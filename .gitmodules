@@ -1,0 +1,3 @@
+[submodule "lib/OpenIndy-Math"]
+	path = lib/OpenIndy-Math
+	url = https://github.com/OpenIndy/OpenIndy-Math.git
