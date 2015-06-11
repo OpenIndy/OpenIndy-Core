@@ -7,7 +7,7 @@
 #include "types.h"
 
 //! Helper class that is used when creating new features to specify their attributes
-class FeatureAttributes
+class OI_CORE_EXPORT FeatureAttributes
 {
 public:
     FeatureAttributes(){

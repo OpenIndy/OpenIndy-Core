@@ -12,7 +12,7 @@
  * \brief The Cone class
  * Defines a right circular cone
  */
-class Cone : public Geometry
+class OI_CORE_EXPORT Cone : public Geometry
 {
     Q_OBJECT
 

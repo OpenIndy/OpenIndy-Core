@@ -21,7 +21,7 @@ class Sensor;
  * \brief The ConnectionConfig class
  * Save all information needed to connect a sensor
  */
-class ConnectionConfig{
+class OI_CORE_EXPORT ConnectionConfig{
 public:
     ConnectionConfig(){}
 
@@ -41,7 +41,7 @@ public:
  * \brief The Accuracy class
  * Save information about the accurycy of a sensor
  */
-class Accuracy{
+class OI_CORE_EXPORT Accuracy{
 public:
     Accuracy() : sigmaXyz((OiVec(3))), sigmaAzimuth(0.0), sigmaZenith(0.0), sigmaDistance(0.0),
         sigmaTemp(0.0), sigmaAngleXZ(0.0), sigmaAngleYZ(0.0){}
@@ -63,7 +63,7 @@ public:
 /*!
  * \brief The SensorConfiguration class
  */
-class SensorConfiguration
+class OI_CORE_EXPORT SensorConfiguration
 {
 
 public:

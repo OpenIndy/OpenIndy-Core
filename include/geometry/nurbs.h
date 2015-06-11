@@ -9,7 +9,7 @@
 /*!
  * \brief The Nurbs class
  */
-class Nurbs : public Geometry
+class OI_CORE_EXPORT Nurbs : public Geometry
 {
     Q_OBJECT
 

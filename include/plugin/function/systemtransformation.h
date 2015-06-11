@@ -9,7 +9,7 @@ class FeatureUpdater;
  * \brief The SystemTransformation class
  * Functions that solves transformation parameters between two coordinate systems (station-station, part-part, alignments)
  */
-class SystemTransformation : public Function
+class OI_CORE_EXPORT SystemTransformation : public Function
 {
     friend class FeatureUpdater;
     Q_OBJECT

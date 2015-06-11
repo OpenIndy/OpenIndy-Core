@@ -21,7 +21,7 @@ class CoordinateSystem;
  * \brief The Geometry class
  *
  */
-class Geometry : public Feature
+class OI_CORE_EXPORT Geometry : public Feature
 {
     friend class Geometry;
     friend class OiJob;

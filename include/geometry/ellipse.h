@@ -12,7 +12,7 @@
 /*!
  * \brief The Ellipse class
  */
-class Ellipse : public Geometry
+class OI_CORE_EXPORT Ellipse : public Geometry
 {
     Q_OBJECT
 

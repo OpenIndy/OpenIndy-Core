@@ -10,13 +10,11 @@
 #include "coordinatesystem.h"
 #include "featurewrapper.h"
 
-//TODO add QMutex
-
 /*!
  * \brief The OiExchangeInterface class
  * Base class for implementing import/export plugins
  */
-class ExchangeInterface : public QObject
+class OI_CORE_EXPORT ExchangeInterface : public QObject
 {
     Q_OBJECT
 
@@ -65,29 +63,6 @@ public slots:
     virtual void importOiData();
     virtual void exportOiData();
 
-    /*!
-     * \brief setUnits
-     * Set the units used for im- or export
-     * \param units
-     */
-    /*void setUnits(QMap<OiUnitConverter::DimensionType, OiUnitConverter::UnitType> units){
-        this->units = units;
-    }*/
-/*
-    void setNominalSystem(CoordinateSystem* nominalCoordSys){
-        this->nominalCoordSys = nominalCoordSys;
-    }*/
-
-/*
-    bool addGeometry(FeatureWrapper *geom, OiExchangeObject &projectData){
-        if(this->nominalCoordSys == NULL || geom == NULL || geom->getGeometry() == NULL){
-            return false;
-        }
-        geom->getGeometry()->setNominalSystem(this->nominalCoordSys);
-        projectData.features.append(geom);
-        return true;
-    }*/
-
 signals:
 
     //################################################
@@ -105,8 +80,6 @@ protected:
     //input and output parameters
     //###########################
 
-    //QMap<OiUnitConverter::DimensionType, OiUnitConverter::UnitType> units; //units used for im- or export
-
     QMap<DimensionType, UnitType> units;
 
     bool exportObservations; //true if only the observations of the selected geometries shall be exported
@@ -118,9 +91,6 @@ protected:
 
     PluginMetaData metaData;
     QList<GeometryTypes> supportedGeometries;
-
-private:
-    //OiExchangeEmitter myExchangeEmitter;
 
 };
 

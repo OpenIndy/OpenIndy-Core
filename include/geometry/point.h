@@ -10,7 +10,7 @@
 /*!
  * \brief The Point class
  */
-class Point : public Geometry
+class OI_CORE_EXPORT Point : public Geometry
 {
     friend class Station;
     Q_OBJECT

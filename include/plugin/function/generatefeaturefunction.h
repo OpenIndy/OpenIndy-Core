@@ -7,7 +7,7 @@
  * \brief The GenerateFeatureFunction class
  * Function that uses its input elements to generate one or more new feature
  */
-class GenerateFeatureFunction : public Function
+class OI_CORE_EXPORT GenerateFeatureFunction : public Function
 {
     Q_OBJECT
 

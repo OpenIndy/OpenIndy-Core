@@ -6,7 +6,7 @@
 #include "element.h"
 #include "oivec.h"
 
-class Position : public Element
+class OI_CORE_EXPORT Position : public Element
 {
     Q_OBJECT
 

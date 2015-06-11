@@ -10,7 +10,7 @@
 /*!
  * \brief The Residual class
  */
-class Residual{
+class OI_CORE_EXPORT Residual{
 public:
     int elementId; //id of the element this residual belongs to
     QMap<QString, double> corrections; //the correction values (key: name)
@@ -20,7 +20,7 @@ public:
 /*!
  * \brief The Statistic class
  */
-class Statistic
+class OI_CORE_EXPORT Statistic
 {
 
 public:

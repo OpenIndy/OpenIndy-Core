@@ -21,7 +21,7 @@
  * The features are stored as lists and also as maps (e.g. with their id as key).
  * The lists and maps are kept in sync.
  */
-class FeatureContainer{
+class OI_CORE_EXPORT FeatureContainer{
 
 public:
     FeatureContainer();

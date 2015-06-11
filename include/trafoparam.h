@@ -16,7 +16,7 @@ class CoordinateSystem;
 /*!
  * \brief The TrafoParam class
  */
-class TrafoParam : public Feature
+class OI_CORE_EXPORT TrafoParam : public Feature
 {
     friend class OiJob;
     Q_OBJECT

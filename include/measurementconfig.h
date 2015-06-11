@@ -6,15 +6,12 @@
 
 #include "types.h"
 
-//class OiConfigState;
-
 /*!
  * \brief The MeasurementConfig class
  * Contains all the configuration parameters needed to start a measurement.
  */
-class MeasurementConfig
+class OI_CORE_EXPORT MeasurementConfig
 {
-    //friend class OiConfigState;
 
 public:
     MeasurementConfig();

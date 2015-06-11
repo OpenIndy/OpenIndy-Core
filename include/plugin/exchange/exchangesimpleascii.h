@@ -10,7 +10,7 @@
  * Interface that shall be used for simple not standardized ascii files.
  * The user of OpenIndy can select the meaning of each column of the file on his own.
  */
-class ExchangeSimpleAscii : public ExchangeInterface
+class OI_CORE_EXPORT ExchangeSimpleAscii : public ExchangeInterface
 {
     Q_OBJECT
 

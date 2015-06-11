@@ -600,6 +600,8 @@ ElementTypes getElementTypeEnum(const ReadingTypes &type){
         return eReadingLevelElement;
     }
 
+    return eUndefinedElement;
+
 }
 
 /*!

@@ -234,18 +234,6 @@ QDomElement Sensor::toOpenIndyXML(QDomDocument &xmlDoc) const{
     sensor.setAttribute("name", this->getMetaData().name);
     sensor.setAttribute("plugin", this->getMetaData().pluginName);
 
-    //add reading types
-    /*QDomElement readingTypes = xmlDoc.createElement("readingTypes");
-    if(this->getSupportedReadingTypes() != NULL){
-        QList<ReadingTypes> *types = this->getSupportedReadingTypes();
-        for(int i = 0; i < types->size(); i++){
-            QDomElement readingType = xmlDoc.createElement("type");
-            readingType.setAttribute("name", getReadingTypeName(types->at(i)));
-            readingTypes.appendChild(readingType);
-        }
-    }
-    sensor.appendChild(readingTypes);*/
-
     return sensor;
 
 }

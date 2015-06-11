@@ -12,7 +12,7 @@
  * \brief The Hyperboloid class
  * Defines a single shell hyperboloid of rotation of the form 1 = x^2/a^2 + y^2/b^2 - z^2/c^2, a=b>0, c>0
  */
-class Hyperboloid : public Geometry
+class OI_CORE_EXPORT Hyperboloid : public Geometry
 {
     Q_OBJECT
 
@@ -85,10 +85,6 @@ public:
     QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
     QString getDisplayA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayC(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-
-    //bool saveSimulationData();
-
-    //static MeasurementConfig defaultMeasurementConfig; //used as a default for this geometry type
 
 private:
 

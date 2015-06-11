@@ -19,7 +19,7 @@ class ProjectExchanger;
 /*!
  * \brief The CoordinateSystem class
  */
-class CoordinateSystem : public Feature
+class OI_CORE_EXPORT CoordinateSystem : public Feature
 {
     friend class Station;
     friend class OiJob;

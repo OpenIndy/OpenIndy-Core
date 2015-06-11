@@ -15,7 +15,7 @@
 /*!
  * \brief The Plugin class
  */
-class Plugin
+class OI_CORE_EXPORT Plugin
 {
 
 public:

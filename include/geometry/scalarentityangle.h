@@ -9,7 +9,7 @@
 /*!
  * \brief The ScalarEntityAngle class
  */
-class ScalarEntityAngle : public Geometry
+class OI_CORE_EXPORT ScalarEntityAngle : public Geometry
 {
     Q_OBJECT
 

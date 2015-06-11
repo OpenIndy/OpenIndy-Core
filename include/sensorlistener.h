@@ -15,7 +15,7 @@ class SensorControl;
  * \brief The SensorListener class
  * The sensor listener handles all sensor streams and is controlled by SensorControl
  */
-class SensorListener : public QObject
+class OI_CORE_EXPORT SensorListener : public QObject
 {
     friend class SensorControl;
     Q_OBJECT

@@ -31,7 +31,7 @@
 #include "scalarentitytemperature.h"
 #include "scalarentitymeasurementseries.h"
 
-class FeatureWrapper : public QObject
+class OI_CORE_EXPORT FeatureWrapper : public QObject
 {
     Q_OBJECT
 

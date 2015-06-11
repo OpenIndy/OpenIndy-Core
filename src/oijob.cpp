@@ -3394,17 +3394,9 @@ bool OiJob::canRemoveFeature(const QPointer<FeatureWrapper> &feature) const{
         return false;
     }
 
+    return true;
+
 }
-
-/*!
- * \brief OiJob::clearDependencies
- * \param feature
- */
-/*void OiJob::clearDependencies(const QPointer<FeatureWrapper> &feature){
-
-
-
-}*/
 
 /*!
  * \brief OiJob::checkCircleWarning

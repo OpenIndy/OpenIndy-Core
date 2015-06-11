@@ -18,7 +18,7 @@ class ProjectExchanger;
  * \brief The SensorControl class
  * A sensor control object belongs to a station and executes all sensor actions on a seperate thread.
  */
-class SensorControl : public QObject
+class OI_CORE_EXPORT SensorControl : public QObject
 {
     friend class ProjectExchanger;
     Q_OBJECT

@@ -16,7 +16,7 @@ class Station;
 class CoordinateSystem;
 class TrafoController;
 
-class Observation : public Element
+class OI_CORE_EXPORT Observation : public Element
 {
     friend class Reading;
     friend class CoordinateSystem;

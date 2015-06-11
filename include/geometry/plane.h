@@ -11,7 +11,7 @@
 /*!
  * \brief The Plane class
  */
-class Plane : public Geometry
+class OI_CORE_EXPORT Plane : public Geometry
 {
     Q_OBJECT
 

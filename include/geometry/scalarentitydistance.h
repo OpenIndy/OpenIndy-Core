@@ -9,7 +9,7 @@
 /*!
  * \brief The ScalarEntityDistance class
  */
-class ScalarEntityDistance : public Geometry
+class OI_CORE_EXPORT ScalarEntityDistance : public Geometry
 {
     Q_OBJECT
 

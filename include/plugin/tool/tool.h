@@ -10,7 +10,7 @@
 #include "pluginmetadata.h"
 #include "oijob.h"
 
-class Tool : public QWidget
+class OI_CORE_EXPORT Tool : public QWidget
 {
     Q_OBJECT
 

@@ -19,7 +19,7 @@
 /*!
  * \brief The SensorAttributes class
  */
-class SensorAttributes{
+class OI_CORE_EXPORT SensorAttributes{
 public:
     double moveAzimuth;
     double moveZenith;
@@ -38,7 +38,7 @@ class SensorControl;
 /*!
  * \brief The Sensor class
  */
-class Sensor : public QObject
+class OI_CORE_EXPORT Sensor : public QObject
 {
     Q_OBJECT
 

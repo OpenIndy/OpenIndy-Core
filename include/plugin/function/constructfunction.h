@@ -7,7 +7,7 @@
  * \brief The ConstructFunction class
  * Function that solves geometries by constructing them from other elements
  */
-class ConstructFunction : public Function
+class OI_CORE_EXPORT ConstructFunction : public Function
 {
     Q_OBJECT
 

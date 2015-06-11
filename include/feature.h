@@ -15,7 +15,7 @@ class Function;
 /*!
  * \brief The Feature class
  */
-class Feature : public Element
+class OI_CORE_EXPORT Feature : public Element
 {
     friend class OiJob;
     friend class Feature;

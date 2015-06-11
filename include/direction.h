@@ -6,7 +6,7 @@
 #include "element.h"
 #include "oivec.h"
 
-class Direction : public Element
+class OI_CORE_EXPORT Direction : public Element
 {
     Q_OBJECT
 

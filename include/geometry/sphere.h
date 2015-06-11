@@ -12,7 +12,7 @@
 /*!
  * \brief The Sphere class
  */
-class Sphere : public Geometry
+class OI_CORE_EXPORT Sphere : public Geometry
 {
     Q_OBJECT
 

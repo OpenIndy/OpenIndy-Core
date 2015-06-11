@@ -13,7 +13,7 @@
  * \brief The Cylinder class
  * Defines a right circular cylinder
  */
-class Cylinder : public Geometry
+class OI_CORE_EXPORT Cylinder : public Geometry
 {
     Q_OBJECT
 

@@ -7,7 +7,7 @@
  * \brief The FitFunction class
  * Function that solves geometries by fitting them using observations
  */
-class FitFunction : public Function
+class OI_CORE_EXPORT FitFunction : public Function
 {
     Q_OBJECT
 

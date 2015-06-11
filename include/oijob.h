@@ -25,7 +25,7 @@ class ProjectExchanger;
  * \brief The OiJob class
  * Represents an OpenIndy job (holds all features and active states)
  */
-class OiJob : public QObject
+class OI_CORE_EXPORT OiJob : public QObject
 {
     friend class ProjectExchanger;
     Q_OBJECT
@@ -274,7 +274,6 @@ private:
     bool checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature);
 
     bool canRemoveFeature(const QPointer<FeatureWrapper> &feature) const;
-    //void clearDependencies(const QPointer<FeatureWrapper> &feature);
 
     bool checkCircleWarning(const QPointer<Feature> &activeFeature, const QPointer<Feature> &usedForActiveFeature);
 

@@ -12,7 +12,7 @@
  * \brief The Ellipsoid class
  * Defines an ellipsoid of rotation
  */
-class Ellipsoid : public Geometry
+class OI_CORE_EXPORT Ellipsoid : public Geometry
 {
     Q_OBJECT
 
@@ -98,11 +98,6 @@ private:
     Direction majorAxis; //major axis vector of the ellipsoid (semi-major axis)
     double a; //semi-major axis
     double b; //semi-minor axis
-
-
-    //bool saveSimulationData();
-
-    //static MeasurementConfig defaultMeasurementConfig; //used as a default for this geometry type
 
 };
 

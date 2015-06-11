@@ -3,7 +3,9 @@
 
 #include <QJsonArray>
 
-class PluginMetaData
+#include "types.h"
+
+class OI_CORE_EXPORT PluginMetaData
 {
 public:
     QString iid;

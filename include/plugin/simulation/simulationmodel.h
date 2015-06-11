@@ -21,7 +21,7 @@
  * \brief The UncertaintyComponent class
  * Describe an uncertainty component of a simulation model
  */
-class UncertaintyComponent
+class OI_CORE_EXPORT UncertaintyComponent
 {
 public:
     QString name;
@@ -40,7 +40,7 @@ public:
 /*!
  * \brief The Uncertainties class
  */
-class Uncertainties{
+class OI_CORE_EXPORT Uncertainties{
 public:
     QMap<QString, UncertaintyComponent> sensorUncertainties;
     QMap<QString, UncertaintyComponent> objectUncertainties;
@@ -52,7 +52,7 @@ public:
  * \brief The UncertaintyData class
  * Save information about simulation results for one geometry parameter
  */
-class UncertaintyData{
+class OI_CORE_EXPORT UncertaintyData{
 public:
     QList<double> values; //randomly shuffled values produced distortion of readings and recalculation
 
@@ -79,7 +79,7 @@ public:
  * \brief The SimulationData class
  * Save simulation results for a geometry
  */
-class SimulationData
+class OI_CORE_EXPORT SimulationData
 {
 public:
 
@@ -124,7 +124,7 @@ public:
 /*!
  * \brief The SimulationConfiguration class
  */
-class SimulationConfiguration{
+class OI_CORE_EXPORT SimulationConfiguration{
 public:
     Uncertainties uncertainties;
 
@@ -142,7 +142,7 @@ public:
  * Interface for creating an uncertainty model for a simulation in OpenIndy.
  * You can provide four major error influences (sensor, object, enviroment and human).
  */
-class SimulationModel : public QObject
+class OI_CORE_EXPORT SimulationModel : public QObject
 {
     Q_OBJECT
 

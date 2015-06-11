@@ -46,7 +46,7 @@
  * \brief The NeededElement class
  * Save the needed element types that are necessary to solve a function
  */
-class NeededElement{
+class OI_CORE_EXPORT NeededElement{
 public:
     ElementTypes typeOfElement; //type of the needed input element
     QString description; //optional description for the needed element to show in the GUI
@@ -57,7 +57,7 @@ public:
  * \brief The InputElement class
  * Save the input elements that are used to solve a function
  */
-class InputElement{
+class OI_CORE_EXPORT InputElement{
 public:
     InputElement() : isUsed(true){}
     InputElement(const int &id) : isUsed(true), id(id){}
@@ -124,7 +124,7 @@ public:
  * \brief The ScalarInputParams class
  * Save user specified non-element scalar function input parameters
  */
-class ScalarInputParams{
+class OI_CORE_EXPORT ScalarInputParams{
 public:
     ScalarInputParams(){
         isValid = false;
@@ -140,7 +140,7 @@ public:
  * \brief The FixedParameter class
  * Save a value for each parameter that shall be fixed
  */
-class FixedParameter{
+class OI_CORE_EXPORT FixedParameter{
 public:
     FixedParameter() : value(0.0){}
     FixedParameter(const UnknownParameters &param) : value(0.0), parameter(param){}
@@ -164,7 +164,7 @@ public:
 /*!
  * \brief The Function class
  */
-class Function : public QObject
+class OI_CORE_EXPORT Function : public QObject
 {
     friend class Feature;
     Q_OBJECT

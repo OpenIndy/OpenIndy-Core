@@ -4,11 +4,13 @@
 #include <QString>
 #include <QtXml>
 
+#include "types.h"
+
 /*!
  * \brief The OiRequestResponse class
  * This class holds the XML request and response corresponding to a special request type
  */
-class OiRequestResponse
+class OI_CORE_EXPORT OiRequestResponse
 {
 public:
     OiRequestResponse();

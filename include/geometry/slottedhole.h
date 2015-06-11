@@ -14,7 +14,7 @@
  * \brief The SlottedHole class
  * Defines an elongated bore with one radius
  */
-class SlottedHole : public Geometry
+class OI_CORE_EXPORT SlottedHole : public Geometry
 {
     Q_OBJECT
 

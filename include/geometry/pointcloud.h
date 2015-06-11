@@ -12,7 +12,7 @@ class FeatureWrapper;
 /*!
  * \brief The Point_PC class
  */
-class Point_PC{
+class OI_CORE_EXPORT Point_PC{
     Point_PC(){ this->isUsed = false; }
 
     float xyz[3];
@@ -22,7 +22,7 @@ class Point_PC{
 /*!
  * \brief The BoundingBox_PC class
  */
-class BoundingBox_PC{
+class OI_CORE_EXPORT BoundingBox_PC{
     float min[3];
     float max[3];
 };
@@ -30,7 +30,7 @@ class BoundingBox_PC{
 /*!
  * \brief The PointCloud class
  */
-class PointCloud : public Geometry
+class OI_CORE_EXPORT PointCloud : public Geometry
 {
     Q_OBJECT
 

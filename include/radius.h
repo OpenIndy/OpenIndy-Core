@@ -5,7 +5,7 @@
 
 #include "element.h"
 
-class Radius : public Element
+class OI_CORE_EXPORT Radius : public Element
 {
     Q_OBJECT
 

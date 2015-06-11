@@ -13,7 +13,7 @@
  * \brief The Torus class
  * Defines a torus of rotation
  */
-class Torus : public Geometry
+class OI_CORE_EXPORT Torus : public Geometry
 {
     Q_OBJECT
 

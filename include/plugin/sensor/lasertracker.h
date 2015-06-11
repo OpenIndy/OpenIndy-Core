@@ -6,7 +6,7 @@
 /*!
  * \brief The LaserTracker class
  */
-class LaserTracker : public Sensor
+class OI_CORE_EXPORT LaserTracker : public Sensor
 {
     Q_OBJECT
 

@@ -4,13 +4,15 @@
 #
 #-------------------------------------------------
 
-QT       += core svg serialport network opengl xml
+QT       += core svg serialport network xml
 
 greaterThan(QT_MAJOR_VERSION, 4):
 
 TARGET = openIndyCore
 
 TEMPLATE = lib
+
+DEFINES += OI_CORE_LIB
 
 CONFIG(debug, debug|release) {
     DESTDIR = $$PWD/bin/debug
@@ -48,16 +50,18 @@ INCLUDEPATH += $$PWD/include/plugin/tool
 INCLUDEPATH += $$PWD/include/plugin/exchange
 INCLUDEPATH += $$PWD/include/util
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/openIndyLib/bin/release/ -lopenIndyLib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/openIndyLib/bin/debug/ -lopenIndyLib
-else:unix: CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/openIndyLib/bin/debug -lopenIndyLib
-else:unix: CONFIG(release, debug|release): LIBS += -L$$PWD/lib/openIndyLib/bin/release -lopenIndyLib
+INCLUDEPATH += $$PWD/lib/OpenIndy-Math/include
 
-INCLUDEPATH += $$PWD/lib/openIndyLib/bin/debug
-DEPENDPATH += $$PWD/lib/openIndyLib/bin/debug
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release/ -lopenIndyMath
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug/ -lopenIndyMath
+else:unix: CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug -lopenIndyMath
+else:unix: CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release -lopenIndyMath
 
-INCLUDEPATH += $$PWD/lib/openIndyLib/bin/release
-DEPENDPATH += $$PWD/lib/openIndyLib/bin/release
+INCLUDEPATH += $$PWD/lib/OpenIndy-Math/bin/debug
+DEPENDPATH += $$PWD/lib/OpenIndy-Math/bin/debug
+
+INCLUDEPATH += $$PWD/lib/OpenIndy-Math/bin/release
+DEPENDPATH += $$PWD/lib/OpenIndy-Math/bin/release
 
 SOURCES += \
     src/geometry/circle.cpp \
@@ -86,7 +90,6 @@ SOURCES += \
     src/plugin/sensor/sensor.cpp \
     src/plugin/simulation/simulationmodel.cpp \
     src/plugin/tool/tool.cpp \
-    src/plugin/pluginmetadata.cpp \
     src/util/util.cpp \
     src/coordinatesystem.cpp \
     src/direction.cpp \
@@ -103,7 +106,6 @@ SOURCES += \
     src/position.cpp \
     src/radius.cpp \
     src/reading.cpp \
-    src/residual.cpp \
     src/sensorconfiguration.cpp \
     src/sensorcontrol.cpp \
     src/sensorlistener.cpp \
@@ -166,10 +168,14 @@ HEADERS  += \
     include/position.h \
     include/radius.h \
     include/reading.h \
-    include/residual.h \
     include/sensorconfiguration.h \
     include/sensorcontrol.h \
     include/sensorlistener.h \
     include/station.h \
     include/statistic.h \
-    include/trafoparam.h
+    include/trafoparam.h \
+    lib/OpenIndy-Math/include/chooselalib.h \
+    lib/OpenIndy-Math/include/global.h \
+    lib/OpenIndy-Math/include/linearalgebra.h \
+    lib/OpenIndy-Math/include/oimat.h \
+    lib/OpenIndy-Math/include/oivec.h

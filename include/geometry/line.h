@@ -11,7 +11,7 @@
 /*!
  * \brief The Line class
  */
-class Line : public Geometry
+class OI_CORE_EXPORT Line : public Geometry
 {
     Q_OBJECT
 public:

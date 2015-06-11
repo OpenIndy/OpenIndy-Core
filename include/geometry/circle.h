@@ -12,7 +12,7 @@
 /*!
  * \brief The Circle class
  */
-class Circle : public Geometry
+class OI_CORE_EXPORT Circle : public Geometry
 {
     Q_OBJECT
 

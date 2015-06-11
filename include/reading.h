@@ -26,7 +26,7 @@ class ProjectExchanger;
 /*!
  * \brief The ReadingPolar class
  */
-class ReadingPolar{
+class OI_CORE_EXPORT ReadingPolar{
 public:
     ReadingPolar() : azimuth(0.0), zenith(0.0), distance(0.0),
         sigmaAzimuth(0.0), sigmaZenith(0.0), sigmaDistance(0.0), isValid(false){}
@@ -43,7 +43,7 @@ public:
 /*!
  * \brief The ReadingDirection class
  */
-class ReadingDirection{
+class OI_CORE_EXPORT ReadingDirection{
 public:
     ReadingDirection() : azimuth(0.0), zenith(0.0), sigmaAzimuth(0.0),
         sigmaZenith(0.0), isValid(false){}
@@ -58,7 +58,7 @@ public:
 /*!
  * \brief The ReadingDistance class
  */
-class ReadingDistance{
+class OI_CORE_EXPORT ReadingDistance{
 public:
     ReadingDistance() : distance(0.0), sigmaDistance(0.0), isValid(false){}
 
@@ -70,7 +70,7 @@ public:
 /*!
  * \brief The ReadingCartesian class
  */
-class ReadingCartesian{
+class OI_CORE_EXPORT ReadingCartesian{
 public:
     ReadingCartesian() : xyz(3), sigmaXyz(3), isValid(false){}
 
@@ -82,7 +82,7 @@ public:
 /*!
  * \brief The ReadingTemperature class
  */
-class ReadingTemperature{
+class OI_CORE_EXPORT ReadingTemperature{
 public:
     ReadingTemperature() : temperature(0.0), sigmaTemperature(0.0), isValid(false){}
 
@@ -94,7 +94,7 @@ public:
 /*!
  * \brief The ReadingUndefined class
  */
-class ReadingUndefined{
+class OI_CORE_EXPORT ReadingUndefined{
 public:
     ReadingUndefined() : isValid(false){}
 
@@ -106,7 +106,7 @@ public:
 /*!
  * \brief The ReadingLevel class
  */
-class ReadingLevel{
+class OI_CORE_EXPORT ReadingLevel{
 public:
     double RX;
     double RY;
@@ -124,7 +124,7 @@ public:
 /*!
  * \brief The Reading class
  */
-class Reading : public Element
+class OI_CORE_EXPORT Reading : public Element
 {
     friend class Station;
     friend class CoordinateSystem;

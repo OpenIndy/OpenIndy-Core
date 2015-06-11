@@ -6,6 +6,8 @@
 
 #include "pluginmetadata.h"
 
+#include "types.h"
+
 class CoordinateSystem;
 class Statistic;
 
@@ -13,7 +15,7 @@ class Statistic;
  * \brief The NetworkAdjustment class
  * Interface for implementing network adjustment plugins.
  */
-class NetworkAdjustment : public QObject
+class OI_CORE_EXPORT NetworkAdjustment : public QObject
 {
     Q_OBJECT
 

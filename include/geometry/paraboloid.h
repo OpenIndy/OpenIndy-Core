@@ -12,7 +12,7 @@
  * \brief The EllipticParaboloid class
  * Defines an elliptic paraboloid of rotation of the form z = x^2/a^2 + y^2/a^2, a > 0
  */
-class Paraboloid : public Geometry
+class OI_CORE_EXPORT Paraboloid : public Geometry
 {
     Q_OBJECT
 

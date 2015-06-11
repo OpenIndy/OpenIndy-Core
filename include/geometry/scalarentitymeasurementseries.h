@@ -9,7 +9,7 @@
 /*!
  * \brief The ScalarEntityMeasurementSeries class
  */
-class ScalarEntityMeasurementSeries : public Geometry
+class OI_CORE_EXPORT ScalarEntityMeasurementSeries : public Geometry
 {
     Q_OBJECT
 

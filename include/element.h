@@ -12,7 +12,7 @@ class OiJob;
 /*!
  * \brief The Element class
  */
-class Element : public QObject
+class OI_CORE_EXPORT Element : public QObject
 {
     friend class OiJob;
     Q_OBJECT

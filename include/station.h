@@ -17,7 +17,7 @@ class ProjectExchanger;
 /*!
  * \brief The Station class
  */
-class Station : public Feature
+class OI_CORE_EXPORT Station : public Feature
 {
     friend class OiJob;
     friend class ProjectExchanger;

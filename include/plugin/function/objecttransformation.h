@@ -7,7 +7,7 @@
  * \brief The ObjectTransformation class
  * Function that changes a previously solved feature by using other elements
  */
-class ObjectTransformation : public Function
+class OI_CORE_EXPORT ObjectTransformation : public Function
 {
     Q_OBJECT
 

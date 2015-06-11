@@ -6,7 +6,7 @@
 /*!
  * \brief The TotalStation class
  */
-class TotalStation : public Sensor
+class OI_CORE_EXPORT TotalStation : public Sensor
 {
     Q_OBJECT
 

@@ -9,7 +9,7 @@
 /*!
  * \brief The ScalarEntityTemperature class
  */
-class ScalarEntityTemperature : public Geometry
+class OI_CORE_EXPORT ScalarEntityTemperature : public Geometry
 {
     Q_OBJECT
 

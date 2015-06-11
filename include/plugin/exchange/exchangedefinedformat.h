@@ -7,7 +7,7 @@
  * \brief The OiExchangeDefinedFormat class
  * Interface that shall be used for files with a special standardized format (like *.obj or *.pts etc.)
  */
-class ExchangeDefinedFormat : public ExchangeInterface
+class OI_CORE_EXPORT ExchangeDefinedFormat : public ExchangeInterface
 {
     Q_OBJECT
 
