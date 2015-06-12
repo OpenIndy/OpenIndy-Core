@@ -1,5 +1,7 @@
 #include "util.h"
 
+namespace oi{
+
 //#################################################
 //maps with element enums and corresponding strings
 //#################################################
@@ -1415,5 +1417,7 @@ ToolTypes getToolTypeEnum(const QString &name){
 
     //get the corresponding tool type enum value
     return internal::toolTypesMap.key(name, eUnknownTool);
+
+}
 
 }

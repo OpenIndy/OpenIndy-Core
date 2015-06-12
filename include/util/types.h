@@ -11,6 +11,8 @@
 #  define OI_CORE_EXPORT Q_DECL_IMPORT
 #endif
 
+namespace oi{
+
 //#######################
 //define scalar constants
 //#######################
@@ -388,5 +390,7 @@ enum ToolTypes{
     eUnknownTool
 
 };
+
+}
 
 #endif // TYPES_H

@@ -3,6 +3,9 @@
 #include "observation.h"
 #include "sensor.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Reading::Reading
  * \param parent

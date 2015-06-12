@@ -5,6 +5,8 @@
 
 class FeatureUpdater;
 
+namespace oi{
+
 /*!
  * \brief The SystemTransformation class
  * Functions that solves transformation parameters between two coordinate systems (station-station, part-part, alignments)
@@ -63,6 +65,8 @@ protected:
     QMap<int, QList<InputElement> > inputElementsDestinationSystem; //input elements solved in destination system
 
 };
+
+}
 
 #define SystemTransformation_iidd "de.openIndy.plugin.function.systemTransformation.v001"
 

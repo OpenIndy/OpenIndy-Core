@@ -6,6 +6,8 @@
 
 #include "geometry.h"
 
+namespace oi{
+
 /*!
  * \brief The ScalarEntityAngle class
  */
@@ -67,5 +69,7 @@ private:
     double angle;
 
 };
+
+}
 
 #endif // SCALARENTITYANGLE_H

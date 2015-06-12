@@ -5,6 +5,8 @@
 
 #include "exchangeinterface.h"
 
+namespace oi{
+
 /*!
  * \brief The ExchangeSimpleAscii class
  * Interface that shall be used for simple not standardized ascii files.
@@ -86,6 +88,8 @@ protected:
     QStringList supportedDelimiters;
 
 };
+
+}
 
 #define ExchangeSimpleAscii_iidd "de.openIndy.plugin.exchange.exchangeSimpleAscii.v001"
 

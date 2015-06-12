@@ -6,6 +6,8 @@
 
 #include "geometry.h"
 
+namespace oi{
+
 /*!
  * \brief The ScalarEntityMeasurementSeries class
  */
@@ -67,5 +69,7 @@ private:
     double seriesValue;
 
 };
+
+}
 
 #endif // SCALARENTITYMEASUREMENTSERIES_H

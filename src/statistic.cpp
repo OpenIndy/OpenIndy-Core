@@ -1,5 +1,8 @@
 #include "statistic.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Statistic::Statistic
  */

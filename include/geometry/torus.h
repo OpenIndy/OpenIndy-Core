@@ -9,6 +9,8 @@
 #include "radius.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Torus class
  * Defines a torus of rotation
@@ -100,5 +102,7 @@ private:
     Radius radiusB; //distance of the center curve to the torus surface (radiusA > radiusB)
 
 };
+
+}
 
 #endif // TORUS_H

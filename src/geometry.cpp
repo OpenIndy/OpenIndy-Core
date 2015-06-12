@@ -6,6 +6,9 @@
 #include "station.h"
 #include "function.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Geometry::Geometry
  * \param isNominal

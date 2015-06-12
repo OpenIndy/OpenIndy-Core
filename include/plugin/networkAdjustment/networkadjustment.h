@@ -8,6 +8,8 @@
 
 #include "types.h"
 
+namespace oi{
+
 class CoordinateSystem;
 class Statistic;
 
@@ -30,8 +32,11 @@ public:
     virtual PluginMetaData* getMetaData(){ return NULL; }
 
     virtual void recalc(){}
-};
-#define NetworkAdjustment_iidd "de.openIndy.plugin.networkAdjustment.v001"
 
+};
+
+}
+
+#define NetworkAdjustment_iidd "de.openIndy.plugin.networkAdjustment.v001"
 
 #endif // PI_NETWORKADJUSTMENT_H

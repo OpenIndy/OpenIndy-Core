@@ -7,6 +7,8 @@
 #include "geometry.h"
 #include "position.h"
 
+namespace oi{
+
 /*!
  * \brief The Point class
  */
@@ -79,5 +81,7 @@ private:
     Position xyz; //position
 
 };
+
+}
 
 #endif // POINT_H

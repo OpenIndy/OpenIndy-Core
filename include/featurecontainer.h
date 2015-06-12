@@ -15,6 +15,8 @@
 #include "trafoparam.h"
 #include "types.h"
 
+namespace oi{
+
 /*!
  * \brief The FeatureContainer class
  * Works as a container for all features in an OiJob.
@@ -102,5 +104,7 @@ private:
     QStringList featureGroups;
 
 };
+
+}
 
 #endif // FEATURECONTAINER_H

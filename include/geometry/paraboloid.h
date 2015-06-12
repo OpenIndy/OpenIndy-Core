@@ -8,6 +8,8 @@
 #include "position.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The EllipticParaboloid class
  * Defines an elliptic paraboloid of rotation of the form z = x^2/a^2 + y^2/a^2, a > 0
@@ -94,5 +96,7 @@ private:
     double a; //compression or streatch parameter
 
 };
+
+}
 
 #endif // PARABOLOID_H

@@ -4,6 +4,9 @@
 #include "coordinatesystem.h"
 #include "function.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Observation::Observation
  * \param parent

@@ -13,6 +13,8 @@
 #include "direction.h"
 #include "radius.h"
 
+namespace oi{
+
 //##############
 //helper classes
 //##############
@@ -213,6 +215,8 @@ protected:
     QMap<QString, UncertaintyComponent> humanInfluence;
 
 };
+
+}
 
 #define Simulation_iidd "de.openIndy.plugin.simulation.v001"
 

@@ -14,6 +14,8 @@
 #include "direction.h"
 #include "position.h"
 
+namespace oi{
+
 class Observation;
 class CoordinateSystem;
 
@@ -158,5 +160,7 @@ private:
     Radius dummyRadius;
 
 };
+
+}
 
 #endif // GEOMETRY_H

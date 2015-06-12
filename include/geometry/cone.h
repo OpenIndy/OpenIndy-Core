@@ -8,6 +8,8 @@
 #include "position.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Cone class
  * Defines a right circular cone
@@ -94,5 +96,7 @@ private:
     double aperture; //opening angle = 2 * angle between surface line and r
 
 };
+
+}
 
 #endif // CONE_H

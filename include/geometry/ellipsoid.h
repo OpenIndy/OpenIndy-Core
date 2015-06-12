@@ -8,6 +8,8 @@
 #include "position.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Ellipsoid class
  * Defines an ellipsoid of rotation
@@ -100,5 +102,7 @@ private:
     double b; //semi-minor axis
 
 };
+
+}
 
 #endif // ELLIPSOID_H

@@ -2,6 +2,8 @@
 
 #include "featurewrapper.h"
 
+using namespace oi;
+
 /*!
  * \brief Nurbs::Nurbs
  * \param isNominal

@@ -2,6 +2,9 @@
 
 #include "featurewrapper.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Line::Line
  * \param isNominal

@@ -7,6 +7,10 @@
 #include "oimat.h"
 #include "types.h"
 
+namespace oi{
+
+using namespace math;
+
 /*!
  * \brief The Residual class
  */
@@ -82,5 +86,7 @@ private:
     QList<Residual> displayResiduals;
 
 };
+
+}
 
 #endif // STATISTIC_H

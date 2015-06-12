@@ -1,5 +1,7 @@
 #include "simulationmodel.h"
 
+using namespace oi;
+
 /*!
  * \brief SimulationModel::SimulationModel
  * \param parent

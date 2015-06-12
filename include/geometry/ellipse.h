@@ -9,6 +9,8 @@
 #include "radius.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Ellipse class
  */
@@ -106,5 +108,7 @@ private:
     Direction semiMajorAxis; //semi-major axis direction
 
 };
+
+}
 
 #endif // ELLIPSE_H

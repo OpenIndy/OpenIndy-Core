@@ -6,6 +6,8 @@
 
 #include "geometry.h"
 
+namespace oi{
+
 /*!
  * \brief The Nurbs class
  */
@@ -52,5 +54,7 @@ public:
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
 };
+
+}
 
 #endif // NURBS_H

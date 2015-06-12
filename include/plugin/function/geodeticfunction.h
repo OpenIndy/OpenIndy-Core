@@ -3,6 +3,8 @@
 
 #include "function.h"
 
+namespace oi{
+
 /*!
  * \brief The GeodeticFunction class
  * for future use only
@@ -25,7 +27,10 @@ protected:
     bool exec(Station &station){ return Function::exec(station); }
     bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
     bool exec(TrafoParam &trafoParam){ return Function::exec(trafoParam); }
+
 };
+
+}
 
 #define GeodeticFunction_iidd "de.openIndy.plugin.function.geodeticFunction.v001"
 

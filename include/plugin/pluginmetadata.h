@@ -5,6 +5,8 @@
 
 #include "types.h"
 
+namespace oi{
+
 class OI_CORE_EXPORT PluginMetaData
 {
 public:
@@ -23,5 +25,7 @@ public:
     QString pluginType;
 
 };
+
+}
 
 #endif // PLUGINMETADATA_H

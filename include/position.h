@@ -6,6 +6,13 @@
 #include "element.h"
 #include "oivec.h"
 
+namespace oi{
+
+using namespace math;
+
+/*!
+ * \brief The Position class
+ */
 class OI_CORE_EXPORT Position : public Element
 {
     Q_OBJECT
@@ -36,5 +43,7 @@ protected:
     OiVec xyzH; //homogeneous vector of size 4 (x, y, z, h)
 
 };
+
+}
 
 #endif // POSITION_H

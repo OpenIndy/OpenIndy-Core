@@ -3,6 +3,8 @@
 
 #include "sensor.h"
 
+namespace oi{
+
 /*!
  * \brief The TotalStation class
  */
@@ -73,8 +75,9 @@ protected:
         return false;
     }
 
-
 };
+
+}
 
 #define TotalStation_iidd "de.openIndy.plugin.sensor.totalStation.v001"
 

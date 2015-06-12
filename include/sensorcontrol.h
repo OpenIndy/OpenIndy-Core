@@ -10,9 +10,12 @@
 #include "sensor.h"
 #include "measurementconfig.h"
 
+class ProjectExchanger;
+
+namespace oi{
+
 class Station;
 class SensorListener;
-class ProjectExchanger;
 
 /*!
  * \brief The SensorControl class
@@ -87,5 +90,7 @@ private:
     QMutex locker;
 
 };
+
+}
 
 #endif // SENSORCONTROL_H

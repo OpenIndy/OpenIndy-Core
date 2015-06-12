@@ -1,5 +1,7 @@
 #include "featurewrapper.h"
 
+using namespace oi;
+
 /*!
  * \brief FeatureWrapper::FeatureWrapper
  * \param parent

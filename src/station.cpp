@@ -7,6 +7,8 @@
 #include "oijob.h"
 #include "featurewrapper.h"
 
+using namespace oi;
+
 /*!
  * \brief Station::Station
  * \param parent

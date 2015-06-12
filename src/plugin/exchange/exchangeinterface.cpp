@@ -1,5 +1,7 @@
 #include "exchangeinterface.h"
 
+using namespace oi;
+
 /*!
  * \brief ExchangeInterface::ExchangeInterface
  * \param parent

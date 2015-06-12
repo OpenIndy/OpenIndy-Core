@@ -1,5 +1,7 @@
 #include "element.h"
 
+using namespace oi;
+
 Element::Element(QObject *parent) : QObject(parent), id(-1){
 
 }

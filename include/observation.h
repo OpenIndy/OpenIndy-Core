@@ -11,11 +11,19 @@
 #include "oivec.h"
 #include "statistic.h"
 
+class TrafoController;
+
+namespace oi{
+
+using namespace math;
+
 class Reading;
 class Station;
 class CoordinateSystem;
-class TrafoController;
 
+/*!
+ * \brief The Observation class
+ */
 class OI_CORE_EXPORT Observation : public Element
 {
     friend class Reading;
@@ -109,8 +117,6 @@ private:
     //booleans that indicate the state of the observation
     //###################################################
 
-    //bool isActiveCoordSys; //indicates wether the observation coord system is the current coordinate system at time of creation
-
     bool isValid; //defines if the reading can be transformed, without any function, to a xyz observation
     bool isSolved; //defines wether this observation is valid in current coordinate system
 
@@ -134,6 +140,8 @@ private:
 
 };
 
-Q_DECLARE_METATYPE( Observation* )
+}
+
+Q_DECLARE_METATYPE( oi::Observation* )
 
 #endif // OBSERVATION_H

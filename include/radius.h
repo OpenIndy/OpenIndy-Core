@@ -5,6 +5,11 @@
 
 #include "element.h"
 
+namespace oi{
+
+/*!
+ * \brief The Radius class
+ */
 class OI_CORE_EXPORT Radius : public Element
 {
     Q_OBJECT
@@ -31,5 +36,7 @@ protected:
     double radius;
 
 };
+
+}
 
 #endif // RADIUS_H

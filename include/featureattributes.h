@@ -6,7 +6,12 @@
 
 #include "types.h"
 
-//! Helper class that is used when creating new features to specify their attributes
+namespace oi{
+
+/*!
+ * \brief The FeatureAttributes class
+ * Helper class that is used when creating new features to specify their attributes
+ */
 class OI_CORE_EXPORT FeatureAttributes
 {
 public:
@@ -39,5 +44,7 @@ public:
     bool isMovement;
 
 };
+
+}
 
 #endif // FEATUREATTRIBUTES_H

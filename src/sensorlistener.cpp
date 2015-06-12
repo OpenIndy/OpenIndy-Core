@@ -1,5 +1,7 @@
 #include "sensorlistener.h"
 
+using namespace oi;
+
 /*!
  * \brief SensorListener::SensorListener
  * \param locker

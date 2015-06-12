@@ -9,6 +9,8 @@
 
 #include "element.h"
 
+namespace oi{
+
 class FeatureWrapper;
 class Function;
 
@@ -210,6 +212,8 @@ protected:
 
 };
 
-Q_DECLARE_METATYPE( Feature* )
+}
+
+Q_DECLARE_METATYPE( oi::Feature* )
 
 #endif // FEATURE_H

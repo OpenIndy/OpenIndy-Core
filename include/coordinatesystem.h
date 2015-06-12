@@ -9,12 +9,15 @@
 #include "position.h"
 #include "direction.h"
 
+class TrafoController;
+class ProjectExchanger;
+
+namespace oi{
+
 class Observation;
 class TrafoParam;
 class Geometry;
 class Station;
-class TrafoController;
-class ProjectExchanger;
 
 /*!
  * \brief The CoordinateSystem class
@@ -171,5 +174,7 @@ private:
     QMap< int, QPointer<FeatureWrapper> > nominalsMap; //same geometries but id as key
 
 };
+
+}
 
 #endif // COORDINATESYSTEM_H

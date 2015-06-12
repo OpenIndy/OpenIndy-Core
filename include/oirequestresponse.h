@@ -6,6 +6,8 @@
 
 #include "types.h"
 
+namespace oi{
+
 /*!
  * \brief The OiRequestResponse class
  * This class holds the XML request and response corresponding to a special request type
@@ -53,6 +55,9 @@ public:
     QDomDocument request; //holds the XML structure of the request
     QDomDocument response; //holds the XML structure of the response
     int requesterId; //identifies the requester so that the response is send only to him
+
 };
+
+}
 
 #endif // OIREQUEST_H

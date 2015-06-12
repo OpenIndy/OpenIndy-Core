@@ -38,6 +38,8 @@
 #include "types.h"
 #include "util.h"
 
+namespace oi{
+
 //############################################
 //helper classes to define function parameters
 //############################################
@@ -325,7 +327,9 @@ protected:
 
 };
 
-Q_DECLARE_METATYPE( Function* )
+}
+
+Q_DECLARE_METATYPE( oi::Function* )
 
 #define Function_iid "de.openIndy.plugin.function.v001"
 

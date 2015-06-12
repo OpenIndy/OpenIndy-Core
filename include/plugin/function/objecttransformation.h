@@ -3,6 +3,8 @@
 
 #include "function.h"
 
+namespace oi{
+
 /*!
  * \brief The ObjectTransformation class
  * Function that changes a previously solved feature by using other elements
@@ -24,7 +26,10 @@ protected:
 
     bool exec(Station &station){ return Function::exec(station); }
     bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
+
 };
+
+}
 
 #define ObjectTransformation_iidd "de.openIndy.plugin.function.objectTransformation.v001"
 

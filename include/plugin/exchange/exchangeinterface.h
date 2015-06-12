@@ -10,6 +10,8 @@
 #include "coordinatesystem.h"
 #include "featurewrapper.h"
 
+namespace oi{
+
 /*!
  * \brief The OiExchangeInterface class
  * Base class for implementing import/export plugins
@@ -93,6 +95,8 @@ protected:
     QList<GeometryTypes> supportedGeometries;
 
 };
+
+}
 
 #define Exchange_iidd "de.openIndy.plugin.exchange.v001"
 

@@ -12,6 +12,8 @@
 #include "exchangesimpleascii.h"
 #include "exchangedefinedformat.h"
 
+namespace oi{
+
 /*!
  * \brief The Plugin class
  */
@@ -46,6 +48,8 @@ public:
     virtual QPointer<ExchangeDefinedFormat> createDefinedFormatExchange(const QString &name) = 0;
 
 };
+
+}
 
 #define Plugin_iidd "de.openIndy.plugin.v001"
 

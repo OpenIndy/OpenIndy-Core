@@ -4,6 +4,8 @@
 #include "function.h"
 #include "featurewrapper.h"
 
+using namespace oi;
+
 /*!
  * \brief Feature::Feature
  * \param parent

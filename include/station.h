@@ -9,10 +9,13 @@
 #include "feature.h"
 #include "point.h"
 
+class ProjectExchanger;
+
+namespace oi{
+
 class Reading;
 class CoordinateSystem;
 class Sensor;
-class ProjectExchanger;
 
 /*!
  * \brief The Station class
@@ -174,5 +177,7 @@ protected:
     void setJob(const QPointer<OiJob> &job);
 
 };
+
+}
 
 #endif // STATION_H

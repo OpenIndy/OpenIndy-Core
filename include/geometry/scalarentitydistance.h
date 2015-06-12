@@ -6,6 +6,8 @@
 
 #include "geometry.h"
 
+namespace oi{
+
 /*!
  * \brief The ScalarEntityDistance class
  */
@@ -67,5 +69,7 @@ private:
     double distance;
 
 };
+
+}
 
 #endif // SCALARENTITYDISTANCE_H

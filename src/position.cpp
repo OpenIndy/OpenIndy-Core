@@ -1,5 +1,8 @@
 #include "position.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Position::Position
  * \param parent

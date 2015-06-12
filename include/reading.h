@@ -14,10 +14,15 @@
 #include "types.h"
 #include "util.h"
 
+class ProjectExchanger;
+
+namespace oi{
+
+using namespace math;
+
 class Sensor;
 class Observation;
 class CoordinateSystem;
-class ProjectExchanger;
 
 //###########################
 //definition of reading types
@@ -306,6 +311,8 @@ private:
 
 };
 
-Q_DECLARE_METATYPE( Reading* )
+}
+
+Q_DECLARE_METATYPE( oi::Reading* )
 
 #endif // READING_H

@@ -6,6 +6,8 @@
 
 #include "geometry.h"
 
+namespace oi{
+
 /*!
  * \brief The ScalarEntityTemperature class
  */
@@ -67,5 +69,7 @@ private:
     double temperature;
 
 };
+
+}
 
 #endif // SCALARENTITYTEMPERATURE_H

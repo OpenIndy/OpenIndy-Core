@@ -16,6 +16,8 @@
 #include "util.h"
 #include "reading.h"
 
+namespace oi{
+
 /*!
  * \brief The SensorAttributes class
  */
@@ -151,6 +153,8 @@ protected:
     QMultiMap<QString, QString> stringParameters;
 
 };
+
+}
 
 #define Sensor_iidd "de.openIndy.plugin.sensor.v001"
 

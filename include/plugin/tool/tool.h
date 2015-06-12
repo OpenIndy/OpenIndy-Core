@@ -10,6 +10,8 @@
 #include "pluginmetadata.h"
 #include "oijob.h"
 
+namespace oi{
+
 class OI_CORE_EXPORT Tool : public QWidget
 {
     Q_OBJECT
@@ -73,6 +75,8 @@ protected:
     QPointer<OiJob> job; //the OpenIndy job that this tool works on
 
 };
+
+}
 
 #define Tool_iidd "de.openIndy.plugin.tool.v001"
 

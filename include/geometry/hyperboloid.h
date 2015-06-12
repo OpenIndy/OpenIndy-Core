@@ -8,6 +8,8 @@
 #include "position.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Hyperboloid class
  * Defines a single shell hyperboloid of rotation of the form 1 = x^2/a^2 + y^2/b^2 - z^2/c^2, a=b>0, c>0
@@ -98,5 +100,7 @@ private:
     double c;
 
 };
+
+}
 
 #endif // HYPERBOLOID_H

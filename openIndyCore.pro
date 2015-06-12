@@ -95,14 +95,12 @@ SOURCES += \
     src/direction.cpp \
     src/element.cpp \
     src/feature.cpp \
-    src/featureattributes.cpp \
     src/featurecontainer.cpp \
     src/featurewrapper.cpp \
     src/geometry.cpp \
     src/measurementconfig.cpp \
     src/observation.cpp \
     src/oijob.cpp \
-    src/oirequestresponse.cpp \
     src/position.cpp \
     src/radius.cpp \
     src/reading.cpp \

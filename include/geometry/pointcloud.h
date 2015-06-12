@@ -7,6 +7,8 @@
 #include "geometry.h"
 #include "position.h"
 
+namespace oi{
+
 class FeatureWrapper;
 
 /*!
@@ -108,5 +110,7 @@ private:
     QList<QPointer<FeatureWrapper> > detectedSegments; //geometry-segments that were detected in the pointcloud
 
 };
+
+}
 
 #endif // POINTCLOUD_H

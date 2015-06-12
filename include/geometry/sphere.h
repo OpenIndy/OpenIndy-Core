@@ -9,6 +9,8 @@
 #include "radius.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Sphere class
  */
@@ -85,5 +87,7 @@ private:
     Radius radius; //radius
 
 };
+
+}
 
 #endif // SPHERE_H

@@ -11,6 +11,10 @@
 #include "util.h"
 #include "oivec.h"
 
+namespace oi{
+
+using namespace math;
+
 class Sensor;
 
 //##############
@@ -150,7 +154,9 @@ private:
     QMap<QString, QString> stringParameter;
 };
 
-Q_DECLARE_METATYPE( SensorConfiguration )
-Q_DECLARE_METATYPE( SensorConfiguration* )
+}
+
+Q_DECLARE_METATYPE( oi::SensorConfiguration )
+Q_DECLARE_METATYPE( oi::SensorConfiguration* )
 
 #endif // SENSORCONFIGURATION_H

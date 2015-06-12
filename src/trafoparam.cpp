@@ -3,6 +3,9 @@
 #include "oijob.h"
 #include "featurewrapper.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief TrafoParam::TrafoParam
  * \param parent

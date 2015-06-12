@@ -6,6 +6,8 @@
 
 #include "types.h"
 
+namespace oi{
+
 /*!
  * \brief The MeasurementConfig class
  * Contains all the configuration parameters needed to start a measurement.
@@ -90,11 +92,11 @@ private:
     double distanceInterval; //distance interval in which the sensor shall measure
     ReadingTypes typeOfReading; //the type of reading which the sensor shall return
 
-    //only OiConfigState can access this method from outside this class
-    //void setIsSaved(bool isSaved);
 };
 
-Q_DECLARE_METATYPE( MeasurementConfig )
-Q_DECLARE_METATYPE( MeasurementConfig* )
+}
+
+Q_DECLARE_METATYPE( oi::MeasurementConfig )
+Q_DECLARE_METATYPE( oi::MeasurementConfig* )
 
 #endif // MEASUREMENTCONFIG_H

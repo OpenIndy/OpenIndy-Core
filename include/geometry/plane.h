@@ -8,6 +8,8 @@
 #include "position.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Plane class
  */
@@ -94,5 +96,7 @@ private:
     double d; //smallest distance from origin
 
 };
+
+}
 
 #endif // PLANE_H

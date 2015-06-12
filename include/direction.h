@@ -6,6 +6,10 @@
 #include "element.h"
 #include "oivec.h"
 
+namespace oi{
+
+using namespace math;
+
 class OI_CORE_EXPORT Direction : public Element
 {
     Q_OBJECT
@@ -36,5 +40,7 @@ private:
     OiVec ijkH; //vector of size 4 (i, j, k, h)
 
 };
+
+}
 
 #endif // DIRECTION_H

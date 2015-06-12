@@ -10,6 +10,8 @@
 #include "radius.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The SlottedHole class
  * Defines an elongated bore with one radius
@@ -118,5 +120,7 @@ private:
     Position circleCenterB; //center of the other circle
 
 };
+
+}
 
 #endif // SLOTTEDHOLE_H

@@ -8,6 +8,8 @@
 #include "position.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Line class
  */
@@ -87,5 +89,7 @@ private:
     Direction axis; //direction vector
 
 };
+
+}
 
 #endif // LINE_H

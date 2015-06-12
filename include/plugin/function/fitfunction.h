@@ -3,6 +3,8 @@
 
 #include "function.h"
 
+namespace oi{
+
 /*!
  * \brief The FitFunction class
  * Function that solves geometries by fitting them using observations
@@ -35,7 +37,10 @@ protected:
     bool exec(Station &station){ return Function::exec(station); }
     bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
     bool exec(TrafoParam &trafoParam){ return Function::exec(trafoParam); }
+
 };
+
+}
 
 #define FitFunction_iidd "de.openIndy.plugin.function.fitFunction.v001"
 

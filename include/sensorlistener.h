@@ -9,6 +9,8 @@
 
 #include "sensor.h"
 
+namespace oi{
+
 class SensorControl;
 
 /*!
@@ -82,5 +84,7 @@ private:
     QMutex &locker;
 
 };
+
+}
 
 #endif // SENSORLISTENER_H

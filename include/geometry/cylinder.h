@@ -9,6 +9,8 @@
 #include "radius.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Cylinder class
  * Defines a right circular cylinder
@@ -95,5 +97,7 @@ private:
     Radius radius; //radius
 
 };
+
+}
 
 #endif // CYLINDER_H

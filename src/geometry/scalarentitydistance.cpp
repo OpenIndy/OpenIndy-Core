@@ -2,6 +2,8 @@
 
 #include "featurewrapper.h"
 
+using namespace oi;
+
 /*!
  * \brief ScalarEntityDistance::ScalarEntityDistance
  * \param isNominal

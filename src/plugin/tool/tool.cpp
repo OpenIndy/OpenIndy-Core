@@ -1,5 +1,7 @@
 #include "tool.h"
 
+using namespace oi;
+
 /*!
  * \brief Tool::Tool
  * \param parent

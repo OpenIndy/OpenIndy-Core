@@ -3,6 +3,8 @@
 
 #include "sensor.h"
 
+namespace oi{
+
 /*!
  * \brief The LaserTracker class
  */
@@ -118,6 +120,8 @@ protected:
     }
 
 };
+
+}
 
 #define LaserTracker_iidd "de.openIndy.plugin.sensor.laserTracker.v001"
 

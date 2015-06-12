@@ -6,6 +6,9 @@
 #include "trafoparam.h"
 #include "oijob.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief CoordinateSystem::CoordinateSystem
  * \param parent

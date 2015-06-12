@@ -11,6 +11,10 @@
 #include "oivec.h"
 #include "oimat.h"
 
+namespace oi{
+
+using namespace math;
+
 class CoordinateSystem;
 
 /*!
@@ -62,7 +66,6 @@ public:
     const OiVec &getTranslation() const;
     const OiVec &getRotation() const;
     const OiVec &getScale() const;
-    //OiVec getQuaternion() const;
 
     bool setTransformationParameters(const OiVec &rotation, const OiVec &translation, const OiVec &scale);
     bool setTransformationParameters(const OiMat &rotation, const OiMat &translation, const OiMat &scale);
@@ -141,8 +144,9 @@ private:
     OiVec scale;
 
     OiMat homogenMatrix;
-    //OiVec quaternion;
 
 };
+
+}
 
 #endif // TRAFOPARAM_H

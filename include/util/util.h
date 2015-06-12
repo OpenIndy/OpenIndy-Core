@@ -7,6 +7,8 @@
 
 #include "types.h"
 
+namespace oi{
+
 //#######################################
 //global functions to query element types
 //#######################################
@@ -109,5 +111,7 @@ ConnectionTypes getConnectionTypeEnum(const QString &name);
 QList<ToolTypes> getAvailableToolTypes();
 const QString &getToolTypeName(const ToolTypes &type);
 ToolTypes getToolTypeEnum(const QString &name);
+
+}
 
 #endif // UTIL_H

@@ -9,6 +9,8 @@
 #include "radius.h"
 #include "direction.h"
 
+namespace oi{
+
 /*!
  * \brief The Circle class
  */
@@ -94,5 +96,7 @@ private:
     Radius radius; //radius
 
 };
+
+}
 
 #endif // CIRCLE_H

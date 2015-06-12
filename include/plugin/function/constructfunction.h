@@ -3,6 +3,8 @@
 
 #include "function.h"
 
+namespace oi{
+
 /*!
  * \brief The ConstructFunction class
  * Function that solves geometries by constructing them from other elements
@@ -27,6 +29,8 @@ protected:
     bool exec(TrafoParam &trafoParam){ return Function::exec(trafoParam); }
 
 };
+
+}
 
 #define ConstructFunction_iidd "de.openIndy.plugin.function.constructFunction.v001"
 

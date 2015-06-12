@@ -31,6 +31,8 @@
 #include "scalarentitytemperature.h"
 #include "scalarentitymeasurementseries.h"
 
+namespace oi{
+
 class OI_CORE_EXPORT FeatureWrapper : public QObject
 {
     Q_OBJECT
@@ -146,6 +148,8 @@ private:
 
 };
 
-Q_DECLARE_METATYPE( FeatureWrapper* )
+}
+
+Q_DECLARE_METATYPE( oi::FeatureWrapper* )
 
 #endif // FEATUREWRAPPER_H

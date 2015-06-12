@@ -7,6 +7,8 @@
 #include "types.h"
 #include "util.h"
 
+namespace oi{
+
 class OiJob;
 
 /*!
@@ -51,5 +53,7 @@ protected:
     int id;
 
 };
+
+}
 
 #endif // ELEMENT_H

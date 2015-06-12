@@ -21,6 +21,8 @@
 
 class ProjectExchanger;
 
+namespace oi{
+
 /*!
  * \brief The OiJob class
  * Represents an OpenIndy job (holds all features and active states)
@@ -315,44 +317,8 @@ private:
 
     int nextId; //the next free id an element of this job could get
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TODO check if still necessary
-    //void removeFeature(const int &featureId);
-    //void addPCSegmentAsFeature(FeatureWrapper *segment);
-
-private:
-
-
-
-
-
-    //################
-    //helper functions
-    //################
-
-    //feature name validation and create feature functions
-    //QList<FeatureWrapper *> createFeatures(const FeatureAttributes &attributes);
-    //void createFeatureName(QString &outputName, int &index, QString inputName, int count = 1);
-    //bool validateFeatureName(const FeatureTypes &featureType, const QString &featureName,
-    //                                bool isNominal = false, CoordinateSystem *myNomSys = NULL);
-
-
-
-
 };
+
+}
 
 #endif // OIJOB_H

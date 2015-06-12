@@ -1,5 +1,8 @@
 #include "direction.h"
 
+using namespace oi;
+using namespace oi::math;
+
 /*!
  * \brief Direction::Direction
  * \param parent

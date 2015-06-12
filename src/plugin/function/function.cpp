@@ -1,5 +1,7 @@
 #include "function.h"
 
+using namespace oi;
+
 /*!
  * \brief Function::Function
  * \param parent

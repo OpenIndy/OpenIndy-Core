@@ -3,6 +3,8 @@
 
 #include "exchangeinterface.h"
 
+namespace oi{
+
 /*!
  * \brief The OiExchangeDefinedFormat class
  * Interface that shall be used for files with a special standardized format (like *.obj or *.pts etc.)
@@ -36,6 +38,8 @@ protected:
     QStringList supportedFileExtensions;
 
 };
+
+}
 
 #define ExchangeDefinedFormat_iidd "de.openIndy.plugin.exchange.exchangeDefinedFormat.v001"
 

@@ -4,6 +4,8 @@
 #include "measurementconfig.h"
 #include "sensorcontrol.h"
 
+using namespace oi;
+
 /*!
  * \brief Sensor::Sensor
  * \param parent

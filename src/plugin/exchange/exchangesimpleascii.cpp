@@ -1,5 +1,7 @@
 #include "exchangesimpleascii.h"
 
+using namespace oi;
+
 /*!
  * \brief ExchangeSimpleAscii::ExchangeSimpleAscii
  * \param parent

@@ -1,5 +1,7 @@
 #include "exchangedefinedformat.h"
 
+using namespace oi;
+
 /*!
  * \brief ExchangeDefinedFormat::ExchangeDefinedFormat
  * \param parent

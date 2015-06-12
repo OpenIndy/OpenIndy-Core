@@ -1,5 +1,7 @@
 #include "radius.h"
 
+using namespace oi;
+
 /*!
  * \brief Radius::Radius
  * \param parent

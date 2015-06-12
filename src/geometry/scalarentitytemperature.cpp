@@ -2,6 +2,8 @@
 
 #include "featurewrapper.h"
 
+using namespace oi;
+
 /*!
  * \brief ScalarEntityTemperature::ScalarEntityTemperature
  * \param isNominal
