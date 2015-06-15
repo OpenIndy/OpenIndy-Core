@@ -203,11 +203,11 @@ void Station::setSensor(const QPointer<Sensor> &sensor){
  * \brief Station::getSensorListener
  * \return
  */
-const QPointer<const SensorListener> Station::getSensorListener() const{
+const QPointer<SensorListener> Station::getSensorListener() const{
     if(!this->sensorControl.isNull()){
         return this->sensorControl->getSensorListener();
     }
-    return QPointer<const SensorListener>();
+    return QPointer<SensorListener>();
 }
 
 /*!

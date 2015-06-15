@@ -50,7 +50,7 @@ public:
 
     void setSensor(const QPointer<Sensor> &sensor);
 
-    const QPointer<SensorListener const> getSensorListener() const;
+    const QPointer<SensorListener> getSensorListener() const;
 
     //####################################################
     //get information about the currently connected sensor

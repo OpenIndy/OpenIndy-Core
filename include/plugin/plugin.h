@@ -17,7 +17,7 @@ namespace oi{
 /*!
  * \brief The Plugin class
  */
-class OI_CORE_EXPORT Plugin
+class Plugin
 {
 
 public:
@@ -53,6 +53,7 @@ public:
 
 #define Plugin_iidd "de.openIndy.plugin.v001"
 
+using namespace oi;
 Q_DECLARE_INTERFACE(Plugin, Plugin_iidd)
 
 #endif // PLUGIN_H

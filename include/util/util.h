@@ -13,104 +13,104 @@ namespace oi{
 //global functions to query element types
 //#######################################
 
-QList<ElementTypes> getAvailableElementTypes();
-QList<FeatureTypes> getAvailableFeatureTypes();
-QList<GeometryTypes> getAvailableGeometryTypes();
+QList<ElementTypes> OI_CORE_EXPORT getAvailableElementTypes();
+QList<FeatureTypes> OI_CORE_EXPORT getAvailableFeatureTypes();
+QList<GeometryTypes> OI_CORE_EXPORT getAvailableGeometryTypes();
 
-const QString &getElementTypeName(const ElementTypes &type);
-const QString &getElementTypePluralName(const ElementTypes &type);
-ElementTypes getElementTypeEnum(const QString &name);
-ElementTypes getElementTypeEnum(const FeatureTypes &type);
-ElementTypes getElementTypeEnum(const ReadingTypes &type);
+const QString OI_CORE_EXPORT &getElementTypeName(const ElementTypes &type);
+const QString OI_CORE_EXPORT &getElementTypePluralName(const ElementTypes &type);
+ElementTypes OI_CORE_EXPORT getElementTypeEnum(const QString &name);
+ElementTypes OI_CORE_EXPORT getElementTypeEnum(const FeatureTypes &type);
+ElementTypes OI_CORE_EXPORT getElementTypeEnum(const ReadingTypes &type);
 
-const QString &getFeatureTypeName(const FeatureTypes &type);
-FeatureTypes getFeatureTypeEnum(const QString &name);
+const QString OI_CORE_EXPORT &getFeatureTypeName(const FeatureTypes &type);
+FeatureTypes OI_CORE_EXPORT getFeatureTypeEnum(const QString &name);
 
-const QString &getGeometryTypeName(const GeometryTypes &type);
-GeometryTypes getGeometryTypeEnum(const QString &name);
+const QString OI_CORE_EXPORT &getGeometryTypeName(const GeometryTypes &type);
+GeometryTypes OI_CORE_EXPORT getGeometryTypeEnum(const QString &name);
 
-bool getIsFeature(const ElementTypes &type);
-bool getIsReading(const ElementTypes &type);
-bool getIsObservation(const ElementTypes &type);
+bool OI_CORE_EXPORT getIsFeature(const ElementTypes &type);
+bool OI_CORE_EXPORT getIsReading(const ElementTypes &type);
+bool OI_CORE_EXPORT getIsObservation(const ElementTypes &type);
 
-bool getIsGeometry(const FeatureTypes &type);
-bool getIsScalarEntity(const FeatureTypes &type);
+bool OI_CORE_EXPORT getIsGeometry(const FeatureTypes &type);
+bool OI_CORE_EXPORT getIsScalarEntity(const FeatureTypes &type);
 
 //#########################################################
 //global function to query icon resources for element types
 //#########################################################
 
-const QString &getElementTypeIconPath(const ElementTypes &type);
-const QString &getFeatureTypeIconPath(const FeatureTypes &type);
+const QString OI_CORE_EXPORT &getElementTypeIconPath(const ElementTypes &type);
+const QString OI_CORE_EXPORT &getFeatureTypeIconPath(const FeatureTypes &type);
 
 //#######################################
 //global functions to query reading types
 //#######################################
 
-const QString &getReadingTypeName(const ReadingTypes &type);
-ReadingTypes getReadingTypeEnum(const QString &name);
+const QString OI_CORE_EXPORT &getReadingTypeName(const ReadingTypes &type);
+ReadingTypes OI_CORE_EXPORT getReadingTypeEnum(const QString &name);
 
 //############################################
 //global functions to query display attributes
 //############################################
 
-const QList<int> &getFeatureDisplayAttributes();
-const QList<ObservationDisplayattributes> &getObservationDisplayAttributes();
-const QList<ReadingDisplayAttributes> &getReadingDisplayAttributes();
+const QList<int> OI_CORE_EXPORT &getFeatureDisplayAttributes();
+const QList<ObservationDisplayattributes> OI_CORE_EXPORT &getObservationDisplayAttributes();
+const QList<ReadingDisplayAttributes> OI_CORE_EXPORT &getReadingDisplayAttributes();
 
-bool getIsFeatureDisplayAttribute(const int &attr);
-bool getIsTrafoParamDisplayAttribute(const int &attr);
+bool OI_CORE_EXPORT getIsFeatureDisplayAttribute(const int &attr);
+bool OI_CORE_EXPORT getIsTrafoParamDisplayAttribute(const int &attr);
 
-const QString &getFeatureDisplayAttributeName(const int &attr);
-const QString &getFeatureDisplayAttributeName(const FeatureDisplayAttributes &attr);
-const QString &getFeatureDisplayAttributeName(const TrafoParamDisplayAttributes &attr);
+const QString OI_CORE_EXPORT &getFeatureDisplayAttributeName(const int &attr);
+const QString OI_CORE_EXPORT &getFeatureDisplayAttributeName(const FeatureDisplayAttributes &attr);
+const QString OI_CORE_EXPORT &getFeatureDisplayAttributeName(const TrafoParamDisplayAttributes &attr);
 
-bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, const ReadingTypes &type);
+bool OI_CORE_EXPORT getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, const ReadingTypes &type);
 
-const QString &getObservationDisplayAttributesName(const ObservationDisplayattributes &attr);
-const QString &getReadingDisplayAttributeName(const ReadingDisplayAttributes &attr);
+const QString OI_CORE_EXPORT &getObservationDisplayAttributesName(const ObservationDisplayattributes &attr);
+const QString OI_CORE_EXPORT &getReadingDisplayAttributeName(const ReadingDisplayAttributes &attr);
 
 //###############################
 //global functions to query units
 //###############################
 
-double convertToDefault(const double &value, const UnitType &type);
-double convertFromDefault(const double &value, const UnitType &type);
+double OI_CORE_EXPORT convertToDefault(const double &value, const UnitType &type);
+double OI_CORE_EXPORT convertFromDefault(const double &value, const UnitType &type);
 
-const QString &getUnitTypeName(const UnitType &type);
-UnitType getUnitTypeEnum(const QString &name);
+const QString OI_CORE_EXPORT &getUnitTypeName(const UnitType &type);
+UnitType OI_CORE_EXPORT getUnitTypeEnum(const QString &name);
 
 //######################################
 //global functions to query sensor types
 //######################################
 
-QList<SensorTypes> getAvailableSensorTypes();
-const QString &getSensorTypeName(const SensorTypes &type);
-SensorTypes getSensorTypeEnum(const QString &name);
+QList<SensorTypes> OI_CORE_EXPORT getAvailableSensorTypes();
+const QString OI_CORE_EXPORT &getSensorTypeName(const SensorTypes &type);
+SensorTypes OI_CORE_EXPORT getSensorTypeEnum(const QString &name);
 
 //##########################################
 //global functions to query sensor functions
 //##########################################
 
-QList<SensorFunctions> getAvailableSensorFunctions();
-const QString &getSensorFunctionName(const SensorFunctions &type);
-SensorFunctions getSensorFunctionEnum(const QString &name);
+QList<SensorFunctions> OI_CORE_EXPORT getAvailableSensorFunctions();
+const QString OI_CORE_EXPORT &getSensorFunctionName(const SensorFunctions &type);
+SensorFunctions OI_CORE_EXPORT getSensorFunctionEnum(const QString &name);
 
 //#########################################
 //global function to query connection types
 //#########################################
 
-QList<ConnectionTypes> getAvailableConnectionTypes();
-const QString &getConnectionTypeName(const ConnectionTypes &type);
-ConnectionTypes getConnectionTypeEnum(const QString &name);
+QList<ConnectionTypes> OI_CORE_EXPORT getAvailableConnectionTypes();
+const QString OI_CORE_EXPORT &getConnectionTypeName(const ConnectionTypes &type);
+ConnectionTypes OI_CORE_EXPORT getConnectionTypeEnum(const QString &name);
 
 //####################################
 //global functions to query tool types
 //####################################
 
-QList<ToolTypes> getAvailableToolTypes();
-const QString &getToolTypeName(const ToolTypes &type);
-ToolTypes getToolTypeEnum(const QString &name);
+QList<ToolTypes> OI_CORE_EXPORT getAvailableToolTypes();
+const QString OI_CORE_EXPORT &getToolTypeName(const ToolTypes &type);
+ToolTypes OI_CORE_EXPORT getToolTypeEnum(const QString &name);
 
 }
 

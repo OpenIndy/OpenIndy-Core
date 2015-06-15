@@ -92,7 +92,7 @@ const QList<QPointer<Sensor> > &SensorControl::getUsedSensors() const{
  * \brief SensorControl::getSensorListener
  * \return
  */
-const QPointer<const SensorListener> SensorControl::getSensorListener() const{
+const QPointer<SensorListener> SensorControl::getSensorListener() const{
     return this->sensorListener;
 }
 
