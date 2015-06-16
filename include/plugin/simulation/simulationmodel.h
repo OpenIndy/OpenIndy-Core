@@ -218,6 +218,8 @@ protected:
 
 }
 
-#define Simulation_iidd "de.openIndy.plugin.simulation.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
+#ifdef PLUGIN_INTERFACE_VERSION
+#define Simulation_iidd "de.openIndy.plugin.simulation.v" PLUGIN_INTERFACE_VERSION
+#endif
 
 #endif // SIMULATIONMODEL_H

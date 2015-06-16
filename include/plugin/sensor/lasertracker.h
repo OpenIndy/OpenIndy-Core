@@ -123,6 +123,8 @@ protected:
 
 }
 
-#define LaserTracker_iidd "de.openIndy.plugin.sensor.laserTracker.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
+#ifdef PLUGIN_INTERFACE_VERSION
+#define LaserTracker_iidd "de.openIndy.plugin.sensor.laserTracker.v" PLUGIN_INTERFACE_VERSION
+#endif
 
 #endif // LASERTRACKER_H

@@ -42,6 +42,8 @@ protected:
 
 }
 
-#define FitFunction_iidd "de.openIndy.plugin.function.fitFunction.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
+#ifdef PLUGIN_INTERFACE_VERSION
+#define FitFunction_iidd "de.openIndy.plugin.function.fitFunction.v" PLUGIN_INTERFACE_VERSION
+#endif
 
 #endif // FITFUNCTION_H

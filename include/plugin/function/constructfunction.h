@@ -32,7 +32,8 @@ protected:
 
 }
 
-#define ConstructFunction_iidd "de.openIndy.plugin.function.constructFunction.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
-
+#ifdef PLUGIN_INTERFACE_VERSION
+#define ConstructFunction_iidd "de.openIndy.plugin.function.constructFunction.v" PLUGIN_INTERFACE_VERSION
+#endif
 
 #endif // CONSTRUCTFUNCTION_H
