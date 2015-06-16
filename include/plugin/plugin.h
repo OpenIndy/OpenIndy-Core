@@ -51,7 +51,9 @@ public:
 
 }
 
-#define Plugin_iidd "de.openIndy.plugin.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
+#ifdef PLUGIN_INTERFACE_VERSION
+#define Plugin_iidd "de.openIndy.plugin.v" PLUGIN_INTERFACE_VERSION
+#endif
 
 using namespace oi;
 Q_DECLARE_INTERFACE(Plugin, Plugin_iidd)
