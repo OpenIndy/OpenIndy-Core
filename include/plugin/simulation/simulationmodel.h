@@ -218,8 +218,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define Simulation_iidd "de.openIndy.plugin.simulation.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define SIMULATION_PREFIX de.openIndy.plugin.simulation.v
+#define Simulation_iidd STR(SIMULATION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // SIMULATIONMODEL_H

@@ -41,8 +41,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define ExchangeDefinedFormat_iidd "de.openIndy.plugin.exchange.exchangeDefinedFormat.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define EXCHANGE_DEFINEDFORMAT_PREFIX de.openIndy.plugin.exchange.exchangeDefinedFormat.v
+#define ExchangeDefinedFormat_iidd STR(EXCHANGE_DEFINEDFORMAT_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // EXCHANGEDEFINEDFORMAT_H

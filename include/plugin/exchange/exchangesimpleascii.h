@@ -91,8 +91,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define ExchangeSimpleAscii_iidd "de.openIndy.plugin.exchange.exchangeSimpleAscii.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define EXCHANGE_SIMPLEASCII_PREFIX de.openIndy.plugin.exchange.exchangeSimpleAscii.v
+#define ExchangeSimpleAscii_iidd STR(EXCHANGE_SIMPLEASCII_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // EXCHANGESIMPLEASCII_H

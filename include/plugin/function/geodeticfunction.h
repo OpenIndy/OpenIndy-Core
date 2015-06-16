@@ -32,8 +32,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define GeodeticFunction_iidd "de.openIndy.plugin.function.geodeticFunction.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define GEODETICFUNCTION_PREFIX de.openIndy.plugin.function.geodeticFunction.v
+#define GeodeticFunction_iidd STR(GEODETICFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // GEODETICFUNCTION_H

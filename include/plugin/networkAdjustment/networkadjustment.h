@@ -37,8 +37,11 @@ public:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define NetworkAdjustment_iidd "de.openIndy.plugin.networkAdjustment.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define NETWORKADJUSTMENT_PREFIX de.openIndy.plugin.networkAdjustment.v
+#define NetworkAdjustment_iidd STR(NETWORKADJUSTMENT_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // PI_NETWORKADJUSTMENT_H

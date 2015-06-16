@@ -51,9 +51,12 @@ public:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define Plugin_iidd "de.openIndy.plugin.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define PLUGIN_PREFIX de.openIndy.plugin.v
+#define Plugin_iidd STR(PLUGIN_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 using namespace oi;
 Q_DECLARE_INTERFACE(Plugin, Plugin_iidd)

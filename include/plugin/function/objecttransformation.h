@@ -31,8 +31,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define ObjectTransformation_iidd "de.openIndy.plugin.function.objectTransformation.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define OBJECTTRANSFORMATIONFUNCTION_PREFIX de.openIndy.plugin.function.objectTransformation.v
+#define ObjectTransformation_iidd STR(OBJECTTRANSFORMATIONFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // OBJECTTRANSFORMATION_H

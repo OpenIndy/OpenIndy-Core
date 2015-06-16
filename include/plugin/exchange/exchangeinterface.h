@@ -98,9 +98,12 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define Exchange_iidd "de.openIndy.plugin.exchange.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define EXCHANGE_PREFIX de.openIndy.plugin.exchange.v
+#define Exchange_iidd STR(EXCHANGE_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // EXCHANGEINTERFACE_H
 

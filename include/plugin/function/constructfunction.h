@@ -32,8 +32,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define ConstructFunction_iidd "de.openIndy.plugin.function.constructFunction.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define CONSTRUCTFUNCTION_PREFIX de.openIndy.plugin.function.constructFunction.v
+#define ConstructFunction_iidd STR(CONSTRUCTFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // CONSTRUCTFUNCTION_H

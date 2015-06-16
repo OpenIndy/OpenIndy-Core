@@ -156,8 +156,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define Sensor_iidd "de.openIndy.plugin.sensor.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define SENSOR_PREFIX de.openIndy.plugin.sensor.v
+#define Sensor_iidd STR(SENSOR_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // SENSOR_H

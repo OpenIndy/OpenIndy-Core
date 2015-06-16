@@ -68,8 +68,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define SystemTransformation_iidd "de.openIndy.plugin.function.systemTransformation.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define SYSTEMTRANSFORMATIONFUNCTION_PREFIX de.openIndy.plugin.function.systemTransformation.v
+#define SystemTransformation_iidd STR(SYSTEMTRANSFORMATIONFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // SYSTEMTRANSFORMATION_H

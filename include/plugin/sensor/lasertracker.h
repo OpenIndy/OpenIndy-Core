@@ -123,8 +123,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define LaserTracker_iidd "de.openIndy.plugin.sensor.laserTracker.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define LASERTRACKER_PREFIX de.openIndy.plugin.sensor.laserTracker.v
+#define LaserTracker_iidd STR(LASERTRACKER_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // LASERTRACKER_H

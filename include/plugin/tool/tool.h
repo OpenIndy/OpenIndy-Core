@@ -78,8 +78,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define Tool_iidd "de.openIndy.plugin.tool.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define TOOL_PREFIX de.openIndy.plugin.tool.v
+#define Tool_iidd STR(TOOL_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // TOOL_H

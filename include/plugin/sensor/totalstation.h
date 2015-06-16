@@ -79,8 +79,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define TotalStation_iidd "de.openIndy.plugin.sensor.totalStation.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define TOTALSTATION_PREFIX de.openIndy.plugin.sensor.totalStation.v
+#define TotalStation_iidd STR(TOTALSTATION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // TOTALSTATION_H

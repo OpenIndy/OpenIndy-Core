@@ -42,8 +42,11 @@ protected:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define FitFunction_iidd "de.openIndy.plugin.function.fitFunction.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define FITFUNCTION_PREFIX de.openIndy.plugin.function.fitFunction.v
+#define FitFunction_iidd STR(FITFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // FITFUNCTION_H

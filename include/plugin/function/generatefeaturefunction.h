@@ -26,8 +26,11 @@ signals:
 
 }
 
-#ifdef PLUGIN_INTERFACE_VERSION
-#define GenerateFeatureFunction_iidd "de.openIndy.plugin.function.generateFeatureFunction.v" PLUGIN_INTERFACE_VERSION
+#ifndef STR
+#define STR(x) #x
 #endif
+
+#define GENERATEFEATUREFUNCTION_PREFIX de.openIndy.plugin.function.generateFeatureFunction.v
+#define GenerateFeatureFunction_iidd STR(GENERATEFEATUREFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
 
 #endif // GENERATEFEATUREFUNCTION_H
