@@ -54,9 +54,19 @@ public:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define PLUGIN_PREFIX de.openIndy.plugin.v
-#define Plugin_iidd STR(PLUGIN_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define Plugin_iidd STR2(CONCAT2(PLUGIN_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 using namespace oi;
 Q_DECLARE_INTERFACE(Plugin, Plugin_iidd)

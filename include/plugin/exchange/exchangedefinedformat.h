@@ -44,8 +44,18 @@ protected:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define EXCHANGE_DEFINEDFORMAT_PREFIX de.openIndy.plugin.exchange.exchangeDefinedFormat.v
-#define ExchangeDefinedFormat_iidd STR(EXCHANGE_DEFINEDFORMAT_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define ExchangeDefinedFormat_iidd STR2(CONCAT2(EXCHANGE_DEFINEDFORMAT_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // EXCHANGEDEFINEDFORMAT_H

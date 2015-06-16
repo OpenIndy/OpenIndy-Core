@@ -159,8 +159,18 @@ protected:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define SENSOR_PREFIX de.openIndy.plugin.sensor.v
-#define Sensor_iidd STR(SENSOR_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define Sensor_iidd STR2(CONCAT2(SENSOR_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // SENSOR_H

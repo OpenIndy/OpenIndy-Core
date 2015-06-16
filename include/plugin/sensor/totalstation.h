@@ -82,8 +82,18 @@ protected:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define TOTALSTATION_PREFIX de.openIndy.plugin.sensor.totalStation.v
-#define TotalStation_iidd STR(TOTALSTATION_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define TotalStation_iidd STR2(CONCAT2(TOTALSTATION_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // TOTALSTATION_H

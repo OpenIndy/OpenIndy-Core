@@ -334,8 +334,18 @@ Q_DECLARE_METATYPE( oi::Function* )
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define FUNCTION_PREFIX de.openIndy.plugin.function.v
-#define Function_iid STR(FUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define Function_iid STR2(CONCAT2(FUNCTION_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // FUNCTION_H

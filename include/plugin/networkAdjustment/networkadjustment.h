@@ -40,8 +40,18 @@ public:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define NETWORKADJUSTMENT_PREFIX de.openIndy.plugin.networkAdjustment.v
-#define NetworkAdjustment_iidd STR(NETWORKADJUSTMENT_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define NetworkAdjustment_iidd STR2(CONCAT2(NETWORKADJUSTMENT_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // PI_NETWORKADJUSTMENT_H

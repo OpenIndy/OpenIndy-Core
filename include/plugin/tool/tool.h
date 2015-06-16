@@ -81,8 +81,18 @@ protected:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define TOOL_PREFIX de.openIndy.plugin.tool.v
-#define Tool_iidd STR(TOOL_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define Tool_iidd STR2(CONCAT2(TOOL_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // TOOL_H

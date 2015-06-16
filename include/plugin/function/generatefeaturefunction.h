@@ -29,8 +29,18 @@ signals:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define GENERATEFEATUREFUNCTION_PREFIX de.openIndy.plugin.function.generateFeatureFunction.v
-#define GenerateFeatureFunction_iidd STR(GENERATEFEATUREFUNCTION_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define GenerateFeatureFunction_iidd STR2(CONCAT2(GENERATEFEATUREFUNCTION_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // GENERATEFEATUREFUNCTION_H

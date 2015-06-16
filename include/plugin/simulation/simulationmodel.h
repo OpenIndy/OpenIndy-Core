@@ -221,8 +221,18 @@ protected:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define SIMULATION_PREFIX de.openIndy.plugin.simulation.v
-#define Simulation_iidd STR(SIMULATION_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define Simulation_iidd STR2(CONCAT2(SIMULATION_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // SIMULATIONMODEL_H

@@ -101,9 +101,19 @@ protected:
 #ifndef STR
 #define STR(x) #x
 #endif
+#ifndef STR2
+#define STR2(x) STR(x)
+#endif
+
+#ifndef CONCAT
+#define CONCAT(a, b) a ## b
+#endif
+#ifndef CONCAT2
+#define CONCAT2(a, b) CONCAT(a, b)
+#endif
 
 #define EXCHANGE_PREFIX de.openIndy.plugin.exchange.v
-#define Exchange_iidd STR(EXCHANGE_PREFIX ## PLUGIN_INTERFACE_VERSION)
+#define Exchange_iidd STR2(CONCAT2(EXCHANGE_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // EXCHANGEINTERFACE_H
 
