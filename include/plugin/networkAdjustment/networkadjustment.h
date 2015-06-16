@@ -37,6 +37,6 @@ public:
 
 }
 
-#define NetworkAdjustment_iidd "de.openIndy.plugin.networkAdjustment.v001"
+#define NetworkAdjustment_iidd "de.openIndy.plugin.networkAdjustment.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // PI_NETWORKADJUSTMENT_H

@@ -41,6 +41,6 @@ protected:
 
 }
 
-#define ExchangeDefinedFormat_iidd "de.openIndy.plugin.exchange.exchangeDefinedFormat.v001"
+#define ExchangeDefinedFormat_iidd "de.openIndy.plugin.exchange.exchangeDefinedFormat.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // EXCHANGEDEFINEDFORMAT_H

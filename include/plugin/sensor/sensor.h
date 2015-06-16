@@ -156,6 +156,6 @@ protected:
 
 }
 
-#define Sensor_iidd "de.openIndy.plugin.sensor.v001"
+#define Sensor_iidd "de.openIndy.plugin.sensor.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // SENSOR_H

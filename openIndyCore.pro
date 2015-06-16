@@ -35,6 +35,7 @@ isEmpty(OpenIndyMath_VERSION){
 #--------------------------
 
 OpenIndyCore_VERSION = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags) # get git version
+DEFINES += PLUGIN_INTERFACE_VERSION=\\\"$$OpenIndyCore_VERSION\\\"
 OpenIndyCore_VERSION = $$replace(OpenIndyCore_VERSION, "-g"{1}\w*, ) # remove commit hash after tag name
 OpenIndyCore_VERSION = $$replace(OpenIndyCore_VERSION, "-", ".") # remove remaining hyphen
 OpenIndyCore_VERSION = $$replace(OpenIndyCore_VERSION, "\b[0-9a-f]{5,40}\b", ) # remove commit hash (only if no tag has been set yet)

@@ -78,6 +78,6 @@ protected:
 
 }
 
-#define Tool_iidd "de.openIndy.plugin.tool.v001"
+#define Tool_iidd "de.openIndy.plugin.tool.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // TOOL_H

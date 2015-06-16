@@ -331,6 +331,6 @@ protected:
 
 Q_DECLARE_METATYPE( oi::Function* )
 
-#define Function_iid "de.openIndy.plugin.function.v001"
+#define Function_iid "de.openIndy.plugin.function.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // FUNCTION_H

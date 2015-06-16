@@ -26,6 +26,6 @@ signals:
 
 }
 
-#define GenerateFeatureFunction_iidd "de.openIndy.plugin.function.generateFeatureFunction.v001"
+#define GenerateFeatureFunction_iidd "de.openIndy.plugin.function.generateFeatureFunction.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // GENERATEFEATUREFUNCTION_H

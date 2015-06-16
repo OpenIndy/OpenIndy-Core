@@ -98,7 +98,7 @@ protected:
 
 }
 
-#define Exchange_iidd "de.openIndy.plugin.exchange.v001"
+#define Exchange_iidd "de.openIndy.plugin.exchange.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // EXCHANGEINTERFACE_H
 

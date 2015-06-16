@@ -91,6 +91,6 @@ protected:
 
 }
 
-#define ExchangeSimpleAscii_iidd "de.openIndy.plugin.exchange.exchangeSimpleAscii.v001"
+#define ExchangeSimpleAscii_iidd "de.openIndy.plugin.exchange.exchangeSimpleAscii.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // EXCHANGESIMPLEASCII_H

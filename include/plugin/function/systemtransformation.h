@@ -68,6 +68,6 @@ protected:
 
 }
 
-#define SystemTransformation_iidd "de.openIndy.plugin.function.systemTransformation.v001"
+#define SystemTransformation_iidd "de.openIndy.plugin.function.systemTransformation.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // SYSTEMTRANSFORMATION_H

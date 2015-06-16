@@ -31,6 +31,6 @@ protected:
 
 }
 
-#define ObjectTransformation_iidd "de.openIndy.plugin.function.objectTransformation.v001"
+#define ObjectTransformation_iidd "de.openIndy.plugin.function.objectTransformation.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // OBJECTTRANSFORMATION_H

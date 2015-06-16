@@ -32,6 +32,6 @@ protected:
 
 }
 
-#define GeodeticFunction_iidd "de.openIndy.plugin.function.geodeticFunction.v001"
+#define GeodeticFunction_iidd "de.openIndy.plugin.function.geodeticFunction.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // GEODETICFUNCTION_H

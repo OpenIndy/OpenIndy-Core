@@ -79,6 +79,6 @@ protected:
 
 }
 
-#define TotalStation_iidd "de.openIndy.plugin.sensor.totalStation.v001"
+#define TotalStation_iidd "de.openIndy.plugin.sensor.totalStation.v" + QString(PLUGIN_INTERFACE_VERSION).replace("[/.]", "")
 
 #endif // TOTALSTATION_H
