@@ -575,12 +575,16 @@ void Station::connectSensorControl(){
 
     QObject::connect(this, &Station::measure, this->sensorControl.data(), &SensorControl::measure, Qt::AutoConnection);
 
-    void (Station:: *movePolarSignal)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative) = &Station::move;
-    void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative) = &SensorControl::move;
+    void (Station:: *movePolarSignal)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
+                                      const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
+    void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
+                                          const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
     QObject::connect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot);
 
-    void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z) = &Station::move;
-    void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z) = &SensorControl::move;
+    void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z,
+                                          const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
+    void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z,
+                                              const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
     QObject::connect(this, moveCartesianSignal, this->sensorControl.data(), moveCartesianSlot);
 
     QObject::connect(this, &Station::initialize, this->sensorControl.data(), &SensorControl::initialize, Qt::AutoConnection);

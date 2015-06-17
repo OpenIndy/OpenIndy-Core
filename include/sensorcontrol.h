@@ -55,8 +55,10 @@ public slots:
 
     void measure(const int &geomId, const MeasurementConfig &mConfig);
 
-    void move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative);
-    void move(const double &x, const double &y, const double &z);
+    void move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
+              const bool &measure, const int &geomId = -1, const MeasurementConfig &mConfig = MeasurementConfig());
+    void move(const double &x, const double &y, const double &z,
+              const bool &measure, const int &geomId = -1, const MeasurementConfig &mConfig = MeasurementConfig());
     void initialize();
     void motorState();
     void home();

@@ -233,8 +233,11 @@ void SensorControl::measure(const int &geomId, const MeasurementConfig &mConfig)
  * \param zenith
  * \param distance
  * \param isRelative
+ * \param measure
+ * \param geomId
+ * \param mConfig
  */
-void SensorControl::move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative){
+void SensorControl::move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative, const bool &measure, const int &geomId, const MeasurementConfig &mConfig){
 
     this->locker.lock();
 
@@ -247,6 +250,7 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
     //start moving if the sensor is connected
     bool success = false;
     QString msg;
+    QList<QPointer<Reading> > readings;
     if(this->sensor->getConnectionState()){
 
         //set up sensor attributes
@@ -259,7 +263,20 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
         bool success = this->sensor->accept(eMoveAngle, attr);
         if(success){
             msg = "moving sensor finished";
-            success = true;
+            if(measure){
+
+                //start measure
+                readings = this->sensor->measure(mConfig);
+                if(readings.size() > 0){
+                    msg.append(", measurement finished");
+                    success = true;
+                }else{
+                    msg.append(", failed to measure");
+                }
+
+            }else{
+                success = true;
+            }
         }else{
             msg = "failed to move sensor";
         }
@@ -269,6 +286,9 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
     }
 
     emit this->commandFinished(success, msg);
+    if(measure && success){
+        emit this->measurementFinished(geomId, readings);
+    }
 
     this->locker.unlock();
 
@@ -279,8 +299,11 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
  * \param x
  * \param y
  * \param z
+ * \param measure
+ * \param geomId
+ * \param mConfig
  */
-void SensorControl::move(const double &x, const double &y, const double &z){
+void SensorControl::move(const double &x, const double &y, const double &z, const bool &measure, const int &geomId, const MeasurementConfig &mConfig){
 
     this->locker.lock();
 
@@ -293,6 +316,7 @@ void SensorControl::move(const double &x, const double &y, const double &z){
     //start moving if the sensor is connected
     bool success = false;
     QString msg;
+    QList<QPointer<Reading> > readings;
     if(this->sensor->getConnectionState()){
 
         //set up sensor attributes
@@ -305,7 +329,20 @@ void SensorControl::move(const double &x, const double &y, const double &z){
         bool success = this->sensor->accept(eMoveXYZ, attr);
         if(success){
             msg = "moving sensor finished";
-            success = true;
+            if(measure){
+
+                //start measure
+                readings = this->sensor->measure(mConfig);
+                if(readings.size() > 0){
+                    msg.append(", measurement finished");
+                    success = true;
+                }else{
+                    msg.append(", failed to measure");
+                }
+
+            }else{
+                success = true;
+            }
         }else{
             msg = "failed to move sensor";
         }
@@ -315,6 +352,9 @@ void SensorControl::move(const double &x, const double &y, const double &z){
     }
 
     emit this->commandFinished(success, msg);
+    if(measure && success){
+        emit this->measurementFinished(geomId, readings);
+    }
 
     this->locker.unlock();
 
