@@ -189,6 +189,64 @@ const QPointer<CoordinateSystem> &Station::getCoordinateSystem() const{
 }
 
 /*!
+ * \brief Station::getIsSensorSet
+ * \return
+ */
+bool Station::getIsSensorSet() const{
+    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
+        return false;
+    }
+    return true;
+}
+
+/*!
+ * \brief Station::getIsSensorConnected
+ * \return
+ */
+bool Station::getIsSensorConnected() const{
+    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()
+            || !this->sensorControl->getSensor()->getConnectionState()){
+        return false;
+    }
+    return true;
+}
+
+/*!
+ * \brief Station::getIsReadyForMeasurement
+ * \return
+ */
+bool Station::getIsReadyForMeasurement() const{
+    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()
+            || !this->sensorControl->getSensor()->getIsReadyForMeasurement()){
+        return false;
+    }
+    return true;
+}
+
+/*!
+ * \brief Station::getIsBusy
+ * \return
+ */
+bool Station::getIsBusy() const{
+    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()
+            || !this->sensorControl->getSensor()->getIsBusy()){
+        return false;
+    }
+    return true;
+}
+
+/*!
+ * \brief Station::getSensorStatus
+ * \return
+ */
+QMap<QString, QString> Station::getSensorStatus() const{
+    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
+        return this->sensorControl->getSensor()->getSensorStatus();
+    }
+    return QMap<QString, QString>();
+}
+
+/*!
  * \brief Station::setSensor
  * \param sensor
  */
