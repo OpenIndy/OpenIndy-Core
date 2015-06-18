@@ -362,7 +362,7 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
         attr.moveDistance = distance;
         attr.moveIsRelative = isRelative;
 
-        bool success = this->sensor->accept(eMoveAngle, attr);
+        success = this->sensor->accept(eMoveAngle, attr);
         if(success){
             msg = "moving sensor finished";
             if(measure){
@@ -428,7 +428,7 @@ void SensorControl::move(const double &x, const double &y, const double &z, cons
         attr.moveZ = z;
         attr.moveIsRelative = false;
 
-        bool success = this->sensor->accept(eMoveXYZ, attr);
+        success = this->sensor->accept(eMoveXYZ, attr);
         if(success){
             msg = "moving sensor finished";
             if(measure){
@@ -480,7 +480,7 @@ void SensorControl::initialize(){
     QString msg;
     if(this->sensor->getConnectionState()){
 
-        bool success = this->sensor->accept(eInitialize, SensorAttributes());
+        success = this->sensor->accept(eInitialize, SensorAttributes());
         if(success){
             msg = "initializing finished";
             success = true;
@@ -516,7 +516,7 @@ void SensorControl::motorState(){
     QString msg;
     if(this->sensor->getConnectionState()){
 
-        bool success = this->sensor->accept(eMotorState, SensorAttributes());
+        success = this->sensor->accept(eMotorState, SensorAttributes());
         if(success){
             msg = "changing motor state finished";
             success = true;
@@ -552,7 +552,7 @@ void SensorControl::home(){
     QString msg;
     if(this->sensor->getConnectionState()){
 
-        bool success = this->sensor->accept(eHome, SensorAttributes());
+        success = this->sensor->accept(eHome, SensorAttributes());
         if(success){
             msg = "setting home finished";
             success = true;
@@ -588,7 +588,7 @@ void SensorControl::toggleSight(){
     QString msg;
     if(this->sensor->getConnectionState()){
 
-        bool success = this->sensor->accept(eToggleSight, SensorAttributes());
+        success = this->sensor->accept(eToggleSight, SensorAttributes());
         if(success){
             msg = "toggle sight orientation finished";
             success = true;
@@ -624,7 +624,7 @@ void SensorControl::compensation(){
     QString msg;
     if(this->sensor->getConnectionState()){
 
-        bool success = this->sensor->accept(eCompensation, SensorAttributes());
+        success = this->sensor->accept(eCompensation, SensorAttributes());
         if(success){
             msg = "starting compensation finished";
             success = true;
@@ -661,7 +661,7 @@ void SensorControl::selfDefinedAction(const QString &action){
     QString msg;
     if(this->sensor->getConnectionState()){
 
-        bool success = this->sensor->doSelfDefinedAction(action);
+        success = this->sensor->doSelfDefinedAction(action);
         if(success){
             msg = "self defined action finished";
             success = true;
