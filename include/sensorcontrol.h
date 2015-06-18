@@ -46,6 +46,16 @@ public slots:
 
     void setStreamFormat(ReadingTypes streamFormat);
 
+    //################################
+    //get information about the sensor
+    //################################
+
+    bool getIsSensorConnected();
+    bool getIsReadyForMeasurement();
+    bool getIsBusy();
+
+    QMap<QString, QString> getSensorStatus();
+
     //####################
     //start sensor actions
     //####################

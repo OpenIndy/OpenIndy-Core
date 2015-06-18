@@ -49,11 +49,11 @@ public:
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;
 
     //get information about the currently connected sensor
-    bool getIsSensorSet() const;
-    bool getIsSensorConnected() const;
-    bool getIsReadyForMeasurement() const;
-    bool getIsBusy() const;
-    QMap<QString, QString> getSensorStatus() const;
+    bool getIsSensorSet();
+    bool getIsSensorConnected();
+    bool getIsReadyForMeasurement();
+    bool getIsBusy();
+    QMap<QString, QString> getSensorStatus();
 
     void setSensor(const QPointer<Sensor> &sensor);
 

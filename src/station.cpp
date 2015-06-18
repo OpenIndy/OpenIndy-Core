@@ -192,7 +192,7 @@ const QPointer<CoordinateSystem> &Station::getCoordinateSystem() const{
  * \brief Station::getIsSensorSet
  * \return
  */
-bool Station::getIsSensorSet() const{
+bool Station::getIsSensorSet(){
     if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
         return false;
     }
@@ -203,47 +203,44 @@ bool Station::getIsSensorSet() const{
  * \brief Station::getIsSensorConnected
  * \return
  */
-bool Station::getIsSensorConnected() const{
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()
-            || !this->sensorControl->getSensor()->getConnectionState()){
+bool Station::getIsSensorConnected(){
+    if(this->sensorControl.isNull()){
         return false;
     }
-    return true;
+    return this->sensorControl->getIsSensorConnected();
 }
 
 /*!
  * \brief Station::getIsReadyForMeasurement
  * \return
  */
-bool Station::getIsReadyForMeasurement() const{
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()
-            || !this->sensorControl->getSensor()->getIsReadyForMeasurement()){
+bool Station::getIsReadyForMeasurement(){
+    if(this->sensorControl.isNull()){
         return false;
     }
-    return true;
+    return this->sensorControl->getIsReadyForMeasurement();
 }
 
 /*!
  * \brief Station::getIsBusy
  * \return
  */
-bool Station::getIsBusy() const{
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()
-            || !this->sensorControl->getSensor()->getIsBusy()){
+bool Station::getIsBusy(){
+    if(this->sensorControl.isNull()){
         return false;
     }
-    return true;
+    return this->sensorControl->getIsBusy();
 }
 
 /*!
  * \brief Station::getSensorStatus
  * \return
  */
-QMap<QString, QString> Station::getSensorStatus() const{
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
-        return this->sensorControl->getSensor()->getSensorStatus();
+QMap<QString, QString> Station::getSensorStatus(){
+    if(this->sensorControl.isNull()){
+        return QMap<QString, QString>();
     }
-    return QMap<QString, QString>();
+    return this->sensorControl->getSensorStatus();
 }
 
 /*!

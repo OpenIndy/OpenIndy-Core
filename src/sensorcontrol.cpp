@@ -122,6 +122,108 @@ void SensorControl::setStreamFormat(ReadingTypes streamFormat){
 }
 
 /*!
+ * \brief SensorControl::getIsSensorConnected
+ * \return
+ */
+bool SensorControl::getIsSensorConnected(){
+
+    this->locker.lock();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        locker.unlock();
+        return false;
+    }
+
+    //check connection state
+    bool isConnected = false;
+    if(this->sensor->getConnectionState()){
+        isConnected = true;
+    }
+
+    this->locker.unlock();
+
+    return isConnected;
+
+}
+
+/*!
+ * \brief SensorControl::getIsReadyForMeasurement
+ * \return
+ */
+bool SensorControl::getIsReadyForMeasurement(){
+
+    this->locker.lock();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        locker.unlock();
+        return false;
+    }
+
+    //check measurement state
+    bool isReady = false;
+    if(this->sensor->getIsReadyForMeasurement()){
+        isReady = true;
+    }
+
+    this->locker.unlock();
+
+    return isReady;
+
+}
+
+/*!
+ * \brief SensorControl::getIsBusy
+ * \return
+ */
+bool SensorControl::getIsBusy(){
+
+    this->locker.lock();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        locker.unlock();
+        return false;
+    }
+
+    //check busy state
+    bool isBusy = false;
+    if(this->sensor->getIsBusy()){
+        isBusy = true;
+    }
+
+    this->locker.unlock();
+
+    return isBusy;
+
+}
+
+/*!
+ * \brief SensorControl::getSensorStatus
+ * \return
+ */
+QMap<QString, QString> SensorControl::getSensorStatus(){
+
+    this->locker.lock();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        locker.unlock();
+        return QMap<QString, QString>();
+    }
+
+    //check sensor status
+    QMap<QString, QString> status;
+    status = this->sensor->getSensorStatus();
+
+    this->locker.unlock();
+
+    return status;
+
+}
+
+/*!
  * \brief SensorControl::connectSensor
  */
 void SensorControl::connectSensor(){
