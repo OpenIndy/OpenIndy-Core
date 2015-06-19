@@ -767,11 +767,34 @@ void OiJob::removeFunction(const int &functionIndex){
         return;
     }
 
+    //get a list of remaining function
+    QList<QPointer<Function> > remainingFunctions;
+    foreach(const QPointer<Function> &f, this->activeFeature->getFeature()->getFunctions()){
+        if(f.isNull() || f == function){
+            continue;
+        }
+        remainingFunctions.append(f);
+    }
+
     //get a list of input elements and reset dependencies
     QMap<int, QList<InputElement> > inputElements = function->getInputElements();
     foreach(int key, inputElements.keys()){
         foreach(const InputElement &element, inputElements[key]){
-            this->resetDependencies(element, this->activeFeature->getFeature());
+
+            //check if element is contained by any other function of the feature
+            bool isStillIncluded = false;
+            foreach(const QPointer<Function> &f, remainingFunctions){
+                if(f->hasInputElement(element.id)){
+                    isStillIncluded = true;
+                    break;
+                }
+            }
+
+            //reset dependencies
+            if(!isStillIncluded){
+                this->resetDependencies(element, this->activeFeature->getFeature());
+            }
+
         }
     }
 
@@ -1239,7 +1262,7 @@ void OiJob::addInputFeature(const QPointer<FeatureWrapper> &target, const int &f
  */
 void OiJob::removeInputElement(const QPointer<FeatureWrapper> &target, const int &functionPosition, const int &neededElementsIndex, const int &elementId){
 
-    //check target and input features
+    //check target
     if(target.isNull() || target->getFeature().isNull()){
         return;
     }
@@ -1252,32 +1275,28 @@ void OiJob::removeInputElement(const QPointer<FeatureWrapper> &target, const int
     Function *function = target->getFeature()->getFunctions().at(functionPosition);
 
     //check and get input elements
-    if(!function->getInputElements().contains(neededElementsIndex)){
+    if(!function->hasInputElement(elementId)){
         return;
     }
+    InputElement inputElement = function->getInputElement(elementId);
 
     //remove the input element with the specified id
     function->removeInputElement(elementId, neededElementsIndex);
 
-    //check wether the removed element is still included at another index of the function
-    InputElement inputElement;
+    //check wether any function of the feature still contains the element
     bool isStillIncluded = false;
-    QMap<int, QList<InputElement> > inputElements = function->getInputElements();
-    foreach(int key, inputElements.keys()){
-        foreach(const InputElement &element, inputElements[key]){
-
-            //compare id
-            if(element.id == elementId){
-                isStillIncluded = true;
-                inputElement = element;
-                break;
-            }
-
+    foreach(const QPointer<Function> &function, target->getFeature()->getFunctions()){
+        if(function.isNull()){
+            continue;
+        }
+        if(function->hasInputElement(elementId)){
+            isStillIncluded = true;
+            break;
         }
     }
 
     //reset dependencies if necessary
-    if(isStillIncluded){
+    if(!isStillIncluded){
         this->resetDependencies(inputElement, target->getFeature());
     }
 

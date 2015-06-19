@@ -223,6 +223,66 @@ const QMap<int, QList<InputElement> > &Function::getInputElements() const{
 }
 
 /*!
+ * \brief Function::getInputElement
+ * Returns the InputElement with the specified id or an empty InputElement
+ * \param id
+ * \return
+ */
+InputElement Function::getInputElement(const int &id) const{
+
+    QList<int> keys = this->inputElements.keys();
+    foreach(const int &key, keys){
+        foreach(const InputElement &element, this->inputElements[key]){
+            if(element.id == id){
+                return element;
+            }
+        }
+    }
+    return InputElement();
+
+}
+
+/*!
+ * \brief Function::getInputElement
+ * Returns the InputElement with the specified id at the specified position
+ * \param id
+ * \param position
+ * \return
+ */
+InputElement Function::getInputElement(const int &id, const int &position) const{
+
+    if(this->inputElements.contains(position)){
+        foreach(const InputElement &element, this->inputElements[position]){
+            if(element.id == id){
+                return element;
+            }
+        }
+    }
+    return InputElement();
+
+}
+
+/*!
+ * \brief Function::hasInputElement
+ * Check wether the function contains the specified InputElement
+ * \param id
+ * \return
+ */
+bool Function::hasInputElement(const int &id) const{
+
+    QList<int> keys = this->inputElements.keys();
+    foreach(const int &key, keys){
+        foreach(const InputElement &element, this->inputElements[key]){
+            if(element.id == id){
+                return true;
+            }
+        }
+    }
+    return false;
+
+}
+
+/*!
  * \brief Function::addInputElement
  * \param element
  * \param position

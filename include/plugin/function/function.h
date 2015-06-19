@@ -61,7 +61,7 @@ public:
  */
 class OI_CORE_EXPORT InputElement{
 public:
-    InputElement() : isUsed(true){}
+    InputElement() : isUsed(true), id(-1){}
     InputElement(const int &id) : isUsed(true), id(id){}
 
     //! custom comparison operator to compare input elements by their id
@@ -227,6 +227,9 @@ public:
     //###################
 
     const QMap<int, QList<InputElement> > &getInputElements() const;
+    InputElement getInputElement(const int &id) const;
+    InputElement getInputElement(const int &id, const int &position) const;
+    bool hasInputElement(const int &id) const;
     void addInputElement(const InputElement &element, const int &position);
     void removeInputElement(const int &id, const int &position);
     void removeInputElement(const int &id);
