@@ -68,8 +68,8 @@ Feature &Feature::operator=(const Feature &copy){
 Feature::~Feature(){
 
     //check and update features which need this feature to recalc
-    if(this->usedFor.size() > 0 && this->selfFeature.isNull()){
-        foreach(const QPointer<FeatureWrapper> &feature, this->usedFor){
+    if(this->usedForList.size() > 0 && this->selfFeature.isNull()){
+        foreach(const QPointer<FeatureWrapper> &feature, this->usedForList){
 
             //check feature
             if(feature.isNull() || feature->getFeature().isNull()){
@@ -84,18 +84,18 @@ Feature::~Feature(){
             }
 
             //remove this feature from previously needed list
-            feature->getFeature()->previouslyNeeded.removeOne(this->selfFeature);
+            feature->getFeature()->previouslyNeededList.removeOne(this->selfFeature);
 
         }
     }
 
     //check and update features which were needed to recalc this feature
-    if(this->previouslyNeeded.size() > 0){
-        foreach(const QPointer<FeatureWrapper> &feature, this->previouslyNeeded){
+    if(this->previouslyNeededList.size() > 0){
+        foreach(const QPointer<FeatureWrapper> &feature, this->previouslyNeededList){
 
             //remove this feature from usedFor list
             if(this->selfFeature.isNull() && !feature.isNull() && !feature->getFeature().isNull()){
-                feature->getFeature()->usedFor.removeOne(this->selfFeature);
+                feature->getFeature()->usedForList.removeOne(this->selfFeature);
             }
 
         }
@@ -307,7 +307,7 @@ void Feature::setActiveFeatureState(const bool &isActiveFeature){
  * \return
  */
 const QList<QPointer<FeatureWrapper> > &Feature::getUsedFor() const{
-    return this->usedFor;
+    return this->usedForList;
 }
 
 /*!
@@ -317,28 +317,26 @@ const QList<QPointer<FeatureWrapper> > &Feature::getUsedFor() const{
  */
 bool Feature::addUsedFor(const QPointer<FeatureWrapper> &feature){
 
-    QPointer<FeatureWrapper> usedForFeature = feature;
-
     //check feature
-    if(usedForFeature.isNull() || usedForFeature->getFeature().isNull()){
+    if(feature.isNull() || feature->getFeature().isNull()){
+        return false;
+    }
+
+    //check if the feature is already included
+    if(this->usedForMap.contains(feature->getFeature()->getId())){
         return false;
     }
 
     //check if feature is in same job
     if(!this->job.isNull()){
-        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(usedForFeature->getFeature()->getId());
-        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || usedForFeature->getFeature() != jobFeature->getFeature()){
+        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(feature->getFeature()->getId());
+        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || feature->getFeature() != jobFeature->getFeature()){
             return false;
         }
-        usedForFeature = jobFeature;
     }
 
-    //check if the feature is already included
-    if(this->usedFor.contains(usedForFeature)){
-        return false;
-    }
-
-    this->usedFor.append(usedForFeature);
+    this->usedForList.append(feature);
+    this->usedForMap.insert(feature->getFeature()->getId(), feature);
 
     //add this feature to the previously needed features of feature
     if(!this->selfFeature.isNull()){
@@ -356,28 +354,26 @@ bool Feature::addUsedFor(const QPointer<FeatureWrapper> &feature){
  */
 bool Feature::removeUsedFor(const QPointer<FeatureWrapper> &feature){
 
-    QPointer<FeatureWrapper> usedForFeature = feature;
-
     //check feature
-    if(usedForFeature.isNull() || usedForFeature->getFeature().isNull()){
+    if(feature.isNull() || feature->getFeature().isNull()){
+        return false;
+    }
+
+    //check if the feature is included
+    if(!this->usedForMap.contains(feature->getFeature()->getId())){
         return false;
     }
 
     //check if feature is in same job
     if(!this->job.isNull()){
-        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(usedForFeature->getFeature()->getId());
-        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || usedForFeature->getFeature() != jobFeature->getFeature()){
+        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(feature->getFeature()->getId());
+        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || feature->getFeature() != jobFeature->getFeature()){
             return false;
         }
-        usedForFeature = jobFeature;
     }
 
-    //check if the feature is included
-    if(!this->usedFor.contains(usedForFeature)){
-        return false;
-    }
-
-    this->usedFor.removeOne(usedForFeature);
+    this->usedForList.removeOne(feature);
+    this->usedForMap.remove(feature->getFeature()->getId());
 
     //remove this feature from the previously needed features of feature
     if(!this->selfFeature.isNull()){
@@ -393,7 +389,7 @@ bool Feature::removeUsedFor(const QPointer<FeatureWrapper> &feature){
  * \return
  */
 const QList<QPointer<FeatureWrapper> > &Feature::getPreviouslyNeeded() const{
-    return this->previouslyNeeded;
+    return this->previouslyNeededList;
 }
 
 /*!
@@ -403,28 +399,26 @@ const QList<QPointer<FeatureWrapper> > &Feature::getPreviouslyNeeded() const{
  */
 bool Feature::addPreviouslyNeeded(const QPointer<FeatureWrapper> &feature){
 
-    QPointer<FeatureWrapper> previouslyNeededFeature = feature;
-
     //check feature
-    if(previouslyNeededFeature.isNull() || previouslyNeededFeature->getFeature().isNull()){
+    if(feature.isNull() || feature->getFeature().isNull()){
+        return false;
+    }
+
+    //check if the feature is already included
+    if(this->previouslyNeededMap.contains(feature->getFeature()->getId())){
         return false;
     }
 
     //check if feature is in same job
     if(!this->job.isNull()){
-        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(previouslyNeededFeature->getFeature()->getId());
-        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || previouslyNeededFeature->getFeature() != jobFeature->getFeature()){
+        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(feature->getFeature()->getId());
+        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || feature->getFeature() != jobFeature->getFeature()){
             return false;
         }
-        previouslyNeededFeature = jobFeature;
     }
 
-    //check if the feature is already included
-    if(this->previouslyNeeded.contains(previouslyNeededFeature)){
-        return false;
-    }
-
-    this->previouslyNeeded.append(previouslyNeededFeature);
+    this->previouslyNeededList.append(feature);
+    this->previouslyNeededMap.insert(feature->getFeature()->getId(), feature);
 
     this->isUpdated = false;
 
@@ -444,28 +438,26 @@ bool Feature::addPreviouslyNeeded(const QPointer<FeatureWrapper> &feature){
  */
 bool Feature::removePreviouslyNeeded(const QPointer<FeatureWrapper> &feature){
 
-    QPointer<FeatureWrapper> previouslyNeededFeature = feature;
-
     //check feature
-    if(previouslyNeededFeature.isNull() || previouslyNeededFeature->getFeature().isNull()){
+    if(feature.isNull() || feature->getFeature().isNull()){
+        return false;
+    }
+
+    //check if the feature is included
+    if(!this->previouslyNeededMap.contains(feature->getFeature()->getId())){
         return false;
     }
 
     //check if feature is in same job
     if(!this->job.isNull()){
-        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(previouslyNeededFeature->getFeature()->getId());
-        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || previouslyNeededFeature->getFeature() != jobFeature->getFeature()){
+        QPointer<FeatureWrapper> jobFeature = this->job->getFeatureById(feature->getFeature()->getId());
+        if(jobFeature.isNull() || jobFeature->getFeature().isNull() || feature->getFeature() != jobFeature->getFeature()){
             return false;
         }
-        previouslyNeededFeature = jobFeature;
     }
 
-    //check if the feature is included
-    if(!this->previouslyNeeded.contains(previouslyNeededFeature)){
-        return false;
-    }
-
-    this->previouslyNeeded.removeOne(previouslyNeededFeature);
+    this->previouslyNeededList.removeOne(feature);
+    this->previouslyNeededMap.remove(feature->getFeature()->getId());
 
     this->isUpdated = false;
 
@@ -542,9 +534,9 @@ QDomElement Feature::toOpenIndyXML(QDomDocument &xmlDoc) const{
     }
 
     //add usedFor features
-    if(this->usedFor.size() > 0){
+    if(this->usedForList.size() > 0){
         QDomElement usedForFeatures = xmlDoc.createElement("usedFor");
-        foreach(FeatureWrapper *f, this->usedFor){
+        foreach(FeatureWrapper *f, this->usedForList){
             if(f != NULL && f->getFeature() != NULL){
                 QDomElement usedFor = xmlDoc.createElement("feature");
                 usedFor.setAttribute("ref", f->getFeature()->getId());
@@ -555,9 +547,9 @@ QDomElement Feature::toOpenIndyXML(QDomDocument &xmlDoc) const{
     }
 
     //add previouslyNeeded features
-    if(this->previouslyNeeded.size() > 0){
+    if(this->previouslyNeededList.size() > 0){
         QDomElement previouslyNeededFeatures = xmlDoc.createElement("previouslyNeeded");
-        foreach(FeatureWrapper *f, this->previouslyNeeded){
+        foreach(FeatureWrapper *f, this->previouslyNeededList){
             if(f != NULL && f->getFeature() != NULL){
                 QDomElement previouslyNeeded = xmlDoc.createElement("feature");
                 previouslyNeeded.setAttribute("ref", f->getFeature()->getId());
@@ -651,10 +643,10 @@ QString Feature::getDisplayFunctions() const{
  */
 QString Feature::getDisplayUsedFor() const{
     QString display = "";
-    for(int i = 0; i < this->usedFor.size(); i++){
-        QPointer<FeatureWrapper> feature = this->usedFor.at(i);
+    for(int i = 0; i < this->usedForList.size(); i++){
+        QPointer<FeatureWrapper> feature = this->usedForList.at(i);
         if(!feature.isNull() && !feature->getFeature().isNull()){
-            if(i == this->usedFor.size() - 1){ // last feature
+            if(i == this->usedForList.size() - 1){ // last feature
                 display += feature->getFeature()->getFeatureName();
             }else{
                 display += feature->getFeature()->getFeatureName() + ", ";
@@ -670,10 +662,10 @@ QString Feature::getDisplayUsedFor() const{
  */
 QString Feature::getDisplayPreviouslyNeeded() const{
     QString display = "";
-    for(int i = 0; i < this->previouslyNeeded.size(); i++){
-        QPointer<FeatureWrapper> feature = this->previouslyNeeded.at(i);
+    for(int i = 0; i < this->previouslyNeededList.size(); i++){
+        QPointer<FeatureWrapper> feature = this->previouslyNeededList.at(i);
         if(!feature.isNull() && !feature->getFeature().isNull()){
-            if(i == this->previouslyNeeded.size() - 1){ // last feature
+            if(i == this->previouslyNeededList.size() - 1){ // last feature
                 display += feature->getFeature()->getFeatureName();
             }else{
                 display += feature->getFeature()->getFeatureName() + ", ";

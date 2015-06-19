@@ -193,8 +193,10 @@ protected:
 
     QList< QPointer<Function> > functionList;
 
-    QList< QPointer<FeatureWrapper> > usedFor; //features which need this feature to recalc
-    QList< QPointer<FeatureWrapper> > previouslyNeeded; //features which are needed to recalc this feature
+    QList< QPointer<FeatureWrapper> > usedForList; //features which need this feature to recalc
+    QMap<int, QPointer<FeatureWrapper> > usedForMap;
+    QList< QPointer<FeatureWrapper> > previouslyNeededList; //features which are needed to recalc this feature
+    QMap<int, QPointer<FeatureWrapper> > previouslyNeededMap;
 
     //######################################
     //this pointer wrapped by FeatureWrapper
