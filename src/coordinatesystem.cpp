@@ -450,8 +450,14 @@ bool CoordinateSystem::removeNominal(const QPointer<FeatureWrapper> &nominal){
 
     if(!nominal.isNull() && !nominal->getGeometry().isNull()){
 
+        //get nominal pointer to remove
+        QPointer<FeatureWrapper> removeNominal = nominal;
+        if(this->nominalsMap.contains(nominal->getGeometry()->getId())){
+            removeNominal = this->nominalsMap[nominal->getGeometry()->getId()];
+        }
+
         if(this->nominalsMap.remove(nominal->getGeometry()->getId()) == 1){
-            this->nominalsList.removeOne(nominal);
+            this->nominalsList.removeOne(removeNominal);
             emit this->nominalsChanged(this->id);
             return true;
         }
