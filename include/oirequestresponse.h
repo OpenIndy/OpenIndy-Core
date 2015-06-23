@@ -16,6 +16,8 @@ class OI_CORE_EXPORT OiRequestResponse
 {
 public:
 
+    OiRequestResponse();
+
     enum RequestType{
         eGetProject,
         eSetProject,
