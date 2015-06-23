@@ -144,8 +144,7 @@ SOURCES += \
     src/sensorlistener.cpp \
     src/station.cpp \
     src/statistic.cpp \
-    src/trafoparam.cpp \
-    src/oirequestresponse.cpp
+    src/trafoparam.cpp
 
 HEADERS  += \
     include/geometry/circle.h \

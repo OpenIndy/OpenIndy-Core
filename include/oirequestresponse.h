@@ -1,5 +1,5 @@
-#ifndef OIREQUEST_H
-#define OIREQUEST_H
+#ifndef OIREQUESTRESPONSE_H
+#define OIREQUESTRESPONSE_H
 
 #include <QString>
 #include <QtXml>
@@ -12,11 +12,9 @@ namespace oi{
  * \brief The OiRequestResponse class
  * This class holds the XML request and response corresponding to a special request type
  */
-class OI_CORE_EXPORT OiRequestResponse
+class OiRequestResponse
 {
 public:
-
-    OiRequestResponse();
 
     enum RequestType{
         eGetProject,
@@ -63,4 +61,4 @@ public:
 
 }
 
-#endif // OIREQUEST_H
+#endif // OIREQUESTRESPONSE_H
