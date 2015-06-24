@@ -674,7 +674,11 @@ bool OiJob::removeFeature(const int &featureId){
 
     this->disconnectFeature(feature);
 
-    return this->featureContainer.removeFeature(featureId);
+    bool success = this->featureContainer.removeFeature(featureId);
+
+    emit this->featureSetChanged();
+
+    return success;
 
 }
 
@@ -704,7 +708,63 @@ bool OiJob::removeFeature(const QPointer<FeatureWrapper> &feature){
 
     this->disconnectFeature(feature);
 
-    return this->featureContainer.removeFeature(feature->getFeature()->getId());
+    bool success = this->featureContainer.removeFeature(feature->getFeature()->getId());
+
+    emit this->featureSetChanged();
+
+    return success;
+
+}
+
+/*!
+ * \brief OiJob::removeFeatures
+ * \param featureIds
+ * \return
+ */
+bool OiJob::removeFeatures(const QSet<int> &featureIds){
+
+    bool success = true;
+
+    this->blockSignals(true);
+
+    foreach(const int &id, featureIds){
+        if(!this->removeFeature(id)){
+            success = false;
+        }
+    }
+
+    this->blockSignals(false);
+
+    emit this->activeGroupChanged();
+    emit this->featureSetChanged();
+
+    return success;
+
+}
+
+/*!
+ * \brief OiJob::removeFeatures
+ * \param features
+ * \return
+ */
+bool OiJob::removeFeatures(const QList<QPointer<FeatureWrapper> > &features){
+
+    bool success = true;
+
+    this->blockSignals(true);
+
+    foreach(const QPointer<FeatureWrapper> &feature, features){
+        if(!this->removeFeature(feature)){
+            success = false;
+        }
+    }
+
+    this->blockSignals(false);
+
+    emit this->activeGroupChanged();
+    emit this->featureSetChanged();
+
+    return success;
 
 }
 

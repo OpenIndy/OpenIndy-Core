@@ -99,6 +99,8 @@ public:
 
     bool removeFeature(const int &featureId);
     bool removeFeature(const QPointer<FeatureWrapper> &feature);
+    bool removeFeatures(const QSet<int> &featureIds);
+    bool removeFeatures(const QList<QPointer<FeatureWrapper> > &features);
 
     void removeAll();
 
