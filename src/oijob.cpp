@@ -697,6 +697,7 @@ bool OiJob::removeFeature(const QPointer<FeatureWrapper> &feature){
 
     //check wether the feature could be deleted
     if(!this->canRemoveFeature(feature)){
+        emit this->sendMessage(QString("Cannot remove feature %1").arg(feature->getFeature()->getFeatureName()));
         return false;
     }
 
@@ -726,14 +727,29 @@ bool OiJob::removeFeatures(const QSet<int> &featureIds){
 
     bool success = true;
 
-    this->blockSignals(true);
+    //check all features wether they could be removed
+    foreach(const int &id, featureIds){
 
+        //get the feature by id
+        QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(id);
+        if(feature.isNull() || feature->getFeature().isNull()){
+            continue;
+        }
+
+        //check wether the feature could be removed
+        if(!this->canRemoveFeature(feature)){
+            continue;
+        }
+
+    }
+
+    //remove features
+    this->blockSignals(true);
     foreach(const int &id, featureIds){
         if(!this->removeFeature(id)){
             success = false;
         }
     }
-
     this->blockSignals(false);
 
     emit this->activeGroupChanged();
@@ -752,14 +768,28 @@ bool OiJob::removeFeatures(const QList<QPointer<FeatureWrapper> > &features){
 
     bool success = true;
 
-    this->blockSignals(true);
+    //check all features wether they could be removed
+    foreach(const QPointer<FeatureWrapper> &feature, features){
 
+        //check feature
+        if(feature.isNull() || feature->getFeature().isNull()){
+            continue;
+        }
+
+        //check wether the feature could be removed
+        if(!this->canRemoveFeature(feature)){
+            continue;
+        }
+
+    }
+
+    //remove features
+    this->blockSignals(true);
     foreach(const QPointer<FeatureWrapper> &feature, features){
         if(!this->removeFeature(feature)){
             success = false;
         }
     }
-
     this->blockSignals(false);
 
     emit this->activeGroupChanged();
