@@ -662,6 +662,7 @@ bool OiJob::removeFeature(const int &featureId){
 
     //check wether the feature could be deleted
     if(!this->canRemoveFeature(feature)){
+        emit this->sendMessage(QString("Cannot remove feature %1").arg(feature->getFeature()->getFeatureName()));
         return false;
     }
 
