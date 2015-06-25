@@ -514,11 +514,14 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
         //check if the new group is empty
         if(feature->getFeature()->getGroupName().compare("") != 0){
 
-            if(this->featuresGroupMap.contains(oldGroup)){
-                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), this->featuresGroupMap.take(oldGroup));
-            }
+            this->featuresGroupMap.remove(oldGroup, feature);
+            this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
+
             if(!this->featuresGroupMap.contains(oldGroup)){
                 this->featureGroups.removeOne(oldGroup);
+            }
+            if(!this->featureGroups.contains(feature->getFeature()->getGroupName())){
+                this->featureGroups.append(feature->getFeature()->getGroupName());
             }
 
         }else{
