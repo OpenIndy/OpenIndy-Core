@@ -112,6 +112,14 @@ QList<ToolTypes> OI_CORE_EXPORT getAvailableToolTypes();
 const QString OI_CORE_EXPORT &getToolTypeName(const ToolTypes &type);
 ToolTypes OI_CORE_EXPORT getToolTypeEnum(const QString &name);
 
+//#######################################
+//global functions to query message types
+//#######################################
+
+QList<MessageTypes> OI_CORE_EXPORT getAvailableMessageTypes();
+const QString OI_CORE_EXPORT &getMessageTypeName(const MessageTypes &type);
+MessageTypes OI_CORE_EXPORT getMessageTypeEnum(const QString &name);
+
 }
 
 #endif // UTIL_H

@@ -37,6 +37,8 @@ QMap<ConnectionTypes, QString> connectionTypesMap;
 
 QMap<ToolTypes, QString> toolTypesMap;
 
+QMap<MessageTypes, QString> messageTypesMap;
+
 QString undefined = "";
 
 bool isInit = false;
@@ -59,6 +61,7 @@ void init(){
     unitTypesMap.clear();
     sensorTypesMap.clear();
     toolTypesMap.clear();
+    messageTypesMap.clear();
 
     //fill element map
     elementTypesMap.insert(eCircleElement, "circle");
@@ -402,6 +405,12 @@ void init(){
     //fill tool types map
     toolTypesMap.insert(eReportTool, "report");
     toolTypesMap.insert(eUnknownTool, "tool");
+
+    //fill message types map
+    messageTypesMap.insert(eInformationMessage, "information");
+    messageTypesMap.insert(eWarningMessage, "warning");
+    messageTypesMap.insert(eErrorMessage, "error");
+    messageTypesMap.insert(eCriticalMessage, "critical");
 
     isInit = true;
 
@@ -1417,6 +1426,58 @@ ToolTypes getToolTypeEnum(const QString &name){
 
     //get the corresponding tool type enum value
     return internal::toolTypesMap.key(name, eUnknownTool);
+
+}
+
+/*!
+ * \brief getAvailableMessageTypes
+ * \return
+ */
+QList<MessageTypes> getAvailableMessageTypes(){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    return internal::messageTypesMap.keys();
+
+}
+
+/*!
+ * \brief getMessageTypeName
+ * \param type
+ * \return
+ */
+const QString &getMessageTypeName(const MessageTypes &type){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding tool type name
+    if(internal::messageTypesMap.contains(type)){
+        return internal::messageTypesMap[type];
+    }
+    return internal::undefined;
+
+}
+
+/*!
+ * \brief getMessageTypeEnum
+ * \param name
+ * \return
+ */
+MessageTypes getMessageTypeEnum(const QString &name){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding tool type enum value
+    return internal::messageTypesMap.key(name, eInformationMessage);
 
 }
 
