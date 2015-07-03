@@ -191,7 +191,7 @@ signals:
     //signals to inform OpenIndy about simulation issues
     //##################################################
 
-    void sendMessage(const QString &msg);
+    void sendMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
 
 protected:
 

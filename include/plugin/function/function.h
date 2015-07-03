@@ -255,7 +255,7 @@ signals:
     //signals to inform OpenIndy about function issues
     //################################################
 
-    void sendMessage(const QString &msg);
+    void sendMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
 
     void inputElementsChanged();
     void scalarInputParametersChanged();

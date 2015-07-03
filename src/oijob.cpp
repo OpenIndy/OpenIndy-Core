@@ -662,7 +662,7 @@ bool OiJob::removeFeature(const int &featureId){
 
     //check wether the feature could be deleted
     if(!this->canRemoveFeature(feature)){
-        emit this->sendMessage(QString("Cannot remove feature %1").arg(feature->getFeature()->getFeatureName()));
+        emit this->sendMessage(QString("Cannot remove feature %1").arg(feature->getFeature()->getFeatureName()), eWarningMessage);
         return false;
     }
 
@@ -697,7 +697,7 @@ bool OiJob::removeFeature(const QPointer<FeatureWrapper> &feature){
 
     //check wether the feature could be deleted
     if(!this->canRemoveFeature(feature)){
-        emit this->sendMessage(QString("Cannot remove feature %1").arg(feature->getFeature()->getFeatureName()));
+        emit this->sendMessage(QString("Cannot remove feature %1").arg(feature->getFeature()->getFeatureName()), eWarningMessage);
         return false;
     }
 
@@ -1002,7 +1002,7 @@ void OiJob::addInputFeature(const QPointer<FeatureWrapper> &target, const int &f
 
     //check circular reference
     if(this->checkCircleWarning(target->getFeature(), feature->getFeature())){
-        emit this->sendMessage("Cannot add input element: circular reference error");
+        emit this->sendMessage("Cannot add input element: circular reference error", eErrorMessage, eMessageBoxMessage);
         return;
     }
 
@@ -2347,7 +2347,7 @@ bool OiJob::checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature){
     QPointer<CoordinateSystem> nominalSystem = isNominal?feature->getGeometry()->getNominalSystem():QPointer<CoordinateSystem>(NULL);
     if(!this->validateFeatureName(feature->getFeature()->getFeatureName(), feature->getFeatureTypeEnum(),
                                  isNominal, nominalSystem)){
-        emit this->sendMessage("feature name already exists");
+        emit this->sendMessage("feature name already exists", eWarningMessage);
         return false;
     }
 
@@ -2513,32 +2513,32 @@ bool OiJob::canRemoveFeature(const QPointer<FeatureWrapper> &feature) const{
 
     //do not remove active station or active coordinate system
     if(!feature->getStation().isNull() && feature->getStation()->getIsActiveStation()){
-        emit this->sendMessage("Cannot delete the active station");
+        emit this->sendMessage("Cannot delete the active station", eWarningMessage);
         return false;
     }
     if( (!feature->getCoordinateSystem().isNull() && feature->getCoordinateSystem()->getIsActiveCoordinateSystem())
             || (!feature->getStation().isNull() && !feature->getStation()->getCoordinateSystem().isNull()
                 && feature->getStation()->getCoordinateSystem()->getIsActiveCoordinateSystem()) ){
-        emit this->sendMessage("Cannot delete the active coordinate system");
+        emit this->sendMessage("Cannot delete the active coordinate system", eWarningMessage);
         return false;
     }
 
     //do not delete a station system (without deleting the station)
     if(!feature->getCoordinateSystem().isNull() && feature->getCoordinateSystem()->getIsStationSystem()){
-        emit this->sendMessage("Cannot delete a station system without the corresponding station");
+        emit this->sendMessage("Cannot delete a station system without the corresponding station", eWarningMessage);
         return false;
     }
 
     //do not delete coordinate systems with observations
     if(!feature->getStation().isNull() && !feature->getStation()->getCoordinateSystem().isNull()
             && feature->getStation()->getCoordinateSystem()->getObservations().size() > 0){
-        emit this->sendMessage("Cannot delete a station which contains one or more observations");
+        emit this->sendMessage("Cannot delete a station which contains one or more observations", eWarningMessage);
         return false;
     }
 
     //do not delete coordinate systems with nominals
     if(!feature->getCoordinateSystem().isNull() && feature->getCoordinateSystem()->getNominals().size() > 0){
-        emit this->sendMessage("Cannot delete a coordinate system which contains one or more nominals");
+        emit this->sendMessage("Cannot delete a coordinate system which contains one or more nominals", eWarningMessage);
         return false;
     }
 

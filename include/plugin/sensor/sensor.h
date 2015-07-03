@@ -122,8 +122,8 @@ signals:
     //signals to inform OpenIndy about sensor issues
     //##############################################
 
-    void sensorMessage(const QString &msg);
-    void sensorMessage(const SensorMessage &type, const QString &msg);
+    void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
+    void sensorMessage(const SensorMessage &type, const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
 
 protected:
 

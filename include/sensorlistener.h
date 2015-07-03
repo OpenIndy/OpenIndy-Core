@@ -45,7 +45,7 @@ signals:
     //special sensor messages
     //#######################
 
-    void sensorMessage(const Sensor::SensorMessage &type, const QString &msg);
+    void sensorMessage(const Sensor::SensorMessage &type, const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
 
 private:
 

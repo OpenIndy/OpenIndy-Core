@@ -59,7 +59,7 @@ signals:
     //signals to inform OpenIndy about tool issues
     //############################################
 
-    void sendMessage(const QString &msg);
+    void sendMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
     void customXmlResponse(const QPointer<OiRequestResponse> &response);
 
 protected:

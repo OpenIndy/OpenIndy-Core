@@ -141,7 +141,7 @@ bool Sensor::abortAction(){
  * \return
  */
 bool Sensor::connectSensor(){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: connect method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: connect method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -150,7 +150,7 @@ bool Sensor::connectSensor(){
  * \return
  */
 bool Sensor::disconnectSensor(){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: disconnect method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: disconnect method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -160,7 +160,7 @@ bool Sensor::disconnectSensor(){
  * \return
  */
 QList<QPointer<Reading> > Sensor::measure(const MeasurementConfig &mConfig){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: measure method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: measure method missing"), eCriticalMessage, eMessageBoxMessage);
     return QList<QPointer<Reading> >();
 }
 
@@ -170,7 +170,7 @@ QList<QPointer<Reading> > Sensor::measure(const MeasurementConfig &mConfig){
  * \return
  */
 QVariantMap Sensor::readingStream(const ReadingTypes &streamFormat){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: reading stream method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: reading stream method missing"), eCriticalMessage, eMessageBoxMessage);
     return QVariantMap();
 }
 
@@ -179,7 +179,7 @@ QVariantMap Sensor::readingStream(const ReadingTypes &streamFormat){
  * \return
  */
 bool Sensor::getConnectionState(){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: connection state method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: connection state method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -188,7 +188,7 @@ bool Sensor::getConnectionState(){
  * \return
  */
 bool Sensor::getIsReadyForMeasurement(){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: is ready method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: is ready method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -197,7 +197,7 @@ bool Sensor::getIsReadyForMeasurement(){
  * \return
  */
 bool Sensor::getIsBusy(){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: is busy method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: is busy method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -206,7 +206,7 @@ bool Sensor::getIsBusy(){
  * \return
  */
 QMap<QString, QString> Sensor::getSensorStatus(){
-    emit this->sensorMessage(QString("Sensor not implemented correctly: sensor status method missing"));
+    emit this->sensorMessage(QString("Sensor not implemented correctly: sensor status method missing"), eCriticalMessage, eMessageBoxMessage);
     return QMap<QString, QString>();
 }
 

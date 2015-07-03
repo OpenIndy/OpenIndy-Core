@@ -22,6 +22,24 @@ namespace oi{
 #define RHO_GON (200.0/PI)
 
 //#######################
+//available message types
+//#######################
+
+//! all types of messages
+enum MessageTypes{
+    eInformationMessage,
+    eWarningMessage,
+    eErrorMessage,
+    eCriticalMessage
+};
+
+//! used to specify where to print a message
+enum MessageDestinations{
+    eConsoleMessage,
+    eMessageBoxMessage
+};
+
+//#######################
 //available element types
 //#######################
 

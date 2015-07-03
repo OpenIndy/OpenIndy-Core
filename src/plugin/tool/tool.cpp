@@ -63,7 +63,7 @@ void Tool::closeEvent(QCloseEvent *event){
  * \param request
  */
 void Tool::customXmlRequest(const QPointer<OiRequestResponse> &request){
-    emit this->sendMessage(QString("No custom XML request implementation"));
+    emit this->sendMessage(QString("No custom XML request implementation"), eCriticalMessage, eMessageBoxMessage);
 }
 
 /*!
@@ -71,7 +71,7 @@ void Tool::customXmlRequest(const QPointer<OiRequestResponse> &request){
  * \param key
  */
 void Tool::watchWindowKeyPressed(const Qt::Key &key){
-    emit this->sendMessage(QString("No watch window key pressed implementation"));
+    emit this->sendMessage(QString("No watch window key pressed implementation"), eCriticalMessage, eMessageBoxMessage);
 }
 
 /*!

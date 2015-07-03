@@ -50,7 +50,7 @@ protected:
      * \return
      */
     virtual bool move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative){
-        emit this->sensorMessage(QString("Total Station not implemented correctly: move method missing"));
+        emit this->sensorMessage(QString("Total Station not implemented correctly: move method missing"), eCriticalMessage, eMessageBoxMessage);
         return false;
     }
 
@@ -62,7 +62,7 @@ protected:
      * \return
      */
     virtual bool move(const double &x, const double &y, const double &z){
-        emit this->sensorMessage(QString("Total Station not implemented correctly: move method missing"));
+        emit this->sensorMessage(QString("Total Station not implemented correctly: move method missing"), eCriticalMessage, eMessageBoxMessage);
         return false;
     }
 
@@ -71,7 +71,7 @@ protected:
      * \return
      */
     virtual bool toggleSightOrientation(){
-        emit this->sensorMessage(QString("Total Station not implemented correctly: toggle sight method missing"));
+        emit this->sensorMessage(QString("Total Station not implemented correctly: toggle sight method missing"), eCriticalMessage, eMessageBoxMessage);
         return false;
     }
 

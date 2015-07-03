@@ -195,7 +195,7 @@ signals:
     //general signals to inform OpenIndy about job issues
     //###################################################
 
-    void sendMessage(const QString &msg) const;
+    void sendMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage) const;
 
     //##############################
     //signals to force recalculation

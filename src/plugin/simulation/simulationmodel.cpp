@@ -106,7 +106,7 @@ const QMap<QString, UncertaintyComponent> &SimulationModel::getHumanInfluence() 
  * \return
  */
 bool SimulationModel::distort(const QPointer<Reading> &r, const OiMat &objectRelation, const bool &newIterationStart){
-    emit this->sendMessage(QString("Simulation Model not implemented correctly: distort method missing"));
+    emit this->sendMessage(QString("Simulation Model not implemented correctly: distort method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -117,7 +117,7 @@ bool SimulationModel::distort(const QPointer<Reading> &r, const OiMat &objectRel
  * \return
  */
 bool SimulationModel::analyseSimulationData(UncertaintyData &d){
-    emit this->sendMessage(QString("Simulation Model not implemented correctly: analyse method missing"));
+    emit this->sendMessage(QString("Simulation Model not implemented correctly: analyse method missing"), eCriticalMessage, eMessageBoxMessage);
     return false;
 }
 
@@ -129,7 +129,7 @@ bool SimulationModel::analyseSimulationData(UncertaintyData &d){
  * \return
  */
 double SimulationModel::getCorrelationCoefficient(const QList<double> &x, const QList<double> &y){
-    emit this->sendMessage(QString("Simulation Model not implemented correctly: correlation method missing"));
+    emit this->sendMessage(QString("Simulation Model not implemented correctly: correlation method missing"), eCriticalMessage, eMessageBoxMessage);
     return 0.0;
 }
 

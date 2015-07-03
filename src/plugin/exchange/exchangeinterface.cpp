@@ -144,14 +144,14 @@ void ExchangeInterface::setUnit(const DimensionType &dimension, const UnitType &
  * \brief ExchangeInterface::importOiData
  */
 void ExchangeInterface::importOiData(){
-    emit this->sendMessage(QString("Exchange Plugin not implemented correctly: import method missing"));
+    emit this->sendMessage(QString("Exchange Plugin not implemented correctly: import method missing"), eCriticalMessage, eMessageBoxMessage);
 }
 
 /*!
  * \brief ExchangeInterface::exportOiData
  */
 void ExchangeInterface::exportOiData(){
-    emit this->sendMessage(QString("Exchange Plugin not implemented correctly: export method missing"));
+    emit this->sendMessage(QString("Exchange Plugin not implemented correctly: export method missing"), eCriticalMessage, eMessageBoxMessage);
 }
 
 /*!
