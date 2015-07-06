@@ -399,9 +399,11 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
     if(fAttr.isNominal){
         QList<QPointer<FeatureWrapper> > features = this->featureContainer.getFeaturesByName(fAttr.nominalSystem);
         if(features.size() != 1){
+            emit this->sendMessage("No valid nominal system specified", eErrorMessage);
             return result;
         }
         if(features.at(0).isNull() || features.at(0)->getCoordinateSystem().isNull() || features.at(0)->getCoordinateSystem()->getIsStationSystem()){
+            emit this->sendMessage("No valid nominal system specified", eErrorMessage);
             return result;
         }
         nominalSystem = features.at(0)->getCoordinateSystem();
@@ -414,6 +416,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
         QList<QPointer<FeatureWrapper> > destinationSystems = this->featureContainer.getFeaturesByName(fAttr.destinationSystem);
         if(startSystems.size() != 1 || destinationSystems.size() != 1
                 || startSystems.at(0).isNull() || destinationSystems.at(0).isNull()){
+            emit this->sendMessage("No valid start and/or destination system specified", eErrorMessage);
             return result;
         }
         if(!startSystems.at(0)->getCoordinateSystem().isNull()){
@@ -428,6 +431,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
         }
 
         if(startSystem.isNull() || destSystem.isNull()){
+            emit this->sendMessage("No valid start and/or destination system specified", eErrorMessage);
             return result;
         }
 
@@ -439,6 +443,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
         if(fAttr.isNominal){
             foreach(const QString &name, featureNames){
                 if(!validateFeatureName(name, fAttr.typeOfFeature, true, nominalSystem)){
+                    emit this->sendMessage("No valid feature name specified", eErrorMessage);
                     return result;
                 }
             }
@@ -446,6 +451,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
         if(fAttr.isActual){
             foreach(const QString &name, featureNames){
                 if(!validateFeatureName(name, fAttr.typeOfFeature)){
+                    emit this->sendMessage("No valid feature name specified", eErrorMessage);
                     return result;
                 }
             }
@@ -453,6 +459,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
     }else{
         foreach(const QString &name, featureNames){
             if(!validateFeatureName(name, fAttr.typeOfFeature)){
+                emit this->sendMessage("No valid feature name specified", eErrorMessage);
                 return result;
             }
         }
@@ -814,6 +821,7 @@ void OiJob::addFunction(const QPointer<Function> &function){
 
     //check active feature
     if(this->activeFeature.isNull() || this->activeFeature->getFeature().isNull()){
+        emit this->sendMessage("No active feature", eErrorMessage);
         return;
     }
 
@@ -846,6 +854,7 @@ void OiJob::removeFunction(const int &functionIndex){
 
     //check active feature
     if(this->activeFeature.isNull() || this->activeFeature->getFeature().isNull()){
+        emit this->sendMessage("No active feature", eErrorMessage);
         return;
     }
 
