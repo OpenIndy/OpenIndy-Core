@@ -28,6 +28,7 @@ FeatureTypes OI_CORE_EXPORT getFeatureTypeEnum(const QString &name);
 
 const QString OI_CORE_EXPORT &getGeometryTypeName(const GeometryTypes &type);
 GeometryTypes OI_CORE_EXPORT getGeometryTypeEnum(const QString &name);
+GeometryTypes OI_CORE_EXPORT getGeometryTypeEnum(const FeatureTypes &type);
 
 bool OI_CORE_EXPORT getIsFeature(const ElementTypes &type);
 bool OI_CORE_EXPORT getIsReading(const ElementTypes &type);
@@ -119,6 +120,16 @@ ToolTypes OI_CORE_EXPORT getToolTypeEnum(const QString &name);
 QList<MessageTypes> OI_CORE_EXPORT getAvailableMessageTypes();
 const QString OI_CORE_EXPORT &getMessageTypeName(const MessageTypes &type);
 MessageTypes OI_CORE_EXPORT getMessageTypeEnum(const QString &name);
+
+//############################################
+//global functions to query unknown parameters
+//############################################
+
+QList<UnknownParameters> OI_CORE_EXPORT getAvailableUnknownParameters();
+const QString OI_CORE_EXPORT &getUnknownParameterName(const UnknownParameters &parameter);
+UnknownParameters OI_CORE_EXPORT getUnknownParameterEnum(const QString &name);
+
+QList<UnknownParameters> OI_CORE_EXPORT getUnknownParameters(const GeometryTypes &type);
 
 }
 

@@ -39,6 +39,8 @@ QMap<ToolTypes, QString> toolTypesMap;
 
 QMap<MessageTypes, QString> messageTypesMap;
 
+QMap<UnknownParameters, QString> unknownParametersMap;
+
 QString undefined = "";
 
 bool isInit = false;
@@ -62,6 +64,7 @@ void init(){
     sensorTypesMap.clear();
     toolTypesMap.clear();
     messageTypesMap.clear();
+    unknownParametersMap.clear();
 
     //fill element map
     elementTypesMap.insert(eCircleElement, "circle");
@@ -412,6 +415,28 @@ void init(){
     messageTypesMap.insert(eErrorMessage, "error");
     messageTypesMap.insert(eCriticalMessage, "critical");
 
+    //fill unknown parameters map
+    unknownParametersMap.insert(eUnknownX, "x");
+    unknownParametersMap.insert(eUnknownY, "y");
+    unknownParametersMap.insert(eUnknownZ, "z");
+    unknownParametersMap.insert(eUnknownPrimaryI, "i");
+    unknownParametersMap.insert(eUnknownPrimaryJ, "j");
+    unknownParametersMap.insert(eUnknownPrimaryK, "k");
+    unknownParametersMap.insert(eUnknownSecondaryI, "i 2");
+    unknownParametersMap.insert(eUnknownSecondaryJ, "j 2");
+    unknownParametersMap.insert(eUnknownSecondaryK, "k 2");
+    unknownParametersMap.insert(eUnknownRadiusA, "radius");
+    unknownParametersMap.insert(eUnknownRadiusB, "radius 2");
+    unknownParametersMap.insert(eUnknownAperture, "aperture");
+    unknownParametersMap.insert(eUnknownA, "a");
+    unknownParametersMap.insert(eUnknownB, "b");
+    unknownParametersMap.insert(eUnknownC, "c");
+    unknownParametersMap.insert(eUnknownAngle, "angle");
+    unknownParametersMap.insert(eUnknownDistance, "distance");
+    unknownParametersMap.insert(eUnknownMeasurementSeries, "measurement series");
+    unknownParametersMap.insert(eUnknownTemperature, "temperature");
+    unknownParametersMap.insert(eUnknownLength, "length");
+
     isInit = true;
 
 }
@@ -686,6 +711,63 @@ GeometryTypes getGeometryTypeEnum(const QString &name){
 
     //get the corresponding geometry enum value
     return internal::geometryTypesMap.key(name, eUndefinedGeometry);
+
+}
+
+/*!
+ * \brief getGeometryTypeEnum
+ * \param type
+ * \return
+ */
+GeometryTypes getGeometryTypeEnum(const FeatureTypes &type){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    switch(type){
+    case eCircleFeature:
+        return eCircleGeometry;
+    case eConeFeature:
+        return eConeGeometry;
+    case eCylinderFeature:
+        return eCylinderGeometry;
+    case eEllipseFeature:
+        return eEllipseGeometry;
+    case eEllipsoidFeature:
+        return eEllipsoidGeometry;
+    case eHyperboloidFeature:
+        return eHyperboloidGeometry;
+    case eLineFeature:
+        return eLineGeometry;
+    case eNurbsFeature:
+        return eNurbsGeometry;
+    case eParaboloidFeature:
+        return eParaboloidGeometry;
+    case ePlaneFeature:
+        return ePlaneGeometry;
+    case ePointFeature:
+        return ePointGeometry;
+    case ePointCloudFeature:
+        return ePointCloudGeometry;
+    case eScalarEntityAngleFeature:
+        return eScalarEntityAngleGeometry;
+    case eScalarEntityDistanceFeature:
+        return eScalarEntityDistanceGeometry;
+    case eScalarEntityMeasurementSeriesFeature:
+        return eScalarEntityMeasurementSeriesGeometry;
+    case eScalarEntityTemperatureFeature:
+        return eScalarEntityTemperatureGeometry;
+    case eSlottedHoleFeature:
+        return eSlottedHoleGeometry;
+    case eSphereFeature:
+        return eSphereGeometry;
+    case eTorusFeature:
+        return eTorusGeometry;
+    default:
+        return eUndefinedGeometry;
+    }
 
 }
 
@@ -1456,7 +1538,7 @@ const QString &getMessageTypeName(const MessageTypes &type){
         internal::init();
     }
 
-    //get the corresponding tool type name
+    //get the corresponding message type name
     if(internal::messageTypesMap.contains(type)){
         return internal::messageTypesMap[type];
     }
@@ -1476,8 +1558,211 @@ MessageTypes getMessageTypeEnum(const QString &name){
         internal::init();
     }
 
-    //get the corresponding tool type enum value
+    //get the corresponding message type enum value
     return internal::messageTypesMap.key(name, eInformationMessage);
+
+}
+
+/*!
+ * \brief getAvailableUnknownParameters
+ * \return
+ */
+QList<UnknownParameters> getAvailableUnknownParameters(){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    return internal::unknownParametersMap.keys();
+
+}
+
+/*!
+ * \brief getUnknownParameterName
+ * \param parameter
+ * \return
+ */
+const QString &getUnknownParameterName(const UnknownParameters &parameter){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding unknown parameter name
+    if(internal::unknownParametersMap.contains(parameter)){
+        return internal::unknownParametersMap[parameter];
+    }
+    return internal::undefined;
+
+}
+
+/*!
+ * \brief getUnknownParameterEnum
+ * \param name
+ * \return
+ */
+UnknownParameters getUnknownParameterEnum(const QString &name){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding unknown parameter enum value
+    return internal::unknownParametersMap.key(name, eUnknownX);
+
+}
+
+/*!
+ * \brief getUnknownParameters
+ * \param type
+ * \return
+ */
+QList<UnknownParameters> getUnknownParameters(const GeometryTypes &type){
+
+    QList<UnknownParameters> unknownParameters;
+
+    switch(type){
+    case eCircleGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownRadiusA);
+        break;
+    case eConeGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownAperture);
+        break;
+    case eCylinderGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownRadiusA);
+        break;
+    case eEllipseGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownA);
+        unknownParameters.append(eUnknownB);
+        unknownParameters.append(eUnknownSecondaryI);
+        unknownParameters.append(eUnknownSecondaryJ);
+        unknownParameters.append(eUnknownSecondaryK);
+        break;
+    case eEllipsoidGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownA);
+        unknownParameters.append(eUnknownB);
+        break;
+    case eHyperboloidGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownA);
+        unknownParameters.append(eUnknownC);
+        break;
+    case eLineGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        break;
+    case eNurbsGeometry:
+        break;
+    case eParaboloidGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownA);
+        break;
+    case ePlaneGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        break;
+    case ePointGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        break;
+    case ePointCloudGeometry:
+        break;
+    case eScalarEntityAngleGeometry:
+        unknownParameters.append(eUnknownAngle);
+        break;
+    case eScalarEntityDistanceGeometry:
+        unknownParameters.append(eUnknownDistance);
+        break;
+    case eScalarEntityMeasurementSeriesGeometry:
+        unknownParameters.append(eUnknownMeasurementSeries);
+        break;
+    case eScalarEntityTemperatureGeometry:
+        unknownParameters.append(eUnknownTemperature);
+        break;
+    case eSlottedHoleGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownRadiusA);
+        unknownParameters.append(eUnknownLength);
+        unknownParameters.append(eUnknownSecondaryI);
+        unknownParameters.append(eUnknownSecondaryJ);
+        unknownParameters.append(eUnknownSecondaryK);
+        break;
+    case eSphereGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownRadiusA);
+        break;
+    case eTorusGeometry:
+        unknownParameters.append(eUnknownX);
+        unknownParameters.append(eUnknownY);
+        unknownParameters.append(eUnknownZ);
+        unknownParameters.append(eUnknownPrimaryI);
+        unknownParameters.append(eUnknownPrimaryJ);
+        unknownParameters.append(eUnknownPrimaryK);
+        unknownParameters.append(eUnknownRadiusA);
+        unknownParameters.append(eUnknownRadiusB);
+        break;
+    }
+
+    return unknownParameters;
 
 }
 
