@@ -167,18 +167,18 @@ void Ellipsoid::setEllipsoid(const Position &center, const Direction &majorAxis,
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> Ellipsoid::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> Ellipsoid::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
-    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownA, this->getDisplayA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownB, this->getDisplayB(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownA, this->getDisplayA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownB, this->getDisplayB(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
 
     return parameters;
 
@@ -188,7 +188,7 @@ QMap<UnknownParameters, QString> Ellipsoid::getUnknownParameters(const QMap<Dime
  * \brief Ellipsoid::setUnknownParameters
  * \param parameters
  */
-void Ellipsoid::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void Ellipsoid::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     OiVec position = this->center.getVector();
@@ -197,8 +197,8 @@ void Ellipsoid::setUnknownParameters(const QMap<UnknownParameters, double> &para
     double b = this->b;
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownX:
             position.setAt(0, parameters.value(eUnknownX));

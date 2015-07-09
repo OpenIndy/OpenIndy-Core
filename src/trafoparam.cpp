@@ -298,7 +298,57 @@ const OiVec &TrafoParam::getScale() const{
  * \return
  */
 bool TrafoParam::setTransformationParameters(const OiVec &rotation, const OiVec &translation, const OiVec &scale){
+
+    if(rotation.getSize() == 3 && translation.getSize() == 3 && scale.getSize() == 3){
+
+        //update transformation parameters
+        this->translation = translation;
+        this->scale = scale;
+        this->rotation = rotation;
+
+        //set up translation matrix
+        OiMat tMat(4, 4);
+        for(int i = 0; i < 4; i++){
+            tMat.setAt(i, i, 1.0);
+        }
+        tMat.setAt(0, 3, translation.getAt(0));
+        tMat.setAt(1, 3, translation.getAt(1));
+        tMat.setAt(2, 3, translation.getAt(2));
+
+        //set up scale matrix
+        OiMat sMat(4, 4);
+        sMat.setAt(0, 0, scale.getAt(0));
+        sMat.setAt(1, 1, scale.getAt(1));
+        sMat.setAt(2, 2, scale.getAt(2));
+        sMat.setAt(3, 3, 1.0);
+
+        //set up rotation matrix
+        OiMat r33(3, 3);
+        OiVec xAxis(3), yAxis(3), zAxis(3);
+        xAxis.setAt(0, 1.0);
+        yAxis.setAt(1, 1.0);
+        zAxis.setAt(2, 1.0);
+        r33 = OiMat::getRotationMatrix(rotation.getAt(2), zAxis) * OiMat::getRotationMatrix(rotation.getAt(1), yAxis) *
+                OiMat::getRotationMatrix(rotation.getAt(0), xAxis);
+        OiMat rMat(4, 4);
+        for(int i = 0; i < 3; i++){
+            for(int j = 0; j < 3; j++){
+                rMat.setAt(i, j, r33.getAt(i, j));
+            }
+        }
+        rMat.setAt(3, 3, 1.0);
+
+        //update homogeneous matrix
+        this->homogenMatrix = tMat * rMat * sMat;
+
+        emit this->transformationParameterChanged(this->id);
+
+        return true;
+
+    }
+
     return false;
+
 }
 
 /*!
@@ -354,6 +404,80 @@ bool TrafoParam::setTransformationParameters(const OiMat &rotation, const OiMat 
  */
 bool TrafoParam::setTransformationParameters(const OiMat &homogenMatrix){
     return false;
+}
+
+/*!
+ * \brief TrafoParam::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<TrafoParamParameters, QString> TrafoParam::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<TrafoParamParameters, QString> parameters;
+
+    parameters.insert(eUnknownTX, this->getDisplayTranslationX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownTY, this->getDisplayTranslationY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownTZ, this->getDisplayTranslationZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownRX, this->getDisplayRotationX(displayUnits.value(eAngular, eUnitRadiant), displayDigits.value(eAngular, 0)));
+    parameters.insert(eUnknownRY, this->getDisplayRotationY(displayUnits.value(eAngular, eUnitRadiant), displayDigits.value(eAngular, 0)));
+    parameters.insert(eUnknownRZ, this->getDisplayRotationZ(displayUnits.value(eAngular, eUnitRadiant), displayDigits.value(eAngular, 0)));
+    parameters.insert(eUnknownSX, this->getDisplayScaleX(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownSY, this->getDisplayScaleY(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownSZ, this->getDisplayScaleZ(displayDigits.value(eDimensionless, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief TrafoParam::setUnknownParameters
+ * \param parameters
+ */
+void TrafoParam::setUnknownParameters(const QMap<TrafoParamParameters, double> &parameters){
+
+    //get current parameters
+    OiVec translation = this->translation;
+    OiVec rotation = this->rotation;
+    OiVec scale = this->scale;
+
+    //update parameters
+    QList<TrafoParamParameters> keys = parameters.keys();
+    foreach(const TrafoParamParameters &key, keys){
+        switch(key){
+        case eUnknownTX:
+            translation.setAt(0, parameters.value(eUnknownTX));
+            break;
+        case eUnknownTY:
+            translation.setAt(1, parameters.value(eUnknownTY));
+            break;
+        case eUnknownTZ:
+            translation.setAt(2, parameters.value(eUnknownTZ));
+            break;
+        case eUnknownRX:
+            rotation.setAt(0, parameters.value(eUnknownRX));
+            break;
+        case eUnknownRY:
+            rotation.setAt(1, parameters.value(eUnknownRY));
+            break;
+        case eUnknownRZ:
+            rotation.setAt(2, parameters.value(eUnknownRZ));
+            break;
+        case eUnknownSX:
+            scale.setAt(0, parameters.value(eUnknownSX));
+            break;
+        case eUnknownSY:
+            scale.setAt(1, parameters.value(eUnknownSY));
+            break;
+        case eUnknownSZ:
+            scale.setAt(2, parameters.value(eUnknownSZ));
+            break;
+        }
+    }
+
+    //update trafo param definition
+    this->setTransformationParameters(rotation, translation, scale);
+
 }
 
 /*!

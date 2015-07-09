@@ -157,17 +157,17 @@ void Cylinder::setCylinder(const Position &axisPoint, const Direction &axis, con
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> Cylinder::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> Cylinder::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
-    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownRadiusA, this->getDisplayRadiusA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownRadiusA, this->getDisplayRadiusA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
 
     return parameters;
 
@@ -177,7 +177,7 @@ QMap<UnknownParameters, QString> Cylinder::getUnknownParameters(const QMap<Dimen
  * \brief Cylinder::setUnknownParameters
  * \param parameters
  */
-void Cylinder::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void Cylinder::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     OiVec position = this->axisPoint.getVector();
@@ -185,8 +185,8 @@ void Cylinder::setUnknownParameters(const QMap<UnknownParameters, double> &param
     double radius = this->radius.getRadius();
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownX:
             position.setAt(0, parameters.value(eUnknownX));

@@ -41,7 +41,8 @@ QMap<ToolTypes, QString> toolTypesMap;
 
 QMap<MessageTypes, QString> messageTypesMap;
 
-QMap<UnknownParameters, QString> unknownParametersMap;
+QMap<GeometryParameters, QString> geometryParametersMap;
+QMap<TrafoParamParameters, QString> trafoParamParametersMap;
 
 QString undefined = "";
 
@@ -66,7 +67,7 @@ void init(){
     sensorTypesMap.clear();
     toolTypesMap.clear();
     messageTypesMap.clear();
-    unknownParametersMap.clear();
+    geometryParametersMap.clear();
 
     //fill element map
     elementTypesMap.insert(eCircleElement, "circle");
@@ -417,27 +418,38 @@ void init(){
     messageTypesMap.insert(eErrorMessage, "error");
     messageTypesMap.insert(eCriticalMessage, "critical");
 
-    //fill unknown parameters map
-    unknownParametersMap.insert(eUnknownX, "x");
-    unknownParametersMap.insert(eUnknownY, "y");
-    unknownParametersMap.insert(eUnknownZ, "z");
-    unknownParametersMap.insert(eUnknownPrimaryI, "i");
-    unknownParametersMap.insert(eUnknownPrimaryJ, "j");
-    unknownParametersMap.insert(eUnknownPrimaryK, "k");
-    unknownParametersMap.insert(eUnknownSecondaryI, "i 2");
-    unknownParametersMap.insert(eUnknownSecondaryJ, "j 2");
-    unknownParametersMap.insert(eUnknownSecondaryK, "k 2");
-    unknownParametersMap.insert(eUnknownRadiusA, "radius");
-    unknownParametersMap.insert(eUnknownRadiusB, "radius 2");
-    unknownParametersMap.insert(eUnknownAperture, "aperture");
-    unknownParametersMap.insert(eUnknownA, "a");
-    unknownParametersMap.insert(eUnknownB, "b");
-    unknownParametersMap.insert(eUnknownC, "c");
-    unknownParametersMap.insert(eUnknownAngle, "angle");
-    unknownParametersMap.insert(eUnknownDistance, "distance");
-    unknownParametersMap.insert(eUnknownMeasurementSeries, "measurement series");
-    unknownParametersMap.insert(eUnknownTemperature, "temperature");
-    unknownParametersMap.insert(eUnknownLength, "length");
+    //fill geometry parameters map
+    geometryParametersMap.insert(eUnknownX, "x");
+    geometryParametersMap.insert(eUnknownY, "y");
+    geometryParametersMap.insert(eUnknownZ, "z");
+    geometryParametersMap.insert(eUnknownPrimaryI, "i");
+    geometryParametersMap.insert(eUnknownPrimaryJ, "j");
+    geometryParametersMap.insert(eUnknownPrimaryK, "k");
+    geometryParametersMap.insert(eUnknownSecondaryI, "i 2");
+    geometryParametersMap.insert(eUnknownSecondaryJ, "j 2");
+    geometryParametersMap.insert(eUnknownSecondaryK, "k 2");
+    geometryParametersMap.insert(eUnknownRadiusA, "radius");
+    geometryParametersMap.insert(eUnknownRadiusB, "radius 2");
+    geometryParametersMap.insert(eUnknownAperture, "aperture");
+    geometryParametersMap.insert(eUnknownA, "a");
+    geometryParametersMap.insert(eUnknownB, "b");
+    geometryParametersMap.insert(eUnknownC, "c");
+    geometryParametersMap.insert(eUnknownAngle, "angle");
+    geometryParametersMap.insert(eUnknownDistance, "distance");
+    geometryParametersMap.insert(eUnknownMeasurementSeries, "measurement series");
+    geometryParametersMap.insert(eUnknownTemperature, "temperature");
+    geometryParametersMap.insert(eUnknownLength, "length");
+
+    //fill trafo param parameters map
+    trafoParamParametersMap.insert(eUnknownTX, "tx");
+    trafoParamParametersMap.insert(eUnknownTY, "ty");
+    trafoParamParametersMap.insert(eUnknownTZ, "tz");
+    trafoParamParametersMap.insert(eUnknownRX, "rx");
+    trafoParamParametersMap.insert(eUnknownRY, "ry");
+    trafoParamParametersMap.insert(eUnknownRZ, "rz");
+    trafoParamParametersMap.insert(eUnknownSX, "sx");
+    trafoParamParametersMap.insert(eUnknownSY, "sy");
+    trafoParamParametersMap.insert(eUnknownSZ, "sz");
 
     isInit = true;
 
@@ -1569,14 +1581,14 @@ MessageTypes getMessageTypeEnum(const QString &name){
  * \brief getAvailableUnknownParameters
  * \return
  */
-QList<UnknownParameters> getAvailableUnknownParameters(){
+QList<GeometryParameters> getAvailableGeometryParameters(){
 
     //fill helper maps if not yet done
     if(!internal::isInit){
         internal::init();
     }
 
-    return internal::unknownParametersMap.keys();
+    return internal::geometryParametersMap.keys();
 
 }
 
@@ -1585,16 +1597,16 @@ QList<UnknownParameters> getAvailableUnknownParameters(){
  * \param parameter
  * \return
  */
-const QString &getUnknownParameterName(const UnknownParameters &parameter){
+const QString &getGeometryParameterName(const GeometryParameters &parameter){
 
     //fill helper maps if not yet done
     if(!internal::isInit){
         internal::init();
     }
 
-    //get the corresponding unknown parameter name
-    if(internal::unknownParametersMap.contains(parameter)){
-        return internal::unknownParametersMap[parameter];
+    //get the corresponding geometry parameter name
+    if(internal::geometryParametersMap.contains(parameter)){
+        return internal::geometryParametersMap[parameter];
     }
     return internal::undefined;
 
@@ -1605,15 +1617,15 @@ const QString &getUnknownParameterName(const UnknownParameters &parameter){
  * \param name
  * \return
  */
-UnknownParameters getUnknownParameterEnum(const QString &name){
+GeometryParameters getGeometryParameterEnum(const QString &name){
 
     //fill helper maps if not yet done
     if(!internal::isInit){
         internal::init();
     }
 
-    //get the corresponding unknown parameter enum value
-    return internal::unknownParametersMap.key(name, eUnknownX);
+    //get the corresponding geometry parameter enum value
+    return internal::geometryParametersMap.key(name, eUnknownX);
 
 }
 
@@ -1622,9 +1634,9 @@ UnknownParameters getUnknownParameterEnum(const QString &name){
  * \param type
  * \return
  */
-QList<UnknownParameters> getUnknownParameters(const GeometryTypes &type){
+QList<GeometryParameters> getGeometryParameters(const GeometryTypes &type){
 
-    QList<UnknownParameters> unknownParameters;
+    QList<GeometryParameters> unknownParameters;
 
     switch(type){
     case eCircleGeometry:
@@ -1765,6 +1777,58 @@ QList<UnknownParameters> getUnknownParameters(const GeometryTypes &type){
     }
 
     return unknownParameters;
+
+}
+
+/*!
+ * \brief getAvailableTrafoParamParameters
+ * \return
+ */
+QList<TrafoParamParameters> getAvailableTrafoParamParameters(){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    return internal::trafoParamParametersMap.keys();
+
+}
+
+/*!
+ * \brief getTrafoParamParameterName
+ * \param parameter
+ * \return
+ */
+const QString &getTrafoParamParameterName(const TrafoParamParameters &parameter){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding trafo param parameter name
+    if(internal::trafoParamParametersMap.contains(parameter)){
+        return internal::trafoParamParametersMap[parameter];
+    }
+    return internal::undefined;
+
+}
+
+/*!
+ * \brief getTrafoParamParameterEnum
+ * \param name
+ * \return
+ */
+TrafoParamParameters getTrafoParamParameterEnum(const QString &name){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding trafo param parameter enum value
+    return internal::trafoParamParametersMap.key(name, eUnknownTX);
 
 }
 

@@ -135,9 +135,9 @@ void Sphere::setSphere(const Position &center, const Radius &radius){
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> Sphere::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> Sphere::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
     parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
     parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
@@ -152,15 +152,15 @@ QMap<UnknownParameters, QString> Sphere::getUnknownParameters(const QMap<Dimensi
  * \brief Sphere::setUnknownParameters
  * \param parameters
  */
-void Sphere::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void Sphere::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     OiVec position = this->center.getVector();
     double radius = this->radius.getRadius();
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownX:
             position.setAt(0, parameters.value(eUnknownX));

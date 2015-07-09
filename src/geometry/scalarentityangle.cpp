@@ -102,9 +102,9 @@ void ScalarEntityAngle::setAngle(const double &angle){
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> ScalarEntityAngle::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> ScalarEntityAngle::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
     parameters.insert(eUnknownAngle, this->getDisplayAngle(displayUnits.value(eAngular, eUnitRadiant), displayDigits.value(eAngular, 0)));
 
@@ -116,14 +116,14 @@ QMap<UnknownParameters, QString> ScalarEntityAngle::getUnknownParameters(const Q
  * \brief ScalarEntityAngle::setUnknownParameters
  * \param parameters
  */
-void ScalarEntityAngle::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void ScalarEntityAngle::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     double angle = this->angle;
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownAngle:
             angle = parameters.value(eUnknownAngle);

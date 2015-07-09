@@ -102,9 +102,9 @@ void ScalarEntityDistance::setDistance(const double &distance){
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> ScalarEntityDistance::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> ScalarEntityDistance::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
     parameters.insert(eUnknownDistance, this->getDisplayDistance(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
 
@@ -116,14 +116,14 @@ QMap<UnknownParameters, QString> ScalarEntityDistance::getUnknownParameters(cons
  * \brief ScalarEntityDistance::setUnknownParameters
  * \param parameters
  */
-void ScalarEntityDistance::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void ScalarEntityDistance::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     double distance = this->distance;
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownDistance:
             distance = parameters.value(eUnknownDistance);

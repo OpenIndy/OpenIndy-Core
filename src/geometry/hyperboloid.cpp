@@ -161,18 +161,18 @@ void Hyperboloid::setHyperboloid(const Position &center, const Direction &axis, 
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> Hyperboloid::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> Hyperboloid::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
-    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless), 0));
-    parameters.insert(eUnknownA, this->getDisplayA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
-    parameters.insert(eUnknownC, this->getDisplayC(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownA, this->getDisplayA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownC, this->getDisplayC(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
 
     return parameters;
 
@@ -182,7 +182,7 @@ QMap<UnknownParameters, QString> Hyperboloid::getUnknownParameters(const QMap<Di
  * \brief Hyperboloid::setUnknownParameters
  * \param parameters
  */
-void Hyperboloid::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void Hyperboloid::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     OiVec position = this->center.getVector();
@@ -191,8 +191,8 @@ void Hyperboloid::setUnknownParameters(const QMap<UnknownParameters, double> &pa
     double c = this->c;
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownX:
             position.setAt(0, parameters.value(eUnknownX));

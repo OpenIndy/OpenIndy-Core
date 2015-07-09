@@ -127,11 +127,15 @@ MessageTypes OI_CORE_EXPORT getMessageTypeEnum(const QString &name);
 //global functions to query unknown parameters
 //############################################
 
-QList<UnknownParameters> OI_CORE_EXPORT getAvailableUnknownParameters();
-const QString OI_CORE_EXPORT &getUnknownParameterName(const UnknownParameters &parameter);
-UnknownParameters OI_CORE_EXPORT getUnknownParameterEnum(const QString &name);
+QList<GeometryParameters> OI_CORE_EXPORT getAvailableGeometryParameters();
+const QString OI_CORE_EXPORT &getGeometryParameterName(const GeometryParameters &parameter);
+GeometryParameters OI_CORE_EXPORT getGeometryParameterEnum(const QString &name);
 
-QList<UnknownParameters> OI_CORE_EXPORT getUnknownParameters(const GeometryTypes &type);
+QList<GeometryParameters> OI_CORE_EXPORT getGeometryParameters(const GeometryTypes &type);
+
+QList<TrafoParamParameters> OI_CORE_EXPORT getAvailableTrafoParamParameters();
+const QString OI_CORE_EXPORT &getTrafoParamParameterName(const TrafoParamParameters &parameter);
+TrafoParamParameters OI_CORE_EXPORT getTrafoParamParameterEnum(const QString &name);
 
 }
 

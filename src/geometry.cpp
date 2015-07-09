@@ -448,15 +448,15 @@ const Position &Geometry::getPosition() const{
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> Geometry::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
-    return QMap<UnknownParameters, QString>();
+QMap<GeometryParameters, QString> Geometry::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+    return QMap<GeometryParameters, QString>();
 }
 
 /*!
  * \brief Geometry::setUnknownParameters
  * \param parameters
  */
-void Geometry::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void Geometry::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
     return;
 }
 

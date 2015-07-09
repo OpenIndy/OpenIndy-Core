@@ -72,6 +72,14 @@ public:
     bool setTransformationParameters(const OiMat &homogenMatrix);
     //bool setQuaternion(OiVec quaternion);
 
+    //#############################
+    //get or set unknown parameters
+    //#############################
+
+    virtual QMap<TrafoParamParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
+                                                          const QMap<DimensionType, int> &displayDigits) const;
+    virtual void setUnknownParameters(const QMap<TrafoParamParameters, double> &parameters);
+
     //###########################
     //reexecute the function list
     //###########################

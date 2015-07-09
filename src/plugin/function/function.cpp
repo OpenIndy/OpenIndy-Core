@@ -179,7 +179,7 @@ void Function::fixParameter(const FixedParameter &parameter){
  * \brief Function::unfixParameter
  * \param parameter
  */
-void Function::unfixParameter(const UnknownParameters &parameter){
+void Function::unfixParameter(const GeometryParameters &parameter){
     this->fixedParameters.removeOne(FixedParameter(parameter));
 }
 

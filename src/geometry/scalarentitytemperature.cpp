@@ -102,9 +102,9 @@ void ScalarEntityTemperature::setTemperature(const double &temperature){
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> ScalarEntityTemperature::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> ScalarEntityTemperature::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
     parameters.insert(eUnknownTemperature, this->getDisplayTemperature(displayUnits.value(eTemperature, eUnitGrad), displayDigits.value(eTemperature, 0)));
 
@@ -116,14 +116,14 @@ QMap<UnknownParameters, QString> ScalarEntityTemperature::getUnknownParameters(c
  * \brief ScalarEntityTemperature::setUnknownParameters
  * \param parameters
  */
-void ScalarEntityTemperature::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void ScalarEntityTemperature::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     double temperature = this->temperature;
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownTemperature:
             temperature = parameters.value(eUnknownTemperature);

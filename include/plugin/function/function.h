@@ -77,11 +77,11 @@ public:
 
     //single parameters of this element that shall not be used in function calculation
     //e.g. ignore the radius of an input sphere
-    QList<UnknownParameters> ignoredDestinationParams;
+    QList<GeometryParameters> ignoredDestinationParams;
 
     //single parameters of the feature to be calculated that this element shall not have effect on
     //e.g. use a point only for a circle's plane, not the radius
-    QList<UnknownParameters> ignoredTargetParams;
+    QList<GeometryParameters> ignoredTargetParams;
 
     bool isUsed; //true if this element is used in function calculation
 
@@ -145,7 +145,7 @@ public:
 class OI_CORE_EXPORT FixedParameter{
 public:
     FixedParameter() : value(0.0){}
-    FixedParameter(const UnknownParameters &param) : value(0.0), parameter(param){}
+    FixedParameter(const GeometryParameters &param) : value(0.0), parameter(param){}
 
     //! custom comparison operator to compare fixed parameters
     bool operator==(const FixedParameter &other){
@@ -155,7 +155,7 @@ public:
         return false;
     }
 
-    UnknownParameters parameter;
+    GeometryParameters parameter;
     double value;
 };
 
@@ -205,7 +205,7 @@ public:
 
     const QList<FixedParameter> &getFixedParameters() const;
     void fixParameter(const FixedParameter &parameter);
-    void unfixParameter(const UnknownParameters &parameter);
+    void unfixParameter(const GeometryParameters &parameter);
     void unfixAllParameters();
 
     //####################

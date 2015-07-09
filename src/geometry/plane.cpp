@@ -187,9 +187,9 @@ void Plane::setPlane(const Direction &normal, const double &d){
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> Plane::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> Plane::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
     parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
     parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
@@ -206,15 +206,15 @@ QMap<UnknownParameters, QString> Plane::getUnknownParameters(const QMap<Dimensio
  * \brief Plane::setUnknownParameters
  * \param parameters
  */
-void Plane::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void Plane::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     OiVec position = this->xyz.getVector();
     OiVec direction = this->normal.getVector();
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownX:
             position.setAt(0, parameters.value(eUnknownX));

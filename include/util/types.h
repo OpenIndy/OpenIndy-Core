@@ -154,7 +154,8 @@ enum GeometryTypes{
 //all available unknown parameters
 //################################
 
-enum UnknownParameters{
+//unknown parameters of all available geometry types
+enum GeometryParameters{
 
     eUnknownX, //point coordinates
     eUnknownY,
@@ -176,6 +177,21 @@ enum UnknownParameters{
     eUnknownMeasurementSeries,
     eUnknownTemperature,
     eUnknownLength //(slotted hole)
+
+};
+
+//unknown parameters of trafo param features
+enum TrafoParamParameters{
+
+    eUnknownTX, //translation
+    eUnknownTY,
+    eUnknownTZ,
+    eUnknownRX, //rotation
+    eUnknownRY,
+    eUnknownRZ,
+    eUnknownSX, //scale
+    eUnknownSY,
+    eUnknownSZ
 
 };
 

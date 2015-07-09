@@ -102,9 +102,9 @@ void ScalarEntityMeasurementSeries::setSeriesValue(const double &seriesValue){
  * \param displayDigits
  * \return
  */
-QMap<UnknownParameters, QString> ScalarEntityMeasurementSeries::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+QMap<GeometryParameters, QString> ScalarEntityMeasurementSeries::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
 
-    QMap<UnknownParameters, QString> parameters;
+    QMap<GeometryParameters, QString> parameters;
 
     parameters.insert(eUnknownMeasurementSeries, this->getDisplayMeasurementSeries(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
 
@@ -116,14 +116,14 @@ QMap<UnknownParameters, QString> ScalarEntityMeasurementSeries::getUnknownParame
  * \brief ScalarEntityMeasurementSeries::setUnknownParameters
  * \param parameters
  */
-void ScalarEntityMeasurementSeries::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+void ScalarEntityMeasurementSeries::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
     double series = this->seriesValue;
 
     //update parameters
-    QList<UnknownParameters> keys = parameters.keys();
-    foreach(const UnknownParameters &key, keys){
+    QList<GeometryParameters> keys = parameters.keys();
+    foreach(const GeometryParameters &key, keys){
         switch(key){
         case eUnknownMeasurementSeries:
             series = parameters.value(eUnknownMeasurementSeries);
