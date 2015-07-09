@@ -167,6 +167,97 @@ void Ellipse::setEllipse(const Position &center, const Direction &normal, const 
     this->b = b;
     this->semiMajorAxis = semiMajorAxis;
 
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief Ellipse::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> Ellipse::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownA, this->getDisplayA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownB, this->getDisplayB(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownSecondaryI, this->getDisplaySecondaryI(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownSecondaryJ, this->getDisplaySecondaryJ(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownSecondaryK, this->getDisplaySecondaryK(displayDigits.value(eDimensionless), 0));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief Ellipse::setUnknownParameters
+ * \param parameters
+ */
+void Ellipse::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    OiVec position = this->center.getVector();
+    OiVec directionA = this->normal.getVector();
+    OiVec directionB = this->semiMajorAxis.getVector();
+    double a = this->a;
+    double b = this->b;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownX:
+            position.setAt(0, parameters.value(eUnknownX));
+            break;
+        case eUnknownY:
+            position.setAt(1, parameters.value(eUnknownY));
+            break;
+        case eUnknownZ:
+            position.setAt(2, parameters.value(eUnknownZ));
+            break;
+        case eUnknownPrimaryI:
+            directionA.setAt(0, parameters.value(eUnknownPrimaryI));
+            break;
+        case eUnknownPrimaryJ:
+            directionA.setAt(1, parameters.value(eUnknownPrimaryJ));
+            break;
+        case eUnknownPrimaryK:
+            directionA.setAt(2, parameters.value(eUnknownPrimaryK));
+            break;
+        case eUnknownA:
+            a = parameters.value(eUnknownA);
+            break;
+        case eUnknownB:
+            b = parameters.value(eUnknownB);
+            break;
+        case eUnknownSecondaryI:
+            directionB.setAt(0, parameters.value(eUnknownSecondaryI));
+            break;
+        case eUnknownSecondaryJ:
+            directionB.setAt(1, parameters.value(eUnknownSecondaryJ));
+            break;
+        case eUnknownSecondaryK:
+            directionB.setAt(2, parameters.value(eUnknownSecondaryK));
+            break;
+        }
+    }
+
+    //update ellipse definition
+    directionA.normalize();
+    directionB.normalize();
+    Position ellipsePosition(position);
+    Direction ellipseDirectionA(directionA);
+    Direction ellipseDirectionB(directionB);
+    this->setEllipse(ellipsePosition, ellipseDirectionA, a, b, ellipseDirectionB);
+
 }
 
 /*!

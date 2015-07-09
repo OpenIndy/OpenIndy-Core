@@ -125,6 +125,63 @@ void Sphere::setSphere(const Position &center, const Radius &radius){
     this->center = center;
     this->radius = radius;
 
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief Sphere::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> Sphere::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownRadiusA, this->getDisplayRadiusA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief Sphere::setUnknownParameters
+ * \param parameters
+ */
+void Sphere::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    OiVec position = this->center.getVector();
+    double radius = this->radius.getRadius();
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownX:
+            position.setAt(0, parameters.value(eUnknownX));
+            break;
+        case eUnknownY:
+            position.setAt(1, parameters.value(eUnknownY));
+            break;
+        case eUnknownZ:
+            position.setAt(2, parameters.value(eUnknownZ));
+            break;
+        case eUnknownRadiusA:
+            radius = parameters.value(eUnknownRadiusA);
+            break;
+        }
+    }
+
+    //update sphere definition
+    Position spherePosition(position);
+    Radius sphereRadius(radius);
+    this->setSphere(spherePosition, sphereRadius);
+
 }
 
 /*!

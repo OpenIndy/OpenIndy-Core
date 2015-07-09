@@ -75,6 +75,14 @@ public:
     void setSlottedHole(const Position &center, const Direction &normal, const Radius &radius, const double &length, const Direction &holeAxis);
     void setSlottedHole(const Position &circleCenterA, const Position &circleCenterB, const Direction &normal, const Radius &radius);
 
+    //#############################
+    //get or set unknown parameters
+    //#############################
+
+    virtual QMap<UnknownParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
+                                                          const QMap<DimensionType, int> &displayDigits) const;
+    virtual void setUnknownParameters(const QMap<UnknownParameters, double> &parameters);
+
     //###########################
     //reexecute the function list
     //###########################

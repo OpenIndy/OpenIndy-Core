@@ -159,6 +159,8 @@ void Plane::setPlane(const Position &xyz, const Direction &normal){
     n0.normalize();
     OiVec::dot(this->d, this->xyz.getVector(), n0);
 
+    emit this->geomParametersChanged(this->id);
+
 }
 
 /*!
@@ -174,6 +176,72 @@ void Plane::setPlane(const Direction &normal, const double &d){
 
     //calculate the other parameters
     this->xyz.setVector(this->d * this->normal.getVector());
+
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief Plane::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> Plane::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless, 0)));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief Plane::setUnknownParameters
+ * \param parameters
+ */
+void Plane::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->normal.getVector();
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownX:
+            position.setAt(0, parameters.value(eUnknownX));
+            break;
+        case eUnknownY:
+            position.setAt(1, parameters.value(eUnknownY));
+            break;
+        case eUnknownZ:
+            position.setAt(2, parameters.value(eUnknownZ));
+            break;
+        case eUnknownPrimaryI:
+            direction.setAt(0, parameters.value(eUnknownPrimaryI));
+            break;
+        case eUnknownPrimaryJ:
+            direction.setAt(1, parameters.value(eUnknownPrimaryJ));
+            break;
+        case eUnknownPrimaryK:
+            direction.setAt(2, parameters.value(eUnknownPrimaryK));
+            break;
+        }
+    }
+
+    //update plane definition
+    direction.normalize();
+    Position planePosition(position);
+    Direction planeDirection(direction);
+    this->setPlane(planePosition, planeDirection);
 
 }
 

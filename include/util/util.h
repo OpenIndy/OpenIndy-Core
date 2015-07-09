@@ -132,9 +132,6 @@ const QString OI_CORE_EXPORT &getUnknownParameterName(const UnknownParameters &p
 UnknownParameters OI_CORE_EXPORT getUnknownParameterEnum(const QString &name);
 
 QList<UnknownParameters> OI_CORE_EXPORT getUnknownParameters(const GeometryTypes &type);
-QMap<UnknownParameters, QString> OI_CORE_EXPORT getUnknownParameters(const QPointer<FeatureWrapper> &feature,
-                                                                    const QMap<DimensionType, UnitType> &displayUnits,
-                                                                    const QMap<DimensionType, int> &displayDigits);
 
 }
 

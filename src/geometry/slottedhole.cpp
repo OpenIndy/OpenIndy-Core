@@ -222,6 +222,8 @@ void SlottedHole::setSlottedHole(const Position &center, const Direction &normal
     this->circleCenterA.setVector(this->center.getVector() + (this->length / 2 - this->radius.getRadius()) * axis);
     this->circleCenterB.setVector(this->center.getVector() - (this->length / 2 - this->radius.getRadius()) * axis);
 
+    emit this->geomParametersChanged(this->id);
+
 }
 
 /*!
@@ -245,6 +247,98 @@ void SlottedHole::setSlottedHole(const Position &circleCenterA, const Position &
     OiVec::dot(this->length, axis, axis);
     axis.normalize();
     this->holeAxis.setVector(axis);
+
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief SlottedHole::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> SlottedHole::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless)));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless)));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless)));
+    parameters.insert(eUnknownRadiusA, this->getDisplayRadiusA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownLength, this->getDisplayLength(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownSecondaryI, this->getDisplaySecondaryI(displayDigits.value(eDimensionless)));
+    parameters.insert(eUnknownSecondaryJ, this->getDisplaySecondaryJ(displayDigits.value(eDimensionless)));
+    parameters.insert(eUnknownSecondaryK, this->getDisplaySecondaryK(displayDigits.value(eDimensionless)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief SlottedHole::setUnknownParameters
+ * \param parameters
+ */
+void SlottedHole::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    OiVec position = this->center.getVector();
+    OiVec directionA = this->normal.getVector();
+    OiVec directionB = this->holeAxis.getVector();
+    double radius = this->radius.getRadius();
+    double length = this->length;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownX:
+            position.setAt(0, parameters.value(eUnknownX));
+            break;
+        case eUnknownY:
+            position.setAt(1, parameters.value(eUnknownY));
+            break;
+        case eUnknownZ:
+            position.setAt(2, parameters.value(eUnknownZ));
+            break;
+        case eUnknownPrimaryI:
+            directionA.setAt(0, parameters.value(eUnknownPrimaryI));
+            break;
+        case eUnknownPrimaryJ:
+            directionA.setAt(1, parameters.value(eUnknownPrimaryJ));
+            break;
+        case eUnknownPrimaryK:
+            directionA.setAt(2, parameters.value(eUnknownPrimaryK));
+            break;
+        case eUnknownRadiusA:
+            radius = parameters.value(eUnknownRadiusA);
+            break;
+        case eUnknownLength:
+            length = parameters.value(eUnknownLength);
+            break;
+        case eUnknownSecondaryI:
+            directionB.setAt(0, parameters.value(eUnknownSecondaryI));
+            break;
+        case eUnknownSecondaryJ:
+            directionB.setAt(1, parameters.value(eUnknownSecondaryJ));
+            break;
+        case eUnknownSecondaryK:
+            directionB.setAt(2, parameters.value(eUnknownSecondaryK));
+            break;
+        }
+    }
+
+    //update slotted hole definition
+    directionA.normalize();
+    directionB.normalize();
+    Position holePosition(position);
+    Direction holeDirectionA(directionA);
+    Direction holeDirectionB(directionB);
+    Radius holeRadius(radius);
+    this->setSlottedHole(holePosition, holeDirectionA, holeRadius, length, holeDirectionB);
 
 }
 

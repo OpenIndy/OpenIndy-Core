@@ -103,6 +103,57 @@ void Point::setPoint(const Position &xyz){
     //set the given parameters
     this->xyz = xyz;
 
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief Point::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> Point::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief Point::setUnknownParameters
+ * \param parameters
+ */
+void Point::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    OiVec position = this->xyz.getVector();
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownX:
+            position.setAt(0, parameters.value(eUnknownX));
+            break;
+        case eUnknownY:
+            position.setAt(1, parameters.value(eUnknownY));
+            break;
+        case eUnknownZ:
+            position.setAt(2, parameters.value(eUnknownZ));
+            break;
+        }
+    }
+
+    //update point definition
+    Position pointPosition(position);
+    this->setPoint(pointPosition);
+
 }
 
 /*!

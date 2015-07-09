@@ -89,7 +89,51 @@ const double &ScalarEntityAngle::getAngle() const{
  * \param angle
  */
 void ScalarEntityAngle::setAngle(const double &angle){
+
     this->angle = angle;
+
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief ScalarEntityAngle::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> ScalarEntityAngle::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownAngle, this->getDisplayAngle(displayUnits.value(eAngular, eUnitRadiant), displayDigits.value(eAngular, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief ScalarEntityAngle::setUnknownParameters
+ * \param parameters
+ */
+void ScalarEntityAngle::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    double angle = this->angle;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownAngle:
+            angle = parameters.value(eUnknownAngle);
+            break;
+        }
+    }
+
+    //update angle definition
+    this->setAngle(angle);
+
 }
 
 /*!

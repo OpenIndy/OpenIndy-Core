@@ -60,6 +60,14 @@ public:
     void setPlane(const Position &xyz, const Direction &normal);
     void setPlane(const Direction &normal, const double &d);
 
+    //#############################
+    //get or set unknown parameters
+    //#############################
+
+    virtual QMap<UnknownParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
+                                                          const QMap<DimensionType, int> &displayDigits) const;
+    virtual void setUnknownParameters(const QMap<UnknownParameters, double> &parameters);
+
     //###########################
     //reexecute the function list
     //###########################

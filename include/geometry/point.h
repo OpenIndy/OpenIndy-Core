@@ -51,6 +51,14 @@ public:
 
     void setPoint(const Position &xyz);
 
+    //#############################
+    //get or set unknown parameters
+    //#############################
+
+    virtual QMap<UnknownParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
+                                                          const QMap<DimensionType, int> &displayDigits) const;
+    virtual void setUnknownParameters(const QMap<UnknownParameters, double> &parameters);
+
     //###########################
     //reexecute the function list
     //###########################

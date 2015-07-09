@@ -157,6 +157,82 @@ void Ellipsoid::setEllipsoid(const Position &center, const Direction &majorAxis,
     this->a = a;
     this->b = b;
 
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief Ellipsoid::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> Ellipsoid::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownX, this->getDisplayX(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownY, this->getDisplayY(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownZ, this->getDisplayZ(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownPrimaryI, this->getDisplayPrimaryI(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownPrimaryJ, this->getDisplayPrimaryJ(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownPrimaryK, this->getDisplayPrimaryK(displayDigits.value(eDimensionless), 0));
+    parameters.insert(eUnknownA, this->getDisplayA(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+    parameters.insert(eUnknownB, this->getDisplayB(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric), 0));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief Ellipsoid::setUnknownParameters
+ * \param parameters
+ */
+void Ellipsoid::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    OiVec position = this->center.getVector();
+    OiVec direction = this->majorAxis.getVector();
+    double a = this->a;
+    double b = this->b;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownX:
+            position.setAt(0, parameters.value(eUnknownX));
+            break;
+        case eUnknownY:
+            position.setAt(1, parameters.value(eUnknownY));
+            break;
+        case eUnknownZ:
+            position.setAt(2, parameters.value(eUnknownZ));
+            break;
+        case eUnknownPrimaryI:
+            direction.setAt(0, parameters.value(eUnknownPrimaryI));
+            break;
+        case eUnknownPrimaryJ:
+            direction.setAt(1, parameters.value(eUnknownPrimaryJ));
+            break;
+        case eUnknownPrimaryK:
+            direction.setAt(2, parameters.value(eUnknownPrimaryK));
+            break;
+        case eUnknownA:
+            a = parameters.value(eUnknownA);
+            break;
+        case eUnknownB:
+            b = parameters.value(eUnknownB);
+            break;
+        }
+    }
+
+    //update ellipsoid definition
+    direction.normalize();
+    Position ellipsoidPosition(position);
+    Direction ellipsoidDirection(direction);
+    this->setEllipsoid(ellipsoidPosition, ellipsoidDirection, a, b);
+
 }
 
 /*!

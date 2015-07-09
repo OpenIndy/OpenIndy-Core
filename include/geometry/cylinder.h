@@ -61,6 +61,14 @@ public:
 
     void setCylinder(const Position &axisPoint, const Direction &axis, const Radius &radius);
 
+    //#############################
+    //get or set unknown parameters
+    //#############################
+
+    virtual QMap<UnknownParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
+                                                          const QMap<DimensionType, int> &displayDigits) const;
+    virtual void setUnknownParameters(const QMap<UnknownParameters, double> &parameters);
+
     //###########################
     //reexecute the function list
     //###########################

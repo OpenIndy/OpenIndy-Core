@@ -443,6 +443,24 @@ const Position &Geometry::getPosition() const{
 }
 
 /*!
+ * \brief Geometry::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> Geometry::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+    return QMap<UnknownParameters, QString>();
+}
+
+/*!
+ * \brief Geometry::setUnknownParameters
+ * \param parameters
+ */
+void Geometry::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+    return;
+}
+
+/*!
  * \brief Geometry::recalc
  */
 void Geometry::recalc(){

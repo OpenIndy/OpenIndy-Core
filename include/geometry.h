@@ -88,6 +88,14 @@ public:
     virtual const Direction &getDirection() const;
     virtual const Position &getPosition() const;
 
+    //#############################
+    //get or set unknown parameters
+    //#############################
+
+    virtual QMap<UnknownParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
+                                                          const QMap<DimensionType, int> &displayDigits) const;
+    virtual void setUnknownParameters(const QMap<UnknownParameters, double> &parameters);
+
     //###########################
     //reexecute the function list
     //###########################
@@ -124,6 +132,7 @@ signals:
     void geomStatisticChanged(const int &featureId);
     void geomSimulationDataChanged(const int &featureId);
     void geomMeasurementConfigChanged(const int &featureId);
+    void geomParametersChanged(const int &featureId);
 
 protected:
 

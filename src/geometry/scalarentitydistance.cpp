@@ -89,7 +89,51 @@ const double &ScalarEntityDistance::getDistance() const{
  * \param distance
  */
 void ScalarEntityDistance::setDistance(const double &distance){
+
     this->distance = distance;
+
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief ScalarEntityDistance::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> ScalarEntityDistance::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownDistance, this->getDisplayDistance(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief ScalarEntityDistance::setUnknownParameters
+ * \param parameters
+ */
+void ScalarEntityDistance::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    double distance = this->distance;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownDistance:
+            distance = parameters.value(eUnknownDistance);
+            break;
+        }
+    }
+
+    //update distance definition
+    this->setDistance(distance);
+
 }
 
 /*!

@@ -89,7 +89,51 @@ const double &ScalarEntityTemperature::getTemperature() const{
  * \param temperature
  */
 void ScalarEntityTemperature::setTemperature(const double &temperature){
+
     this->temperature = temperature;
+
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief ScalarEntityTemperature::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> ScalarEntityTemperature::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownTemperature, this->getDisplayTemperature(displayUnits.value(eTemperature, eUnitGrad), displayDigits.value(eTemperature, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief ScalarEntityTemperature::setUnknownParameters
+ * \param parameters
+ */
+void ScalarEntityTemperature::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    double temperature = this->temperature;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownTemperature:
+            temperature = parameters.value(eUnknownTemperature);
+            break;
+        }
+    }
+
+    //update temperature definition
+    this->setTemperature(temperature);
+
 }
 
 /*!

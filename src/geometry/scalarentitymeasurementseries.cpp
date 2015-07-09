@@ -89,7 +89,51 @@ const double &ScalarEntityMeasurementSeries::getSeriesValue() const{
  * \param seriesValue
  */
 void ScalarEntityMeasurementSeries::setSeriesValue(const double &seriesValue){
+
     this->seriesValue = seriesValue;
+
+    emit this->geomParametersChanged(this->id);
+
+}
+
+/*!
+ * \brief ScalarEntityMeasurementSeries::getUnknownParameters
+ * \param displayUnits
+ * \param displayDigits
+ * \return
+ */
+QMap<UnknownParameters, QString> ScalarEntityMeasurementSeries::getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits, const QMap<DimensionType, int> &displayDigits) const{
+
+    QMap<UnknownParameters, QString> parameters;
+
+    parameters.insert(eUnknownMeasurementSeries, this->getDisplayMeasurementSeries(displayUnits.value(eMetric, eUnitMeter), displayDigits.value(eMetric, 0)));
+
+    return parameters;
+
+}
+
+/*!
+ * \brief ScalarEntityMeasurementSeries::setUnknownParameters
+ * \param parameters
+ */
+void ScalarEntityMeasurementSeries::setUnknownParameters(const QMap<UnknownParameters, double> &parameters){
+
+    //get current parameters
+    double series = this->seriesValue;
+
+    //update parameters
+    QList<UnknownParameters> keys = parameters.keys();
+    foreach(const UnknownParameters &key, keys){
+        switch(key){
+        case eUnknownMeasurementSeries:
+            series = parameters.value(eUnknownMeasurementSeries);
+            break;
+        }
+    }
+
+    //update measurement series definition
+    this->setSeriesValue(series);
+
 }
 
 /*!
