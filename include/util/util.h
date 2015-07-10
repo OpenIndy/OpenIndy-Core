@@ -137,6 +137,14 @@ QList<TrafoParamParameters> OI_CORE_EXPORT getAvailableTrafoParamParameters();
 const QString OI_CORE_EXPORT &getTrafoParamParameterName(const TrafoParamParameters &parameter);
 TrafoParamParameters OI_CORE_EXPORT getTrafoParamParameterEnum(const QString &name);
 
+//#######################################################
+//global functions to query actual nominal filter options
+//#######################################################
+
+QList<ActualNominalFilter> OI_CORE_EXPORT getAvailableActualNominalFilters();
+const QString OI_CORE_EXPORT &getActualNominalFilterName(const ActualNominalFilter &type);
+ActualNominalFilter OI_CORE_EXPORT getActualNominalFilterEnum(const QString &name);
+
 }
 
 #endif // UTIL_H

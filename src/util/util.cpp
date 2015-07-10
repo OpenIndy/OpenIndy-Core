@@ -44,6 +44,8 @@ QMap<MessageTypes, QString> messageTypesMap;
 QMap<GeometryParameters, QString> geometryParametersMap;
 QMap<TrafoParamParameters, QString> trafoParamParametersMap;
 
+QMap<ActualNominalFilter, QString> actualNominalFilterMap;
+
 QString undefined = "";
 
 bool isInit = false;
@@ -68,6 +70,7 @@ void init(){
     toolTypesMap.clear();
     messageTypesMap.clear();
     geometryParametersMap.clear();
+    actualNominalFilterMap.clear();
 
     //fill element map
     elementTypesMap.insert(eCircleElement, "circle");
@@ -450,6 +453,11 @@ void init(){
     trafoParamParametersMap.insert(eUnknownSX, "sx");
     trafoParamParametersMap.insert(eUnknownSY, "sy");
     trafoParamParametersMap.insert(eUnknownSZ, "sz");
+
+    //fill actual nominal filter map
+    actualNominalFilterMap.insert(eFilterActualNominal, "All Features");
+    actualNominalFilterMap.insert(eFilterActual, "Actuals");
+    actualNominalFilterMap.insert(eFilterNominal, "Nominals");
 
     isInit = true;
 
@@ -1829,6 +1837,58 @@ TrafoParamParameters getTrafoParamParameterEnum(const QString &name){
 
     //get the corresponding trafo param parameter enum value
     return internal::trafoParamParametersMap.key(name, eUnknownTX);
+
+}
+
+/*!
+ * \brief getAvailableActualNominalFilters
+ * \return
+ */
+QList<ActualNominalFilter> getAvailableActualNominalFilters(){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    return internal::actualNominalFilterMap.keys();
+
+}
+
+/*!
+ * \brief getActualNominalFilterName
+ * \param type
+ * \return
+ */
+const QString &getActualNominalFilterName(const ActualNominalFilter &type){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding actual nominal filter name
+    if(internal::actualNominalFilterMap.contains(type)){
+        return internal::actualNominalFilterMap[type];
+    }
+    return internal::undefined;
+
+}
+
+/*!
+ * \brief getActualNominalFilterEnum
+ * \param name
+ * \return
+ */
+ActualNominalFilter getActualNominalFilterEnum(const QString &name){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding actual nominal filter enum value
+    return internal::actualNominalFilterMap.key(name, eFilterActualNominal);
 
 }
 

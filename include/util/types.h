@@ -425,6 +425,16 @@ enum ToolTypes{
 
 };
 
+//#############################
+//actual nominal filter options
+//#############################
+
+enum ActualNominalFilter{
+    eFilterActualNominal,
+    eFilterActual,
+    eFilterNominal
+};
+
 }
 
 #endif // TYPES_H
