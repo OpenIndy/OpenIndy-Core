@@ -290,7 +290,8 @@ enum TrafoParamDisplayAttributes{
     eTrafoParamDisplayScaleZ,
     eTrafoParamDisplayIsUsed,
     eTrafoParamDisplayValidTime,
-    eTrafoParamDisplayIsMovement
+    eTrafoParamDisplayIsMovement,
+    eTrafoParamDisplayIsDatumTransformation
 
 };
 

@@ -353,6 +353,7 @@ void init(){
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsUsed, "used");
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayValidTime, "time");
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsMovement, "movement");
+    trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsMovement, "datum transformation");
 
     //fill available display attributes
     for(int i = 0; i < 10; i++){ //general feature attributes
@@ -367,7 +368,7 @@ void init(){
     for(int i = 300; i < 303; i++){ //coordinate system specific
         featureDisplayAttributes.append(i);
     }
-    for(int i = 400; i < 414; i++){ //trafo param specific
+    for(int i = 400; i < 415; i++){ //trafo param specific
         featureDisplayAttributes.append(i);
     }
 
@@ -1016,7 +1017,7 @@ bool getIsFeatureDisplayAttribute(const int &attr){
  * \return
  */
 bool getIsTrafoParamDisplayAttribute(const int &attr){
-    if( (attr >= 0 && attr < 10) || (attr >= 400 && attr < 414) ){
+    if( (attr >= 0 && attr < 10) || (attr >= 400 && attr < 415) ){
         return true;
     }
     return false;
