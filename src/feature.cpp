@@ -1154,6 +1154,14 @@ QString Feature::getDisplayIsMovement() const{
 }
 
 /*!
+ * \brief Feature::getDisplayIsDatumTransformation
+ * \return
+ */
+QString Feature::getDisplayIsDatumTransformation() const{
+    return QString("-/-");
+}
+
+/*!
  * \brief Feature::setUpFeatureId
  * Generate a new unique id when the current job was set
  */

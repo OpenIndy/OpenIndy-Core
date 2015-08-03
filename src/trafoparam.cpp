@@ -772,3 +772,11 @@ QString TrafoParam::getDisplayValidTime() const{
 QString TrafoParam::getDisplayIsMovement() const{
     return this->isMovement?"true":"false";
 }
+
+/*!
+ * \brief TrafoParam::getDisplayIsDatumTransformation
+ * \return
+ */
+QString TrafoParam::getDisplayIsDatumTransformation() const{
+    return this->isDatumTrafo?"true":"false";
+}

@@ -113,6 +113,7 @@ public:
     QString getDisplayIsUsed() const;
     QString getDisplayValidTime() const;
     QString getDisplayIsMovement() const;
+    QString getDisplayIsDatumTransformation() const;
 
 signals:
 
