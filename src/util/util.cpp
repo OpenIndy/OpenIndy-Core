@@ -353,7 +353,7 @@ void init(){
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsUsed, "used");
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayValidTime, "time");
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsMovement, "movement");
-    trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsMovement, "datum transformation");
+    trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsDatumTransformation, "datum transformation");
 
     //fill available display attributes
     for(int i = 0; i < 10; i++){ //general feature attributes
