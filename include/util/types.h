@@ -36,7 +36,8 @@ enum MessageTypes{
 //! used to specify where to print a message
 enum MessageDestinations{
     eConsoleMessage,
-    eMessageBoxMessage
+    eMessageBoxMessage,
+    eStatusBarMessage
 };
 
 //#######################
