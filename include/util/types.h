@@ -308,7 +308,10 @@ enum ObservationDisplayattributes{
     eObservationDisplaySigmaY,
     eObservationDisplaySigmaZ,
     eObservationDisplayIsValid,
-    eObservationDisplayIsSolved
+    eObservationDisplayIsSolved,
+    eObservationDisplayVX,
+    eObservationDisplayVY,
+    eObservationDisplayVZ
 
 };
 

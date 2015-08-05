@@ -73,6 +73,9 @@ bool OI_CORE_EXPORT getReadingDisplayAttributeVisibility(const ReadingDisplayAtt
 const QString OI_CORE_EXPORT &getObservationDisplayAttributesName(const ObservationDisplayattributes &attr);
 const QString OI_CORE_EXPORT &getReadingDisplayAttributeName(const ReadingDisplayAttributes &attr);
 
+ObservationDisplayattributes OI_CORE_EXPORT getObservationDisplayAttributeEnum(const QString &name);
+ReadingDisplayAttributes OI_CORE_EXPORT getReadingDisplayAttributeEnum(const QString &name);
+
 //###############################
 //global functions to query units
 //###############################

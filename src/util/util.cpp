@@ -300,6 +300,9 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaZ, "sigma z");
     observationDisplayAttributesMap.insert(eObservationDisplayIsValid, "valid");
     observationDisplayAttributesMap.insert(eObservationDisplayIsSolved, "solved");
+    observationDisplayAttributesMap.insert(eObservationDisplayVX, "vx");
+    observationDisplayAttributesMap.insert(eObservationDisplayVY, "vy");
+    observationDisplayAttributesMap.insert(eObservationDisplayVZ, "vz");
 
     //fill reading display attributes map
     readingDisplayAttributesMap.insert(eReadingDisplayId, "id");
@@ -1222,6 +1225,40 @@ const QString &getReadingDisplayAttributeName(const ReadingDisplayAttributes &at
     }
 
     return internal::readingDisplayAttributesMap[attr];
+
+}
+
+/*!
+ * \brief getObservationDisplayAttributeEnum
+ * \param name
+ * \return
+ */
+ObservationDisplayattributes getObservationDisplayAttributeEnum(const QString &name){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding observation enum value
+    return internal::observationDisplayAttributesMap.key(name, eObservationDisplayId);
+
+}
+
+/*!
+ * \brief getReadingDisplayAttributeEnum
+ * \param name
+ * \return
+ */
+ReadingDisplayAttributes getReadingDisplayAttributeEnum(const QString &name){
+
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding reading enum value
+    return internal::readingDisplayAttributesMap.key(name, eReadingDisplayId);
 
 }
 
