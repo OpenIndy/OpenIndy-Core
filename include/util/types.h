@@ -311,7 +311,9 @@ enum ObservationDisplayattributes{
     eObservationDisplayIsSolved,
     eObservationDisplayVX,
     eObservationDisplayVY,
-    eObservationDisplayVZ
+    eObservationDisplayVZ,
+    eObservationDisplayV,
+    eObservationDisplayIsUsed
 
 };
 

@@ -303,6 +303,8 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayVX, "vx");
     observationDisplayAttributesMap.insert(eObservationDisplayVY, "vy");
     observationDisplayAttributesMap.insert(eObservationDisplayVZ, "vz");
+    observationDisplayAttributesMap.insert(eObservationDisplayV, "v");
+    observationDisplayAttributesMap.insert(eObservationDisplayIsUsed, "used");
 
     //fill reading display attributes map
     readingDisplayAttributesMap.insert(eReadingDisplayId, "id");
