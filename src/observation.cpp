@@ -11,7 +11,8 @@ using namespace oi::math;
  * \brief Observation::Observation
  * \param parent
  */
-Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), isValid(false), isSolved(false){
+Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4),
+    isValid(false), isSolved(false){
 
 }
 
