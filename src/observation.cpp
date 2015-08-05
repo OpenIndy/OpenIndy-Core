@@ -395,9 +395,9 @@ QString Observation::getDisplayZ(const UnitType &type, const int &digits) const{
  * \return
  */
 QString Observation::getDisplaySigmaX(const UnitType &type, const int &digits) const{
-    /*if(this->isValid && this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getAt(0), type), 'f', digits);
-    }*/
+    if(this->isValid && this->isSolved){
+        return QString::number(convertFromDefault(this->sigmaXyz.getAt(0), type), 'f', digits);
+    }
     return QString("");
 }
 
@@ -408,9 +408,9 @@ QString Observation::getDisplaySigmaX(const UnitType &type, const int &digits) c
  * \return
  */
 QString Observation::getDisplaySigmaY(const UnitType &type, const int &digits) const{
-    /*if(this->isValid && this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getAt(0), type), 'f', digits);
-    }*/
+    if(this->isValid && this->isSolved){
+        return QString::number(convertFromDefault(this->sigmaXyz.getAt(1), type), 'f', digits);
+    }
     return QString("");
 }
 
@@ -421,9 +421,9 @@ QString Observation::getDisplaySigmaY(const UnitType &type, const int &digits) c
  * \return
  */
 QString Observation::getDisplaySigmaZ(const UnitType &type, const int &digits) const{
-    /*if(this->isValid && this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getAt(0), type), 'f', digits);
-    }*/
+    if(this->isValid && this->isSolved){
+        return QString::number(convertFromDefault(this->sigmaXyz.getAt(2), type), 'f', digits);
+    }
     return QString("");
 }
 
