@@ -28,8 +28,8 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
     //this->isActiveCoordSys = copy.isActiveCoordSys;
     this->xyz = copy.xyz;
     this->originalXyz = copy.originalXyz;
-    this->statistic = copy.statistic;
-    this->originalStatistic = copy.originalStatistic;
+    this->sigmaXyz = copy.sigmaXyz;
+    this->originalSigmaXyz = copy.originalSigmaXyz;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -50,8 +50,8 @@ Observation &Observation::operator=(const Observation &copy){
     //this->isActiveCoordSys = copy.isActiveCoordSys;
     this->xyz = copy.xyz;
     this->originalXyz = copy.originalXyz;
-    this->statistic = copy.statistic;
-    this->originalStatistic = copy.originalStatistic;
+    this->sigmaXyz = copy.sigmaXyz;
+    this->originalSigmaXyz = copy.originalSigmaXyz;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -147,19 +147,32 @@ const OiVec &Observation::getOriginalXYZ() const{
 }
 
 /*!
- * \brief Observation::getStatistic
+ * \brief Observation::getSigmaXYZ
  * \return
  */
-const Statistic &Observation::getStatistic() const{
-    return this->statistic;
+const OiVec &Observation::getSigmaXYZ() const{
+    return this->sigmaXyz;
 }
 
 /*!
- * \brief Observation::getOriginalStatistic
+ * \brief Observation::setSigmaXyz
+ * \param sigmaXyz
+ */
+void Observation::setSigmaXyz(const OiVec &sigmaXyz){
+
+    //check vector
+    if(sigmaXyz.getSize() == this->sigmaXyz.getSize()){
+        this->sigmaXyz = sigmaXyz;
+    }
+
+}
+
+/*!
+ * \brief Observation::getOriginalSigmaXyz
  * \return
  */
-const Statistic &Observation::getOriginalStatistic() const{
-    return this->originalStatistic;
+const OiVec &Observation::getOriginalSigmaXyz() const{
+    return this->originalSigmaXyz;
 }
 
 /*!

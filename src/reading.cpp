@@ -458,13 +458,24 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         return;
     }
 
-    //set observation position
+    //set observation position and standard deviation
     if(this->rCartesian.isValid){
+
+        //set position
         observation->originalXyz.setAt(0, this->rCartesian.xyz.getAt(0));
         observation->originalXyz.setAt(1, this->rCartesian.xyz.getAt(1));
         observation->originalXyz.setAt(2, this->rCartesian.xyz.getAt(2));
         observation->originalXyz.setAt(3, 1.0);
+
+        //set standard deviation
+        observation->originalSigmaXyz.setAt(0, this->rCartesian.sigmaXyz.getAt(0));
+        observation->originalSigmaXyz.setAt(1, this->rCartesian.sigmaXyz.getAt(1));
+        observation->originalSigmaXyz.setAt(2, this->rCartesian.sigmaXyz.getAt(2));
+        observation->originalSigmaXyz.setAt(3, 1.0);
+
+        //set observation to valid
         observation->isValid = true;
+
     }
 
     //set up dependencies

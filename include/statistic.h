@@ -16,6 +16,8 @@ using namespace math;
  */
 class OI_CORE_EXPORT Residual{
 public:
+    Residual() : elementId(-1){}
+
     int elementId; //id of the element this residual belongs to
     QMap<QString, double> corrections; //the correction values (key: name)
     DimensionType dimension; //dimension of the correction values
@@ -65,6 +67,7 @@ public:
     void setV(const OiVec &v);
 
     const QList<Residual> &getDisplayResiduals() const;
+    Residual getDisplayResidual(const int &elementId) const;
     void addDisplayResidual(const Residual &residual);
 
 private:
@@ -83,7 +86,8 @@ private:
     OiMat qxx;
 
     OiVec v; //vertical distances from geometry surface
-    QList<Residual> displayResiduals;
+    QList<Residual> displayResidualsList; //list of display residuals
+    QMap<int, Residual> displayResidualsMap; //map of display residuals (key: element id that the residual belongs to)
 
 };
 

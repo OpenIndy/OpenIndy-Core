@@ -49,10 +49,10 @@ public:
 
     const OiVec &getOriginalXYZ() const;
 
-    const Statistic &getStatistic() const;
-    const Statistic &getOriginalStatistic() const;
+    const OiVec &getSigmaXYZ() const;
+    void setSigmaXyz(const OiVec &sigmaXyz);
 
-    //const OiVec &getSigmaXYZ() const;
+    const OiVec &getOriginalSigmaXyz() const;
 
     //##################################################
     //get and set station, reading and target geometries
@@ -125,18 +125,10 @@ private:
     //#############################
 
     OiVec xyz; //the homogeneous coordinate vector in the current display coordinate system
-    OiVec originalXyz; //the homogeneous coordinate vector in the station system that produced this observations
+    OiVec originalXyz; //the homogeneous coordinate vector in the station system that produced this observation
 
-    Statistic statistic;
-    Statistic originalStatistic;
-
-    //OiVec sigmaXyz;
-
-    //##############
-    //helper methods
-    //##############
-
-    //void calcFromReading();
+    OiVec sigmaXyz; //the homogeneous stdev vector in the current display coordinate system
+    OiVec originalSigmaXyz; //the homogeneous stdev vector in the station system that produced this observation
 
 };
 
