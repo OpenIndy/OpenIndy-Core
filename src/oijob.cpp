@@ -1513,6 +1513,32 @@ void OiJob::removeAllObservations(){
 }
 
 /*!
+ * \brief OiJob::setShouldBeUsed
+ * \param target
+ * \param functionIndex
+ * \param neededElementIndex
+ * \param elementId
+ * \param use
+ */
+void OiJob::setShouldBeUsed(const QPointer<FeatureWrapper> &target, const int &functionIndex, const int &neededElementIndex, const int &elementId, const bool &use){
+
+    //check target feature
+    if(target.isNull() || target->getFeature().isNull()){
+        return;
+    }
+
+    //check function position
+    if(functionIndex < 0 || functionIndex >= target->getFeature()->getFunctions().size()
+            || target->getFeature()->getFunctions().at(functionIndex).isNull()){
+        return;
+    }
+
+    //set should use
+    target->getFeature()->getFunctions()[functionIndex]->setShouldBeUsed(neededElementIndex, elementId, use);
+
+}
+
+/*!
  * \brief OiJob::setActiveFeature
  * \param featureId
  */

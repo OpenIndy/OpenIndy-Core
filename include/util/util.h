@@ -58,7 +58,7 @@ ReadingTypes OI_CORE_EXPORT getReadingTypeEnum(const QString &name);
 //############################################
 
 const QList<int> OI_CORE_EXPORT &getFeatureDisplayAttributes();
-const QList<ObservationDisplayattributes> OI_CORE_EXPORT &getObservationDisplayAttributes();
+const QList<ObservationDisplayAttributes> OI_CORE_EXPORT &getObservationDisplayAttributes();
 const QList<ReadingDisplayAttributes> OI_CORE_EXPORT &getReadingDisplayAttributes();
 
 bool OI_CORE_EXPORT getIsFeatureDisplayAttribute(const int &attr);
@@ -70,10 +70,10 @@ const QString OI_CORE_EXPORT &getFeatureDisplayAttributeName(const TrafoParamDis
 
 bool OI_CORE_EXPORT getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, const ReadingTypes &type);
 
-const QString OI_CORE_EXPORT &getObservationDisplayAttributesName(const ObservationDisplayattributes &attr);
+const QString OI_CORE_EXPORT &getObservationDisplayAttributesName(const ObservationDisplayAttributes &attr);
 const QString OI_CORE_EXPORT &getReadingDisplayAttributeName(const ReadingDisplayAttributes &attr);
 
-ObservationDisplayattributes OI_CORE_EXPORT getObservationDisplayAttributeEnum(const QString &name);
+ObservationDisplayAttributes OI_CORE_EXPORT getObservationDisplayAttributeEnum(const QString &name);
 ReadingDisplayAttributes OI_CORE_EXPORT getReadingDisplayAttributeEnum(const QString &name);
 
 //###############################

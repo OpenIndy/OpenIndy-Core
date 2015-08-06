@@ -341,6 +341,59 @@ void Function::replaceInputElement(const InputElement &element, const int &posit
 }
 
 /*!
+ * \brief Function::getIsUsed
+ * \param position
+ * \param id
+ * \return
+ */
+bool Function::getIsUsed(const int &position, const int &id){
+
+    if(this->inputElements.contains(position)){
+        int index = this->inputElements[position].indexOf(id);
+        if(index > -1){
+            return this->inputElements[position][index].isUsed;
+        }
+    }
+
+}
+
+/*!
+ * \brief Function::getShouldBeUsed
+ * \param position
+ * \param id
+ * \return
+ */
+bool Function::getShouldBeUsed(const int &position, const int &id){
+
+    if(this->inputElements.contains(position)){
+        int index = this->inputElements[position].indexOf(id);
+        if(index > -1){
+            return this->inputElements[position][index].shouldBeUsed;
+        }
+    }
+
+}
+
+/*!
+ * \brief Function::setShouldBeUsed
+ * \param position
+ * \param id
+ * \param state
+ */
+void Function::setShouldBeUsed(const int &position, const int &id, const bool &state){
+
+    //get the element at position with id and set shouldBeUsed to state
+    if(this->inputElements.contains(position)){
+        int index = this->inputElements[position].indexOf(id);
+        if(index > -1){
+            this->inputElements[position][index].shouldBeUsed = state;
+            emit this->inputElementsChanged();
+        }
+    }
+
+}
+
+/*!
  * \brief Function::clear
  */
 void Function::clear(){
@@ -733,12 +786,12 @@ bool Function::exec(Torus &torus){
 }
 
 /*!
- * \brief Function::setUseState
+ * \brief Function::setIsUsed
  * \param position
  * \param id
  * \param state
  */
-void Function::setUseState(const int &position, const int &id, const bool &state){
+void Function::setIsUsed(const int &position, const int &id, const bool &state){
 
     //get the element at position with id and set isUsed to state
     if(this->inputElements.contains(position)){

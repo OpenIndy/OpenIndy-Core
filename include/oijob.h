@@ -131,6 +131,12 @@ public:
     void removeObservations(const int &featureId);
     void removeAllObservations();
 
+    //###############################
+    //set use state of input elements
+    //###############################
+
+    void setShouldBeUsed(const QPointer<FeatureWrapper> &target, const int &functionIndex, const int &neededElementIndex, const int &elementId, const bool &use);
+
 signals:
 
     //#########################################

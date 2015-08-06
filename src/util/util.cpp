@@ -22,11 +22,11 @@ QMap<ReadingTypes, QString> readingTypesMap;
 
 QMap<FeatureDisplayAttributes, QString> featureDisplayAttributesMap;
 QMap<TrafoParamDisplayAttributes, QString> trafoParamDisplayAttributesMap;
-QMap<ObservationDisplayattributes, QString> observationDisplayAttributesMap;
+QMap<ObservationDisplayAttributes, QString> observationDisplayAttributesMap;
 QMap<ReadingDisplayAttributes, QString> readingDisplayAttributesMap;
 
 QList<int> featureDisplayAttributes;
-QList<ObservationDisplayattributes> observationDisplayAttributes;
+QList<ObservationDisplayAttributes> observationDisplayAttributes;
 QList<ReadingDisplayAttributes> readingDisplayAttributes;
 
 QMap<UnitType, QString> unitTypesMap;
@@ -378,7 +378,7 @@ void init(){
     }
 
     //fill available observation display attributes
-    foreach(const ObservationDisplayattributes &attr, observationDisplayAttributesMap.keys()){
+    foreach(const ObservationDisplayAttributes &attr, observationDisplayAttributesMap.keys()){
         observationDisplayAttributes.append(attr);
     }
 
@@ -976,7 +976,7 @@ const QList<int> &getFeatureDisplayAttributes(){
  * \brief getObservationDisplayAttributes
  * \return
  */
-const QList<ObservationDisplayattributes> &getObservationDisplayAttributes(){
+const QList<ObservationDisplayAttributes> &getObservationDisplayAttributes(){
 
     //fill helper maps if not yet done
     if(!internal::isInit){
@@ -1203,7 +1203,7 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
  * \param attr
  * \return
  */
-const QString &getObservationDisplayAttributesName(const ObservationDisplayattributes &attr){
+const QString &getObservationDisplayAttributesName(const ObservationDisplayAttributes &attr){
 
     //fill helper maps if not yet done
     if(!internal::isInit){
@@ -1235,7 +1235,7 @@ const QString &getReadingDisplayAttributeName(const ReadingDisplayAttributes &at
  * \param name
  * \return
  */
-ObservationDisplayattributes getObservationDisplayAttributeEnum(const QString &name){
+ObservationDisplayAttributes getObservationDisplayAttributeEnum(const QString &name){
 
     //fill helper maps if not yet done
     if(!internal::isInit){

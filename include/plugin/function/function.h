@@ -61,8 +61,8 @@ public:
  */
 class OI_CORE_EXPORT InputElement{
 public:
-    InputElement() : isUsed(true), id(-1){}
-    InputElement(const int &id) : isUsed(true), id(id){}
+    InputElement() : isUsed(true), shouldBeUsed(true), id(-1){}
+    InputElement(const int &id) : isUsed(true), shouldBeUsed(true), id(id){}
 
     //! custom comparison operator to compare input elements by their id
     bool operator==(const InputElement &other){
@@ -83,7 +83,8 @@ public:
     //e.g. use a point only for a circle's plane, not the radius
     QList<GeometryParameters> ignoredTargetParams;
 
-    bool isUsed; //true if this element is used in function calculation
+    bool shouldBeUsed; //true if this element should be used in function calculation (user specified)
+    bool isUsed; //true if this element is used in function calculation (plugin specified)
 
     //element pointers (only valid for the specified element type)
     QPointer<Station> station;
@@ -235,6 +236,14 @@ public:
     void removeInputElement(const int &id);
     void replaceInputElement(const InputElement &element, const int &position);
 
+    //#################################
+    //mark elements as used or not used
+    //#################################
+
+    bool getIsUsed(const int &position, const int &id);
+    bool getShouldBeUsed(const int &position, const int &id);
+    void setShouldBeUsed(const int &position, const int &id, const bool &state);
+
     //#############
     //clear results
     //#############
@@ -294,7 +303,7 @@ protected:
     //mark elements as used or not used
     //#################################
 
-    void setUseState(const int &position, const int &id, const bool &state);
+    void setIsUsed(const int &position, const int &id, const bool &state);
 
     //###########################
     //input and output parameters

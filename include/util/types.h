@@ -296,7 +296,7 @@ enum TrafoParamDisplayAttributes{
 
 };
 
-enum ObservationDisplayattributes{
+enum ObservationDisplayAttributes{
 
     eObservationDisplayId = 0,
     eObservationDisplayStation,
