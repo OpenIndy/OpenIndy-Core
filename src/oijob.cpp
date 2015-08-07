@@ -1519,8 +1519,9 @@ void OiJob::removeAllObservations(){
  * \param neededElementIndex
  * \param elementId
  * \param use
+ * \param recalc
  */
-void OiJob::setShouldBeUsed(const QPointer<FeatureWrapper> &target, const int &functionIndex, const int &neededElementIndex, const int &elementId, const bool &use){
+void OiJob::setShouldBeUsed(const QPointer<FeatureWrapper> &target, const int &functionIndex, const int &neededElementIndex, const int &elementId, const bool &use, const bool &recalc){
 
     //check target feature
     if(target.isNull() || target->getFeature().isNull()){
@@ -1533,8 +1534,18 @@ void OiJob::setShouldBeUsed(const QPointer<FeatureWrapper> &target, const int &f
         return;
     }
 
+    //check if the current use state already equals the new use state
+    if(target->getFeature()->getFunctions()[functionIndex]->getShouldBeUsed(neededElementIndex, elementId) == use){
+        return;
+    }
+
     //set should use
     target->getFeature()->getFunctions()[functionIndex]->setShouldBeUsed(neededElementIndex, elementId, use);
+
+    //force recalculation if requested
+    if(recalc){
+        emit this->recalcFeature(target->getFeature());
+    }
 
 }
 
