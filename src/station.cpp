@@ -255,6 +255,25 @@ void Station::setSensor(const QPointer<Sensor> &sensor){
 }
 
 /*!
+ * \brief Station::resetSensor
+ */
+void Station::resetSensor(){
+
+    //reset sensor control
+    this->sensorControl->resetSensor();
+    this->disconnectSensorControl();
+
+    //stop station thread
+    if(this->stationThread.isRunning()){
+        this->stationThread.quit();
+        this->stationThread.wait(5000);
+    }
+
+    emit this->sensorChanged(this->id);
+
+}
+
+/*!
  * \brief Station::getSensorListener
  * \return
  */
@@ -595,6 +614,43 @@ void Station::connectSensorControl(){
     QObject::connect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished, Qt::AutoConnection);
+
+}
+
+/*!
+ * \brief Station::disconnectSensorControl
+ */
+void Station::disconnectSensorControl(){
+
+    //disconnect sensor actions
+    QObject::disconnect(this, &Station::connectSensor, this->sensorControl.data(), &SensorControl::connectSensor);
+    QObject::disconnect(this, &Station::disconnectSensor, this->sensorControl.data(), &SensorControl::disconnectSensor);
+
+    QObject::disconnect(this, &Station::measure, this->sensorControl.data(), &SensorControl::measure);
+
+    void (Station:: *movePolarSignal)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
+                                      const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
+    void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
+                                          const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
+    QObject::disconnect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot);
+
+    void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z,
+                                          const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
+    void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z,
+                                              const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
+    QObject::disconnect(this, moveCartesianSignal, this->sensorControl.data(), moveCartesianSlot);
+
+    QObject::disconnect(this, &Station::initialize, this->sensorControl.data(), &SensorControl::initialize);
+    QObject::disconnect(this, &Station::motorState, this->sensorControl.data(), &SensorControl::motorState);
+    QObject::disconnect(this, &Station::home, this->sensorControl.data(), &SensorControl::home);
+    QObject::disconnect(this, &Station::toggleSight, this->sensorControl.data(), &SensorControl::toggleSight);
+    QObject::disconnect(this, &Station::compensation, this->sensorControl.data(), &SensorControl::compensation);
+    QObject::disconnect(this, &Station::selfDefinedAction, this->sensorControl.data(), &SensorControl::selfDefinedAction);
+
+    //disconnect sensor action results
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished);
 
 }
 

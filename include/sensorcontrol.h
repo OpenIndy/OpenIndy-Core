@@ -39,6 +39,7 @@ public slots:
 
     const QPointer<Sensor> &getSensor() const;
     void setSensor(const QPointer<Sensor> &sensor);
+    void resetSensor();
 
     const QList<QPointer<Sensor> > &getUsedSensors() const;
 

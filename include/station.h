@@ -56,6 +56,7 @@ public:
     QMap<QString, QString> getSensorStatus();
 
     void setSensor(const QPointer<Sensor> &sensor);
+    void resetSensor();
 
     const QPointer<SensorListener> getSensorListener() const;
 
@@ -173,6 +174,7 @@ private slots:
 
     void stationNameChanged(const int &featureId, const QString &oldName);
     void connectSensorControl();
+    void disconnectSensorControl();
 
     void addReadings(const int &geomId, const QList<QPointer<Reading> > &readings);
     void removeReading(const QPointer<Reading> &reading);

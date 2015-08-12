@@ -81,6 +81,28 @@ void SensorControl::setSensor(const QPointer<Sensor> &sensor){
 }
 
 /*!
+ * \brief SensorControl::resetSensor
+ */
+void SensorControl::resetSensor(){
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return;
+    }
+
+    //stop listener thread if it is still running
+    if(this->listenerThread.isRunning()){
+        this->listenerThread.quit();
+        this->listenerThread.wait(5000);
+    }
+
+    //reset sensor
+    this->usedSensors.append(this->sensor);
+    this->sensor = QPointer<Sensor>(NULL);
+
+}
+
+/*!
  * \brief SensorControl::getUsedSensors
  * \return
  */

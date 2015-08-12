@@ -1623,6 +1623,12 @@ void OiJob::setActiveStation(const int &featureId){
             this->activeStation->setActiveStationState(false);
         }
 
+        //set sensor of the new station and reset sensor of old one
+        if(!this->activeStation.isNull() && this->activeStation->getIsSensorSet()){
+            this->activeStation->resetSensor();
+            feature->getStation()->setSensor(this->activeStation->sensorControl->getSensor());
+        }
+
         //save station as active station
         this->activeStation = feature->getStation();
 
