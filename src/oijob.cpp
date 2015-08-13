@@ -496,6 +496,11 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             nominalSystem->nominalsList.append(feature);
             nominalSystem->nominalsMap.insert(feature->getGeometry()->getId(), feature);
 
+            //set solved state
+            if(nominalSystem->getIsActiveCoordinateSystem()){
+                feature->getGeometry()->setIsSolved(true);
+            }
+
             //search corresponding actual
             QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
             foreach(const QPointer<FeatureWrapper> &equal, equalNameFeatures){
