@@ -8,7 +8,7 @@ using namespace oi;
  * \param parent
  */
 SensorListener::SensorListener(QMutex &locker, QObject *parent) : QObject(parent),
-    locker(locker), streamFormat(eCartesianReading){
+    locker(locker), streamFormat(eCartesianReading), isActiveStation(false){
 
 }
 
@@ -38,6 +38,22 @@ const QPointer<Sensor> &SensorListener::getSensor() const{
 }
 
 /*!
+ * \brief SensorListener::getIsActiveStation
+ * \return
+ */
+bool SensorListener::getIsActiveStation() const{
+    return this->isActiveStation;
+}
+
+/*!
+ * \brief SensorListener::setIsActiveStation
+ * \param isActiveStation
+ */
+void SensorListener::setIsActiveStation(const bool &isActiveStation){
+    this->isActiveStation = isActiveStation;
+}
+
+/*!
  * \brief SensorListener::startStreaming
  */
 void SensorListener::startStreaming(){
@@ -46,6 +62,12 @@ void SensorListener::startStreaming(){
     forever{
 
         this->locker.lock();
+
+        //check if this stream belongs to the active station's sensor
+        if(!this->isActiveStation){
+            this->locker.unlock();
+            return;
+        }
 
         //check sensor
         if(this->sensor.isNull()){

@@ -1620,17 +1620,34 @@ void OiJob::setActiveStation(const int &featureId){
 
         //set currently active station to deactive
         if(!this->activeStation.isNull()){
+            this->activeStation->blockSignals(true);
             this->activeStation->setActiveStationState(false);
+            this->activeStation->blockSignals(false);
         }
 
         //set sensor of the new station and reset sensor of old one
-        if(!this->activeStation.isNull() && this->activeStation->getIsSensorSet()){
-            this->activeStation->resetSensor();
-            feature->getStation()->setSensor(this->activeStation->sensorControl->getSensor());
-        }
+        if(!this->activeStation.isNull()){
 
-        //save station as active station
-        this->activeStation = feature->getStation();
+            bool check = this->activeStation->getIsSensorSet();
+            if(check){
+                QPointer<Sensor> tmpSensor = this->activeStation->sensorControl->getSensor();
+                this->activeStation->resetSensor();
+
+                //save station as active station
+                this->activeStation = feature->getStation();
+
+                //feature->getStation()->sensorControl->setSensor(tmpSensor);
+                //feature->getStation()->sensorChanged(feature->getStation()->getId());
+                feature->getStation()->setSensor(tmpSensor);
+
+            }
+
+        }else{
+
+            //save station as active station
+            this->activeStation = feature->getStation();
+
+        }
 
         emit this->activeStationChanged();
 
@@ -1644,9 +1661,9 @@ void OiJob::setActiveStation(const int &featureId){
         }
 
         //if there is a new active station
-        if(!this->activeStation.isNull()){
+        /*if(!this->activeStation.isNull()){
             return;
-        }
+        }*/
 
     }
 

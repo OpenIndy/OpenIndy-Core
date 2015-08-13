@@ -29,6 +29,7 @@ SensorControl::SensorControl(QPointer<Station> &station, QObject *parent) : QObj
 SensorControl::~SensorControl(){
 
     //stop listener thread if it is still running
+    this->sensorListener->setIsActiveStation(false);
     if(this->listenerThread.isRunning()){
         this->listenerThread.quit();
         this->listenerThread.wait();
@@ -73,6 +74,7 @@ void SensorControl::setSensor(const QPointer<Sensor> &sensor){
     //set new sensor
     this->sensor = sensor;
     this->sensorListener->setSensor(this->sensor);
+    this->sensorListener->setIsActiveStation(true);
 
     //move sensor listener to thread and start listening
     this->sensorListener->moveToThread(&this->listenerThread);
@@ -91,6 +93,7 @@ void SensorControl::resetSensor(){
     }
 
     //stop listener thread if it is still running
+    this->sensorListener->setIsActiveStation(false);
     if(this->listenerThread.isRunning()){
         this->listenerThread.quit();
         this->listenerThread.wait(5000);

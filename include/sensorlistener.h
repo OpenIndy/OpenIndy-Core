@@ -56,6 +56,13 @@ private:
     void setSensor(const QPointer<Sensor> &sensor);
     const QPointer<Sensor> &getSensor() const;
 
+    //################################
+    //activate or deactivate streaming
+    //################################
+
+    bool getIsActiveStation() const;
+    void setIsActiveStation(const bool &isActiveStation);
+
 private slots:
 
     //#######################
@@ -80,6 +87,8 @@ private:
     QPointer<Sensor> sensor;
 
     ReadingTypes streamFormat;
+
+    bool isActiveStation;
 
     QMutex &locker;
 
