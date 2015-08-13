@@ -323,7 +323,7 @@ bool TrafoParam::setTransformationParameters(const OiVec &rotation, const OiVec 
         sMat.setAt(3, 3, 1.0);
 
         //set up rotation matrix
-        OiMat r33(3, 3);
+        /*OiMat r33(3, 3);
         OiVec xAxis(3), yAxis(3), zAxis(3);
         xAxis.setAt(0, 1.0);
         yAxis.setAt(1, 1.0);
@@ -336,7 +336,29 @@ bool TrafoParam::setTransformationParameters(const OiVec &rotation, const OiVec 
                 rMat.setAt(i, j, r33.getAt(i, j));
             }
         }
-        rMat.setAt(3, 3, 1.0);
+        rMat.setAt(3, 3, 1.0);*/
+
+        //set up rotation matrix
+        double rx = rotation.getAt(0);
+        double ry = rotation.getAt(1);
+        double rz = rotation.getAt(2);
+        OiMat rMat(4, 4);
+        rMat.setAt(0,0,qCos(ry)*qCos(rz));
+        rMat.setAt(0,1,qCos(rx)*qSin(rz)+qSin(rx)*qSin(ry)*qCos(rz));
+        rMat.setAt(0,2,qSin(rx)*qSin(rz)-qCos(rx)*qSin(ry)*qCos(rz));
+        rMat.setAt(0,3,0.0);
+        rMat.setAt(1,0,-qCos(ry)*qSin(rz));
+        rMat.setAt(1,1,qCos(rx)*qCos(rz)-qSin(rx)*qSin(ry)*qSin(rz));
+        rMat.setAt(1,2,qSin(rx)*qCos(rz)+qCos(rx)*qSin(ry)*qSin(rz));
+        rMat.setAt(1,3,0.0);
+        rMat.setAt(2,0,qSin(ry));
+        rMat.setAt(2,1,-qSin(rx)*qCos(ry));
+        rMat.setAt(2,2,qCos(rx)*qCos(ry));
+        rMat.setAt(2,3,0.0);
+        rMat.setAt(3,0,0.0);
+        rMat.setAt(3,1,0.0);
+        rMat.setAt(3,2,0.0);
+        rMat.setAt(3,3,1.0);
 
         //update homogeneous matrix
         this->homogenMatrix = tMat * rMat * sMat;
@@ -476,7 +498,10 @@ void TrafoParam::setUnknownParameters(const QMap<TrafoParamParameters, double> &
     }
 
     //update trafo param definition
-    this->setTransformationParameters(rotation, translation, scale);
+    bool check = this->setTransformationParameters(rotation, translation, scale);
+    if(check){
+        this->isSolved = true;
+    }
 
 }
 
