@@ -452,6 +452,8 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
             inputElement.setAttribute("index", inputIterator.key());
             inputElement.setAttribute("type", input.typeOfElement);
             inputElement.setAttribute("ref", input.id);
+            inputElement.setAttribute("isUsed", input.isUsed);
+            inputElement.setAttribute("shouldBeUsed", input.shouldBeUsed);
             inputElements.appendChild(inputElement);
         }
     }
