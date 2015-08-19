@@ -34,8 +34,9 @@ public:
     bool isNominal;
     bool isCommon;
     QString nominalSystem;
+    QString mConfig;
 
-    //a function
+    //function
     QPair<QString, QString> functionPlugin; //T1 = function, T2 = file path
 
     //only when typeOfFeature specifies a trafo param
