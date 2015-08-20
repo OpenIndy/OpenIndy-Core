@@ -646,7 +646,14 @@ QString Geometry::getDisplayStDev(const UnitType &type, const int &digits) const
  * \return
  */
 QString Geometry::getDisplayMeasurementConfig() const{
-    return this->activeMeasurementConfig.getName();
+    if(this->activeMeasurementConfig.getIsValid()){
+        if(this->activeMeasurementConfig.getIsSaved()){
+            return this->activeMeasurementConfig.getName();
+        }else{
+            return QString("*%1").arg(this->activeMeasurementConfig.getName());
+        }
+    }
+    return QString("");
 }
 
 /*!
