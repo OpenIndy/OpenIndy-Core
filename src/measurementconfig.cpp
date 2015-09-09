@@ -152,7 +152,7 @@ const bool &MeasurementConfig::getMeasureTwoSides() const{
  * \brief MeasurementConfig::setMeasureTwoSides
  * \param twoSides
  */
-void MeasurementConfig::setMeasureTwoSides(const bool &twoSides){
+void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
     this->measureTwoSides = measureTwoSides;
     this->isSaved = false;
 }

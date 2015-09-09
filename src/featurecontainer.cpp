@@ -538,3 +538,50 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
     return true;
 
 }
+
+/*!
+ * \brief FeatureContainer::geometryMeasurementConfigChanged
+ * \param featureId
+ * \param oldMConfig
+ * \return
+ */
+bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig){
+
+    //check if the feature exists
+    if(!this->featuresIdMap.contains(featureId)){
+        return false;
+    }
+
+    //get the feature pointer
+    QPointer<FeatureWrapper> feature = this->featuresIdMap.value(featureId, QPointer<FeatureWrapper>());
+
+    //check if the feature is valid and is a geometry
+    if(feature.isNull() || feature->getGeometry().isNull()){
+        return false;
+    }
+    QPointer<Geometry> geometry = feature->getGeometry();
+
+    //if both, old and new mConfig, are empty nothing should happen
+    if(oldMConfig.compare("") == 0 && geometry->getMeasurementConfig().getName().compare("") == 0){
+        return true;
+    }
+
+    //if the old mConfig was empty
+    if(oldMConfig.compare("") == 0){
+        this->geometriesMConfigMap.insert(geometry->getMeasurementConfig().getName(), geometry);
+        return true;
+    }
+
+    //if the new mConfig is empty
+    if(geometry->getMeasurementConfig().getName().compare("") == 0){
+        this->geometriesMConfigMap.remove(oldMConfig, geometry);
+        return true;
+    }
+
+    //if both mConfigs are non-empty
+    this->geometriesMConfigMap.remove(oldMConfig, geometry);
+    this->geometriesMConfigMap.insert(geometry->getMeasurementConfig().getName(), geometry);
+
+    return true;
+
+}

@@ -50,7 +50,7 @@ public:
     void setIterations(const int &iterations);
 
     const bool &getMeasureTwoSides() const;
-    void setMeasureTwoSides(const bool &twoSides);
+    void setMeasureTwoSides(const bool &measureTwoSides);
 
     const bool &getTimeDependent() const;
     void setTimeDependent(const bool &timeDependent);

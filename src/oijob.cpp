@@ -1949,9 +1949,15 @@ void OiJob::setGeometrySimulationData(const int &featureId){
 /*!
  * \brief OiJob::setGeometryMeasurementConfig
  * \param featureId
+ * \param oldMConfig
  */
-void OiJob::setGeometryMeasurementConfig(const int &featureId){
-    emit this->geometryMeasurementConfigChanged(featureId);
+void OiJob::setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig){
+
+    //update feature container
+    this->featureContainer.geometryMeasurementConfigChanged(featureId, oldMConfig);
+
+    emit this->geometryMeasurementConfigChanged(featureId, oldMConfig);
+
 }
 
 /*!
