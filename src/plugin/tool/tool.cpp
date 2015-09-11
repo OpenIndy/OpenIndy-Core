@@ -54,7 +54,6 @@ void Tool::setJob(const QPointer<OiJob> &job){
  * \param event
  */
 void Tool::closeEvent(QCloseEvent *event){
-    this->deleteLater();
     event->accept();
 }
 
