@@ -62,6 +62,23 @@ signals:
     void sendMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
     void customXmlResponse(const QPointer<OiRequestResponse> &response);
 
+    //###############################
+    //signals to start sensor actions
+    //###############################
+
+    void startConnect();
+    void startDisconnect();
+    void startMeasurement();
+    void startMove(const Reading &reading);
+    void startAim();
+    void startAimAndMeasure();
+    void startToggleSight();
+    void startInitialize();
+    void startHome();
+    void startCompensation();
+    void startChangeMotorState();
+    void startCustomAction(const QString &task);
+
 protected:
 
     //###########################
