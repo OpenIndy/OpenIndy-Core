@@ -39,6 +39,22 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
 }
 
 /*!
+ * \brief Observation::Observation
+ * \param xyz
+ * \param isValid
+ */
+Observation::Observation(const OiVec &xyz, bool isValid){
+
+    this->isValid = isValid;
+    if(xyz.getSize() == this->xyz.getSize()){
+        this->xyz = xyz;
+        this->originalXyz = xyz;
+        this->isSolved = true;
+    }
+
+}
+
+/*!
  * \brief Observation::operator =
  * \param copy
  * \return
