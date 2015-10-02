@@ -27,6 +27,11 @@ public:
 
     virtual ~SystemTransformation(){}
 
+    void setInputPoint(const QList<Point> &startSystem, const QList<Point> &destinationSystem){
+        this->inputPointsStartSystem = startSystem;
+        this->inputPointsDestinationSystem = destinationSystem;
+    }
+
 protected:
 
     //####################################
