@@ -17,8 +17,7 @@ class OiRequestResponse
 public:
 
     enum RequestType{
-        eGetProject,
-        eSetProject,
+        eGetProject = 0,
         eGetActiveFeature,
         eSetActiveFeature,
         eGetActiveStation,
@@ -26,15 +25,16 @@ public:
         eGetActiveCoordinateSystem,
         eSetActiveCoordinateSystem,
         eAim,
-        eMove,
         eMeasure,
         eStartWatchwindow,
         eStopWatchwindow,
-        eOiToolRequest
+        eOiToolRequest,
+        eUnknownRequest = 999
     };
 
     enum ErrorCode{
-        eNoError,
+        eNoError = 0,
+        eNoJob,
         eWrongFormat,
         eUnknownRequestType,
         eNoActiveFeature,
