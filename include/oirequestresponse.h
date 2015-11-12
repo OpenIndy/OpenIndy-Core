@@ -61,4 +61,7 @@ public:
 
 }
 
+Q_DECLARE_METATYPE( oi::OiRequestResponse )
+Q_DECLARE_METATYPE( oi::OiRequestResponse* )
+
 #endif // OIREQUESTRESPONSE_H
