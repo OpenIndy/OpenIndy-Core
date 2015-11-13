@@ -17,6 +17,7 @@ class OiRequestResponse
 public:
 
     enum RequestType{
+
         eGetProject = 0,
         eGetActiveFeature,
         eSetActiveFeature,
@@ -37,10 +38,23 @@ public:
         eGetMeasurementConfigs,
         eGetMeasurementConfig,
         eSetMeasurementConfig,
-        eUnknownRequest = 999
+
+        eUnknownRequest = 999,
+
+        eSensorActionStarted = 1001,
+        eSensorActionFinished,
+        eMessageBox,
+        eRealTimeReading,
+        eActiveFeatureChanged,
+        eActiveStationChanged,
+        eActiveCoordinateSystemChanged,
+        eFeatureSetChanged,
+        eFeatureAttributesChanged
+
     };
 
     enum ErrorCode{
+
         eNoError = 0,
         eNoJob,
         eWrongFormat,
@@ -58,6 +72,7 @@ public:
         eMeasurementError,
         eNoSensorConnected,
         eFeatureNotSolved
+
     };
 
     RequestType myRequestType; //defines the type of request
