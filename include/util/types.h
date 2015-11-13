@@ -27,7 +27,7 @@ namespace oi{
 
 //! all types of messages
 enum MessageTypes{
-    eInformationMessage,
+    eInformationMessage = 0,
     eWarningMessage,
     eErrorMessage,
     eCriticalMessage
@@ -35,7 +35,7 @@ enum MessageTypes{
 
 //! used to specify where to print a message
 enum MessageDestinations{
-    eConsoleMessage,
+    eConsoleMessage = 0,
     eMessageBoxMessage,
     eStatusBarMessage
 };
@@ -48,7 +48,7 @@ enum MessageDestinations{
 enum ElementTypes{
 
     //geometry types
-    eCircleElement,
+    eCircleElement = 0,
     eConeElement,
     eCylinderElement,
     eEllipseElement,
@@ -95,7 +95,7 @@ enum ElementTypes{
 enum FeatureTypes{
 
     //geometry types
-    eCircleFeature,
+    eCircleFeature = 0,
     eConeFeature,
     eCylinderFeature,
     eEllipseFeature,
@@ -127,7 +127,7 @@ enum FeatureTypes{
 //! all OpenIndy geometry types
 enum GeometryTypes{
 
-    eCircleGeometry,
+    eCircleGeometry = 0,
     eConeGeometry,
     eCylinderGeometry,
     eEllipseGeometry,
@@ -158,7 +158,7 @@ enum GeometryTypes{
 //unknown parameters of all available geometry types
 enum GeometryParameters{
 
-    eUnknownX, //point coordinates
+    eUnknownX = 0, //point coordinates
     eUnknownY,
     eUnknownZ,
     eUnknownPrimaryI, //primary vector
@@ -184,7 +184,7 @@ enum GeometryParameters{
 //unknown parameters of trafo param features
 enum TrafoParamParameters{
 
-    eUnknownTX, //translation
+    eUnknownTX = 0, //translation
     eUnknownTY,
     eUnknownTZ,
     eUnknownRX, //rotation
@@ -202,7 +202,7 @@ enum TrafoParamParameters{
 
 enum ReadingTypes{
 
-    eDistanceReading,
+    eDistanceReading = 0,
     eCartesianReading,
     ePolarReading,
     eDirectionReading,
@@ -354,7 +354,7 @@ enum ReadingDisplayAttributes{
 enum UnitType{
 
     //metric unit types
-    eUnitMilliMeter,
+    eUnitMilliMeter = 0,
     eUnitMeter,
     eUnitInch,
 
@@ -376,7 +376,7 @@ enum UnitType{
 
 enum DimensionType{
 
-    eMetric,
+    eMetric = 0,
     eAngular,
     eTemperature,
     eDimensionless
@@ -389,7 +389,7 @@ enum DimensionType{
 
 enum SensorTypes{
 
-    eLaserTracker,
+    eLaserTracker = 0,
     eTotalStation,
     eUndefinedSensor
 
@@ -397,21 +397,21 @@ enum SensorTypes{
 
 enum SensorFaces{
 
-    eFrontSide,
+    eFrontSide = 0,
     eBackSide
 
 };
 
 enum ConnectionTypes{
 
-    eNetworkConnection,
+    eNetworkConnection = 0,
     eSerialConnection
 
 };
 
 enum SensorFunctions{
 
-    eMoveAngle,
+    eMoveAngle = 0,
     eMoveXYZ,
     eMotorState,
     eToggleSight,
@@ -427,7 +427,7 @@ enum SensorFunctions{
 
 enum ToolTypes{
 
-    eReportTool,
+    eReportTool = 0,
     eUnknownTool
 
 };
@@ -437,9 +437,11 @@ enum ToolTypes{
 //#############################
 
 enum ActualNominalFilter{
-    eFilterActualNominal,
+
+    eFilterActualNominal = 0,
     eFilterActual,
     eFilterNominal
+
 };
 
 }

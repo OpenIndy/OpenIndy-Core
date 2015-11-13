@@ -29,6 +29,14 @@ public:
         eStartWatchwindow,
         eStopWatchwindow,
         eOiToolRequest,
+        eGetFeatures,
+        eAddFeatures,
+        eGetObservations,
+        eRemoveObservations,
+        eGetParameters,
+        eGetMeasurementConfigs,
+        eGetMeasurementConfig,
+        eSetMeasurementConfig,
         eUnknownRequest = 999
     };
 
