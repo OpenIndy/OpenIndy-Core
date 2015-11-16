@@ -71,7 +71,11 @@ public:
         eCannotMeasureNominal,
         eMeasurementError,
         eNoSensorConnected,
-        eFeatureNotSolved
+        eFeatureNotSolved,
+        eCreateFeatureError,
+        eNoMeasurementConfigManager,
+        eNoSensorConfigManager,
+        eNoMeasurementConfig
 
     };
 
