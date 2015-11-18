@@ -42,16 +42,18 @@ public:
     const QList<QPointer<TrafoParam> > &getTransformationParametersList() const;
     const QList<QPointer<FeatureWrapper> > &getGeometriesList() const;
 
-    //getter to get a list of all feature ids, names and groups
+    //getter to get a list of all feature ids, names, groups and measurement configs
     const QList<int> &getFeatureIdList() const;
     const QStringList &getFeatureNameList() const;
     const QStringList &getFeatureGroupList() const;
+    const QList<QPair<QString, bool> > &getUsedMeasurementConfigs() const;
 
     //getter to access features by id, name, group, type or mConfig
     QPointer<FeatureWrapper> getFeatureById(const int &featureId) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByGroup(const QString &group) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByType(const FeatureTypes &type) const;
+    QList<QPointer<Geometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;
 
     //######################
     //get number of features
@@ -60,6 +62,8 @@ public:
     int getFeatureCount() const;
     int getGeometryCount() const;
     int getFeatureCount(const FeatureTypes &type) const;
+    int getFeatureCount(const QString &group) const;
+    int getFeatureCount(const QPair<QString, bool> &mConfig) const;
 
     //######################
     //add or remove features
@@ -100,10 +104,11 @@ private:
     QMultiMap<FeatureTypes, QPointer<FeatureWrapper> > featuresTypeMap; // map of all features in OpenIndy with their type as key
     QMultiMap<QPair<QString, bool>, QPointer<Geometry> > geometriesMConfigMap; //map of all geometries in OpenIndy with their measurement config name and saved state as key
 
-    //lists with ids, names and groups
+    //lists with ids, names, groups and measurement configs
     QList<int> featureIds;
     QStringList featureNames;
     QStringList featureGroups;
+    QList<QPair<QString, bool> > usedMConfigs;
 
 };
 

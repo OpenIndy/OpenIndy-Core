@@ -60,11 +60,14 @@ public:
     int getFeatureCount() const;
     int getGeometryCount() const;
     int getFeatureCount(const FeatureTypes &type) const;
+    int getFeatureCount(const QString &group) const;
+    int getFeatureCount(const QPair<QString, bool> &mConfig) const;
 
     //access a list of all feature ids and names
     const QList<int> &getFeatureIdList() const;
     const QStringList &getFeatureNameList() const;
     const QStringList &getFeatureGroupList() const;
+    const QList<QPair<QString, bool> > &getUsedMeasurementConfigs() const;
 
     //access feature lists
     const QList<QPointer<FeatureWrapper> > &getFeaturesList() const;
@@ -79,6 +82,7 @@ public:
     QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByGroup(const QString &group) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByType(const FeatureTypes &type) const;
+    QList<QPointer<Geometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;
 
     //access active features
     const QPointer<FeatureWrapper> &getActiveFeature() const;

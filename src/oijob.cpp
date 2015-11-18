@@ -175,6 +175,24 @@ int OiJob::getFeatureCount(const FeatureTypes &type) const{
 }
 
 /*!
+ * \brief OiJob::getFeatureCount
+ * \param group
+ * \return
+ */
+int OiJob::getFeatureCount(const QString &group) const{
+    return this->featureContainer.getFeatureCount(group);
+}
+
+/*!
+ * \brief OiJob::getFeatureCount
+ * \param mConfig
+ * \return
+ */
+int OiJob::getFeatureCount(const QPair<QString, bool> &mConfig) const{
+    return this->featureContainer.getFeatureCount(mConfig);
+}
+
+/*!
  * \brief OiJob::getFeatureIdList
  * \return
  */
@@ -196,6 +214,14 @@ const QStringList &OiJob::getFeatureNameList() const{
  */
 const QStringList &OiJob::getFeatureGroupList() const{
     return this->featureContainer.getFeatureGroupList();
+}
+
+/*!
+ * \brief OiJob::getUsedMeasurementConfigs
+ * \return
+ */
+const QList<QPair<QString, bool> > &OiJob::getUsedMeasurementConfigs() const{
+    return this->featureContainer.getUsedMeasurementConfigs();
 }
 
 /*!
@@ -281,6 +307,15 @@ QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByGroup(const QString &group)
  */
 QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByType(const FeatureTypes &type) const{
     return this->featureContainer.getFeaturesByType(type);
+}
+
+/*!
+ * \brief OiJob::getGeometriesByMConfig
+ * \param mConfig
+ * \return
+ */
+QList<QPointer<Geometry> > OiJob::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
+    return this->featureContainer.getGeometriesByMConfig(mConfig);
 }
 
 /*!
