@@ -42,10 +42,11 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
  * \brief Observation::Observation
  * \param xyz
  * \param isValid
+ * \param parent
  */
-Observation::Observation(const OiVec &xyz, bool isValid){
+Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4),
+    isValid(isValid), isSolved(false){
 
-    this->isValid = isValid;
     if(xyz.getSize() == this->xyz.getSize()){
         this->xyz = xyz;
         this->originalXyz = xyz;

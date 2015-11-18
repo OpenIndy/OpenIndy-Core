@@ -17,8 +17,8 @@ class OiRequestResponse
 public:
 
     enum RequestType{
-        eGetProject,
-        eSetProject,
+
+        eGetProject = 0,
         eGetActiveFeature,
         eSetActiveFeature,
         eGetActiveStation,
@@ -26,15 +26,37 @@ public:
         eGetActiveCoordinateSystem,
         eSetActiveCoordinateSystem,
         eAim,
-        eMove,
         eMeasure,
         eStartWatchwindow,
         eStopWatchwindow,
-        eOiToolRequest
+        eOiToolRequest,
+        eGetFeatures,
+        eAddFeatures,
+        eGetObservations,
+        eRemoveObservations,
+        eGetParameters,
+        eGetMeasurementConfigs,
+        eGetMeasurementConfig,
+        eSetMeasurementConfig,
+
+        eUnknownRequest = 999,
+
+        eSensorActionStarted = 1001,
+        eSensorActionFinished,
+        eMessageBox,
+        eRealTimeReading,
+        eActiveFeatureChanged,
+        eActiveStationChanged,
+        eActiveCoordinateSystemChanged,
+        eFeatureSetChanged,
+        eFeatureAttributesChanged
+
     };
 
     enum ErrorCode{
-        eNoError,
+
+        eNoError = 0,
+        eNoJob,
         eWrongFormat,
         eUnknownRequestType,
         eNoActiveFeature,
@@ -49,7 +71,12 @@ public:
         eCannotMeasureNominal,
         eMeasurementError,
         eNoSensorConnected,
-        eFeatureNotSolved
+        eFeatureNotSolved,
+        eCreateFeatureError,
+        eNoMeasurementConfigManager,
+        eNoSensorConfigManager,
+        eNoMeasurementConfig
+
     };
 
     RequestType myRequestType; //defines the type of request
@@ -60,5 +87,8 @@ public:
 };
 
 }
+
+Q_DECLARE_METATYPE( oi::OiRequestResponse )
+Q_DECLARE_METATYPE( oi::OiRequestResponse* )
 
 #endif // OIREQUESTRESPONSE_H

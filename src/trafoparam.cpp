@@ -323,22 +323,6 @@ bool TrafoParam::setTransformationParameters(const OiVec &rotation, const OiVec 
         sMat.setAt(3, 3, 1.0);
 
         //set up rotation matrix
-        /*OiMat r33(3, 3);
-        OiVec xAxis(3), yAxis(3), zAxis(3);
-        xAxis.setAt(0, 1.0);
-        yAxis.setAt(1, 1.0);
-        zAxis.setAt(2, 1.0);
-        r33 = OiMat::getRotationMatrix(rotation.getAt(2), zAxis) * OiMat::getRotationMatrix(rotation.getAt(1), yAxis) *
-                OiMat::getRotationMatrix(rotation.getAt(0), xAxis);
-        OiMat rMat(4, 4);
-        for(int i = 0; i < 3; i++){
-            for(int j = 0; j < 3; j++){
-                rMat.setAt(i, j, r33.getAt(i, j));
-            }
-        }
-        rMat.setAt(3, 3, 1.0);*/
-
-        //set up rotation matrix
         double rx = rotation.getAt(0);
         double ry = rotation.getAt(1);
         double rz = rotation.getAt(2);
@@ -362,6 +346,7 @@ bool TrafoParam::setTransformationParameters(const OiVec &rotation, const OiVec 
 
         //update homogeneous matrix
         this->homogenMatrix = tMat * rMat * sMat;
+        this->isSolved = true;
 
         emit this->transformationParameterChanged(this->id);
 
@@ -407,6 +392,7 @@ bool TrafoParam::setTransformationParameters(const OiMat &rotation, const OiMat 
         this->rotation = r;
 
         this->homogenMatrix = translation * rotation * scale;
+        this->isSolved = true;
 
         emit this->transformationParameterChanged(this->id);
 
