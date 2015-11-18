@@ -195,8 +195,16 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
     case eTrafoParamFeature:
         this->trafoParamsList.append(feature->getTrafoParam());
         break;
-    default:
-        this->geometriesList.append(feature);
+    default: //geometry
+        if(!feature->getGeometry().isNull()){
+            this->geometriesList.append(feature);
+            if(feature->getGeometry()->getMeasurementConfig().getIsValid()){
+                QPair<QString, bool> key;
+                key.first = feature->getGeometry()->getMeasurementConfig().getName();
+                key.second = feature->getGeometry()->getMeasurementConfig().getIsSaved();
+                this->geometriesMConfigMap.insert(key, feature->getGeometry());
+            }
+        }
         break;
     }
 
@@ -252,8 +260,16 @@ bool FeatureContainer::removeFeature(const int &featureId){
     case eTrafoParamFeature:
         this->trafoParamsList.removeOne(feature->getTrafoParam());
         break;
-    default:
-        this->geometriesList.removeOne(feature);
+    default: //geometry
+        if(!feature->getGeometry().isNull()){
+            this->geometriesList.removeOne(feature);
+            if(feature->getGeometry()->getMeasurementConfig().getIsValid()){
+                QPair<QString, bool> key;
+                key.first = feature->getGeometry()->getMeasurementConfig().getName();
+                key.second = feature->getGeometry()->getMeasurementConfig().getIsSaved();
+                this->geometriesMConfigMap.remove(key, feature->getGeometry());
+            }
+        }
         break;
     }
 
@@ -543,9 +559,10 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
  * \brief FeatureContainer::geometryMeasurementConfigChanged
  * \param featureId
  * \param oldMConfig
+ * \param oldIsSaved
  * \return
  */
-bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig){
+bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved){
 
     //check if the feature exists
     if(!this->featuresIdMap.contains(featureId)){
@@ -562,25 +579,32 @@ bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, co
     QPointer<Geometry> geometry = feature->getGeometry();
 
     //if both, old and new mConfig, are empty nothing should happen
-    if(oldMConfig.compare("") == 0 && geometry->getMeasurementConfig().getName().compare("") == 0){
+    if(oldMConfig.compare("") == 0 && !geometry->getMeasurementConfig().getIsValid()){
         return true;
     }
 
+    //get map-keys for old and new mConfig
+    QPair<QString, bool> oldKey, newKey;
+    oldKey.first = oldMConfig;
+    oldKey.second = oldIsSaved;
+    newKey.first = geometry->getMeasurementConfig().getName();
+    newKey.second = geometry->getMeasurementConfig().getIsSaved();
+
     //if the old mConfig was empty
     if(oldMConfig.compare("") == 0){
-        this->geometriesMConfigMap.insert(geometry->getMeasurementConfig().getName(), geometry);
+        this->geometriesMConfigMap.insert(newKey, geometry);
         return true;
     }
 
     //if the new mConfig is empty
-    if(geometry->getMeasurementConfig().getName().compare("") == 0){
-        this->geometriesMConfigMap.remove(oldMConfig, geometry);
+    if(!geometry->getMeasurementConfig().getIsValid()){
+        this->geometriesMConfigMap.remove(oldKey, geometry);
         return true;
     }
 
     //if both mConfigs are non-empty
-    this->geometriesMConfigMap.remove(oldMConfig, geometry);
-    this->geometriesMConfigMap.insert(geometry->getMeasurementConfig().getName(), geometry);
+    this->geometriesMConfigMap.remove(oldKey, geometry);
+    this->geometriesMConfigMap.insert(newKey, geometry);
 
     return true;
 

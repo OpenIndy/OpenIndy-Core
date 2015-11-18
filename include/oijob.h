@@ -181,7 +181,7 @@ signals:
     void geometryNominalSystemChanged(const int &featureId);
     void geometryStatisticChanged(const int &featureId);
     void geometrySimulationDataChanged(const int &featureId);
-    void geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig);
+    void geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
 
     //coordinate system specific attributes changed
     void systemObservationsChanged(const int &featureId, const int &obsId);
@@ -247,7 +247,7 @@ private slots:
     void setGeometryNominalSystem(const int &featureId);
     void setGeometryStatistic(const int &featureId);
     void setGeometrySimulationData(const int &featureId);
-    void setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig);
+    void setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
 
     //coordinate system specific attributes changed
     void setSystemObservations(const int &featureId, const int &obsId);
