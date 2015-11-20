@@ -98,9 +98,6 @@ public:
 
     bool getIsValid() const;
 
-    //const QPointer<Sensor> &getSensor() const;
-    //void setSensor(const QPointer<Sensor> &sensor);
-
     const SensorTypes &getTypeOfSensor() const;
     void setTypeOfSensor(const SensorTypes &type);
 
@@ -125,6 +122,9 @@ public:
     const QMap<QString, QString> &getStringParameter() const;
     void setStringParameter(const QMap<QString, QString> &stringParams);
 
+    const QMultiMap<QString, QString> &getAvailableStringParameter() const;
+    void setAvailableStringParameter(const QMap<QString, QString> &stringParams);
+
     //#################
     //save and load XML
     //#################
@@ -144,14 +144,18 @@ private:
     QString pluginName;
     QString sensorName;
     SensorTypes typeOfSensor;
-    //QPointer<Sensor> sensor;
 
     Accuracy accuracy;
     ConnectionConfig cConfig;
 
+    //parameter selection
     QMap<QString, int> integerParameter;
     QMap<QString, double> doubleParameter;
     QMap<QString, QString> stringParameter;
+
+    //all available string parameter (specified by the sensor)
+    QMultiMap<QString, QString> availableStringParameter;
+
 };
 
 }

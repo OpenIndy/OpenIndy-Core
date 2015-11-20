@@ -234,6 +234,22 @@ void SensorConfiguration::setStringParameter(const QMap<QString, QString> &strin
 }
 
 /*!
+ * \brief SensorConfiguration::getAvailableStringParameter
+ * \return
+ */
+const QMultiMap<QString, QString> &SensorConfiguration::getAvailableStringParameter() const{
+    return this->availableStringParameter;
+}
+
+/*!
+ * \brief SensorConfiguration::setAvailableStringParameter
+ * \param stringParams
+ */
+void SensorConfiguration::setAvailableStringParameter(const QMap<QString, QString> &stringParams){
+    this->availableStringParameter = stringParams;
+}
+
+/*!
  * \brief SensorConfiguration::toOpenIndyXML
  * \param xmlDoc
  * \return
