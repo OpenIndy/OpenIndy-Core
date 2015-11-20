@@ -55,6 +55,9 @@ public:
     bool getIsBusy();
     QMap<QString, QString> getSensorStatus();
 
+    SensorConfiguration getSensorConfiguration();
+    void setSensorConfiguration(const SensorConfiguration &sConfig);
+
     void setSensor(const QPointer<Sensor> &sensor);
     void resetSensor();
 

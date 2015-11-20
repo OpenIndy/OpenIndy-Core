@@ -244,6 +244,27 @@ QMap<QString, QString> Station::getSensorStatus(){
 }
 
 /*!
+ * \brief Station::getSensorConfiguration
+ * \return
+ */
+SensorConfiguration Station::getSensorConfiguration(){
+    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
+        return SensorConfiguration();
+    }
+    return this->sensorControl->getSensor()->getSensorConfiguration();
+}
+
+/*!
+ * \brief Station::setSensorConfiguration
+ * \param sConfig
+ */
+void Station::setSensorConfiguration(const SensorConfiguration &sConfig){
+    if(!this->sensorControl.isNull() && !this->sensorControl->getSensor().isNull()){
+        this->sensorControl->getSensor()->setSensorConfiguration(sConfig);
+    }
+}
+
+/*!
  * \brief Station::setSensor
  * \param sensor
  */
