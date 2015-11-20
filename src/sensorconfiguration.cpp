@@ -344,6 +344,25 @@ QDomElement SensorConfiguration::toOpenIndyXML(QDomDocument &xmlDoc) const{
         sConfig.appendChild(stringParams);
     }
 
+    //save available string parameters
+    if(!this->availableStringParameter.isEmpty()){
+        QDomElement stringParams = xmlDoc.createElement("availableStringParameters");
+        QStringList params = this->availableStringParameter.uniqueKeys();
+        QStringList values;
+        for(int i = 0; i < params.size(); i++){
+            QDomElement param = xmlDoc.createElement("parameter");
+            param.setAttribute("name", params.at(i));
+            values = this->availableStringParameter.values(params.at(i));
+            for(int j = 0; j < values.size(); j++){
+                QDomElement paramOption = xmlDoc.createElement("option");
+                paramOption.setAttribute("value", values.at(j));
+                param.appendChild(paramOption);
+            }
+            stringParams.appendChild(param);
+        }
+        sConfig.appendChild(stringParams);
+    }
+
     return sConfig;
 
 }
@@ -454,6 +473,24 @@ bool SensorConfiguration::fromOpenIndyXML(QDomElement &xmlElem){
             QDomElement param = params.at(i).toElement();
             if(param.hasAttribute("name") && param.hasAttribute("value")){
                 this->stringParameter.insert(param.attribute("name"), param.attribute("value"));
+            }
+        }
+    }
+
+    //get available string parameters
+    QDomElement availableStringParams = xmlElem.firstChildElement("availableStringParameters");
+    if(!availableStringParams.isNull()){
+        QDomNodeList params = availableStringParams.childNodes();
+        for(int i = 0; i < params.size(); ++i){
+            QDomElement param = params.at(i).toElement();
+            if(param.hasAttribute("name")){
+                QDomNodeList values = param.childNodes();
+                for(int j = 0; j < values.size(); j++){
+                    QDomElement value = values.at(j).toElement();
+                    if(value.hasAttribute("value")){
+                        this->availableStringParameter.insertMulti(param.attribute("name"), value.attribute("value"));
+                    }
+                }
             }
         }
     }
