@@ -28,6 +28,7 @@ SensorConfiguration::SensorConfiguration(const SensorConfiguration &copy){
     this->integerParameter = copy.integerParameter;
     this->doubleParameter = copy.doubleParameter;
     this->stringParameter = copy.stringParameter;
+    this->availableStringParameter = copy.availableStringParameter;
 
 }
 
@@ -49,6 +50,7 @@ SensorConfiguration &SensorConfiguration::operator=(const SensorConfiguration &c
     this->integerParameter = copy.integerParameter;
     this->doubleParameter = copy.doubleParameter;
     this->stringParameter = copy.stringParameter;
+    this->availableStringParameter = copy.availableStringParameter;
 
     return *this;
 
