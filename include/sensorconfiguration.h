@@ -29,16 +29,21 @@ class OI_CORE_EXPORT ConnectionConfig{
 public:
     ConnectionConfig(){}
 
+    //type
     ConnectionTypes typeOfConnection;
 
+    //network
     QString ip;
     QString port;
+
+    //serial
     QString comPort;
     QSerialPort::BaudRate baudRate;
     QSerialPort::DataBits dataBits;
     QSerialPort::Parity parity;
     QSerialPort::StopBits stopBits;
     QSerialPort::FlowControl flowControl;
+
 };
 
 /*!
@@ -47,17 +52,28 @@ public:
  */
 class OI_CORE_EXPORT Accuracy{
 public:
-    Accuracy() : sigmaXyz((OiVec(3))), sigmaAzimuth(0.0), sigmaZenith(0.0), sigmaDistance(0.0),
-        sigmaTemp(0.0), sigmaAngleXZ(0.0), sigmaAngleYZ(0.0){}
+    Accuracy() : sigmaXyz(OiVec(3)), sigmaAzimuth(0.0), sigmaZenith(0.0), sigmaDistance(0.0),
+        sigmaTemp(0.0), sigmaRX(0.0), sigmaRY(0.0), sigmaRZ(0.0){}
 
+    //polar
     double sigmaAzimuth;
     double sigmaZenith;
     double sigmaDistance;
+
+    //cartesian
     OiVec sigmaXyz;
+
+    //temperature
     double sigmaTemp;
+
+    //level
+    double sigmaRX;
+    double sigmaRY;
+    double sigmaRZ;
+
+    //undefined
     QMap<QString, double> sigmaUndefined;
-    double sigmaAngleXZ;
-    double sigmaAngleYZ;
+
 };
 
 //###########################
