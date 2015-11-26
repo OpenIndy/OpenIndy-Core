@@ -86,6 +86,12 @@ double OI_CORE_EXPORT convertFromDefault(const double &value, const UnitType &ty
 const QString OI_CORE_EXPORT &getUnitTypeName(const UnitType &type);
 UnitType OI_CORE_EXPORT getUnitTypeEnum(const QString &name);
 
+//#######################################
+//global function for floating comparison
+//#######################################
+
+bool OI_CORE_EXPORT almostEqual(const double &a, const double &b, const int &digits);
+
 //######################################
 //global functions to query sensor types
 //######################################

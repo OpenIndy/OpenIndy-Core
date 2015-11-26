@@ -1366,6 +1366,32 @@ UnitType getUnitTypeEnum(const QString &name){
 }
 
 /*!
+ * \brief almostEqual
+ * \param a
+ * \param b
+ * \param digits
+ * \return
+ */
+bool almostEqual(const double &a, const double &b, const int &digits){
+
+    //calculate difference
+    double diff = qAbs(a - b);
+
+    //calculate epsilon
+    double epsilon = 1.0;
+    for(int i = 0; i < digits; i++){
+        epsilon = epsilon / 10.0;
+    }
+
+    //check difference
+    if(diff <= epsilon){
+        return true;
+    }
+    return false;
+
+}
+
+/*!
  * \brief getAvailableSensorTypes
  * \return
  */
