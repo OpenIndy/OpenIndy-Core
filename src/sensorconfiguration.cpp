@@ -247,7 +247,7 @@ const QMultiMap<QString, QString> &SensorConfiguration::getAvailableStringParame
  * \brief SensorConfiguration::setAvailableStringParameter
  * \param stringParams
  */
-void SensorConfiguration::setAvailableStringParameter(const QMap<QString, QString> &stringParams){
+void SensorConfiguration::setAvailableStringParameter(const QMultiMap<QString, QString> &stringParams){
     this->availableStringParameter = stringParams;
 }
 

@@ -139,7 +139,7 @@ public:
     void setStringParameter(const QMap<QString, QString> &stringParams);
 
     const QMultiMap<QString, QString> &getAvailableStringParameter() const;
-    void setAvailableStringParameter(const QMap<QString, QString> &stringParams);
+    void setAvailableStringParameter(const QMultiMap<QString, QString> &stringParams);
 
     //#################
     //save and load XML
