@@ -86,7 +86,7 @@ public:
 
     const QStringList &getSelfDefinedActions() const;
 
-    const QMap<QString, double> &getDefaultAccuracy() const;
+    const Accuracy &getDefaultAccuracy() const;
 
     //########################
     //sensor state and actions
@@ -144,7 +144,7 @@ protected:
     QList<SensorFunctions> supportedSensorActions;
     QList<ConnectionTypes> supportedConnectionTypes;
     QStringList selfDefinedActions;
-    QMap<QString, double> defaultAccuracy;
+    Accuracy defaultAccuracy;
     PluginMetaData metaData;
 
     //the needed scalar input parameters including default values

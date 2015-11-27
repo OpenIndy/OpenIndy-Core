@@ -113,7 +113,7 @@ const QStringList &Sensor::getSelfDefinedActions() const{
  * \brief Sensor::getDefaultAccuracy
  * \return
  */
-const QMap<QString, double> &Sensor::getDefaultAccuracy() const{
+const Accuracy &Sensor::getDefaultAccuracy() const{
     return this->defaultAccuracy;
 }
 
