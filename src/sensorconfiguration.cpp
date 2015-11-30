@@ -71,7 +71,6 @@ const QString &SensorConfiguration::getName() const{
 void SensorConfiguration::setName(const QString &name){
     if(this->name.compare(name) != 0){
         this->name = name;
-        this->isSaved = false;
     }
 }
 
@@ -164,7 +163,6 @@ const Accuracy &SensorConfiguration::getAccuracy() const{
  */
 void SensorConfiguration::setAccuracy(const Accuracy &accuracy){
     this->accuracy = accuracy;
-    this->isSaved = false;
 }
 
 /*!
@@ -181,7 +179,6 @@ const ConnectionConfig &SensorConfiguration::getConnectionConfig() const{
  */
 void SensorConfiguration::setConnectionConfig(const ConnectionConfig &cConfig){
     this->cConfig = cConfig;
-    this->isSaved = false;
 }
 
 /*!
@@ -198,7 +195,6 @@ const QMap<QString, int> &SensorConfiguration::getIntegerParameter() const{
  */
 void SensorConfiguration::setIntegerParameter(const QMap<QString, int> &intParams){
     this->integerParameter = intParams;
-    this->isSaved = false;
 }
 
 /*!
@@ -215,7 +211,6 @@ const QMap<QString, double> &SensorConfiguration::getDoubleParameter() const{
  */
 void SensorConfiguration::setDoubleParameter(const QMap<QString, double> &doubleParams){
     this->doubleParameter = doubleParams;
-    this->isSaved = false;
 }
 
 /*!
@@ -232,7 +227,6 @@ const QMap<QString, QString> &SensorConfiguration::getStringParameter() const{
  */
 void SensorConfiguration::setStringParameter(const QMap<QString, QString> &stringParams){
     this->stringParameter = stringParams;
-    this->isSaved = false;
 }
 
 /*!
