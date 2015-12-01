@@ -257,6 +257,7 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //set measurement config attributes
     mConfig.setAttribute("name", this->name);
+    mConfig.setAttribute("isSaved", this->isSaved);
     mConfig.setAttribute("count", this->count);
     mConfig.setAttribute("iterations", this->iterations);
     mConfig.setAttribute("measureTwoSides", this->measureTwoSides);
@@ -297,6 +298,10 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
     this->typeOfReading = (ReadingTypes)xmlElem.attribute("typeOfReading").toInt();
+
+    if(xmlElem.hasAttribute("isSaved")){
+        this->isSaved = xmlElem.attribute("isSaved").toInt();
+    }
 
     return true;
 

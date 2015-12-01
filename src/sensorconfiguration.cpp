@@ -258,6 +258,7 @@ QDomElement SensorConfiguration::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     QDomElement sConfig = xmlDoc.createElement("sensorConfig");
     sConfig.setAttribute("name", this->name);
+    sConfig.setAttribute("isSaved", this->isSaved);
 
     //save plugin information
     QDomElement pluginInfo = xmlDoc.createElement("plugin");
@@ -374,6 +375,11 @@ bool SensorConfiguration::fromOpenIndyXML(QDomElement &xmlElem){
 
     //set name of sensor config
     this->name = xmlElem.attribute("name");
+
+    //set saved state
+    if(xmlElem.hasAttribute("isSaved")){
+        this->isSaved = xmlElem.attribute("isSaved").toInt();
+    }
 
     //get plugin information
     QDomElement pluginInfo = xmlElem.firstChildElement("plugin");
