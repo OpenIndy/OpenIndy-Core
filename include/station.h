@@ -41,39 +41,52 @@ public:
     //get or set station attributes
     //#############################
 
+    //active state
     const bool &getIsActiveStation() const;
     void setActiveStationState(const bool &isActiveStation);
 
+    //position
     const QPointer<Point> &getPosition() const;
 
+    //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;
 
+    //get or set sensor configuration
+    SensorConfiguration getSensorConfiguration();
+    void setSensorConfiguration(const SensorConfiguration &sConfig);
+
+    //(re)set sensor
+    void setSensor(const QPointer<Sensor> &sensor);
+    void resetSensor();
+
+    //previously used sensors
+    const QList<Sensor> &getUsedSensors() const;
+
+    //####################################################
     //get information about the currently connected sensor
+    //####################################################
+
+    //status information
     bool getIsSensorSet();
     bool getIsSensorConnected();
     bool getIsReadyForMeasurement();
     bool getIsBusy();
     QMap<QString, QString> getSensorStatus();
 
-    SensorConfiguration getSensorConfiguration();
-    void setSensorConfiguration(const SensorConfiguration &sConfig);
-
-    void setSensor(const QPointer<Sensor> &sensor);
-    void resetSensor();
-
-    const QPointer<SensorListener> getSensorListener() const;
-
-    //####################################################
-    //get information about the currently connected sensor
-    //####################################################
-
+    //sensor type
     SensorTypes getActiveSensorType() const;
 
+    //reading and connection types
     QList<ReadingTypes> getSupportedReadingTypes() const;
     QList<ConnectionTypes> getSupportedConnectionTypes() const;
 
+    //sensor actions
     QList<SensorFunctions> getSupportedSensorActions() const;
     QStringList getSelfDefinedActions() const;
+
+    //stream format
+    ReadingTypes getStreamFormat();
+    void setStreamFormat(ReadingTypes streamFormat);
 
     //###########################
     //reexecute the function list
@@ -109,13 +122,14 @@ signals:
     //signals to start sensor actions
     //###############################
 
+    //connect or disconnect
     void connectSensor();
     void disconnectSensor();
 
+    //measure
     void measure(const int &geomId, const MeasurementConfig &mConfig);
 
-    void setStreamFormat(ReadingTypes streamFormat);
-
+    //general sensor actions
     void move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
               const bool &measure, const int &geomId = -1, const MeasurementConfig &mConfig = MeasurementConfig());
     void move(const double &x, const double &y, const double &z,
@@ -127,12 +141,50 @@ signals:
     void compensation();
     void selfDefinedAction(const QString &action);
 
-    //#################################################
-    //signals emitted when a sensor action was finished
-    //#################################################
+    //################
+    //sensor streaming
+    //################
 
-    void commandFinished(const bool &success, const QString &msg);
-    void measurementFinished(const int &geomId, const QList<QPointer<Reading> > &readings);
+    //reading stream
+    void startReadingStream();
+    void stopReadingStream();
+
+    //connection monitoring stream
+    void startConnectionMonitoringStream();
+    void stopConnectionMonitoringStream();
+
+    //status monitoring stream
+    void startStatusMonitoringStream();
+    void stopStatusMonitoringStream();
+
+    //##############################
+    //inform about streaming results
+    //##############################
+
+    //real time data
+    void realTimeReading(QVariantMap reading);
+    void realTimeStatus(QMap<QString, QString> status);
+
+    //connection information
+    void connectionLost();
+    void connectionReceived();
+
+    //ready state
+    void isReadyForMeasurement(bool isReady);
+
+    //##############################################
+    //signals emitted after sensor actions were done
+    //##############################################
+
+    //sensor action callbacks
+    void commandFinished(bool success, QString msg);
+    void measurementFinished(int geomId, QList<QPointer<Reading> > readings);
+
+    //#######################
+    //special sensor messages
+    //#######################
+
+    void sensorMessage(QString msg, MessageTypes msgType, MessageDestinations msgDest = eConsoleMessage);
 
 protected:
 
@@ -150,12 +202,14 @@ private:
 
     bool isActiveStation;
 
-    QPointer<Point> position; //the position of the station
+    //the position of the station
+    QPointer<Point> position;
 
-    QPointer<SensorControl> sensorControl; //sensor communication
-    QThread stationThread; //thread the sensor control runs on
+    //sensor communication
+    QPointer<SensorControl> sensorControl;
 
-    QPointer<CoordinateSystem> stationSystem; //the corresponding coordinate system
+    //the corresponding coordinate system
+    QPointer<CoordinateSystem> stationSystem;
 
     //#############################
     //readings made by this station
@@ -175,10 +229,14 @@ private slots:
     //helper methods
     //##############
 
+    //station attribute changes
     void stationNameChanged(const int &featureId, const QString &oldName);
+
+    //connect or disconnect sensor control
     void connectSensorControl();
     void disconnectSensorControl();
 
+    //add or remove readings
     void addReadings(const int &geomId, const QList<QPointer<Reading> > &readings);
     void removeReading(const QPointer<Reading> &reading);
 

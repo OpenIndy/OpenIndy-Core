@@ -47,6 +47,10 @@ class OI_CORE_EXPORT Sensor : public QObject
 public:
     explicit Sensor(QObject *parent = 0);
 
+    Sensor(const Sensor &copy, QObject *parent = 0);
+
+    Sensor &operator=(const Sensor &copy);
+
     virtual ~Sensor();
 
     enum SensorMessage{
@@ -66,7 +70,7 @@ public:
     //####################################
 
     const SensorConfiguration &getSensorConfiguration() const;
-    void setSensorConfiguration(const SensorConfiguration &sConfig);
+    virtual void setSensorConfiguration(const SensorConfiguration &sConfig);
 
     const QPair<ReadingTypes, QPointer<Reading> > &getLastReading() const;
 
@@ -74,39 +78,50 @@ public:
     //methods to get or set further information to use a sensor
     //#########################################################
 
+    //reading types, sensor actions and connection types
     const QList<ReadingTypes> &getSupportedReadingTypes() const;
     const QList<SensorFunctions> &getSupportedSensorActions() const;
     const QList<ConnectionTypes> &getSupportedConnectionTypes() const;
 
+    //meta data
     const PluginMetaData &getMetaData() const;
 
+    //integer, double and string parameter
     const QMap<QString, int> &getIntegerParameter() const;
     const QMap<QString, double> &getDoubleParameter() const;
     const QMultiMap<QString, QString> &getStringParameter() const;
 
+    //self deined actions
     const QStringList &getSelfDefinedActions() const;
 
+    //accuracy
     const Accuracy &getDefaultAccuracy() const;
 
     //########################
     //sensor state and actions
     //########################
 
+    //sensor actions
     virtual bool accept(const SensorFunctions &method, const SensorAttributes &sAttr);
 
+    //abort actions
     virtual bool abortAction();
 
+    //connect or disconnect
     virtual bool connectSensor();
     virtual bool disconnectSensor();
 
+    //measurements
     virtual QList<QPointer<Reading> > measure(const MeasurementConfig &mConfig);
     virtual QVariantMap readingStream(const ReadingTypes &streamFormat);
 
+    //status information
     virtual bool getConnectionState();
     virtual bool getIsReadyForMeasurement();
     virtual bool getIsBusy();
     virtual QMap<QString, QString> getSensorStatus();
 
+    //self defined actions
     virtual bool doSelfDefinedAction(const QString &action);
 
     //#################

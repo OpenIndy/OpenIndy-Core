@@ -141,7 +141,7 @@ SOURCES += \
     src/reading.cpp \
     src/sensorconfiguration.cpp \
     src/sensorcontrol.cpp \
-    src/sensorlistener.cpp \
+    src/sensorworker.cpp \
     src/station.cpp \
     src/statistic.cpp \
     src/trafoparam.cpp
@@ -203,7 +203,7 @@ HEADERS  += \
     include/reading.h \
     include/sensorconfiguration.h \
     include/sensorcontrol.h \
-    include/sensorlistener.h \
+    include/sensorworker.h \
     include/station.h \
     include/statistic.h \
     include/trafoparam.h \

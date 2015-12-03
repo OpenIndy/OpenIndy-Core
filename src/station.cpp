@@ -27,12 +27,10 @@ Station::Station(QObject *parent) : Feature(parent), isActiveStation(false){
     this->stationSystem = new CoordinateSystem(QPointer<Station>(this));
     QObject::connect(this, SIGNAL(featureNameChanged(const int&, const QString&)), this, SLOT(stationNameChanged(const int&, const QString&)), Qt::DirectConnection);
 
-    //create a sensor control object, connect it and move it to thread
+    //create a sensor control object and connect it
     QPointer<Station> stationPointer(this);
     this->sensorControl = new SensorControl(stationPointer);
     this->connectSensorControl();
-    this->sensorControl->moveToThread(&this->stationThread);
-    this->stationThread.start();
 
 }
 
@@ -59,12 +57,10 @@ Station::Station(const QString &name, QObject *parent) : Feature(parent), isActi
     this->stationSystem->setFeatureName(this->name);
     QObject::connect(this, SIGNAL(featureNameChanged(const int&, const QString&)), this, SLOT(stationNameChanged(const int&, const QString&)), Qt::DirectConnection);
 
-    //create a sensor control object, connect it and move it to thread
+    //create a sensor control object and connect it
     QPointer<Station> stationPointer(this);
     this->sensorControl = new SensorControl(stationPointer);
     this->connectSensorControl();
-    this->sensorControl->moveToThread(&this->stationThread);
-    this->stationThread.start();
 
 }
 
@@ -86,15 +82,6 @@ Station::Station(const Station &copy, QObject *parent) : Feature(copy, parent){
         this->position = new Point(*copy.position.data());
     }
 
-    //copy measured readings
-    //this->cartesianReadings = copy.cartesianReadings;
-    //this->directionReadings = copy.directionReadings;
-    //this->distanceReadings = copy.distanceReadings;
-    //this->polarReadings = copy.polarReadings;
-    //this->levelReadings = copy.levelReadings;
-    //this->temperatureRadings = copy.temperatureRadings;
-    //this->undefinedReadings = copy.undefinedReadings;
-
 }
 
 /*!
@@ -115,15 +102,6 @@ Station &Station::operator=(const Station &copy){
         this->position = new Point(*copy.position.data());
     }
 
-    //copy measured readings
-    //this->cartesianReadings = copy.cartesianReadings;
-    //this->directionReadings = copy.directionReadings;
-    //this->distanceReadings = copy.distanceReadings;
-    //this->polarReadings = copy.polarReadings;
-    //this->levelReadings = copy.levelReadings;
-    //this->temperatureRadings = copy.temperatureRadings;
-    //this->undefinedReadings = copy.undefinedReadings;
-
     return *this;
 
 }
@@ -133,16 +111,13 @@ Station &Station::operator=(const Station &copy){
  */
 Station::~Station(){
 
-    this->stationThread.quit();
-    this->stationThread.wait();
-
     //delete corresponding coordinate system with all observations made from this station
     if(!this->stationSystem.isNull()){
         delete this->stationSystem;
     }
 
     //delete position of this station
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         delete this->position;
     }
 
@@ -189,69 +164,18 @@ const QPointer<CoordinateSystem> &Station::getCoordinateSystem() const{
 }
 
 /*!
- * \brief Station::getIsSensorSet
- * \return
- */
-bool Station::getIsSensorSet(){
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
-        return false;
-    }
-    return true;
-}
-
-/*!
- * \brief Station::getIsSensorConnected
- * \return
- */
-bool Station::getIsSensorConnected(){
-    if(this->sensorControl.isNull()){
-        return false;
-    }
-    return this->sensorControl->getIsSensorConnected();
-}
-
-/*!
- * \brief Station::getIsReadyForMeasurement
- * \return
- */
-bool Station::getIsReadyForMeasurement(){
-    if(this->sensorControl.isNull()){
-        return false;
-    }
-    return this->sensorControl->getIsReadyForMeasurement();
-}
-
-/*!
- * \brief Station::getIsBusy
- * \return
- */
-bool Station::getIsBusy(){
-    if(this->sensorControl.isNull()){
-        return false;
-    }
-    return this->sensorControl->getIsBusy();
-}
-
-/*!
- * \brief Station::getSensorStatus
- * \return
- */
-QMap<QString, QString> Station::getSensorStatus(){
-    if(this->sensorControl.isNull()){
-        return QMap<QString, QString>();
-    }
-    return this->sensorControl->getSensorStatus();
-}
-
-/*!
  * \brief Station::getSensorConfiguration
  * \return
  */
 SensorConfiguration Station::getSensorConfiguration(){
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
         return SensorConfiguration();
     }
-    return this->sensorControl->getSensor()->getSensorConfiguration();
+
+    return this->sensorControl->getSensorConfiguration();
+
 }
 
 /*!
@@ -259,9 +183,14 @@ SensorConfiguration Station::getSensorConfiguration(){
  * \param sConfig
  */
 void Station::setSensorConfiguration(const SensorConfiguration &sConfig){
-    if(!this->sensorControl.isNull() && !this->sensorControl->getSensor().isNull()){
-        this->sensorControl->getSensor()->setSensorConfiguration(sConfig);
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return;
     }
+
+    this->sensorControl->setSensorConfiguration(sConfig);
+
 }
 
 /*!
@@ -269,10 +198,25 @@ void Station::setSensorConfiguration(const SensorConfiguration &sConfig){
  * \param sensor
  */
 void Station::setSensor(const QPointer<Sensor> &sensor){
-    if(!sensor.isNull() && !this->sensorControl.isNull()){
-        this->sensorControl->setSensor(sensor);
-        emit this->sensorChanged(this->id);
+
+    //check active station state
+    if(!this->isActiveStation){
+        return;
     }
+
+    //check sensor
+    if(sensor.isNull()){
+        return;
+    }
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return;
+    }
+
+    this->sensorControl->setSensor(sensor);
+    emit this->sensorChanged(this->id);
+
 }
 
 /*!
@@ -280,29 +224,104 @@ void Station::setSensor(const QPointer<Sensor> &sensor){
  */
 void Station::resetSensor(){
 
-    //reset sensor control
-    this->sensorControl->resetSensor();
-    this->disconnectSensorControl();
-
-    //stop station thread
-    if(this->stationThread.isRunning()){
-        this->stationThread.quit();
-        this->stationThread.wait(5000);
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return;
     }
 
+    this->sensorControl->resetSensor();
     emit this->sensorChanged(this->id);
 
 }
 
 /*!
- * \brief Station::getSensorListener
+ * \brief Station::getUsedSensors
  * \return
  */
-const QPointer<SensorListener> Station::getSensorListener() const{
-    if(!this->sensorControl.isNull()){
-        return this->sensorControl->getSensorListener();
+const QList<Sensor> &Station::getUsedSensors() const{
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QList<Sensor>();
     }
-    return QPointer<SensorListener>();
+
+    return this->sensorControl->getUsedSensors();
+
+}
+
+/*!
+ * \brief Station::getIsSensorSet
+ * \return
+ */
+bool Station::getIsSensorSet(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return false;
+    }
+
+    return this->sensorControl->getIsSensorSet();
+
+}
+
+/*!
+ * \brief Station::getIsSensorConnected
+ * \return
+ */
+bool Station::getIsSensorConnected(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return false;
+    }
+
+    return this->sensorControl->getIsSensorConnected();
+
+}
+
+/*!
+ * \brief Station::getIsReadyForMeasurement
+ * \return
+ */
+bool Station::getIsReadyForMeasurement(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return false;
+    }
+
+    return this->sensorControl->getIsReadyForMeasurement();
+
+}
+
+/*!
+ * \brief Station::getIsBusy
+ * \return
+ */
+bool Station::getIsBusy(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return false;
+    }
+
+    return this->sensorControl->getIsBusy();
+
+}
+
+/*!
+ * \brief Station::getSensorStatus
+ * \return
+ */
+QMap<QString, QString> Station::getSensorStatus(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QMap<QString, QString>();
+    }
+
+    return this->sensorControl->getSensorStatus();
+
 }
 
 /*!
@@ -312,13 +331,11 @@ const QPointer<SensorListener> Station::getSensorListener() const{
 SensorTypes Station::getActiveSensorType() const{
 
     //check sensor control
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
+    if(this->sensorControl.isNull()){
         return eUndefinedSensor;
     }
 
-    SensorTypes sensorType = this->sensorControl->getSensor()->getSensorConfiguration().getTypeOfSensor();
-
-    return sensorType;
+    return this->sensorControl->getActiveSensorType();
 
 }
 
@@ -328,15 +345,12 @@ SensorTypes Station::getActiveSensorType() const{
  */
 QList<ReadingTypes> Station::getSupportedReadingTypes() const{
 
-    QList<ReadingTypes> readingTypes;
-
-    //check sensor
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
-        return readingTypes;
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QList<ReadingTypes>();
     }
 
-    readingTypes = this->sensorControl->getSensor()->getSupportedReadingTypes();
-    return readingTypes;
+    return this->sensorControl->getSupportedReadingTypes();
 
 }
 
@@ -346,15 +360,12 @@ QList<ReadingTypes> Station::getSupportedReadingTypes() const{
  */
 QList<ConnectionTypes> Station::getSupportedConnectionTypes() const{
 
-    QList<ConnectionTypes> connectionTypes;
-
-    //check sensor
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
-        return connectionTypes;
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QList<ConnectionTypes>();
     }
 
-    connectionTypes = this->sensorControl->getSensor()->getSupportedConnectionTypes();
-    return connectionTypes;
+    return this->sensorControl->getSupportedConnectionTypes();
 
 }
 
@@ -364,15 +375,12 @@ QList<ConnectionTypes> Station::getSupportedConnectionTypes() const{
  */
 QList<SensorFunctions> Station::getSupportedSensorActions() const{
 
-    QList<SensorFunctions> sensorFunctions;
-
-    //check sensor
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
-        return sensorFunctions;
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QList<SensorFunctions>();
     }
 
-    sensorFunctions = this->sensorControl->getSensor()->getSupportedSensorActions();
-    return sensorFunctions;
+    return this->sensorControl->getSupportedSensorActions();
 
 }
 
@@ -382,15 +390,42 @@ QList<SensorFunctions> Station::getSupportedSensorActions() const{
  */
 QStringList Station::getSelfDefinedActions() const{
 
-    QStringList selfDefinedActions;
-
-    //check sensor
-    if(this->sensorControl.isNull() || this->sensorControl->getSensor().isNull()){
-        return selfDefinedActions;
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QStringList();
     }
 
-    selfDefinedActions = this->sensorControl->getSensor()->getSelfDefinedActions();
-    return selfDefinedActions;
+    return this->sensorControl->getSelfDefinedActions();
+
+}
+
+/*!
+ * \brief Station::getStreamFormat
+ * \return
+ */
+ReadingTypes Station::getStreamFormat(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return eUndefinedReading;
+    }
+
+    return this->sensorControl->getStreamFormat();
+
+}
+
+/*!
+ * \brief Station::setStreamFormat
+ * \param streamFormat
+ */
+void Station::setStreamFormat(ReadingTypes streamFormat){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return;
+    }
+
+    this->sensorControl->setStreamFormat(streamFormat);
 
 }
 
@@ -422,20 +457,18 @@ QDomElement Station::toOpenIndyXML(QDomDocument &xmlDoc){
     //add used sensors
     if(!this->sensorControl.isNull() && this->sensorControl->getUsedSensors().size() > 0){
         QDomElement usedSensors = xmlDoc.createElement("usedSensors");
-        foreach(const QPointer<Sensor> &s, this->sensorControl->getUsedSensors()){
-            if(!s.isNull()){
-                QDomElement sensor = s->toOpenIndyXML(xmlDoc);
-                if(!sensor.isNull()){
-                    usedSensors.appendChild(sensor);
-                }
+        foreach(const Sensor &s, this->sensorControl->getUsedSensors()){
+            QDomElement sensor = s.toOpenIndyXML(xmlDoc);
+            if(!sensor.isNull()){
+                usedSensors.appendChild(sensor);
             }
         }
         station.appendChild(usedSensors);
     }
 
     //add active sensor
-    if(!this->sensorControl.isNull() && !this->sensorControl->getSensor().isNull()){
-        QDomElement activeSensor = this->sensorControl->getSensor()->toOpenIndyXML(xmlDoc);
+    if(!this->sensorControl.isNull()){
+        QDomElement activeSensor = this->sensorControl->getSensor().toOpenIndyXML(xmlDoc);
         if(!activeSensor.isNull()){
             activeSensor.setTagName("activeSensor");
             station.appendChild(activeSensor);
@@ -609,21 +642,17 @@ void Station::connectSensorControl(){
     //connect sensor actions
     QObject::connect(this, &Station::connectSensor, this->sensorControl.data(), &SensorControl::connectSensor, Qt::AutoConnection);
     QObject::connect(this, &Station::disconnectSensor, this->sensorControl.data(), &SensorControl::disconnectSensor, Qt::AutoConnection);
-
     QObject::connect(this, &Station::measure, this->sensorControl.data(), &SensorControl::measure, Qt::AutoConnection);
-
     void (Station:: *movePolarSignal)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
                                       const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
     QObject::connect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot);
-
     void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z,
                                               const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
     QObject::connect(this, moveCartesianSignal, this->sensorControl.data(), moveCartesianSlot);
-
     QObject::connect(this, &Station::initialize, this->sensorControl.data(), &SensorControl::initialize, Qt::AutoConnection);
     QObject::connect(this, &Station::motorState, this->sensorControl.data(), &SensorControl::motorState, Qt::AutoConnection);
     QObject::connect(this, &Station::home, this->sensorControl.data(), &SensorControl::home, Qt::AutoConnection);
@@ -631,10 +660,28 @@ void Station::connectSensorControl(){
     QObject::connect(this, &Station::compensation, this->sensorControl.data(), &SensorControl::compensation, Qt::AutoConnection);
     QObject::connect(this, &Station::selfDefinedAction, this->sensorControl.data(), &SensorControl::selfDefinedAction, Qt::AutoConnection);
 
+    //connect sensor streaming
+    QObject::connect(this, &Station::startReadingStream, this->sensorControl.data(), &SensorControl::startReadingStream, Qt::AutoConnection);
+    QObject::connect(this, &Station::stopReadingStream, this->sensorControl.data(), &SensorControl::stopReadingStream, Qt::AutoConnection);
+    QObject::connect(this, &Station::startConnectionMonitoringStream, this->sensorControl.data(), &SensorControl::startConnectionMonitoringStream, Qt::AutoConnection);
+    QObject::connect(this, &Station::stopConnectionMonitoringStream, this->sensorControl.data(), &SensorControl::stopConnectionMonitoringStream, Qt::AutoConnection);
+    QObject::connect(this, &Station::startStatusMonitoringStream, this->sensorControl.data(), &SensorControl::startStatusMonitoringStream, Qt::AutoConnection);
+    QObject::connect(this, &Station::stopStatusMonitoringStream, this->sensorControl.data(), &SensorControl::stopStatusMonitoringStream, Qt::AutoConnection);
+
     //connect sensor action results
     QObject::connect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished, Qt::AutoConnection);
+
+    //connect sensor streaming results
+    QObject::connect(this->sensorControl.data(), &SensorControl::realTimeReading, this, &Station::realTimeReading, Qt::AutoConnection);
+    QObject::connect(this->sensorControl.data(), &SensorControl::realTimeStatus, this, &Station::realTimeStatus, Qt::AutoConnection);
+    QObject::connect(this->sensorControl.data(), &SensorControl::connectionLost, this, &Station::connectionLost, Qt::AutoConnection);
+    QObject::connect(this->sensorControl.data(), &SensorControl::connectionReceived, this, &Station::connectionReceived, Qt::AutoConnection);
+    QObject::connect(this->sensorControl.data(), &SensorControl::isReadyForMeasurement, this, &Station::isReadyForMeasurement, Qt::AutoConnection);
+
+    //connect sensor messages
+    QObject::connect(this->sensorControl.data(), &SensorControl::sensorMessage, this, &Station::sensorMessage, Qt::AutoConnection);
 
 }
 
@@ -646,21 +693,17 @@ void Station::disconnectSensorControl(){
     //disconnect sensor actions
     QObject::disconnect(this, &Station::connectSensor, this->sensorControl.data(), &SensorControl::connectSensor);
     QObject::disconnect(this, &Station::disconnectSensor, this->sensorControl.data(), &SensorControl::disconnectSensor);
-
     QObject::disconnect(this, &Station::measure, this->sensorControl.data(), &SensorControl::measure);
-
     void (Station:: *movePolarSignal)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
                                       const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
     QObject::disconnect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot);
-
     void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z,
                                               const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
     QObject::disconnect(this, moveCartesianSignal, this->sensorControl.data(), moveCartesianSlot);
-
     QObject::disconnect(this, &Station::initialize, this->sensorControl.data(), &SensorControl::initialize);
     QObject::disconnect(this, &Station::motorState, this->sensorControl.data(), &SensorControl::motorState);
     QObject::disconnect(this, &Station::home, this->sensorControl.data(), &SensorControl::home);
@@ -668,10 +711,28 @@ void Station::disconnectSensorControl(){
     QObject::disconnect(this, &Station::compensation, this->sensorControl.data(), &SensorControl::compensation);
     QObject::disconnect(this, &Station::selfDefinedAction, this->sensorControl.data(), &SensorControl::selfDefinedAction);
 
+    //disconnect sensor streaming
+    QObject::disconnect(this, &Station::startReadingStream, this->sensorControl.data(), &SensorControl::startReadingStream);
+    QObject::disconnect(this, &Station::stopReadingStream, this->sensorControl.data(), &SensorControl::stopReadingStream);
+    QObject::disconnect(this, &Station::startConnectionMonitoringStream, this->sensorControl.data(), &SensorControl::startConnectionMonitoringStream);
+    QObject::disconnect(this, &Station::stopConnectionMonitoringStream, this->sensorControl.data(), &SensorControl::stopConnectionMonitoringStream);
+    QObject::disconnect(this, &Station::startStatusMonitoringStream, this->sensorControl.data(), &SensorControl::startStatusMonitoringStream);
+    QObject::disconnect(this, &Station::stopStatusMonitoringStream, this->sensorControl.data(), &SensorControl::stopStatusMonitoringStream);
+
     //disconnect sensor action results
     QObject::disconnect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished);
     QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings);
     QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished);
+
+    //disconnect sensor streaming results
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::realTimeReading, this, &Station::realTimeReading);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::realTimeStatus, this, &Station::realTimeStatus);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::connectionLost, this, &Station::connectionLost);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::connectionReceived, this, &Station::connectionReceived);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::isReadyForMeasurement, this, &Station::isReadyForMeasurement);
+
+    //connect sensor messages
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::sensorMessage, this, &Station::sensorMessage);
 
 }
 

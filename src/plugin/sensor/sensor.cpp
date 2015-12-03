@@ -15,6 +15,58 @@ Sensor::Sensor(QObject *parent) : QObject(parent){
 }
 
 /*!
+ * \brief Sensor::Sensor
+ * \param copy
+ * \param parent
+ */
+Sensor::Sensor(const Sensor &copy, QObject *parent){
+
+    //sensor configuration
+    this->sensorConfiguration = copy.getSensorConfiguration();
+
+    //meta information about the sensor
+    this->supportedReadingTypes = copy.getSupportedReadingTypes();
+    this->supportedSensorActions = copy.getSupportedSensorActions();
+    this->supportedConnectionTypes = copy.getSupportedConnectionTypes();
+    this->selfDefinedActions = copy.getSelfDefinedActions();
+    this->defaultAccuracy = copy.getDefaultAccuracy();
+    this->metaData = copy.getMetaData();
+
+    //the needed scalar input parameters including default values
+    this->integerParameters = copy.getIntegerParameter();
+    this->doubleParameters = copy.getDoubleParameter();
+    this->stringParameters = copy.getStringParameter();
+
+}
+
+/*!
+ * \brief Sensor::operator =
+ * \param copy
+ * \return
+ */
+Sensor &Sensor::operator=(const Sensor &copy){
+
+    //sensor configuration
+    this->sensorConfiguration = copy.getSensorConfiguration();
+
+    //meta information about the sensor
+    this->supportedReadingTypes = copy.getSupportedReadingTypes();
+    this->supportedSensorActions = copy.getSupportedSensorActions();
+    this->supportedConnectionTypes = copy.getSupportedConnectionTypes();
+    this->selfDefinedActions = copy.getSelfDefinedActions();
+    this->defaultAccuracy = copy.getDefaultAccuracy();
+    this->metaData = copy.getMetaData();
+
+    //the needed scalar input parameters including default values
+    this->integerParameters = copy.getIntegerParameter();
+    this->doubleParameters = copy.getDoubleParameter();
+    this->stringParameters = copy.getStringParameter();
+
+    return *this;
+
+}
+
+/*!
  * \brief Sensor::~Sensor
  */
 Sensor::~Sensor(){
