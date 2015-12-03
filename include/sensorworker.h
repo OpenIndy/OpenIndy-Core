@@ -61,11 +61,11 @@ public slots:
     //(re)set sensor
     //##############
 
-    //set sensor
+    //get or set sensor
+    Sensor getSensor() const;
     void setSensor(QPointer<Sensor> sensor);
-
-    //sensor configuration
-    void setSensorConfiguration(SensorConfiguration sConfig);
+    QPointer<Sensor> takeSensor();
+    void resetSensor();
 
     //####################################################
     //get information about the currently connected sensor
@@ -76,6 +76,21 @@ public slots:
     bool getIsReadyForMeasurement();
     bool getIsBusy();
     QMap<QString, QString> getSensorStatus();
+
+    //sensor type
+    SensorTypes getActiveSensorType() const;
+
+    //reading and connection types
+    QList<ReadingTypes> getSupportedReadingTypes() const;
+    QList<ConnectionTypes> getSupportedConnectionTypes() const;
+
+    //sensor actions
+    QList<SensorFunctions> getSupportedSensorActions() const;
+    QStringList getSelfDefinedActions() const;
+
+    //sensor configuration
+    SensorConfiguration getSensorConfiguration();
+    void setSensorConfiguration(SensorConfiguration sConfig);
 
     //####################
     //start sensor actions

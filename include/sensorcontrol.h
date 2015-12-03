@@ -36,12 +36,13 @@ public slots:
     //get or set sensor control attributes
     //####################################
 
-    //(re)set sensor
-    const Sensor &getSensor() const;
+    //get or set sensor
+    Sensor getSensor() const;
     void setSensor(const QPointer<Sensor> &sensor);
+    QPointer<Sensor> takeSensor();
     void resetSensor();
 
-    //active sensor and previously used sensors
+    //previously used sensors
     const QList<Sensor> &getUsedSensors() const;
 
     //stream format
@@ -151,8 +152,8 @@ private:
     //##############
 
     //sensor worker
-    bool isWorkerValid();
-    bool isWorkerRunning();
+    bool isWorkerValid() const;
+    bool isWorkerRunning() const;
     void startSensorWorker();
     void stopSensorWorker();
 
@@ -167,10 +168,11 @@ private:
     //corresponding station
     QPointer<Station> station;
 
-    //current sensor and all previously used sensors
-    Sensor sensor;
-    bool sensorValid;
+    //previously used sensors
     QList<Sensor> usedSensors;
+
+    //current sensor state
+    bool sensorValid;
 
     //sensor worker
     QPointer<SensorWorker> worker;

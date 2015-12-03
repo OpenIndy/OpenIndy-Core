@@ -55,8 +55,10 @@ public:
     SensorConfiguration getSensorConfiguration();
     void setSensorConfiguration(const SensorConfiguration &sConfig);
 
-    //(re)set sensor
+    //get or set sensor
+    Sensor getSensor() const;
     void setSensor(const QPointer<Sensor> &sensor);
+    QPointer<Sensor> takeSensor();
     void resetSensor();
 
     //previously used sensors

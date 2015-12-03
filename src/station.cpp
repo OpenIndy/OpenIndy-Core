@@ -194,6 +194,21 @@ void Station::setSensorConfiguration(const SensorConfiguration &sConfig){
 }
 
 /*!
+ * \brief Station::getSensor
+ * \return
+ */
+Sensor Station::getSensor() const{
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return Sensor();
+    }
+
+    return this->sensorControl->getSensor();
+
+}
+
+/*!
  * \brief Station::setSensor
  * \param sensor
  */
@@ -216,6 +231,25 @@ void Station::setSensor(const QPointer<Sensor> &sensor){
 
     this->sensorControl->setSensor(sensor);
     emit this->sensorChanged(this->id);
+
+}
+
+/*!
+ * \brief Station::takeSensor
+ * \return
+ */
+QPointer<Sensor> Station::takeSensor(){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return QPointer<Sensor>(NULL);
+    }
+
+    QPointer<Sensor> sensor = this->sensorControl->takeSensor();
+
+    emit this->sensorChanged(this->id);
+
+    return sensor;
 
 }
 

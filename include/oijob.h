@@ -214,12 +214,6 @@ signals:
 
     void recalcFeature(const QPointer<Feature> &feature);
 
-    //#########################################################
-    //signals to force setting the sensor of the active station
-    //#########################################################
-
-    void setSensor(const SensorConfiguration &sConfig);
-
     //#####################################
     //signals forwarded from FeatureUpdater
     //#####################################

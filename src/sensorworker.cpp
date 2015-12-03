@@ -17,11 +17,22 @@ SensorWorker::SensorWorker(QObject *parent) : QObject(parent), isSensorConnected
  */
 SensorWorker::~SensorWorker(){
 
-    //check and disconnect old sensor
-    if(!this->sensor.isNull()){
-        this->sensor->disconnectSensor();
-        delete this->sensor;
+}
+
+/*!
+ * \brief SensorWorker::getSensor
+ * \return
+ */
+Sensor SensorWorker::getSensor() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return Sensor();
     }
+
+    return Sensor(*this->sensor.data());
 
 }
 
@@ -33,12 +44,6 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check and disconnect old sensor
-    if(!this->sensor.isNull()){
-        this->sensor->disconnectSensor();
-        delete this->sensor;
-    }
-
     if(!sensor.isNull()){
         this->sensor = sensor;
     }
@@ -46,19 +51,41 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
 }
 
 /*!
- * \brief SensorWorker::setSensorConfiguration
- * \param sConfig
+ * \brief SensorWorker::takeSensor
+ * \return
  */
-void SensorWorker::setSensorConfiguration(SensorConfiguration sConfig){
+QPointer<Sensor> SensorWorker::takeSensor(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check sensor
-    if(this->sensor.isNull()){
-        return;
-    }
+    //save sensor pointer
+    QPointer<Sensor> sensor = this->sensor;
 
-    this->sensor->setSensorConfiguration(sConfig);
+    //set sensor pointer to NULL pointer
+    this->sensor = QPointer<Sensor>(NULL);
+
+    return sensor;
+
+}
+
+/*!
+ * \brief SensorWorker::resetSensor
+ */
+void SensorWorker::resetSensor(){
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    if(!this->sensor.isNull()){
+
+        //disconnect sensor
+        if(this->sensor->getConnectionState()){
+            this->sensor->disconnectSensor();
+        }
+
+        //delete sensor
+        delete this->sensor;
+
+    }
 
 }
 
@@ -127,6 +154,125 @@ QMap<QString, QString> SensorWorker::getSensorStatus(){
     }
 
     this->sensor->getSensorStatus();
+
+}
+
+/*!
+ * \brief SensorWorker::getActiveSensorType
+ * \return
+ */
+SensorTypes SensorWorker::getActiveSensorType() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return eUndefinedSensor;
+    }
+
+    this->sensor->getSensorConfiguration().getTypeOfSensor();
+
+}
+
+/*!
+ * \brief SensorWorker::getSupportedReadingTypes
+ * \return
+ */
+QList<ReadingTypes> SensorWorker::getSupportedReadingTypes() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return QList<ReadingTypes>();
+    }
+
+    this->sensor->getSupportedReadingTypes();
+
+}
+
+/*!
+ * \brief SensorWorker::getSupportedConnectionTypes
+ * \return
+ */
+QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return QList<ConnectionTypes>();
+    }
+
+    this->sensor->getSupportedConnectionTypes();
+
+}
+
+/*!
+ * \brief SensorWorker::getSupportedSensorActions
+ * \return
+ */
+QList<SensorFunctions> SensorWorker::getSupportedSensorActions() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return QList<SensorFunctions>();
+    }
+
+    this->sensor->getSupportedSensorActions();
+
+}
+
+/*!
+ * \brief SensorWorker::getSelfDefinedActions
+ * \return
+ */
+QStringList SensorWorker::getSelfDefinedActions() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return QStringList();
+    }
+
+    this->sensor->getSelfDefinedActions();
+
+}
+
+/*!
+ * \brief SensorWorker::getSensorConfiguration
+ * \return
+ */
+SensorConfiguration SensorWorker::getSensorConfiguration(){
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return SensorConfiguration();
+    }
+
+    this->sensor->getSensorConfiguration();
+
+}
+
+/*!
+ * \brief SensorWorker::setSensorConfiguration
+ * \param sConfig
+ */
+void SensorWorker::setSensorConfiguration(SensorConfiguration sConfig){
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor
+    if(this->sensor.isNull()){
+        return;
+    }
+
+    this->sensor->setSensorConfiguration(sConfig);
 
 }
 

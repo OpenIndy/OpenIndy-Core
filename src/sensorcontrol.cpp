@@ -20,14 +20,30 @@ SensorControl::~SensorControl(){
 
 /*!
  * \brief SensorControl::getSensor
+ * Returns a copy of the current sensor
  * \return
  */
-const Sensor &SensorControl::getSensor() const{
-    return this->sensor;
+Sensor SensorControl::getSensor() const{
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor worker
+    if(!this->isWorkerRunning()){
+        return Sensor();
+    }
+
+    //get sensor
+    Sensor sensor;
+    QMetaObject::invokeMethod(this->worker, "getSensor", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(Sensor, sensor));
+
+    return sensor;
+
 }
 
 /*!
  * \brief SensorControl::setSensor
+ * Sets the current sensor to the given one
  * \param sensor
  */
 void SensorControl::setSensor(const QPointer<Sensor> &sensor){
@@ -39,41 +55,82 @@ void SensorControl::setSensor(const QPointer<Sensor> &sensor){
         return;
     }
 
-    //check old sensor and add it to the list of used sensors
-    if(sensorValid){
-        this->usedSensors.append(this->sensor);
-    }
-
-    //update current sensor
-    this->sensor = Sensor(*sensor.data());
-    this->sensorValid = true;
-
     //start worker thread if it is not running yet
     this->startSensorWorker();
 
+    //check old sensor and add it to the list of used sensors
+    if(sensorValid){
+        this->usedSensors.append(this->getSensor());
+    }
+
     //call method of sensor worker
-    QMetaObject::invokeMethod(this->worker, "setSensor", Qt::QueuedConnection,
+    QMetaObject::invokeMethod(this->worker, "setSensor", Qt::BlockingQueuedConnection,
                               Q_ARG(QPointer<Sensor>, sensor));
+
+    //set sensor valid
+    this->sensorValid = true;
+
+}
+
+/*!
+ * \brief SensorControl::takeSensor
+ * Returns the current sensor instance. That sensor will no longer be used by the sensor worker
+ * \return
+ */
+QPointer<Sensor> SensorControl::takeSensor(){
+
+    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
+
+    //check sensor worker
+    if(!this->isWorkerRunning()){
+        return QPointer<Sensor>(NULL);
+    }
+
+    //check old sensor and add it to the list of used sensors
+    if(sensorValid){
+        this->usedSensors.append(this->getSensor());
+    }
+
+    //call method of sensor worker
+    QPointer<Sensor> sensor(NULL);
+    QMetaObject::invokeMethod(this->worker, "takeSensor", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QPointer<Sensor>, sensor));
+
+    //stop worker thread
+    this->stopSensorWorker();
+
+    //set sensor invalid
+    this->sensorValid = false;
+
+    return sensor;
 
 }
 
 /*!
  * \brief SensorControl::resetSensor
+ * Disconnects and deletes the current sensor
  */
 void SensorControl::resetSensor(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //stop worker thread
-    this->stopSensorWorker();
+    //check sensor worker
+    if(!this->isWorkerRunning()){
+        return;
+    }
 
     //check old sensor and add it to the list of used sensors
     if(sensorValid){
-        this->usedSensors.append(this->sensor);
+        this->usedSensors.append(this->getSensor());
     }
 
-    //update current sensor
-    this->sensor = Sensor();
+    //call method of sensor worker
+    QMetaObject::invokeMethod(this->worker, "resetSensor", Qt::BlockingQueuedConnection);
+
+    //stop worker thread
+    this->stopSensorWorker();
+
+    //set sensor invalid
     this->sensorValid = false;
 
 }
@@ -231,12 +288,17 @@ SensorTypes SensorControl::getActiveSensorType() const{
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
+    //check sensor worker
+    if(!this->isWorkerRunning()){
         return eUndefinedSensor;
     }
 
-    return this->sensor.getSensorConfiguration().getTypeOfSensor();
+    //call method of sensor worker
+    SensorTypes type;
+    QMetaObject::invokeMethod(this->worker, "getActiveSensorType", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(SensorTypes, type));
+
+    return type;
 
 }
 
@@ -248,12 +310,17 @@ QList<ReadingTypes> SensorControl::getSupportedReadingTypes() const{
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
+    //check sensor worker
+    if(!this->isWorkerRunning()){
         return QList<ReadingTypes>();
     }
 
-    return this->sensor.getSupportedReadingTypes();
+    //call method of sensor worker
+    QList<ReadingTypes> types;
+    QMetaObject::invokeMethod(this->worker, "getSupportedReadingTypes", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QList<ReadingTypes>, types));
+
+    return types;
 
 }
 
@@ -265,12 +332,17 @@ QList<ConnectionTypes> SensorControl::getSupportedConnectionTypes() const{
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
+    //check sensor worker
+    if(!this->isWorkerRunning()){
         return QList<ConnectionTypes>();
     }
 
-    return this->sensor.getSupportedConnectionTypes();
+    //call method of sensor worker
+    QList<ConnectionTypes> types;
+    QMetaObject::invokeMethod(this->worker, "getSupportedConnectionTypes", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QList<ConnectionTypes>, types));
+
+    return types;
 
 }
 
@@ -282,12 +354,17 @@ QList<SensorFunctions> SensorControl::getSupportedSensorActions() const{
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
+    //check sensor worker
+    if(!this->isWorkerRunning()){
         return QList<SensorFunctions>();
     }
 
-    return this->sensor.getSupportedSensorActions();
+    //call method of sensor worker
+    QList<SensorFunctions> actions;
+    QMetaObject::invokeMethod(this->worker, "getSupportedSensorActions", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QList<SensorFunctions>, actions));
+
+    return actions;
 
 }
 
@@ -299,12 +376,17 @@ QStringList SensorControl::getSelfDefinedActions() const{
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
+    //check sensor worker
+    if(!this->isWorkerRunning()){
         return QStringList();
     }
 
-    return this->sensor.getSelfDefinedActions();
+    //call method of sensor worker
+    QStringList actions;
+    QMetaObject::invokeMethod(this->worker, "getSelfDefinedActions", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(QStringList, actions));
+
+    return actions;
 
 }
 
@@ -316,12 +398,17 @@ SensorConfiguration SensorControl::getSensorConfiguration(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
+    //check sensor worker
+    if(!this->isWorkerRunning()){
         return SensorConfiguration();
     }
 
-    return this->sensor.getSensorConfiguration();
+    //call method of sensor worker
+    SensorConfiguration sConfig;
+    QMetaObject::invokeMethod(this->worker, "getSensorConfiguration", Qt::BlockingQueuedConnection,
+                              Q_RETURN_ARG(SensorConfiguration, sConfig));
+
+    return sConfig;
 
 }
 
@@ -333,22 +420,14 @@ void SensorControl::setSensorConfiguration(const SensorConfiguration &sConfig){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
-    //check current sensor
-    if(!this->sensorValid){
-        return;
-    }
-
     //check sensor worker
     if(!this->isWorkerRunning()){
         return;
     }
 
     //call method of sensor worker
-    QMetaObject::invokeMethod(this->worker, "setSensorConfiguration", Qt::QueuedConnection,
+    QMetaObject::invokeMethod(this->worker, "setSensorConfiguration", Qt::BlockingQueuedConnection,
                               Q_ARG(SensorConfiguration, sConfig));
-
-    //update sensor helper copy
-    this->sensor.setSensorConfiguration(sConfig);
 
 }
 
@@ -668,7 +747,7 @@ void SensorControl::stopStatusMonitoringStream(){
  * \brief SensorControl::isWorkerValid
  * \return
  */
-bool SensorControl::isWorkerValid(){
+bool SensorControl::isWorkerValid() const{
     if(this->worker.isNull() || this->workerThread.isNull()){
         return false;
     }
@@ -679,7 +758,7 @@ bool SensorControl::isWorkerValid(){
  * \brief SensorControl::isWorkerRunning
  * \return
  */
-bool SensorControl::isWorkerRunning(){
+bool SensorControl::isWorkerRunning() const{
     if(!this->isWorkerValid() || !this->workerThread->isRunning()){
         return false;
     }
