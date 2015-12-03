@@ -242,6 +242,9 @@ private slots:
     void addReadings(const int &geomId, const QList<QPointer<Reading> > &readings);
     void removeReading(const QPointer<Reading> &reading);
 
+    //set previously used sensors
+    void setUsedSensors(const QList<Sensor> &sensors);
+
 protected:
 
     //#############################################

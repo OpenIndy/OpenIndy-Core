@@ -44,6 +44,7 @@ public slots:
 
     //previously used sensors
     const QList<Sensor> &getUsedSensors() const;
+    void setUsedSensors(const QList<Sensor> &sensors);
 
     //stream format
     ReadingTypes getStreamFormat();

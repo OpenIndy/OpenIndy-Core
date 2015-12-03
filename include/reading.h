@@ -9,6 +9,7 @@
 
 #include "element.h"
 #include "measurementconfig.h"
+#include "sensorconfiguration.h"
 #include "oivec.h"
 #include "oimat.h"
 #include "types.h"
@@ -20,9 +21,9 @@ namespace oi{
 
 using namespace math;
 
-class Sensor;
 class Observation;
 class CoordinateSystem;
+class Station;
 
 //###########################
 //definition of reading types
@@ -203,11 +204,11 @@ public:
     void setSensorFace(const SensorFaces &face);
 
     //#################################################
-    //get and set references to sensor and observations
+    //get and set sensor configuration and observations
     //#################################################
 
-    const QPointer<Sensor> &getSensor() const;
-    void setSensor(const QPointer<Sensor> &sensor);
+    const SensorConfiguration &getSensorConfiguration() const;
+    void setSensorConfiguration(const SensorConfiguration &sConfig);
 
     const QPointer<Observation> &getObservation() const;
     void setObservation(const QPointer<Observation> &observation);
@@ -285,11 +286,11 @@ private:
     MeasurementConfig mConfig; //the configuration that the sensor used to produce this reading
     SensorFaces face;
 
-    //####################################
-    //references to sensor and observation
-    //####################################
+    //######################
+    //sensor and observation
+    //######################
 
-    QPointer<Sensor> sensor;
+    SensorConfiguration sConfig;
     QPointer<Observation> observation;
 
     //################

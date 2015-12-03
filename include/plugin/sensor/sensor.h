@@ -33,10 +33,6 @@ public:
     QString action;
 };
 
-class Reading;
-class MeasurementConfig;
-class SensorControl;
-
 /*!
  * \brief The Sensor class
  */
@@ -138,7 +134,6 @@ signals:
     //##############################################
 
     void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
-    void sensorMessage(const SensorMessage &type, const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
 
 protected:
 

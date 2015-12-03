@@ -45,7 +45,13 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     if(!sensor.isNull()){
+
+        //set sensor
         this->sensor = sensor;
+
+        //connect sensor
+        QObject::connect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage, Qt::AutoConnection);
+
     }
 
 }
@@ -60,6 +66,11 @@ QPointer<Sensor> SensorWorker::takeSensor(){
 
     //save sensor pointer
     QPointer<Sensor> sensor = this->sensor;
+
+    //disconnect sensor
+    if(!sensor.isNull()){
+        QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
+    }
 
     //set sensor pointer to NULL pointer
     this->sensor = QPointer<Sensor>(NULL);
@@ -81,6 +92,7 @@ void SensorWorker::resetSensor(){
         if(this->sensor->getConnectionState()){
             this->sensor->disconnectSensor();
         }
+        QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
 
         //delete sensor
         delete this->sensor;

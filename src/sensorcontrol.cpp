@@ -144,6 +144,14 @@ const QList<Sensor> &SensorControl::getUsedSensors() const{
 }
 
 /*!
+ * \brief SensorControl::setUsedSensors
+ * \param sensors
+ */
+void SensorControl::setUsedSensors(const QList<Sensor> &sensors){
+    this->usedSensors = sensors;
+}
+
+/*!
  * \brief SensorControl::getStreamFormat
  * \return
  */

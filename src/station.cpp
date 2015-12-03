@@ -284,6 +284,21 @@ const QList<Sensor> &Station::getUsedSensors() const{
 }
 
 /*!
+ * \brief Station::setUsedSensors
+ * \param sensors
+ */
+void Station::setUsedSensors(const QList<Sensor> &sensors){
+
+    //check sensor control
+    if(this->sensorControl.isNull()){
+        return;
+    }
+
+    return this->sensorControl->setUsedSensors(sensors);
+
+}
+
+/*!
  * \brief Station::getIsSensorSet
  * \return
  */
@@ -783,6 +798,9 @@ void Station::addReadings(const int &geomId, const QList<QPointer<Reading> > &re
         if(reading.isNull()){
             continue;
         }
+
+        //set sensor configuration of reading
+        reading->setSensorConfiguration(this->getSensorConfiguration());
 
         switch(reading->getTypeOfReading()){
         case eCartesianReading:

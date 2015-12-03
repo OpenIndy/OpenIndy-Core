@@ -152,7 +152,7 @@ Reading::Reading(const Reading &copy, QObject *parent) : Element(copy, parent){
     this->measuredAt = copy.measuredAt;
     this->mConfig = copy.mConfig;
     this->face = copy.face;
-    this->sensor = copy.sensor;
+    this->sConfig = copy.sConfig;
     this->observation = copy.observation;
     this->hasBackup = copy.hasBackup;
 
@@ -186,7 +186,7 @@ Reading &Reading::operator=(const Reading &copy){
     this->measuredAt = copy.measuredAt;
     this->mConfig = copy.mConfig;
     this->face = copy.face;
-    this->sensor = copy.sensor;
+    this->sConfig = copy.sConfig;
     this->observation = copy.observation;
     this->hasBackup = copy.hasBackup;
 
@@ -422,21 +422,19 @@ void Reading::setSensorFace(const SensorFaces &face){
 }
 
 /*!
- * \brief Reading::getSensor
+ * \brief Reading::getSensorConfiguration
  * \return
  */
-const QPointer<Sensor> &Reading::getSensor() const{
-    return this->sensor;
+const SensorConfiguration &Reading::getSensorConfiguration() const{
+    return this->sConfig;
 }
 
 /*!
- * \brief Reading::setSensor
+ * \brief Reading::setSensorConfiguration
  * \param sensor
  */
-void Reading::setSensor(const QPointer<Sensor> &sensor){
-    if(this->sensor.isNull() && !sensor.isNull()){
-        this->sensor = sensor;
-    }
+void Reading::setSensorConfiguration(const SensorConfiguration &sConfig){
+    this->sConfig = sConfig;
 }
 
 /*!
@@ -513,12 +511,7 @@ QString Reading::getDisplayTime() const{
  * \return
  */
 QString Reading::getDisplaySensor() const{
-
-    if(this->sensor.isNull()){
-        return "";
-    }
-    return this->sensor->getMetaData().name;
-
+    return "";//return this->sensor.getMetaData().name;
 }
 
 /*!
