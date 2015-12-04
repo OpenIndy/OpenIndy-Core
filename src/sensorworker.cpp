@@ -182,7 +182,8 @@ SensorTypes SensorWorker::getActiveSensorType(){
         return eUndefinedSensor;
     }
 
-    this->sensor->getSensorConfiguration().getTypeOfSensor();
+    SensorTypes type = this->sensor->getSensorConfiguration().getTypeOfSensor();
+    return type;
 
 }
 
@@ -199,7 +200,8 @@ QList<ReadingTypes> SensorWorker::getSupportedReadingTypes(){
         return QList<ReadingTypes>();
     }
 
-    this->sensor->getSupportedReadingTypes();
+    QList<ReadingTypes> types = this->sensor->getSupportedReadingTypes();
+    return types;
 
 }
 
@@ -216,7 +218,8 @@ QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes(){
         return QList<ConnectionTypes>();
     }
 
-    this->sensor->getSupportedConnectionTypes();
+    QList<ConnectionTypes> types = this->sensor->getSupportedConnectionTypes();
+    return types;
 
 }
 
@@ -233,7 +236,8 @@ QList<SensorFunctions> SensorWorker::getSupportedSensorActions(){
         return QList<SensorFunctions>();
     }
 
-    this->sensor->getSupportedSensorActions();
+    QList<SensorFunctions> functions = this->sensor->getSupportedSensorActions();
+    return functions;
 
 }
 
@@ -250,7 +254,8 @@ QStringList SensorWorker::getSelfDefinedActions(){
         return QStringList();
     }
 
-    this->sensor->getSelfDefinedActions();
+    QStringList actions = this->sensor->getSelfDefinedActions();
+    return actions;
 
 }
 
@@ -267,7 +272,8 @@ SensorConfiguration SensorWorker::getSensorConfiguration(){
         return SensorConfiguration();
     }
 
-    this->sensor->getSensorConfiguration();
+    SensorConfiguration sConfig = this->sensor->getSensorConfiguration();
+    return sConfig;
 
 }
 
