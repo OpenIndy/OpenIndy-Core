@@ -8,7 +8,8 @@ using namespace oi;
  * \param parent
  */
 SensorWorker::SensorWorker(QObject *parent) : QObject(parent), isSensorConnected(false),
-    isReadingStreamStarted(false), isConnectionStreamStarted(false), isStatusStreamStarted(false){
+    isReadingStreamStarted(false), isConnectionStreamStarted(false), isStatusStreamStarted(false),
+    streamFormat(eUndefinedReading){
 
 }
 
@@ -502,7 +503,7 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
         attr.moveIsRelative = false;
 
         //move
-        success = this->sensor->accept(eMoveAngle, attr);
+        success = this->sensor->accept(eMoveXYZ, attr);
         if(success){
 
             msg = "moving sensor finished";

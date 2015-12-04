@@ -135,7 +135,7 @@ public slots:
     void startStatusMonitoringStream();
     void stopStatusMonitoringStream();
 
-private:
+private slots:
 
     //##############
     //helper methods
@@ -144,6 +144,8 @@ private:
     void streamReading();
     void monitorConnectionStatus();
     void streamStatus();
+
+private:
 
     //#################
     //helper attributes
