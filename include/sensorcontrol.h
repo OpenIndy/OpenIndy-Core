@@ -37,13 +37,13 @@ public slots:
     //####################################
 
     //get or set sensor
-    Sensor getSensor() const;
+    Sensor getSensor();
     void setSensor(const QPointer<Sensor> &sensor);
     QPointer<Sensor> takeSensor();
     void resetSensor();
 
     //previously used sensors
-    const QList<Sensor> &getUsedSensors() const;
+    const QList<Sensor> &getUsedSensors();
     void setUsedSensors(const QList<Sensor> &sensors);
 
     //stream format
@@ -62,15 +62,15 @@ public slots:
     QMap<QString, QString> getSensorStatus();
 
     //sensor type
-    SensorTypes getActiveSensorType() const;
+    SensorTypes getActiveSensorType();
 
     //reading and connection types
-    QList<ReadingTypes> getSupportedReadingTypes() const;
-    QList<ConnectionTypes> getSupportedConnectionTypes() const;
+    QList<ReadingTypes> getSupportedReadingTypes();
+    QList<ConnectionTypes> getSupportedConnectionTypes();
 
     //sensor actions
-    QList<SensorFunctions> getSupportedSensorActions() const;
-    QStringList getSelfDefinedActions() const;
+    QList<SensorFunctions> getSupportedSensorActions();
+    QStringList getSelfDefinedActions();
 
     //sensor configuration
     SensorConfiguration getSensorConfiguration();

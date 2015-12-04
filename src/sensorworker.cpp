@@ -23,7 +23,7 @@ SensorWorker::~SensorWorker(){
  * \brief SensorWorker::getSensor
  * \return
  */
-Sensor SensorWorker::getSensor() const{
+Sensor SensorWorker::getSensor(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
@@ -173,7 +173,7 @@ QMap<QString, QString> SensorWorker::getSensorStatus(){
  * \brief SensorWorker::getActiveSensorType
  * \return
  */
-SensorTypes SensorWorker::getActiveSensorType() const{
+SensorTypes SensorWorker::getActiveSensorType(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
@@ -190,7 +190,7 @@ SensorTypes SensorWorker::getActiveSensorType() const{
  * \brief SensorWorker::getSupportedReadingTypes
  * \return
  */
-QList<ReadingTypes> SensorWorker::getSupportedReadingTypes() const{
+QList<ReadingTypes> SensorWorker::getSupportedReadingTypes(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
@@ -207,7 +207,7 @@ QList<ReadingTypes> SensorWorker::getSupportedReadingTypes() const{
  * \brief SensorWorker::getSupportedConnectionTypes
  * \return
  */
-QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes() const{
+QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
@@ -224,7 +224,7 @@ QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes() const{
  * \brief SensorWorker::getSupportedSensorActions
  * \return
  */
-QList<SensorFunctions> SensorWorker::getSupportedSensorActions() const{
+QList<SensorFunctions> SensorWorker::getSupportedSensorActions(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
@@ -241,7 +241,7 @@ QList<SensorFunctions> SensorWorker::getSupportedSensorActions() const{
  * \brief SensorWorker::getSelfDefinedActions
  * \return
  */
-QStringList SensorWorker::getSelfDefinedActions() const{
+QStringList SensorWorker::getSelfDefinedActions(){
 
     qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
