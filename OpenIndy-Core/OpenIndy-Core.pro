@@ -34,7 +34,7 @@ isEmpty(OpenIndyMath_VERSION){
 # get OpenIndy-Core version
 #--------------------------
 
-OpenIndyCore_VERSION = $$system(git --git-dir $$PWD/.git --work-tree $$PWD describe --always --tags) # get git version
+OpenIndyCore_VERSION = $$system(git --git-dir $$PWD/../.git --work-tree $$PWD describe --always --tags) # get git version
 OpenIndyCore_VERSION = $$replace(OpenIndyCore_VERSION, "-g"{1}\w*, ) # remove commit hash after tag name
 OpenIndyCore_VERSION = $$replace(OpenIndyCore_VERSION, "-", ".") # remove remaining hyphen
 PluginInterfaceVersion = $$replace(OpenIndyCore_VERSION, "[\.]", "")
@@ -85,18 +85,18 @@ INCLUDEPATH += $$PWD/include/plugin/tool
 INCLUDEPATH += $$PWD/include/plugin/exchange
 INCLUDEPATH += $$PWD/include/util
 
-INCLUDEPATH += $$PWD/lib/OpenIndy-Math/include
+INCLUDEPATH += $$PWD/lib/OpenIndy-Math/OpenIndy-Math/include
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release/ -lopenIndyMath1
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug/ -lopenIndyMath1
-else:unix: CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug -lopenIndyMath1
-else:unix: CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release -lopenIndyMath1
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/release/ -lopenIndyMath1
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/debug/ -lopenIndyMath1
+else:unix: CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/debug -lopenIndyMath1
+else:unix: CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/release -lopenIndyMath1
 
-INCLUDEPATH += $$PWD/lib/OpenIndy-Math/bin/debug
-DEPENDPATH += $$PWD/lib/OpenIndy-Math/bin/debug
+INCLUDEPATH += $$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/debug
+DEPENDPATH += $$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/debug
 
-INCLUDEPATH += $$PWD/lib/OpenIndy-Math/bin/release
-DEPENDPATH += $$PWD/lib/OpenIndy-Math/bin/release
+INCLUDEPATH += $$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/release
+DEPENDPATH += $$PWD/lib/OpenIndy-Math/OpenIndy-Math/bin/release
 
 SOURCES += \
     src/geometry/circle.cpp \
@@ -207,8 +207,8 @@ HEADERS  += \
     include/station.h \
     include/statistic.h \
     include/trafoparam.h \
-    lib/OpenIndy-Math/include/chooselalib.h \
-    lib/OpenIndy-Math/include/global.h \
-    lib/OpenIndy-Math/include/linearalgebra.h \
-    lib/OpenIndy-Math/include/oimat.h \
-    lib/OpenIndy-Math/include/oivec.h
+    lib/OpenIndy-Math/OpenIndy-Math/include/chooselalib.h \
+    lib/OpenIndy-Math/OpenIndy-Math/include/global.h \
+    lib/OpenIndy-Math/OpenIndy-Math/include/linearalgebra.h \
+    lib/OpenIndy-Math/OpenIndy-Math/include/oimat.h \
+    lib/OpenIndy-Math/OpenIndy-Math/include/oivec.h

@@ -1,14 +1,14 @@
 TEMPLATE = subdirs
 
-CONFIG += ordered
+#CONFIG += ordered
 
 SUBDIRS = \
     core \
     math
 
 # project locations
-core.subdir = $$PWD
-math.subdir = $$PWD/lib/OpenIndy-Math
+core.subdir = $$PWD/OpenIndy-Core
+math.subdir = $$PWD/OpenIndy-Core/lib/OpenIndy-Math/OpenIndy-Math
 
 #internal dependencies
 core.depends = math
