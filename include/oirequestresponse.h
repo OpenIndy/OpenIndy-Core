@@ -38,6 +38,7 @@ public:
         eGetMeasurementConfigs,
         eGetMeasurementConfig,
         eSetMeasurementConfig,
+        eGetCoordinateSystems,
 
         eUnknownRequest = 999,
 
