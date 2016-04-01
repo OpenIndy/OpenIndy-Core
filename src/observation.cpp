@@ -194,6 +194,22 @@ const OiVec &Observation::getOriginalSigmaXyz() const{
 }
 
 /*!
+ * \brief Observation::getIJK
+ * \return
+ */
+const OiVec &Observation::getIJK() const{
+    return this->ijk;
+}
+
+/*!
+ * \brief Observation::setIJK
+ * \param ijk
+ */
+void Observation::setIJK(const OiVec &ijk){
+
+}
+
+/*!
  * \brief Observation::getStation
  * \return
  */

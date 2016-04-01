@@ -474,6 +474,14 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         //set observation to valid
         observation->isValid = true;
 
+    }else if(this->rLevel.isValid){
+
+        //set ijk
+        observation->originalIjk.setAt(0, this->rLevel.i);
+        observation->originalIjk.setAt(1, this->rLevel.j);
+        observation->originalIjk.setAt(2, this->rLevel.k);
+        observation->originalIjk.setAt(3, 1.0);
+
     }
 
     //set up dependencies
@@ -612,9 +620,9 @@ QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayRX(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayI(const UnitType &type, const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RX, type), 'f', digits);
+        return QString::number(convertFromDefault(this->rLevel.i, type), 'f', digits);
     }
     return QString("");
 }
@@ -625,9 +633,9 @@ QString Reading::getDisplayRX(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayRY(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayJ(const UnitType &type, const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RY, type), 'f', digits);
+        return QString::number(convertFromDefault(this->rLevel.j, type), 'f', digits);
     }
     return QString("");
 }
@@ -638,9 +646,9 @@ QString Reading::getDisplayRY(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayRZ(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayK(const UnitType &type, const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RZ, type), 'f', digits);
+        return QString::number(convertFromDefault(this->rLevel.k, type), 'f', digits);
     }
     return QString("");
 }
@@ -748,9 +756,9 @@ QString Reading::getDisplaySigmaZ(const UnitType &type, const int &digits) const
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaRX(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaI(const UnitType &type, const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RX, type), 'f', digits);
+        return QString::number(convertFromDefault(this->rLevel.sigmaI, type), 'f', digits);
     }
     return QString("");
 }
@@ -761,9 +769,9 @@ QString Reading::getDisplaySigmaRX(const UnitType &type, const int &digits) cons
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaRY(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaJ(const UnitType &type, const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RY, type), 'f', digits);
+        return QString::number(convertFromDefault(this->rLevel.sigmaJ, type), 'f', digits);
     }
     return QString("");
 }
@@ -774,9 +782,9 @@ QString Reading::getDisplaySigmaRY(const UnitType &type, const int &digits) cons
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaRZ(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaK(const UnitType &type, const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RZ, type), 'f', digits);
+        return QString::number(convertFromDefault(this->rLevel.sigmaK, type), 'f', digits);
     }
     return QString("");
 }
@@ -888,19 +896,19 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     case eLevelReading:
         if(this->rLevel.isValid){
             QDomElement rx = xmlDoc.createElement("measurement");
-            rx.setAttribute("type", "RX");
-            rx.setAttribute("value", this->rLevel.RX);
-            rx.setAttribute("sigma", this->rLevel.sigmaRX);
+            rx.setAttribute("type", "i");
+            rx.setAttribute("value", this->rLevel.i);
+            rx.setAttribute("sigma", this->rLevel.sigmaI);
             measurements.appendChild(rx);
             QDomElement ry = xmlDoc.createElement("measurement");
-            ry.setAttribute("type", "zenith");
-            ry.setAttribute("value", this->rLevel.RY);
-            ry.setAttribute("sigma", this->rLevel.sigmaRY);
+            ry.setAttribute("type", "j");
+            ry.setAttribute("value", this->rLevel.j);
+            ry.setAttribute("sigma", this->rLevel.sigmaJ);
             measurements.appendChild(ry);
             QDomElement rz = xmlDoc.createElement("measurement");
-            rz.setAttribute("type", "zenith");
-            rz.setAttribute("value", this->rLevel.RZ);
-            rz.setAttribute("sigma", this->rLevel.sigmaRZ);
+            rz.setAttribute("type", "k");
+            rz.setAttribute("value", this->rLevel.k);
+            rz.setAttribute("sigma", this->rLevel.sigmaK);
             measurements.appendChild(rz);
         }
         break;
@@ -984,13 +992,13 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
             this->rPolar.distance = measurement.attribute("value").toDouble();
             this->rDistance.distance = measurement.attribute("value").toDouble();
             this->rDistance.isValid = true;
-        }else if(measurement.attribute("type").compare("RX") == 0){
-            this->rLevel.RX = measurement.attribute("value").toDouble();
+        }else if(measurement.attribute("type").compare("i") == 0){
+            this->rLevel.i = measurement.attribute("value").toDouble();
             this->rLevel.isValid = true;
-        }else if(measurement.attribute("type").compare("RY") == 0){
-            this->rLevel.RY = measurement.attribute("value").toDouble();
-        }else if(measurement.attribute("type").compare("RZ") == 0){
-            this->rLevel.RZ = measurement.attribute("value").toDouble();
+        }else if(measurement.attribute("type").compare("j") == 0){
+            this->rLevel.j = measurement.attribute("value").toDouble();
+        }else if(measurement.attribute("type").compare("k") == 0){
+            this->rLevel.k = measurement.attribute("value").toDouble();
         }
     }
 

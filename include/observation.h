@@ -55,6 +55,16 @@ public:
 
     const OiVec &getOriginalSigmaXyz() const;
 
+    const OiVec &getIJK() const;
+    void setIJK(const OiVec &ijk);
+
+    const OiVec &getOriginalIJK() const;
+
+    const OiVec &getSigmaIJK() const;
+    void setSigmaIjk(const OiVec &sigmaIjk);
+
+    const OiVec &getOriginalSigmaIjk() const;
+
     //##################################################
     //get and set station, reading and target geometries
     //##################################################
@@ -130,6 +140,16 @@ private:
 
     OiVec sigmaXyz; //the homogeneous stdev vector in the current display coordinate system
     OiVec originalSigmaXyz; //the homogeneous stdev vector in the station system that produced this observation
+
+    //###############################
+    //ijk - unit vector and statistic
+    //###############################
+
+    OiVec ijk; // unit vector
+    OiVec originalIjk; // orignal unit vector
+
+    OiVec sigmaIjk; // stdev unit vector
+    OiVec originalSigmaIjk; // orignal sigma unit vector
 
 };
 
