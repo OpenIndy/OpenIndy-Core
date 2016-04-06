@@ -994,11 +994,16 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
             this->rDistance.isValid = true;
         }else if(measurement.attribute("type").compare("i") == 0){
             this->rLevel.i = measurement.attribute("value").toDouble();
+            this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
             this->rLevel.isValid = true;
         }else if(measurement.attribute("type").compare("j") == 0){
             this->rLevel.j = measurement.attribute("value").toDouble();
+            this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
+            this->rLevel.isValid = true;
         }else if(measurement.attribute("type").compare("k") == 0){
             this->rLevel.k = measurement.attribute("value").toDouble();
+            this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
+            this->rLevel.isValid = true;
         }
     }
 

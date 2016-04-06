@@ -506,6 +506,79 @@ QString Observation::getDisplaySigmaZ(const UnitType &type, const int &digits) c
 }
 
 /*!
+ * \brief Observation::getDisplayI
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplayI(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->ijk.getAt(0), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplayJ
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplayJ(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->ijk.getAt(1), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplayK
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplayK(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->ijk.getAt(2), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplaySigmaI
+ * \param type
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplaySigmaI(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->sigmaIjk.getAt(0), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplaySigmaJ
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplaySigmaJ(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->sigmaIjk.getAt(1), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplaySigmaK
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplaySigmaK(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->sigmaIjk.getAt(2), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
  * \brief Observation::getDisplayIsValid
  * \return
  */

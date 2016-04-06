@@ -101,6 +101,12 @@ public:
     QString getDisplaySigmaX(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaY(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaZ(const UnitType &type, const int &digits) const;
+    QString getDisplayI(const int &digits) const;
+    QString getDisplayJ(const int &digits) const;
+    QString getDisplayK(const int &digits) const;
+    QString getDisplaySigmaI(const int &digits) const;
+    QString getDisplaySigmaJ(const int &digits) const;
+    QString getDisplaySigmaK(const int &digits) const;
     QString getDisplayIsValid() const;
     QString getDisplayIsSolved() const;
 
