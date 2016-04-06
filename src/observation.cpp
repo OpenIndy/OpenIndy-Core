@@ -11,7 +11,7 @@ using namespace oi::math;
  * \brief Observation::Observation
  * \param parent
  */
-Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4),
+Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
     isValid(false), isSolved(false){
 
 }
@@ -31,6 +31,10 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
     this->originalXyz = copy.originalXyz;
     this->sigmaXyz = copy.sigmaXyz;
     this->originalSigmaXyz = copy.originalSigmaXyz;
+    this->ijk = copy.ijk;
+    this->originalIjk = copy.originalIjk;
+    this->sigmaIjk = copy.sigmaIjk;
+    this->originalSigmaIjk = copy.originalSigmaIjk;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -207,6 +211,46 @@ const OiVec &Observation::getIJK() const{
  */
 void Observation::setIJK(const OiVec &ijk){
 
+    //check vector
+    if(ijk.getSize() == this->ijk.getSize()){
+        this->ijk = ijk;
+    }
+}
+
+/*!
+ * \brief Observation::getOriginalIJK
+ * \return
+ */
+const OiVec &Observation::getOriginalIJK() const{
+    return this->originalIjk;
+}
+
+/*!
+ * \brief Observation::getSigmaIJK
+ * \return
+ */
+const OiVec &Observation::getSigmaIJK() const{
+    return this->sigmaIjk;
+}
+
+/*!
+ * \brief Observation::setSigmaIjk
+ * \param sigmaIjk
+ */
+void Observation::setSigmaIjk(const OiVec &sigmaIjk){
+
+    //check vector
+    if(sigmaIjk.getSize() == this->sigmaIjk.getSize()){
+        this->sigmaIjk = sigmaIjk;
+    }
+}
+
+/*!
+ * \brief Observation::getOriginalSigmaIjk
+ * \return
+ */
+const OiVec &Observation::getOriginalSigmaIjk() const{
+    return this->originalSigmaIjk;
 }
 
 /*!
