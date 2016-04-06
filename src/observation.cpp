@@ -619,7 +619,16 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
         observation.setAttribute("y", 0.0);
         observation.setAttribute("z", 0.0);
     }
-    /*if(this->sigmaXyz.getSize() >= 3){
+    if(this->ijk.getSize() >= 3){
+        observation.setAttribute("i", this->ijk.getAt(0));
+        observation.setAttribute("j", this->ijk.getAt(1));
+        observation.setAttribute("k", this->ijk.getAt(2));
+    }else{
+        observation.setAttribute("i", 0.0);
+        observation.setAttribute("j", 0.0);
+        observation.setAttribute("k", 1.0);
+    }
+    if(this->sigmaXyz.getSize() >= 3){
         observation.setAttribute("sigmaX", this->sigmaXyz.getAt(0));
         observation.setAttribute("sigmaY", this->sigmaXyz.getAt(1));
         observation.setAttribute("sigmaZ", this->sigmaXyz.getAt(2));
@@ -627,10 +636,19 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
         observation.setAttribute("sigmaX", 0.0);
         observation.setAttribute("sigmaY", 0.0);
         observation.setAttribute("sigmaZ", 0.0);
-    }*/
-    observation.setAttribute("sigmaX", 0.0);
+    }
+    if(this->sigmaIjk.getSize() >= 3){
+        observation.setAttribute("sigmaI", this->sigmaIjk.getAt(0));
+        observation.setAttribute("sigmaJ", this->sigmaIjk.getAt(1));
+        observation.setAttribute("sigmaK", this->sigmaIjk.getAt(2));
+    }else{
+        observation.setAttribute("sigmaI", 0.0);
+        observation.setAttribute("sigmaJ", 0.0);
+        observation.setAttribute("sigmaK", 0.0);
+    }
+    /*observation.setAttribute("sigmaX", 0.0);
     observation.setAttribute("sigmaY", 0.0);
-    observation.setAttribute("sigmaZ", 0.0);
+    observation.setAttribute("sigmaZ", 0.0);*/
 
     observation.setAttribute("isValid", this->isValid);
     observation.setAttribute("isSolved", this->isSolved);
@@ -677,9 +695,17 @@ bool Observation::fromOpenIndyXML(QDomElement &xmlElem){
         this->xyz.setAt(1, xmlElem.attribute("y").toDouble());
         this->xyz.setAt(2, xmlElem.attribute("z").toDouble());
         this->xyz.setAt(3, 1.0);
-        /*this->sigmaXyz.setAt(0, xmlElem.attribute("sigmaX").toDouble());
+        this->sigmaXyz.setAt(0, xmlElem.attribute("sigmaX").toDouble());
         this->sigmaXyz.setAt(1, xmlElem.attribute("sigmaY").toDouble());
-        this->sigmaXyz.setAt(2, xmlElem.attribute("sigmaZ").toDouble());*/
+        this->sigmaXyz.setAt(2, xmlElem.attribute("sigmaZ").toDouble());
+
+        this->ijk.setAt(0, xmlElem.attribute("i").toDouble());
+        this->ijk.setAt(1, xmlElem.attribute("j").toDouble());
+        this->ijk.setAt(2, xmlElem.attribute("k").toDouble());
+        this->ijk.setAt(3, 1.0);
+        this->sigmaIjk.setAt(0, xmlElem.attribute("sigmaI").toDouble());
+        this->sigmaIjk.setAt(1, xmlElem.attribute("sigmaJ").toDouble());
+        this->sigmaIjk.setAt(2, xmlElem.attribute("sigmaK").toDouble());
 
         //set reading
         QDomElement reading = xmlElem.firstChildElement("reading");
