@@ -620,9 +620,9 @@ QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayI(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayI(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.i, type), 'f', digits);
+        return QString::number(rLevel.i, 'f', digits);
     }
     return QString("");
 }
@@ -633,9 +633,9 @@ QString Reading::getDisplayI(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayJ(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayJ(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.j, type), 'f', digits);
+        return QString::number(this->rLevel.j, 'f', digits);
     }
     return QString("");
 }
@@ -646,9 +646,9 @@ QString Reading::getDisplayJ(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayK(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayK(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.k, type), 'f', digits);
+        return QString::number(this->rLevel.k, 'f', digits);
     }
     return QString("");
 }
@@ -756,9 +756,9 @@ QString Reading::getDisplaySigmaZ(const UnitType &type, const int &digits) const
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaI(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaI(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.sigmaI, type), 'f', digits);
+        return QString::number(this->rLevel.sigmaI, 'f', digits);
     }
     return QString("");
 }
@@ -769,9 +769,9 @@ QString Reading::getDisplaySigmaI(const UnitType &type, const int &digits) const
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaJ(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaJ(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.sigmaJ, type), 'f', digits);
+        return QString::number(this->rLevel.sigmaJ, 'f', digits);
     }
     return QString("");
 }
@@ -782,9 +782,9 @@ QString Reading::getDisplaySigmaJ(const UnitType &type, const int &digits) const
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaK(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaK(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.sigmaK, type), 'f', digits);
+        return QString::number(this->rLevel.sigmaK, 'f', digits);
     }
     return QString("");
 }

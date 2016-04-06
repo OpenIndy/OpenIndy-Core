@@ -228,9 +228,9 @@ public:
     QString getDisplayX(const UnitType &type, const int &digits) const;
     QString getDisplayY(const UnitType &type, const int &digits) const;
     QString getDisplayZ(const UnitType &type, const int &digits) const;
-    QString getDisplayI(const UnitType &type, const int &digits) const;
-    QString getDisplayJ(const UnitType &type, const int &digits) const;
-    QString getDisplayK(const UnitType &type, const int &digits) const;
+    QString getDisplayI(const int &digits) const;
+    QString getDisplayJ(const int &digits) const;
+    QString getDisplayK(const int &digits) const;
     QString getDisplayTemperature(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaAzimuth(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaZenith(const UnitType &type, const int &digits) const;
@@ -238,9 +238,9 @@ public:
     QString getDisplaySigmaX(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaY(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaZ(const UnitType &type, const int &digits) const;
-    QString getDisplaySigmaI(const UnitType &type, const int &digits) const;
-    QString getDisplaySigmaJ(const UnitType &type, const int &digits) const;
-    QString getDisplaySigmaK(const UnitType &type, const int &digits) const;
+    QString getDisplaySigmaI(const int &digits) const;
+    QString getDisplaySigmaJ(const int &digits) const;
+    QString getDisplaySigmaK(const int &digits) const;
     QString getDisplaySigmaTemperature(const UnitType &type, const int &digits) const;
 
     //#################
