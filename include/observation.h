@@ -88,6 +88,8 @@ public:
     void setIsSolved(const bool &isSolved);
     const bool &getIsSolved() const;
 
+    const bool &getHasDirection() const;
+
     //###############
     //display methods
     //###############

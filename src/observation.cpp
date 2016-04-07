@@ -389,6 +389,14 @@ const bool &Observation::getIsSolved() const{
 }
 
 /*!
+ * \brief Observation::getHasDirection
+ * \return
+ */
+const bool &Observation::getHasDirection() const{
+    return this->hasDirection;
+}
+
+/*!
  * \brief Observation::getDisplayId
  * \return
  */
