@@ -295,15 +295,15 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayX, "x");
     observationDisplayAttributesMap.insert(eObservationDisplayY, "y");
     observationDisplayAttributesMap.insert(eObservationDisplayZ, "z");
-    observationDisplayAttributesMap.insert(eObservationDisplayI, "I");
-    observationDisplayAttributesMap.insert(eObservationDisplayJ, "J");
-    observationDisplayAttributesMap.insert(eObservationDisplayK, "K");
+    observationDisplayAttributesMap.insert(eObservationDisplayI, "i");
+    observationDisplayAttributesMap.insert(eObservationDisplayJ, "j");
+    observationDisplayAttributesMap.insert(eObservationDisplayK, "k");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaX, "sigma x");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaY, "sigma y");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaZ, "sigma z");
-    observationDisplayAttributesMap.insert(eObservationDisplaySigmaI, "sigma I");
-    observationDisplayAttributesMap.insert(eObservationDisplaySigmaJ, "sigma J");
-    observationDisplayAttributesMap.insert(eObservationDisplaySigmaK, "sigma K");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaI, "sigma i");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaJ, "sigma j");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaK, "sigma k");
     observationDisplayAttributesMap.insert(eObservationDisplayIsValid, "valid");
     observationDisplayAttributesMap.insert(eObservationDisplayIsSolved, "solved");
     observationDisplayAttributesMap.insert(eObservationDisplayVX, "vx");
@@ -324,9 +324,9 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplayX, "x");
     readingDisplayAttributesMap.insert(eReadingDisplayY, "y");
     readingDisplayAttributesMap.insert(eReadingDisplayZ, "z");
-    readingDisplayAttributesMap.insert(eReadingDisplayI, "I");
-    readingDisplayAttributesMap.insert(eReadingDisplayJ, "J");
-    readingDisplayAttributesMap.insert(eReadingDisplayK, "K");
+    readingDisplayAttributesMap.insert(eReadingDisplayI, "i");
+    readingDisplayAttributesMap.insert(eReadingDisplayJ, "j");
+    readingDisplayAttributesMap.insert(eReadingDisplayK, "k");
     readingDisplayAttributesMap.insert(eReadingDisplayTemperature, "temperature");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaAzimuth, "sigma azimuth");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaZenith, "sigma zenith");
@@ -334,9 +334,9 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaX, "sigma x");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaY, "sigma y");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaZ, "sigma z");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaI, "sigma I");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaJ, "sigma J");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaK, "sigma K");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaI, "sigma i");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaJ, "sigma j");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaK, "sigma k");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaTemperature, "sigma temperature");
 
     //fill trafo param display attributes map
