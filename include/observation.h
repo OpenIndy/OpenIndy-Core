@@ -134,8 +134,9 @@ private:
     //booleans that indicate the state of the observation
     //###################################################
 
-    bool isValid; //defines if the reading can be transformed, without any function, to a xyz observation
+    bool isValid; //defines if the reading can be transformed, without any function, to a xyz/ijk observation
     bool isSolved; //defines wether this observation is valid in current coordinate system
+    bool hasDirection; //defines if the observation has a valid ijk direction
 
     //#############################
     //xyz coordinates and statistic

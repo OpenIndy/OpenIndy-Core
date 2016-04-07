@@ -471,6 +471,12 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         observation->originalSigmaXyz.setAt(2, this->rCartesian.sigmaXyz.getAt(2));
         observation->originalSigmaXyz.setAt(3, 1.0);
 
+        //set ijk
+        observation->originalIjk.setAt(0, 0.0);
+        observation->originalIjk.setAt(1, 0.0);
+        observation->originalIjk.setAt(2, 0.0);
+        observation->originalIjk.setAt(3, 1.0);
+
         //set observation to valid
         observation->isValid = true;
 
@@ -482,10 +488,23 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         observation->originalIjk.setAt(2, this->rLevel.k);
         observation->originalIjk.setAt(3, 1.0);
 
+        //set standard deviation
         observation->originalSigmaIjk.setAt(0, this->rLevel.sigmaI);
         observation->originalSigmaIjk.setAt(1, this->rLevel.sigmaJ);
         observation->originalSigmaIjk.setAt(2, this->rLevel.sigmaK);
         observation->originalSigmaIjk.setAt(3, 1.0);
+
+        //set position
+        observation->originalXyz.setAt(0, 0.0);
+        observation->originalXyz.setAt(1, 0.0);
+        observation->originalXyz.setAt(2, 0.0);
+        observation->originalXyz.setAt(3, 1.0);
+
+        //set observation to valid
+        observation->isValid = true;
+
+        //set observation direction valid
+        observation->hasDirection = true;
 
     }
 

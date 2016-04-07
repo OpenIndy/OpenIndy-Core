@@ -12,7 +12,7 @@ using namespace oi::math;
  * \param parent
  */
 Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
-    isValid(false), isSolved(false){
+    isValid(false), isSolved(false), hasDirection(false){
 
 }
 
@@ -26,6 +26,7 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
     //copy attributes
     this->isValid = copy.isValid;
     this->isSolved = copy.isSolved;
+    this->hasDirection = copy.hasDirection;
     //this->isActiveCoordSys = copy.isActiveCoordSys;
     this->xyz = copy.xyz;
     this->originalXyz = copy.originalXyz;
@@ -48,8 +49,8 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
  * \param isValid
  * \param parent
  */
-Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4),
-    isValid(isValid), isSolved(false){
+Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
+    isValid(isValid), isSolved(false) , hasDirection(false){
 
     if(xyz.getSize() == this->xyz.getSize()){
         this->xyz = xyz;
@@ -69,11 +70,16 @@ Observation &Observation::operator=(const Observation &copy){
     //copy attributes
     this->isValid = copy.isValid;
     this->isSolved = copy.isSolved;
+    this->hasDirection = copy.hasDirection;
     //this->isActiveCoordSys = copy.isActiveCoordSys;
     this->xyz = copy.xyz;
     this->originalXyz = copy.originalXyz;
     this->sigmaXyz = copy.sigmaXyz;
     this->originalSigmaXyz = copy.originalSigmaXyz;
+    this->ijk = copy.ijk;
+    this->originalIjk = copy.originalIjk;
+    this->sigmaIjk = copy.sigmaIjk;
+    this->originalSigmaIjk = copy.originalSigmaIjk;
 
     //copy reading and station
     this->reading = copy.reading;
