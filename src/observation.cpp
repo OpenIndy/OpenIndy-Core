@@ -11,8 +11,8 @@ using namespace oi::math;
  * \brief Observation::Observation
  * \param parent
  */
-Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4),
-    isValid(false), isSolved(false){
+Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
+    isValid(false), isSolved(false), hasDirection(false){
 
 }
 
@@ -26,11 +26,16 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
     //copy attributes
     this->isValid = copy.isValid;
     this->isSolved = copy.isSolved;
+    this->hasDirection = copy.hasDirection;
     //this->isActiveCoordSys = copy.isActiveCoordSys;
     this->xyz = copy.xyz;
     this->originalXyz = copy.originalXyz;
     this->sigmaXyz = copy.sigmaXyz;
     this->originalSigmaXyz = copy.originalSigmaXyz;
+    this->ijk = copy.ijk;
+    this->originalIjk = copy.originalIjk;
+    this->sigmaIjk = copy.sigmaIjk;
+    this->originalSigmaIjk = copy.originalSigmaIjk;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -44,8 +49,8 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
  * \param isValid
  * \param parent
  */
-Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4),
-    isValid(isValid), isSolved(false){
+Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
+    isValid(isValid), isSolved(false) , hasDirection(false){
 
     if(xyz.getSize() == this->xyz.getSize()){
         this->xyz = xyz;
@@ -65,11 +70,16 @@ Observation &Observation::operator=(const Observation &copy){
     //copy attributes
     this->isValid = copy.isValid;
     this->isSolved = copy.isSolved;
+    this->hasDirection = copy.hasDirection;
     //this->isActiveCoordSys = copy.isActiveCoordSys;
     this->xyz = copy.xyz;
     this->originalXyz = copy.originalXyz;
     this->sigmaXyz = copy.sigmaXyz;
     this->originalSigmaXyz = copy.originalSigmaXyz;
+    this->ijk = copy.ijk;
+    this->originalIjk = copy.originalIjk;
+    this->sigmaIjk = copy.sigmaIjk;
+    this->originalSigmaIjk = copy.originalSigmaIjk;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -191,6 +201,62 @@ void Observation::setSigmaXyz(const OiVec &sigmaXyz){
  */
 const OiVec &Observation::getOriginalSigmaXyz() const{
     return this->originalSigmaXyz;
+}
+
+/*!
+ * \brief Observation::getIJK
+ * \return
+ */
+const OiVec &Observation::getIJK() const{
+    return this->ijk;
+}
+
+/*!
+ * \brief Observation::setIJK
+ * \param ijk
+ */
+void Observation::setIJK(const OiVec &ijk){
+
+    //check vector
+    if(ijk.getSize() == this->ijk.getSize()){
+        this->ijk = ijk;
+    }
+}
+
+/*!
+ * \brief Observation::getOriginalIJK
+ * \return
+ */
+const OiVec &Observation::getOriginalIJK() const{
+    return this->originalIjk;
+}
+
+/*!
+ * \brief Observation::getSigmaIJK
+ * \return
+ */
+const OiVec &Observation::getSigmaIJK() const{
+    return this->sigmaIjk;
+}
+
+/*!
+ * \brief Observation::setSigmaIjk
+ * \param sigmaIjk
+ */
+void Observation::setSigmaIjk(const OiVec &sigmaIjk){
+
+    //check vector
+    if(sigmaIjk.getSize() == this->sigmaIjk.getSize()){
+        this->sigmaIjk = sigmaIjk;
+    }
+}
+
+/*!
+ * \brief Observation::getOriginalSigmaIjk
+ * \return
+ */
+const OiVec &Observation::getOriginalSigmaIjk() const{
+    return this->originalSigmaIjk;
 }
 
 /*!
@@ -323,6 +389,14 @@ const bool &Observation::getIsSolved() const{
 }
 
 /*!
+ * \brief Observation::getHasDirection
+ * \return
+ */
+const bool &Observation::getHasDirection() const{
+    return this->hasDirection;
+}
+
+/*!
  * \brief Observation::getDisplayId
  * \return
  */
@@ -446,6 +520,79 @@ QString Observation::getDisplaySigmaZ(const UnitType &type, const int &digits) c
 }
 
 /*!
+ * \brief Observation::getDisplayI
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplayI(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->ijk.getAt(0), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplayJ
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplayJ(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->ijk.getAt(1), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplayK
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplayK(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->ijk.getAt(2), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplaySigmaI
+ * \param type
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplaySigmaI(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->sigmaIjk.getAt(0), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplaySigmaJ
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplaySigmaJ(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->sigmaIjk.getAt(1), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Observation::getDisplaySigmaK
+ * \param digits
+ * \return
+ */
+QString Observation::getDisplaySigmaK(const int &digits) const{
+    if(this->isValid && this->isSolved){
+        return QString::number(this->sigmaIjk.getAt(2), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
  * \brief Observation::getDisplayIsValid
  * \return
  */
@@ -486,7 +633,16 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
         observation.setAttribute("y", 0.0);
         observation.setAttribute("z", 0.0);
     }
-    /*if(this->sigmaXyz.getSize() >= 3){
+    if(this->ijk.getSize() >= 3){
+        observation.setAttribute("i", this->ijk.getAt(0));
+        observation.setAttribute("j", this->ijk.getAt(1));
+        observation.setAttribute("k", this->ijk.getAt(2));
+    }else{
+        observation.setAttribute("i", 0.0);
+        observation.setAttribute("j", 0.0);
+        observation.setAttribute("k", 1.0);
+    }
+    if(this->sigmaXyz.getSize() >= 3){
         observation.setAttribute("sigmaX", this->sigmaXyz.getAt(0));
         observation.setAttribute("sigmaY", this->sigmaXyz.getAt(1));
         observation.setAttribute("sigmaZ", this->sigmaXyz.getAt(2));
@@ -494,10 +650,19 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
         observation.setAttribute("sigmaX", 0.0);
         observation.setAttribute("sigmaY", 0.0);
         observation.setAttribute("sigmaZ", 0.0);
-    }*/
-    observation.setAttribute("sigmaX", 0.0);
+    }
+    if(this->sigmaIjk.getSize() >= 3){
+        observation.setAttribute("sigmaI", this->sigmaIjk.getAt(0));
+        observation.setAttribute("sigmaJ", this->sigmaIjk.getAt(1));
+        observation.setAttribute("sigmaK", this->sigmaIjk.getAt(2));
+    }else{
+        observation.setAttribute("sigmaI", 0.0);
+        observation.setAttribute("sigmaJ", 0.0);
+        observation.setAttribute("sigmaK", 0.0);
+    }
+    /*observation.setAttribute("sigmaX", 0.0);
     observation.setAttribute("sigmaY", 0.0);
-    observation.setAttribute("sigmaZ", 0.0);
+    observation.setAttribute("sigmaZ", 0.0);*/
 
     observation.setAttribute("isValid", this->isValid);
     observation.setAttribute("isSolved", this->isSolved);
@@ -544,9 +709,17 @@ bool Observation::fromOpenIndyXML(QDomElement &xmlElem){
         this->xyz.setAt(1, xmlElem.attribute("y").toDouble());
         this->xyz.setAt(2, xmlElem.attribute("z").toDouble());
         this->xyz.setAt(3, 1.0);
-        /*this->sigmaXyz.setAt(0, xmlElem.attribute("sigmaX").toDouble());
+        this->sigmaXyz.setAt(0, xmlElem.attribute("sigmaX").toDouble());
         this->sigmaXyz.setAt(1, xmlElem.attribute("sigmaY").toDouble());
-        this->sigmaXyz.setAt(2, xmlElem.attribute("sigmaZ").toDouble());*/
+        this->sigmaXyz.setAt(2, xmlElem.attribute("sigmaZ").toDouble());
+
+        this->ijk.setAt(0, xmlElem.attribute("i").toDouble());
+        this->ijk.setAt(1, xmlElem.attribute("j").toDouble());
+        this->ijk.setAt(2, xmlElem.attribute("k").toDouble());
+        this->ijk.setAt(3, 1.0);
+        this->sigmaIjk.setAt(0, xmlElem.attribute("sigmaI").toDouble());
+        this->sigmaIjk.setAt(1, xmlElem.attribute("sigmaJ").toDouble());
+        this->sigmaIjk.setAt(2, xmlElem.attribute("sigmaK").toDouble());
 
         //set reading
         QDomElement reading = xmlElem.firstChildElement("reading");

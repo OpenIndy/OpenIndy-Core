@@ -471,8 +471,40 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         observation->originalSigmaXyz.setAt(2, this->rCartesian.sigmaXyz.getAt(2));
         observation->originalSigmaXyz.setAt(3, 1.0);
 
+        //set ijk
+        observation->originalIjk.setAt(0, 0.0);
+        observation->originalIjk.setAt(1, 0.0);
+        observation->originalIjk.setAt(2, 0.0);
+        observation->originalIjk.setAt(3, 1.0);
+
         //set observation to valid
         observation->isValid = true;
+
+    }else if(this->rLevel.isValid){
+
+        //set ijk
+        observation->originalIjk.setAt(0, this->rLevel.i);
+        observation->originalIjk.setAt(1, this->rLevel.j);
+        observation->originalIjk.setAt(2, this->rLevel.k);
+        observation->originalIjk.setAt(3, 1.0);
+
+        //set standard deviation
+        observation->originalSigmaIjk.setAt(0, this->rLevel.sigmaI);
+        observation->originalSigmaIjk.setAt(1, this->rLevel.sigmaJ);
+        observation->originalSigmaIjk.setAt(2, this->rLevel.sigmaK);
+        observation->originalSigmaIjk.setAt(3, 1.0);
+
+        //set position
+        observation->originalXyz.setAt(0, 0.0);
+        observation->originalXyz.setAt(1, 0.0);
+        observation->originalXyz.setAt(2, 0.0);
+        observation->originalXyz.setAt(3, 1.0);
+
+        //set observation to valid
+        observation->isValid = true;
+
+        //set observation direction valid
+        observation->hasDirection = true;
 
     }
 
@@ -612,9 +644,9 @@ QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayRX(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayI(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RX, type), 'f', digits);
+        return QString::number(rLevel.i, 'f', digits);
     }
     return QString("");
 }
@@ -625,9 +657,9 @@ QString Reading::getDisplayRX(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayRY(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayJ(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RY, type), 'f', digits);
+        return QString::number(this->rLevel.j, 'f', digits);
     }
     return QString("");
 }
@@ -638,9 +670,9 @@ QString Reading::getDisplayRY(const UnitType &type, const int &digits) const{
  * \param digits
  * \return
  */
-QString Reading::getDisplayRZ(const UnitType &type, const int &digits) const{
+QString Reading::getDisplayK(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RZ, type), 'f', digits);
+        return QString::number(this->rLevel.k, 'f', digits);
     }
     return QString("");
 }
@@ -748,9 +780,9 @@ QString Reading::getDisplaySigmaZ(const UnitType &type, const int &digits) const
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaRX(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaI(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RX, type), 'f', digits);
+        return QString::number(this->rLevel.sigmaI, 'f', digits);
     }
     return QString("");
 }
@@ -761,9 +793,9 @@ QString Reading::getDisplaySigmaRX(const UnitType &type, const int &digits) cons
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaRY(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaJ(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RY, type), 'f', digits);
+        return QString::number(this->rLevel.sigmaJ, 'f', digits);
     }
     return QString("");
 }
@@ -774,9 +806,9 @@ QString Reading::getDisplaySigmaRY(const UnitType &type, const int &digits) cons
  * \param digits
  * \return
  */
-QString Reading::getDisplaySigmaRZ(const UnitType &type, const int &digits) const{
+QString Reading::getDisplaySigmaK(const int &digits) const{
     if(this->rLevel.isValid){
-        return QString::number(convertFromDefault(this->rLevel.RZ, type), 'f', digits);
+        return QString::number(this->rLevel.sigmaK, 'f', digits);
     }
     return QString("");
 }
@@ -888,19 +920,19 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     case eLevelReading:
         if(this->rLevel.isValid){
             QDomElement rx = xmlDoc.createElement("measurement");
-            rx.setAttribute("type", "RX");
-            rx.setAttribute("value", this->rLevel.RX);
-            rx.setAttribute("sigma", this->rLevel.sigmaRX);
+            rx.setAttribute("type", "i");
+            rx.setAttribute("value", this->rLevel.i);
+            rx.setAttribute("sigma", this->rLevel.sigmaI);
             measurements.appendChild(rx);
             QDomElement ry = xmlDoc.createElement("measurement");
-            ry.setAttribute("type", "zenith");
-            ry.setAttribute("value", this->rLevel.RY);
-            ry.setAttribute("sigma", this->rLevel.sigmaRY);
+            ry.setAttribute("type", "j");
+            ry.setAttribute("value", this->rLevel.j);
+            ry.setAttribute("sigma", this->rLevel.sigmaJ);
             measurements.appendChild(ry);
             QDomElement rz = xmlDoc.createElement("measurement");
-            rz.setAttribute("type", "zenith");
-            rz.setAttribute("value", this->rLevel.RZ);
-            rz.setAttribute("sigma", this->rLevel.sigmaRZ);
+            rz.setAttribute("type", "k");
+            rz.setAttribute("value", this->rLevel.k);
+            rz.setAttribute("sigma", this->rLevel.sigmaK);
             measurements.appendChild(rz);
         }
         break;
@@ -984,13 +1016,18 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
             this->rPolar.distance = measurement.attribute("value").toDouble();
             this->rDistance.distance = measurement.attribute("value").toDouble();
             this->rDistance.isValid = true;
-        }else if(measurement.attribute("type").compare("RX") == 0){
-            this->rLevel.RX = measurement.attribute("value").toDouble();
+        }else if(measurement.attribute("type").compare("i") == 0){
+            this->rLevel.i = measurement.attribute("value").toDouble();
+            this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
             this->rLevel.isValid = true;
-        }else if(measurement.attribute("type").compare("RY") == 0){
-            this->rLevel.RY = measurement.attribute("value").toDouble();
-        }else if(measurement.attribute("type").compare("RZ") == 0){
-            this->rLevel.RZ = measurement.attribute("value").toDouble();
+        }else if(measurement.attribute("type").compare("j") == 0){
+            this->rLevel.j = measurement.attribute("value").toDouble();
+            this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
+            this->rLevel.isValid = true;
+        }else if(measurement.attribute("type").compare("k") == 0){
+            this->rLevel.k = measurement.attribute("value").toDouble();
+            this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
+            this->rLevel.isValid = true;
         }
     }
 

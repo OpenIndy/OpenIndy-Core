@@ -295,9 +295,15 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayX, "x");
     observationDisplayAttributesMap.insert(eObservationDisplayY, "y");
     observationDisplayAttributesMap.insert(eObservationDisplayZ, "z");
+    observationDisplayAttributesMap.insert(eObservationDisplayI, "i");
+    observationDisplayAttributesMap.insert(eObservationDisplayJ, "j");
+    observationDisplayAttributesMap.insert(eObservationDisplayK, "k");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaX, "sigma x");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaY, "sigma y");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaZ, "sigma z");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaI, "sigma i");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaJ, "sigma j");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaK, "sigma k");
     observationDisplayAttributesMap.insert(eObservationDisplayIsValid, "valid");
     observationDisplayAttributesMap.insert(eObservationDisplayIsSolved, "solved");
     observationDisplayAttributesMap.insert(eObservationDisplayVX, "vx");
@@ -318,9 +324,9 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplayX, "x");
     readingDisplayAttributesMap.insert(eReadingDisplayY, "y");
     readingDisplayAttributesMap.insert(eReadingDisplayZ, "z");
-    readingDisplayAttributesMap.insert(eReadingDisplayRX, "RX");
-    readingDisplayAttributesMap.insert(eReadingDisplayRY, "RY");
-    readingDisplayAttributesMap.insert(eReadingDisplayRZ, "RZ");
+    readingDisplayAttributesMap.insert(eReadingDisplayI, "i");
+    readingDisplayAttributesMap.insert(eReadingDisplayJ, "j");
+    readingDisplayAttributesMap.insert(eReadingDisplayK, "k");
     readingDisplayAttributesMap.insert(eReadingDisplayTemperature, "temperature");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaAzimuth, "sigma azimuth");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaZenith, "sigma zenith");
@@ -328,9 +334,9 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaX, "sigma x");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaY, "sigma y");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaZ, "sigma z");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaRX, "sigma RX");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaRY, "sigma RY");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaRZ, "sigma RZ");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaI, "sigma i");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaJ, "sigma j");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaK, "sigma k");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaTemperature, "sigma temperature");
 
     //fill trafo param display attributes map
@@ -1122,17 +1128,17 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
             return false;
         }
         break;
-    case eReadingDisplayRX:
+    case eReadingDisplayI:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplayRY:
+    case eReadingDisplayJ:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplayRZ:
+    case eReadingDisplayK:
         if(type != eLevelReading){
             return false;
         }
@@ -1172,17 +1178,17 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
             return false;
         }
         break;
-    case eReadingDisplaySigmaRX:
+    case eReadingDisplaySigmaI:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplaySigmaRY:
+    case eReadingDisplaySigmaJ:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplaySigmaRZ:
+    case eReadingDisplaySigmaK:
         if(type != eLevelReading){
             return false;
         }
