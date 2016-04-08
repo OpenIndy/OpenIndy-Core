@@ -289,9 +289,9 @@ QDomElement SensorConfiguration::toOpenIndyXML(QDomDocument &xmlDoc) const{
     accuracy.setAttribute("sigmaZenith", this->accuracy.sigmaZenith);
     accuracy.setAttribute("sigmaDistance", this->accuracy.sigmaDistance);
     accuracy.setAttribute("sigmaTemp", this->accuracy.sigmaTemp);
-    accuracy.setAttribute("sigmaRX", this->accuracy.sigmaRX);
-    accuracy.setAttribute("sigmaRY", this->accuracy.sigmaRY);
-    accuracy.setAttribute("sigmaRZ", this->accuracy.sigmaRZ);
+    accuracy.setAttribute("sigmaI", this->accuracy.sigmaI);
+    accuracy.setAttribute("sigmaJ", this->accuracy.sigmaJ);
+    accuracy.setAttribute("sigmaK", this->accuracy.sigmaK);
     QDomElement sigmaUndefined = xmlDoc.createElement("sigmaUndefined");
     QStringList params = this->accuracy.sigmaUndefined.keys();
     for(int i = 0; i < params.size(); i++){
@@ -424,9 +424,9 @@ bool SensorConfiguration::fromOpenIndyXML(QDomElement &xmlElem){
         if(accuracy.hasAttribute("sigmaY")){ this->accuracy.sigmaXyz.setAt(1, accuracy.attribute("sigmaY").toDouble()); }
         if(accuracy.hasAttribute("sigmaZ")){ this->accuracy.sigmaXyz.setAt(2, accuracy.attribute("sigmaZ").toDouble()); }
         if(accuracy.hasAttribute("sigmaTemp")){ this->accuracy.sigmaTemp = accuracy.attribute("sigmaTemp").toDouble(); }
-        if(accuracy.hasAttribute("sigmaRX")){ this->accuracy.sigmaRX = accuracy.attribute("sigmaRX").toDouble(); }
-        if(accuracy.hasAttribute("sigmaRY")){ this->accuracy.sigmaRY = accuracy.attribute("sigmaRY").toDouble(); }
-        if(accuracy.hasAttribute("sigmaRZ")){ this->accuracy.sigmaRZ = accuracy.attribute("sigmaRZ").toDouble(); }
+        if(accuracy.hasAttribute("sigmaI")){ this->accuracy.sigmaI = accuracy.attribute("sigmaI").toDouble(); }
+        if(accuracy.hasAttribute("sigmaJ")){ this->accuracy.sigmaJ = accuracy.attribute("sigmaJ").toDouble(); }
+        if(accuracy.hasAttribute("sigmaK")){ this->accuracy.sigmaK = accuracy.attribute("sigmaK").toDouble(); }
 
         //set undefined accuracy values if available
         QDomElement sigmaUndefined = accuracy.firstChildElement("sigmaUndefined");
