@@ -18,6 +18,13 @@ Function::~Function(){
 }
 
 /*!
+ * \brief Function::init
+ */
+void Function::init(){
+
+}
+
+/*!
  * \brief Function::exec
  * \param feature
  * \return
@@ -557,13 +564,6 @@ bool Function::fromOpenIndyXML(QDomElement &xmlElem){
     this->scalarInputParams.isValid = true;
 
     return true;
-
-}
-
-/*!
- * \brief Function::init
- */
-void Function::init(){
 
 }
 

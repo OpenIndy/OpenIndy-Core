@@ -5,6 +5,7 @@
 #include "geometry.h"
 #include "trafoparam.h"
 #include "oijob.h"
+#include "bundleadjustment.h"
 
 using namespace oi;
 using namespace oi::math;
@@ -13,7 +14,21 @@ using namespace oi::math;
  * \brief CoordinateSystem::CoordinateSystem
  * \param parent
  */
-CoordinateSystem::CoordinateSystem(QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isStationSystem(false){
+CoordinateSystem::CoordinateSystem(QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isStationSystem(false), isBundleSystem(false){
+
+    //set up feature wrapper
+    if(!this->selfFeature.isNull()){
+        this->selfFeature->setCoordinateSystem(this);
+    }
+
+}
+
+/*!
+ * \brief CoordinateSystem::CoordinateSystem
+ * \param isBundleSystem
+ * \param parent
+ */
+CoordinateSystem::CoordinateSystem(bool isBundleSystem, QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isStationSystem(false), isBundleSystem(isBundleSystem){
 
     //set up feature wrapper
     if(!this->selfFeature.isNull()){
@@ -27,7 +42,7 @@ CoordinateSystem::CoordinateSystem(QObject *parent) : Feature(parent), isActiveC
  * \param station
  * \param parent
  */
-CoordinateSystem::CoordinateSystem(const QPointer<Station> &station, QObject *parent) : Feature(parent), isActiveCoordinateSystem(false){
+CoordinateSystem::CoordinateSystem(const QPointer<Station> &station, QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isBundleSystem(false){
 
     //set up feature wrapper
     if(!this->selfFeature.isNull()){
@@ -62,7 +77,7 @@ CoordinateSystem::CoordinateSystem(const CoordinateSystem &copy, QObject *parent
     this->yAxis = copy.yAxis;
     this->zAxis = copy.zAxis;
     this->isStationSystem = copy.isStationSystem;
-    //this->station = copy.station;
+    this->isBundleSystem = copy.isBundleSystem;
     this->isActiveCoordinateSystem = copy.isActiveCoordinateSystem;
     this->expansionOrigin = copy.expansionOrigin;
 
@@ -88,7 +103,7 @@ CoordinateSystem &CoordinateSystem::operator=(const CoordinateSystem &copy){
     this->yAxis = copy.yAxis;
     this->zAxis = copy.zAxis;
     this->isStationSystem = copy.isStationSystem;
-    //this->station = copy.station;
+    this->isBundleSystem = copy.isBundleSystem;
     this->isActiveCoordinateSystem = copy.isActiveCoordinateSystem;
     this->expansionOrigin = copy.expansionOrigin;
 
@@ -117,12 +132,17 @@ CoordinateSystem::~CoordinateSystem(){
 
     //delete nominals of this coordinate system
     foreach(const QPointer<FeatureWrapper> &nominal, this->nominalsList){
-        if(nominal.isNull()){
-            if(nominal->getFeature().isNull()){
+        if(!nominal.isNull()){
+            if(!nominal->getFeature().isNull()){
                 delete nominal->getFeature();
             }
             delete nominal;
         }
+    }
+
+    //delete bundle adjustment
+    if(!this->bundlePlugin.isNull()){
+        delete this->bundlePlugin;
     }
 
 }
@@ -160,6 +180,14 @@ const bool &CoordinateSystem::getIsStationSystem() const{
  */
 const QPointer<Station> &CoordinateSystem::getStation() const{
     return this->station;
+}
+
+/*!
+ * \brief CoordinateSystem::getIsBundleSystem
+ * \return
+ */
+const bool &CoordinateSystem::getIsBundleSystem() const{
+    return this->isBundleSystem;
 }
 
 /*!
@@ -485,6 +513,39 @@ bool CoordinateSystem::removeNominal(const int &featureId){
     }
 
     return false;
+
+}
+
+/*!
+ * \brief CoordinateSystem::getBundlePlugin
+ * \return
+ */
+const QPointer<BundleAdjustment> &CoordinateSystem::getBundlePlugin() const{
+    return this->bundlePlugin;
+}
+
+/*!
+ * \brief CoordinateSystem::setBundlePlugin
+ * \param bundle
+ */
+void CoordinateSystem::setBundlePlugin(const QPointer<BundleAdjustment> &bundle){
+
+    //check if the system is a bundle system
+    if(!this->isBundleSystem){
+        return;
+    }
+
+    //check bundle plugin
+    if(bundle.isNull()){
+        return;
+    }
+
+    //pass coordinate system to bundle plugin
+    bundle->setBundleSystem(this);
+
+    //set bundle
+    this->bundlePlugin = bundle;
+    emit this->bundlePluginChanged(this->id);
 
 }
 

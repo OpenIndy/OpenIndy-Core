@@ -7,7 +7,7 @@
 #include "function.h"
 #include "sensor.h"
 #include "simulationmodel.h"
-#include "networkadjustment.h"
+//#include "bundleadjustment.h"
 #include "tool.h"
 #include "exchangesimpleascii.h"
 #include "exchangedefinedformat.h"
@@ -29,7 +29,7 @@ public:
 
     virtual QList<QPointer<Sensor> > createSensors() = 0;
     virtual QList<QPointer<Function> > createFunctions() = 0;
-    virtual QList<QPointer<NetworkAdjustment> > createNetworkAdjustments() = 0;
+    //virtual QList<QPointer<BundleAdjustment> > createBundleAdjustments() = 0;
     virtual QList<QPointer<SimulationModel> > createSimulations() = 0;
     virtual QList<QPointer<Tool> > createTools() = 0;
     virtual QList<QPointer<ExchangeSimpleAscii> > createSimpleAsciiExchanges() = 0;
@@ -41,7 +41,7 @@ public:
 
     virtual QPointer<Sensor> createSensor(const QString &name) = 0;
     virtual QPointer<Function> createFunction(const QString &name) = 0;
-    virtual QPointer<NetworkAdjustment> createNetworkAdjustment(const QString &name) = 0;
+    //virtual QPointer<BundleAdjustment> createBundleAdjustment(const QString &name) = 0;
     virtual QPointer<SimulationModel> createSimulation(const QString &name) = 0;
     virtual QPointer<Tool> createTool(const QString &name) = 0;
     virtual QPointer<ExchangeSimpleAscii> createSimpleAsciiExchange(const QString &name) = 0;

@@ -48,7 +48,7 @@ namespace oi{
  * \brief The NeededElement class
  * Save the needed element types that are necessary to solve a function
  */
-class OI_CORE_EXPORT NeededElement{
+class NeededElement{
 public:
     ElementTypes typeOfElement; //type of the needed input element
     QString description; //optional description for the needed element to show in the GUI
@@ -59,7 +59,7 @@ public:
  * \brief The InputElement class
  * Save the input elements that are used to solve a function
  */
-class OI_CORE_EXPORT InputElement{
+class InputElement{
 public:
     InputElement() : isUsed(true), shouldBeUsed(true), id(-1){}
     InputElement(const int &id) : isUsed(true), shouldBeUsed(true), id(id){}
@@ -124,26 +124,10 @@ public:
 };
 
 /*!
- * \brief The ScalarInputParams class
- * Save user specified non-element scalar function input parameters
- */
-class OI_CORE_EXPORT ScalarInputParams{
-public:
-    ScalarInputParams(){
-        isValid = false;
-    }
-
-    bool isValid;
-    QMap<QString, double> doubleParameter;
-    QMap<QString, int> intParameter;
-    QMap<QString, QString> stringParameter;
-};
-
-/*!
  * \brief The FixedParameter class
  * Save a value for each parameter that shall be fixed
  */
-class OI_CORE_EXPORT FixedParameter{
+class FixedParameter{
 public:
     FixedParameter() : value(0.0){}
     FixedParameter(const GeometryParameters &param) : value(0.0), parameter(param){}

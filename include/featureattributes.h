@@ -21,6 +21,7 @@ public:
         this->isNominal = false;
         this->isCommon = false;
         this->isMovement = false;
+        this->isBundleSystem = false;
     }
 
     //general attributes
@@ -43,6 +44,9 @@ public:
     QString startSystem;
     QString destinationSystem;
     bool isMovement;
+
+    //only when typeOfFeature specifies a coordinate system
+    bool isBundleSystem;
 
 };
 

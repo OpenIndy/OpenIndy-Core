@@ -22,6 +22,7 @@ TrafoParam::TrafoParam(QObject *parent) : Feature(parent), scale(3), rotation(3)
     this->validTime = QDateTime::currentDateTime();
     this->isMovement = false;
     this->isDatumTrafo = false;
+    this->isBundleTrafo = false;
 
     //default values for transformation parameters
     this->scale.setAt(0, 1.0);
@@ -47,12 +48,11 @@ TrafoParam::TrafoParam(const TrafoParam &copy, QObject *parent) : Feature(copy, 
     }
 
     //copy attributes
-    //this->from = copy.from;
-    //this->to = copy.to;
     this->isUsed = copy.isUsed;
     this->validTime = copy.validTime;
     this->isMovement = copy.isMovement;
     this->isDatumTrafo = copy.isDatumTrafo;
+    this->isBundleTrafo = copy.isBundleTrafo;
 
     //copy transformation parameters
     this->rotation = copy.rotation;
@@ -75,12 +75,11 @@ TrafoParam &TrafoParam::operator=(const TrafoParam &copy){
     }
 
     //copy attributes
-    //this->from = copy.from;
-    //this->to = copy.to;
     this->isUsed = copy.isUsed;
     this->validTime = copy.validTime;
     this->isMovement = copy.isMovement;
     this->isDatumTrafo = copy.isDatumTrafo;
+    this->isBundleTrafo = copy.isBundleTrafo;
 
     //copy transformation parameters
     this->rotation = copy.rotation;
@@ -105,6 +104,13 @@ TrafoParam::~TrafoParam(){
     //delete this trafo set in to system
     if(!this->to.isNull()){
         this->to->removeTransformationParameter(this);
+    }
+
+    //delete bundle children
+    foreach(const QPointer<TrafoParam> &tp, this->bundleChildren){
+        if(!tp.isNull()){
+            delete tp;
+        }
     }
 
 }
@@ -205,6 +211,25 @@ void TrafoParam::setIsMovement(const bool &isMovement){
 }
 
 /*!
+ * \brief TrafoParam::getIsBundle
+ * \return
+ */
+const bool &TrafoParam::getIsBundle() const{
+    return this->isBundleTrafo;
+}
+
+/*!
+ * \brief TrafoParam::setIsBundle
+ * \param isBundle
+ */
+void TrafoParam::setIsBundle(const bool &isBundle){
+    if(this->isBundleTrafo != isBundle){
+        this->isBundleTrafo = isBundle;
+        emit this->isBundleChanged(this->id);
+    }
+}
+
+/*!
  * \brief TrafoParam::getValidTime
  * \return
  */
@@ -243,7 +268,7 @@ void TrafoParam::setStatistic(const Statistic &statistic){
  * \brief TrafoParam::getIsDatumTrafo
  * \return
  */
-const bool &TrafoParam::getIsDatumTrafo(){
+const bool &TrafoParam::getIsDatumTrafo() const{
     return this->isDatumTrafo;
 }
 
@@ -255,6 +280,74 @@ void TrafoParam::setIsDatumTrafo(const bool &isDatumTrafo){
     if(this->isDatumTrafo != isDatumTrafo){
         this->isDatumTrafo = isDatumTrafo;
     }
+}
+
+/*!
+ * \brief TrafoParam::getBundleParent
+ * \return
+ */
+const QPointer<TrafoParam> &TrafoParam::getBundleParent() const{
+    return this->bundleParent;
+}
+
+/*!
+ * \brief TrafoParam::setBundleParent
+ * \param parent
+ */
+void TrafoParam::setBundleParent(const QPointer<TrafoParam> &parent){
+
+    //check trafo
+    if(!this->isBundleTrafo){
+        return;
+    }
+
+    //check parent
+    if(parent.isNull() || this->parent() == parent || !parent->getIsBundle()){
+        return;
+    }
+
+    //set parent
+    this->bundleParent = parent;
+    emit this->bundleParentChanged(this->id);
+
+}
+
+/*!
+ * \brief TrafoParam::getBundleChildren
+ * \return
+ */
+const QList<QPointer<TrafoParam> > &TrafoParam::getBundleChildren() const{
+    return this->bundleChildren;
+}
+
+/*!
+ * \brief TrafoParam::setBundleChildren
+ * \param children
+ */
+void TrafoParam::setBundleChildren(const QList<QPointer<TrafoParam> > &children){
+
+    //check trafo
+    if(!this->isBundleTrafo || this->bundleChildren.size() > 0){
+        return;
+    }
+
+    //check children
+    foreach(const QPointer<TrafoParam> &tp, children){
+        if(tp.isNull() || !tp->getBundleParent().isNull()){
+            return;
+        }
+    }
+
+    //set up children
+    foreach(const QPointer<TrafoParam> &tp, children){
+        tp->bundleParent = this;
+        tp->isBundleTrafo = true;
+    }
+
+    //set children
+    this->bundleChildren = children;
+    emit this->bundleChildrenChanged(this->id);
+
 }
 
 /*!

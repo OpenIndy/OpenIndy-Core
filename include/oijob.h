@@ -73,6 +73,7 @@ public:
     const QList<QPointer<FeatureWrapper> > &getFeaturesList() const;
     const QList<QPointer<CoordinateSystem> > &getCoordinateSystemsList() const;
     QList<QPointer<CoordinateSystem> > getStationSystemsList() const;
+    QList<QPointer<CoordinateSystem> > getBundleSystemList() const;
     const QList<QPointer<Station> > &getStationsList() const;
     const QList<QPointer<TrafoParam> > &getTransformationParametersList() const;
     const QList<QPointer<FeatureWrapper> > &getGeometriesList() const;
@@ -97,15 +98,16 @@ public:
     //add or remove features
     //######################
 
+    //add features
     bool addFeature(const QPointer<FeatureWrapper> &feature);
     QList<QPointer<FeatureWrapper> > addFeatures(const FeatureAttributes &fAttr);
     bool addFeatures(const QList<QPointer<FeatureWrapper> > &features);
 
+    //remove features
     bool removeFeature(const int &featureId);
     bool removeFeature(const QPointer<FeatureWrapper> &feature);
     bool removeFeatures(const QSet<int> &featureIds);
     bool removeFeatures(const QList<QPointer<FeatureWrapper> > &features);
-
     void removeAll();
 
     //##########################################

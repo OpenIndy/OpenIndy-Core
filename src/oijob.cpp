@@ -250,6 +250,14 @@ QList<QPointer<CoordinateSystem> > OiJob::getStationSystemsList() const{
 }
 
 /*!
+ * \brief OiJob::getBundleSystemList
+ * \return
+ */
+QList<QPointer<CoordinateSystem> > OiJob::getBundleSystemList() const{
+    return this->featureContainer.getBundleSystemList();
+}
+
+/*!
  * \brief OiJob::getStationsList
  * \return
  */
@@ -611,6 +619,11 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 feature->getTrafoParam()->to = destSystem;
                 startSystem->trafoParams.append(feature->getTrafoParam());
                 destSystem->trafoParams.append(feature->getTrafoParam());
+            }
+
+            //if type of feature is a coordinate system
+            if(fAttr.typeOfFeature == eCoordinateSystemFeature){
+                feature->getCoordinateSystem()->isBundleSystem = fAttr.isBundleSystem;
             }
 
             //add and connect feature

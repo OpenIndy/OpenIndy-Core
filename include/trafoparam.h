@@ -38,44 +38,62 @@ public:
     //get or set trafo param attributes
     //#################################
 
+    //used state
     const bool &getIsUsed() const;
     void setIsUsed(const bool &isUsed);
 
+    //coordinate systems
     const QPointer<CoordinateSystem> &getStartSystem() const;
     const QPointer<CoordinateSystem> &getDestinationSystem() const;
     bool setCoordinateSystems(const QPointer<CoordinateSystem> &from,
                               const QPointer<CoordinateSystem> &to);
 
+    //movement
     const bool &getIsMovement() const;
     void setIsMovement(const bool &isMovement);
 
+    //bundle
+    const bool &getIsBundle() const;
+    void setIsBundle(const bool &isBundle);
+
+    //time stamp
     const QDateTime &getValidTime() const;
     void setValidTime(const QDateTime &validTime);
 
+    //statistic
     const Statistic &getStatistic() const;
     void setStatistic(const Statistic &statistic);
 
-    const bool &getIsDatumTrafo();
+    //datum transformation
+    const bool &getIsDatumTrafo() const;
     void setIsDatumTrafo(const bool &isDatumTrafo);
+
+    //bundle transformation
+    const QPointer<TrafoParam> &getBundleParent() const;
+    void setBundleParent(const QPointer<TrafoParam> &parent);
+    const QList<QPointer<TrafoParam> > &getBundleChildren() const;
+    void setBundleChildren(const QList<QPointer<TrafoParam> > &children);
 
     //####################################
     //get or set transformation parameters
     //####################################
 
+    //getter
     const OiMat &getHomogenMatrix() const;
     const OiVec &getTranslation() const;
     const OiVec &getRotation() const;
     const OiVec &getScale() const;
 
+    //setter
     bool setTransformationParameters(const OiVec &rotation, const OiVec &translation, const OiVec &scale);
     bool setTransformationParameters(const OiMat &rotation, const OiMat &translation, const OiMat &scale);
     bool setTransformationParameters(const OiMat &homogenMatrix);
-    //bool setQuaternion(OiVec quaternion);
 
     //#############################
     //get or set unknown parameters
     //#############################
 
+    //unknown parameters
     virtual QMap<TrafoParamParameters, QString> getUnknownParameters(const QMap<DimensionType, UnitType> &displayUnits,
                                                           const QMap<DimensionType, int> &displayDigits) const;
     virtual void setUnknownParameters(const QMap<TrafoParamParameters, double> &parameters);
@@ -126,6 +144,9 @@ signals:
     void isUsedChanged(const int &tpId);
     void validTimeChanged(const int &tpId);
     void isMovementChanged(const int &tpId);
+    void isBundleChanged(const int &tpId);
+    void bundleParentChanged(const int &tpId);
+    void bundleChildrenChanged(const int &tpId);
 
 private:
 
@@ -133,16 +154,24 @@ private:
     //general trafo param attributes
     //##############################
 
+    //coordinate systems
     QPointer<CoordinateSystem> from;
     QPointer<CoordinateSystem> to;
 
+    //statistic
     Statistic statistic;
 
     bool isDatumTrafo;
     bool isUsed; //true if this trafo param object is used for transformation (false if not)
+    bool isBundleTrafo; //true if the transformation represents a bundle adjustment
 
+    //movement
     bool isMovement;
     QDateTime validTime; //used for movements to decide which observations shall be "moved"
+
+    //bundle transformation
+    QPointer<TrafoParam> bundleParent; //parent of each bundle transformation
+    QList<QPointer<TrafoParam> > bundleChildren; //all bundle transformations with this as parent
 
     //#########################
     //transformation parameters

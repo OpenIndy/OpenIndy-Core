@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QMap>
 #include <QtCore/QtGlobal>
 
 #if defined(OI_CORE_LIB)
@@ -442,6 +443,26 @@ enum ActualNominalFilter{
     eFilterActual,
     eFilterNominal
 
+};
+
+//##############
+//helper classes
+//##############
+
+/*!
+ * \brief The ScalarInputParams class
+ * Save user specified non-element scalar input parameters
+ */
+class ScalarInputParams{
+public:
+    ScalarInputParams(){
+        isValid = false;
+    }
+
+    bool isValid;
+    QMap<QString, double> doubleParameter;
+    QMap<QString, int> intParameter;
+    QMap<QString, QString> stringParameter;
 };
 
 }
