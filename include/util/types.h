@@ -234,6 +234,7 @@ enum FeatureDisplayAttributes{
     //geometry specific
     eFeatureDisplayMeasurementConfig = 100,
     eFeatureDisplayObservations,
+    eFeatureDisplayIsCommon,
 
     //unknown parameters
     eFeatureDisplayX = 200,

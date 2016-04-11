@@ -702,6 +702,14 @@ QString Feature::getDisplayObservations() const{
 }
 
 /*!
+ * \brief Feature::getDisplayIsCommon
+ * \return
+ */
+QString Feature::getDisplayIsCommon() const{
+    return QString("-/-");
+}
+
+/*!
  * \brief Feature::getDisplayX
  * \param type
  * \param digits

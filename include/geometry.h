@@ -117,6 +117,7 @@ public:
 
     QString getDisplayMeasurementConfig() const;
     QString getDisplayObservations() const;
+    QString getDisplayIsCommon() const;
 
 signals:
 
@@ -140,19 +141,25 @@ protected:
     //geometry attributes
     //###################
 
+    //common
     bool isCommon;
 
+    //nominals
     bool isNominal;
     QList< QPointer<Geometry> > nominals;
 
+    //actual / nominal
     QPointer<Geometry> actual;
     QPointer<CoordinateSystem> nominalSystem;
 
+    //observations
     QList<QPointer<Observation> > observations;
 
+    //statistic
     Statistic statistic;
     SimulationData simulationData;
 
+    //reading types
     QList<ReadingTypes> usedReadingTypes;
 
     //current measurement config that is used to create readings until the user selects another one

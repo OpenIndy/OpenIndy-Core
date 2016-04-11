@@ -702,3 +702,11 @@ QString Geometry::getDisplayObservations() const{
     return QString("0/%1").arg(totalObs);
 
 }
+
+/*!
+ * \brief Geometry::getDisplayIsCommon
+ * \return
+ */
+QString Geometry::getDisplayIsCommon() const{
+    return this->isCommon?"true":"false";
+}
