@@ -259,6 +259,7 @@ void init(){
     featureDisplayAttributesMap.insert(eFeatureDisplayIsSolved, "solved");
     featureDisplayAttributesMap.insert(eFeatureDisplayIsUpdated, "updated");
     featureDisplayAttributesMap.insert(eFeatureDisplayFunctions, "functions");
+    featureDisplayAttributesMap.insert(eFeatureDisplayIsCommon, "common");
     featureDisplayAttributesMap.insert(eFeatureDisplayUsedFor, "used for");
     featureDisplayAttributesMap.insert(eFeatureDisplayPreviouslyNeeded, "previously needed");
     featureDisplayAttributesMap.insert(eFeatureDisplayStDev, "stdev");
@@ -370,7 +371,7 @@ void init(){
     for(int i = 0; i < 10; i++){ //general feature attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 100; i < 102; i++){ //geometry specific attributes
+    for(int i = 100; i < 103; i++){ //geometry specific attributes
         featureDisplayAttributes.append(i);
     }
     for(int i = 200; i < 220; i++){ //unknown geometry parameters
@@ -1015,7 +1016,7 @@ const QList<ReadingDisplayAttributes> &getReadingDisplayAttributes(){
  * \return
  */
 bool getIsFeatureDisplayAttribute(const int &attr){
-    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 102) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
+    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 103) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
         return true;
     }
     return false;

@@ -578,6 +578,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             feature->getFeature()->name = name;
             feature->getFeature()->group = fAttr.group;
             feature->getGeometry()->isNominal = false;
+            feature->getGeometry()->isCommon = fAttr.isCommon;
 
             //search corresponding nominal
             QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
