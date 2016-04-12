@@ -201,13 +201,15 @@ void BundleAdjustment::clear(){
     this->scalarInputParams.isValid = false;
     this->stations.clear();
     this->baseSystem = BundleStation();
+    this->clearResults();
 }
 
 /*!
  * \brief BundleAdjustment::clearResults
  */
 void BundleAdjustment::clearResults(){
-
+    this->geometries.clear();
+    this->transformations.clear();
 }
 
 /*!
