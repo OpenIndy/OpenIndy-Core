@@ -284,6 +284,60 @@ const QList<Sensor> &Station::getUsedSensors() const{
 }
 
 /*!
+ * \brief Station::getTargetGeometries
+ * \return
+ */
+QList<QPointer<Geometry> > Station::getTargetGeometries() const{
+
+    QList<QPointer<Geometry> > geometries;
+
+    //get a list of all readings
+    QList<QPointer<Reading> > readings;
+    foreach(const QPointer<Reading> &reading, this->cartesianReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->directionReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->distanceReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->polarReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->levelReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->temperatureRadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->undefinedReadings){
+        readings.append(reading);
+    }
+
+    //get target geometries
+    foreach(const QPointer<Reading> &reading, readings){
+
+        //check reading
+        if(reading.isNull() || reading->getObservation().isNull()){
+            continue;
+        }
+
+        //add target geometries of the observation
+        const QList<QPointer<Geometry> > &targetGeometries = reading->getObservation()->getTargetGeometries();
+        foreach(const QPointer<Geometry> &geom, targetGeometries){
+            if(!geom.isNull() && !geometries.contains(geom)){
+                geometries.append(geom);
+            }
+        }
+
+    }
+
+    return geometries;
+
+}
+
+/*!
  * \brief Station::setUsedSensors
  * \param sensors
  */

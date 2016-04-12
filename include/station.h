@@ -64,6 +64,9 @@ public:
     //previously used sensors
     const QList<Sensor> &getUsedSensors() const;
 
+    //get geometries measured from this station
+    QList<QPointer<Geometry> > getTargetGeometries() const;
+
     //####################################################
     //get information about the currently connected sensor
     //####################################################
