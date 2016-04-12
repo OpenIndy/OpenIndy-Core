@@ -151,6 +151,8 @@ public:
     const int &getId() const;
 
     //bundle results
+    const QList<BundleGeometry> &getOutputGeometries() const;
+    const QList<BundleTransformation> &getOutputTransformations() const;
 
     //#############
     //clear results
@@ -211,6 +213,10 @@ protected:
     //input stations
     QList<BundleStation> stations;
     BundleStation baseSystem;
+
+    //output geometries and transformation parameters
+    QList<BundleGeometry> geometries;
+    QList<BundleTransformation> transformations;
 
     //bundle coordinate system
     QPointer<CoordinateSystem> bundleSystem;

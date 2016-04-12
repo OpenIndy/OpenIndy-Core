@@ -179,6 +179,22 @@ const int &BundleAdjustment::getId() const{
 }
 
 /*!
+ * \brief BundleAdjustment::getOutputGeometries
+ * \return
+ */
+const QList<BundleGeometry> &BundleAdjustment::getOutputGeometries() const{
+    return this->geometries;
+}
+
+/*!
+ * \brief BundleAdjustment::getOutputTransformations
+ * \return
+ */
+const QList<BundleTransformation> &BundleAdjustment::getOutputTransformations() const{
+    return this->transformations;
+}
+
+/*!
  * \brief BundleAdjustment::clear
  */
 void BundleAdjustment::clear(){
