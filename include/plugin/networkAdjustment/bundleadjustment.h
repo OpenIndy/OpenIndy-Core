@@ -15,6 +15,52 @@
 namespace oi{
 
 /*!
+ * \brief The BundleTransformation class
+ * Defines a transformation for bundle adjustment
+ */
+class BundleTransformation{
+public:
+    BundleTransformation() : id(-1){}
+
+    bool operator == (const BundleTransformation &other){
+        if(this->id == other.id){
+            return true;
+        }
+        return false;
+    }
+
+    //station feature id
+    int id;
+
+    //transformation parameters
+    QMap<TrafoParamParameters, double> parameters;
+
+};
+
+/*!
+ * \brief The BundleGeometry class
+ * Defines a geometry for bundle adjustment
+ */
+class BundleGeometry{
+public:
+    BundleGeometry() : id(-1){}
+
+    bool operator == (const BundleGeometry &other){
+        if(this->id == other.id){
+            return true;
+        }
+        return false;
+    }
+
+    //geometry feature id
+    int id;
+
+    //geometry parameters
+    QMap<GeometryParameters, double> parameters;
+
+};
+
+/*!
  * \brief The BundleStation class
  * Defines a station used for bundle adjustment
  */
@@ -30,10 +76,17 @@ public:
         return false;
     }
 
-    int id; //station feature id
-    bool tx, ty, tz; //defines which parameters to calculate
+    //station feature id
+    int id;
+
+    //defines which parameters to calculate
+    bool tx, ty, tz;
     bool rx, ry, rz;
     bool m;
+
+    //geometries solved in station system
+    QList<Geometry> geometries;
+
 };
 
 /*!
@@ -94,13 +147,17 @@ public:
     //general getters
     //###############
 
+    //id
     const int &getId() const;
+
+    //bundle results
 
     //#############
     //clear results
     //#############
 
     virtual void clear();
+    virtual void clearResults();
 
     //#################
     //save and load XML

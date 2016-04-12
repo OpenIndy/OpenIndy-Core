@@ -188,6 +188,13 @@ void BundleAdjustment::clear(){
 }
 
 /*!
+ * \brief BundleAdjustment::clearResults
+ */
+void BundleAdjustment::clearResults(){
+
+}
+
+/*!
  * \brief BundleAdjustment::toOpenIndyXML
  * \param xmlDoc
  * \return
