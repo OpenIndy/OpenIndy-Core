@@ -85,7 +85,7 @@ public:
     bool m;
 
     //geometries solved in station system
-    QList<Geometry> geometries;
+    QList<BundleGeometry> geometries;
 
 };
 
