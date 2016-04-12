@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QList>
 #include <QPointer>
+#include <QJsonObject>
 
 #include "feature.h"
 #include "position.h"
@@ -90,6 +91,10 @@ public:
     bool addNominals(const QList< QPointer<FeatureWrapper> > &nominals);
     bool removeNominal(const QPointer<FeatureWrapper> &nominal);
     bool removeNominal(const int &featureId);
+
+    //bundle template
+    const QJsonObject &getBundleTemplate() const;
+    void setBundleTemplate(const QJsonObject &bundleTemplate);
 
     //bundle adjustment
     const QPointer<BundleAdjustment> &getBundlePlugin() const;
@@ -180,6 +185,7 @@ private:
     QPointer<Station> station;
 
     //the bundle plugin that is used to solve the bundle
+    QJsonObject bundleTemplate;
     QPointer<BundleAdjustment> bundlePlugin;
 
     //#######################################

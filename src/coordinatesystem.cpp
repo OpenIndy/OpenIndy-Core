@@ -517,6 +517,22 @@ bool CoordinateSystem::removeNominal(const int &featureId){
 }
 
 /*!
+ * \brief CoordinateSystem::getBundleTemplate
+ * \return
+ */
+const QJsonObject &CoordinateSystem::getBundleTemplate() const{
+    return this->bundleTemplate;
+}
+
+/*!
+ * \brief CoordinateSystem::setBundleTemplate
+ * \param bundleTemplate
+ */
+void CoordinateSystem::setBundleTemplate(const QJsonObject &bundleTemplate){
+    this->bundleTemplate = bundleTemplate;
+}
+
+/*!
  * \brief CoordinateSystem::getBundlePlugin
  * \return
  */
