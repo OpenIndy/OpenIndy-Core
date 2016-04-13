@@ -106,13 +106,6 @@ TrafoParam::~TrafoParam(){
         this->to->removeTransformationParameter(this);
     }
 
-    //delete bundle children
-    foreach(const QPointer<TrafoParam> &tp, this->bundleChildren){
-        if(!tp.isNull()){
-            delete tp;
-        }
-    }
-
 }
 
 /*!
@@ -132,15 +125,6 @@ void TrafoParam::setIsUsed(const bool &isUsed){
 
         //set used state
         this->isUsed = isUsed;
-
-        //set used state of bundle children
-        if(this->isBundleTrafo){
-            foreach(const QPointer<TrafoParam> &trafo, this->bundleChildren){
-                if(!trafo.isNull()){
-                    trafo->isUsed = isUsed;
-                }
-            }
-        }
 
         emit this->isUsedChanged(this->id);
 
@@ -176,7 +160,7 @@ bool TrafoParam::setCoordinateSystems(const QPointer<CoordinateSystem> &from, co
         return false;
     }
 
-    if(!from.isNull() && !to.isNull() && from != to){
+    if(!from.isNull() && !to.isNull()){
 
         //check if to and from are in the same job
         if(!this->job.isNull()){
@@ -293,80 +277,6 @@ void TrafoParam::setIsDatumTrafo(const bool &isDatumTrafo){
     if(this->isDatumTrafo != isDatumTrafo){
         this->isDatumTrafo = isDatumTrafo;
     }
-}
-
-/*!
- * \brief TrafoParam::getBundleParent
- * \return
- */
-const QPointer<TrafoParam> &TrafoParam::getBundleParent() const{
-    return this->bundleParent;
-}
-
-/*!
- * \brief TrafoParam::setBundleParent
- * \param parent
- */
-void TrafoParam::setBundleParent(const QPointer<TrafoParam> &parent){
-
-    //check trafo
-    if(!this->isBundleTrafo){
-        return;
-    }
-
-    //check parent
-    if(parent.isNull() || this->parent() == parent || !parent->getIsBundle()){
-        return;
-    }
-
-    //set parent
-    this->bundleParent = parent;
-    if(!parent->bundleChildren.contains(this)){
-        QList<QPointer<TrafoParam> > children = parent->bundleChildren;
-        children.append(this);
-        parent->setBundleChildren(children);
-    }
-
-    emit this->bundleParentChanged(this->id);
-
-}
-
-/*!
- * \brief TrafoParam::getBundleChildren
- * \return
- */
-const QList<QPointer<TrafoParam> > &TrafoParam::getBundleChildren() const{
-    return this->bundleChildren;
-}
-
-/*!
- * \brief TrafoParam::setBundleChildren
- * \param children
- */
-void TrafoParam::setBundleChildren(const QList<QPointer<TrafoParam> > &children){
-
-    //check trafo
-    if(!this->isBundleTrafo || this->bundleChildren.size() > 0){
-        return;
-    }
-
-    //check children
-    foreach(const QPointer<TrafoParam> &tp, children){
-        if(tp.isNull() || !tp->getBundleParent().isNull()){
-            return;
-        }
-    }
-
-    //set up children
-    foreach(const QPointer<TrafoParam> &tp, children){
-        tp->bundleParent = this;
-        tp->isBundleTrafo = true;
-    }
-
-    //set children
-    this->bundleChildren = children;
-    emit this->bundleChildrenChanged(this->id);
-
 }
 
 /*!

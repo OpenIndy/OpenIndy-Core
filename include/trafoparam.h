@@ -68,12 +68,6 @@ public:
     const bool &getIsDatumTrafo() const;
     void setIsDatumTrafo(const bool &isDatumTrafo);
 
-    //bundle transformation
-    const QPointer<TrafoParam> &getBundleParent() const;
-    void setBundleParent(const QPointer<TrafoParam> &parent);
-    const QList<QPointer<TrafoParam> > &getBundleChildren() const;
-    void setBundleChildren(const QList<QPointer<TrafoParam> > &children);
-
     //####################################
     //get or set transformation parameters
     //####################################
@@ -145,8 +139,6 @@ signals:
     void validTimeChanged(const int &tpId);
     void isMovementChanged(const int &tpId);
     void isBundleChanged(const int &tpId);
-    void bundleParentChanged(const int &tpId);
-    void bundleChildrenChanged(const int &tpId);
 
 private:
 
@@ -168,10 +160,6 @@ private:
     //movement
     bool isMovement;
     QDateTime validTime; //used for movements to decide which observations shall be "moved"
-
-    //bundle transformation
-    QPointer<TrafoParam> bundleParent; //parent of each bundle transformation
-    QList<QPointer<TrafoParam> > bundleChildren; //all bundle transformations with this as parent
 
     //#########################
     //transformation parameters
