@@ -129,8 +129,21 @@ const bool &TrafoParam::getIsUsed() const{
  */
 void TrafoParam::setIsUsed(const bool &isUsed){
     if(this->isUsed != isUsed){
+
+        //set used state
         this->isUsed = isUsed;
+
+        //set used state of bundle children
+        if(this->isBundleTrafo){
+            foreach(const QPointer<TrafoParam> &trafo, this->bundleChildren){
+                if(!trafo.isNull()){
+                    trafo->isUsed = isUsed;
+                }
+            }
+        }
+
         emit this->isUsedChanged(this->id);
+
     }
 }
 
@@ -308,6 +321,12 @@ void TrafoParam::setBundleParent(const QPointer<TrafoParam> &parent){
 
     //set parent
     this->bundleParent = parent;
+    if(!parent->bundleChildren.contains(this)){
+        QList<QPointer<TrafoParam> > children = parent->bundleChildren;
+        children.append(this);
+        parent->setBundleChildren(children);
+    }
+
     emit this->bundleParentChanged(this->id);
 
 }
