@@ -362,6 +362,8 @@ bool Function::getIsUsed(const int &position, const int &id){
         }
     }
 
+    return false;
+
 }
 
 /*!
@@ -378,6 +380,8 @@ bool Function::getShouldBeUsed(const int &position, const int &id){
             return this->inputElements[position][index].shouldBeUsed;
         }
     }
+
+    return false;
 
 }
 

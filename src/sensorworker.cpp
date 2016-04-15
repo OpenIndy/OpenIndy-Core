@@ -105,7 +105,7 @@ bool SensorWorker::getIsSensorConnected(){
         return false;
     }
 
-    this->sensor->getConnectionState();
+    return this->sensor->getConnectionState();
 
 }
 
@@ -120,7 +120,7 @@ bool SensorWorker::getIsReadyForMeasurement(){
         return false;
     }
 
-    this->sensor->getIsReadyForMeasurement();
+    return this->sensor->getIsReadyForMeasurement();
 
 }
 
@@ -135,7 +135,7 @@ bool SensorWorker::getIsBusy(){
         return false;
     }
 
-    this->sensor->getIsBusy();
+    return this->sensor->getIsBusy();
 
 }
 
@@ -150,7 +150,7 @@ QMap<QString, QString> SensorWorker::getSensorStatus(){
         return QMap<QString, QString>();
     }
 
-    this->sensor->getSensorStatus();
+    return this->sensor->getSensorStatus();
 
 }
 
