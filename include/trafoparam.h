@@ -48,17 +48,9 @@ public:
     bool setCoordinateSystems(const QPointer<CoordinateSystem> &from,
                               const QPointer<CoordinateSystem> &to);
 
-    //movement
-    const bool &getIsMovement() const;
-    void setIsMovement(const bool &isMovement);
-
     //bundle
     const bool &getIsBundle() const;
     void setIsBundle(const bool &isBundle);
-
-    //time stamp
-    const QDateTime &getValidTime() const;
-    void setValidTime(const QDateTime &validTime);
 
     //statistic
     const Statistic &getStatistic() const;
@@ -123,8 +115,6 @@ public:
     QString getDisplayScaleY(const int &digits) const;
     QString getDisplayScaleZ(const int &digits) const;
     QString getDisplayIsUsed() const;
-    QString getDisplayValidTime() const;
-    QString getDisplayIsMovement() const;
     QString getDisplayIsDatumTransformation() const;
 
 signals:
@@ -156,10 +146,6 @@ private:
     bool isDatumTrafo;
     bool isUsed; //true if this trafo param object is used for transformation (false if not)
     bool isBundleTrafo; //true if the transformation represents a bundle adjustment
-
-    //movement
-    bool isMovement;
-    QDateTime validTime; //used for movements to decide which observations shall be "moved"
 
     //#########################
     //transformation parameters

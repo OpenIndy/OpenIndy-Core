@@ -20,7 +20,6 @@ public:
         this->isActual = false;
         this->isNominal = false;
         this->isCommon = false;
-        this->isMovement = false;
         this->isBundleSystem = false;
         this->isBundleTrafo = false;
     }
@@ -44,7 +43,6 @@ public:
     //only when typeOfFeature specifies a trafo param
     QString startSystem;
     QString destinationSystem;
-    bool isMovement;
     bool isBundleTrafo;
 
     //only when typeOfFeature specifies a coordinate system
