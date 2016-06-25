@@ -201,8 +201,8 @@ signals:
     void trafoParamParametersChanged(const int &featureId);
     void trafoParamSystemsChanged(const int &featureId);
     void trafoParamIsUsedChanged(const int &featureId);
-    void trafoParamValidTimeChanged(const int &featureId);
-    void trafoParamIsMovementChanged(const int &featureId);
+    //void trafoParamValidTimeChanged(const int &featureId);
+    //void trafoParamIsMovementChanged(const int &featureId);
 
     //###################################################
     //general signals to inform OpenIndy about job issues
@@ -267,8 +267,8 @@ private slots:
     void setTrafoParamParameters(const int &featureId);
     void setTrafoParamSystems(const int &featureId);
     void setTrafoParamIsUsed(const int &featureId);
-    void setTrafoParamValidTime(const int &featureId);
-    void setTrafoParamIsMovement(const int &featureId);
+    //void setTrafoParamValidTime(const int &featureId);
+    //void setTrafoParamIsMovement(const int &featureId);
 
     //element deleted
     void elementAboutToBeDeleted(const int &elementId, const QString &name, const QString &group, const FeatureTypes &type);

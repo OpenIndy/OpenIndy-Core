@@ -126,8 +126,8 @@ signals:
     void transformationParameterChanged(const int &tpId);
     void coordinateSystemsChanged(const int &tpId);
     void isUsedChanged(const int &tpId);
-    void validTimeChanged(const int &tpId);
-    void isMovementChanged(const int &tpId);
+    //void validTimeChanged(const int &tpId);
+    //void isMovementChanged(const int &tpId);
     void isBundleChanged(const int &tpId);
 
 private:

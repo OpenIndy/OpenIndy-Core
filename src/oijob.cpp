@@ -2073,17 +2073,17 @@ void OiJob::setTrafoParamIsUsed(const int &featureId){
  * \brief OiJob::setTrafoParamValidTime
  * \param featureId
  */
-void OiJob::setTrafoParamValidTime(const int &featureId){
+/*void OiJob::setTrafoParamValidTime(const int &featureId){
     emit this->trafoParamValidTimeChanged(featureId);
-}
+}*/
 
 /*!
  * \brief OiJob::setTrafoParamIsMovement
  * \param featureId
  */
-void OiJob::setTrafoParamIsMovement(const int &featureId){
+/*void OiJob::setTrafoParamIsMovement(const int &featureId){
     emit this->trafoParamIsMovementChanged(featureId);
-}
+}*/
 
 /*!
  * \brief OiJob::elementAboutToBeDeleted
@@ -2165,10 +2165,10 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setTrafoParamSystems, Qt::AutoConnection);
         QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isUsedChanged,
                          this, &OiJob::setTrafoParamIsUsed, Qt::AutoConnection);
-        QObject::connect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
-                         this, &OiJob::setTrafoParamValidTime, Qt::AutoConnection);
-        QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
-                         this, &OiJob::setTrafoParamIsMovement, Qt::AutoConnection);
+        /*QObject::connect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
+                         this, &OiJob::setTrafoParamValidTime, Qt::AutoConnection);*/
+        /*QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
+                         this, &OiJob::setTrafoParamIsMovement, Qt::AutoConnection);*/
     }
 
     //station connects
@@ -2262,10 +2262,10 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setTrafoParamSystems);
         QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isUsedChanged,
                          this, &OiJob::setTrafoParamIsUsed);
-        QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
-                         this, &OiJob::setTrafoParamValidTime);
-        QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
-                         this, &OiJob::setTrafoParamIsMovement);
+        /*QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
+                         this, &OiJob::setTrafoParamValidTime);*/
+        /*QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
+                         this, &OiJob::setTrafoParamIsMovement);*/
     }
 
     //station connects
