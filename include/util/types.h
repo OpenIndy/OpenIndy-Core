@@ -120,7 +120,7 @@ enum FeatureTypes{
     eCoordinateSystemFeature,
     eStationFeature,
     eTrafoParamFeature,
-
+    eMasterGeometryFeature,
     eUndefinedFeature
 
 };

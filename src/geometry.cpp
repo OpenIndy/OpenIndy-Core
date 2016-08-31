@@ -5,6 +5,7 @@
 #include "observation.h"
 #include "station.h"
 #include "function.h"
+#include "mastergeometry.h"
 
 using namespace oi;
 using namespace oi::math;
@@ -709,4 +710,29 @@ QString Geometry::getDisplayObservations() const{
  */
 QString Geometry::getDisplayIsCommon() const{
     return this->isCommon?"true":"false";
+}
+
+/*!
+ * \brief Geometry::setMasterGeom
+ * \param mastergeom
+ * \return
+ */
+bool Geometry::setMasterGeom(const QPointer<MasterGeometry> &mastergeom)
+{
+    if(!mastergeom.isNull()){
+        this->myMasterGeom = mastergeom;
+        return true;
+    }
+    return false;
+}
+
+/*!
+ * \brief Geometry::removeMasterGeom
+ * \param mastergeom
+ * \return
+ */
+bool Geometry::removeMasterGeom(const QPointer<MasterGeometry> &mastergeom)
+{
+    this->myMasterGeom.clear();
+    return true;
 }

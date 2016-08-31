@@ -93,7 +93,8 @@ SOURCES += \
     $$PWD/../src/station.cpp \
     $$PWD/../src/statistic.cpp \
     $$PWD/../src/trafoparam.cpp \
-    $$PWD/../src/plugin/networkAdjustment/bundleadjustment.cpp
+    $$PWD/../src/plugin/networkAdjustment/bundleadjustment.cpp \
+    ../include/util/mastergeometry.cpp
 
 # header files
 HEADERS  += \
@@ -156,4 +157,5 @@ HEADERS  += \
     $$PWD/../include/station.h \
     $$PWD/../include/statistic.h \
     $$PWD/../include/trafoparam.h \
-    $$PWD/../include/plugin/networkAdjustment/bundleadjustment.h
+    $$PWD/../include/plugin/networkAdjustment/bundleadjustment.h \
+    ../include/util/mastergeometry.h

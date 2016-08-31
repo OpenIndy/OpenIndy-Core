@@ -13,9 +13,11 @@
 #include "radius.h"
 #include "direction.h"
 #include "position.h"
+#include "mastergeometry.h"
 
 namespace oi{
 
+//class MasterGeometry;
 class Observation;
 class CoordinateSystem;
 
@@ -119,6 +121,10 @@ public:
     QString getDisplayObservations() const;
     QString getDisplayIsCommon() const;
 
+    //add or remove reference to master geometry
+    bool setMasterGeom(const QPointer<MasterGeometry> &mastergeom);
+    bool removeMasterGeom(const QPointer<MasterGeometry> &mastergeom);
+
 signals:
 
     //########################################
@@ -174,6 +180,8 @@ private:
     Position dummyPosition;
     Direction dummyDirection;
     Radius dummyRadius;
+
+    QPointer<MasterGeometry> myMasterGeom;
 
 };
 

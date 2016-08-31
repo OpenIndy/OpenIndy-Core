@@ -244,7 +244,18 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
     case eTrafoParamFeature:
         this->trafoParamsList.append(feature->getTrafoParam());
         break;
-    default: //geometry
+    case eMasterGeometryFeature:
+        if(!feature->getMasterGeometry().isNull()){
+            this->geometriesList.append(feature);
+            if(!feature->getMasterGeometry()->getActual().isNull() && feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsValid()){
+                QPair<QString, bool> key;
+                key.first = feature->getMasterGeometry()->getActual()->getMeasurementConfig().getName();
+                key.second = feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsSaved();
+                this->geometriesMConfigMap.insert(key, feature->getMasterGeometry()->getActual());
+            }
+        }
+        break;
+    /*default: //geometry
         if(!feature->getGeometry().isNull()){
             this->geometriesList.append(feature);
             if(feature->getGeometry()->getMeasurementConfig().getIsValid()){
@@ -254,7 +265,7 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
                 this->geometriesMConfigMap.insert(key, feature->getGeometry());
             }
         }
-        break;
+        break;*/
     }
 
     //update lists with ids, names, groups and mConfigs
@@ -266,9 +277,14 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
             !this->featureGroups.contains(feature->getFeature()->getGroupName())){
         this->featureGroups.append(feature->getFeature()->getGroupName());
     }
-    if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().getIsValid()){
+    /*if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().getIsValid()){
         this->usedMConfigs.append(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
                                         feature->getGeometry()->getMeasurementConfig().getIsSaved()));
+    }*/
+    if(!feature->getMasterGeometry().isNull() && !feature->getMasterGeometry()->getActual().isNull()
+            && feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsValid()){
+        this->usedMConfigs.append(QPair<QString,bool>(feature->getMasterGeometry()->getActual()->getMeasurementConfig().getName(),
+                                                      feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsSaved()));
     }
 
     return true;
@@ -313,7 +329,17 @@ bool FeatureContainer::removeFeature(const int &featureId){
     case eTrafoParamFeature:
         this->trafoParamsList.removeOne(feature->getTrafoParam());
         break;
-    default: //geometry
+    case eMasterGeometryFeature:
+        if(!feature->getMasterGeometry().isNull() && !feature->getMasterGeometry()->getActual().isNull()){
+            this->geometriesList.removeOne(feature);
+            if(feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsValid()){
+                QPair<QString, bool> key;
+                key.first = feature->getMasterGeometry()->getActual()->getMeasurementConfig().getName();
+                key.second = feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsSaved();
+                this->geometriesMConfigMap.remove(key,feature->getMasterGeometry()->getActual());
+            }
+        }
+    /*default: //geometry
         if(!feature->getGeometry().isNull()){
             this->geometriesList.removeOne(feature);
             if(feature->getGeometry()->getMeasurementConfig().getIsValid()){
@@ -323,7 +349,7 @@ bool FeatureContainer::removeFeature(const int &featureId){
                 this->geometriesMConfigMap.remove(key, feature->getGeometry());
             }
         }
-        break;
+        break;*/
     }
 
     //update lists with ids, names and groups
@@ -335,9 +361,14 @@ bool FeatureContainer::removeFeature(const int &featureId){
             !this->featuresGroupMap.contains(feature->getFeature()->getGroupName())){
         this->featureGroups.removeOne(feature->getFeature()->getGroupName());
     }
-    if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().getIsValid()){
+    /*if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().getIsValid()){
         this->usedMConfigs.removeOne(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
                                            feature->getGeometry()->getMeasurementConfig().getIsSaved()));
+    }*/
+    if(!feature->getMasterGeometry().isNull() && !feature->getMasterGeometry()->getActual().isNull()
+            && feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsValid()){
+        this->usedMConfigs.removeOne(QPair<QString, bool>(feature->getMasterGeometry()->getActual()->getMeasurementConfig().getName(),
+                                                          feature->getMasterGeometry()->getActual()->getMeasurementConfig().getIsSaved()));
     }
 
     //delete the feature

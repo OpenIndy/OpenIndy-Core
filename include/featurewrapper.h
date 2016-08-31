@@ -81,6 +81,8 @@ public:
     const QPointer<ScalarEntityTemperature> &getScalarEntityTemperature() const;
     const QPointer<ScalarEntityMeasurementSeries> &getScalarEntityMeasurementSeries() const;
 
+    const QPointer<MasterGeometry> &getMasterGeometry() const;
+
     //###################
     //set feature pointer
     //###################
@@ -110,6 +112,8 @@ public:
     void setScalarEntityTemperature(const QPointer<ScalarEntityTemperature> &temperature);
     void setScalarEntityMeasurementSeries(const QPointer<ScalarEntityMeasurementSeries> &measurementSeries);
 
+    void setMasterGeometry(const QPointer<MasterGeometry> &mastergeom);
+
 private:
 
     //#################################################################
@@ -118,6 +122,7 @@ private:
 
     QPointer<Feature> feature;
     QPointer<Geometry> geometry;
+    QPointer<MasterGeometry> masterGeom;
 
     QPointer<CoordinateSystem> coordinateSystem;
     QPointer<TrafoParam> trafoParam;
@@ -143,6 +148,8 @@ private:
     QPointer<ScalarEntityDistance> distance;
     QPointer<ScalarEntityTemperature> temperature;
     QPointer<ScalarEntityMeasurementSeries> measurementSeries;
+
+    QPointer<MasterGeometry> masterGeometry;
 
     FeatureTypes typeOfFeature;
 
