@@ -63,8 +63,8 @@ public:
     const QPointer<CoordinateSystem> &getNominalSystem() const;
     bool setNominalSystem(const QPointer<CoordinateSystem> &nomSys);
 	
-    const MeasurementConfig &getMeasurementConfig() const;
-    void setMeasurementConfig(const MeasurementConfig &myConfig);
+    //const MeasurementConfig &getMeasurementConfig() const;
+    //void setMeasurementConfig(const MeasurementConfig &myConfig);
 
     const Statistic &getStatistic() const;
     void setStatistic(const Statistic &myStatistic);
@@ -117,7 +117,7 @@ public:
 
     QString getDisplayStDev(const UnitType &type, const int &digits) const;
 
-    QString getDisplayMeasurementConfig() const;
+    //QString getDisplayMeasurementConfig() const;
     QString getDisplayObservations() const;
     QString getDisplayIsCommon() const;
 
@@ -168,9 +168,9 @@ protected:
     //reading types
     QList<ReadingTypes> usedReadingTypes;
 
-    //current measurement config that is used to create readings until the user selects another one
+    /*//current measurement config that is used to create readings until the user selects another one
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
-
+    */
 private:
 
     //############################################################################

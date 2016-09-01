@@ -225,6 +225,12 @@ QDomElement MasterGeometry::toOpenIndyXML(QDomDocument &xmlDoc) const
         }
         geometry.appendChild(nominals);
     }
+
+    //add measurement config
+    QDomElement mConfig = xmlDoc.createElement("measurementConfig");
+    mConfig.setAttribute("name",this->activeMeasurementConfig.getName());
+    geometry.appendChild(mConfig);
+
     return geometry;
 }
 
@@ -237,6 +243,27 @@ bool MasterGeometry::fromOpenIndyXML(QDomElement &xmlElem)
 
 void MasterGeometry::recalc()
 {
+}
+
+/*!
+ * \brief MasterGeometry::getMeasurementConfig
+ * \return
+ */
+const MeasurementConfig &MasterGeometry::getMeasurementConfig() const
+{
+    return this->activeMeasurementConfig;
+}
+
+/*!
+ * \brief MasterGeometry::setMeasurementConfig
+ * \param myConfig
+ */
+void MasterGeometry::setMeasurementConfig(const MeasurementConfig &myConfig)
+{
+    QString oldName = this->activeMeasurementConfig.getName();
+    bool oldIsSaved = this->activeMeasurementConfig.getIsSaved();
+    this->activeMeasurementConfig = myConfig;
+    emit this->geomMeasurementConfigChanged(this->id, oldName, oldIsSaved);
 }
 
 /*!

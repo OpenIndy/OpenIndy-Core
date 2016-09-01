@@ -322,7 +322,7 @@ QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByType(const FeatureTypes &ty
  * \param mConfig
  * \return
  */
-QList<QPointer<Geometry> > OiJob::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
+QList<QPointer<MasterGeometry> > OiJob::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
     return this->featureContainer.getGeometriesByMConfig(mConfig);
 }
 
@@ -2153,7 +2153,7 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setGeometryStatistic, Qt::AutoConnection);
         QObject::connect(feature->getGeometry().data(), &Geometry::geomSimulationDataChanged,
                          this, &OiJob::setGeometrySimulationData, Qt::AutoConnection);
-        QObject::connect(feature->getGeometry().data(), &Geometry::geomMeasurementConfigChanged,
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
                          this, &OiJob::setGeometryMeasurementConfig, Qt::AutoConnection);
     }
 
@@ -2250,7 +2250,7 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setGeometryStatistic);
         QObject::disconnect(feature->getGeometry().data(), &Geometry::geomSimulationDataChanged,
                          this, &OiJob::setGeometrySimulationData);
-        QObject::disconnect(feature->getGeometry().data(), &Geometry::geomMeasurementConfigChanged,
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
                          this, &OiJob::setGeometryMeasurementConfig);
     }
 

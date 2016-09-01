@@ -53,8 +53,15 @@ public:
 
     virtual void recalc();
 
+    const MeasurementConfig &getMeasurementConfig() const;
+    void setMeasurementConfig(const MeasurementConfig &myConfig);
+
+    //current measurement config that is used to create readings until the user selects another one
+    MeasurementConfig activeMeasurementConfig; //only for this geometry instance
+
 signals:
     //TODO void geomNominalsChanged(const int &featureId);
+    void geomMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
 
 protected:
     QPointer<Geometry> myActual;

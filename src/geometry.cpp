@@ -31,7 +31,6 @@ Geometry::Geometry(const Geometry &copy, QObject *parent) : Feature(copy, parent
     this->isCommon = copy.isCommon;
     this->statistic = copy.statistic;
     this->simulationData = copy.simulationData;
-    this->activeMeasurementConfig = copy.activeMeasurementConfig;
 
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
@@ -53,7 +52,6 @@ Geometry &Geometry::operator=(const Geometry &copy){
     this->isCommon = copy.isCommon;
     this->statistic = copy.statistic;
     this->simulationData = copy.simulationData;
-    this->activeMeasurementConfig = copy.activeMeasurementConfig;
 
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
@@ -342,20 +340,20 @@ bool Geometry::setNominalSystem(const QPointer<CoordinateSystem> &nomSys){
  * \brief Geometry::getMeasurementConfig
  * \return
  */
-const MeasurementConfig &Geometry::getMeasurementConfig() const{
+/*const MeasurementConfig &Geometry::getMeasurementConfig() const{
     return this->activeMeasurementConfig;
-}
+}*/
 
 /*!
  * \brief Geometry::setMeasurementConfig
  * \param myConfig
  */
-void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
+/*void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
     QString oldName = this->activeMeasurementConfig.getName();
     bool oldIsSaved = this->activeMeasurementConfig.getIsSaved();
     this->activeMeasurementConfig = myConfig;
     emit this->geomMeasurementConfigChanged(this->id, oldName, oldIsSaved);
-}
+}*/
 
 /*!
  * \brief Geometry::getStatistic
@@ -589,12 +587,12 @@ QDomElement Geometry::toOpenIndyXML(QDomDocument &xmlDoc) const{
         geometry.appendChild(nominals);
     }
 
-    //add measurement config
+    /*//add measurement config
     if(!this->isNominal){
         QDomElement mConfig = xmlDoc.createElement("measurementConfig");
         mConfig.setAttribute("name", this->activeMeasurementConfig.getName());
         geometry.appendChild(mConfig);
-    }
+    }*/
 
     return geometry;
 
@@ -648,7 +646,7 @@ QString Geometry::getDisplayStDev(const UnitType &type, const int &digits) const
  * \brief Geometry::getDisplayMeasurementConfig
  * \return
  */
-QString Geometry::getDisplayMeasurementConfig() const{
+/*QString Geometry::getDisplayMeasurementConfig() const{
     if(this->activeMeasurementConfig.getIsValid()){
         if(this->activeMeasurementConfig.getIsSaved()){
             return this->activeMeasurementConfig.getName();
@@ -657,7 +655,7 @@ QString Geometry::getDisplayMeasurementConfig() const{
         }
     }
     return QString("");
-}
+}*/
 
 /*!
  * \brief Geometry::getDisplayObservations
