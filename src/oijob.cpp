@@ -2076,6 +2076,12 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
     QObject::connect(feature->getFeature().data(), &Feature::featureIsActiveChanged,
                      this, &OiJob::setActiveFeature, Qt::AutoConnection);
 
+    //Mastergeometry connects
+    QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
+                     this, &OiJob::setGeometryNominals, Qt::AutoConnection);
+    QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
+                     this, &OiJob::setGeometryActual, Qt::AutoConnection);
+
     //general geometry connects
     if(getIsGeometry(feature->getFeatureTypeEnum())){
         QObject::connect(feature->getGeometry().data(), &Geometry::geomIsCommonChanged,
@@ -2173,9 +2179,15 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
     QObject::disconnect(feature->getFeature().data(), &Feature::featureIsActiveChanged,
                      this, &OiJob::setActiveFeature);
 
+    //master geometry disconnects
+    QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
+                     this, &OiJob::setGeometryNominals);
+    QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
+                     this, &OiJob::setGeometryActual);
+
     //general geometry connects
     if(getIsGeometry(feature->getFeatureTypeEnum())){
-        QObject::connect(feature->getGeometry().data(), &Geometry::geomIsCommonChanged,
+        QObject::disconnect(feature->getGeometry().data(), &Geometry::geomIsCommonChanged,
                          this, &OiJob::setGeometryIsCommon);
         QObject::disconnect(feature->getGeometry().data(), &Geometry::geomNominalsChanged,
                          this, &OiJob::setGeometryNominals);

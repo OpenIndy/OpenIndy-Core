@@ -74,7 +74,7 @@ bool MasterGeometry::addNominal(const QPointer<Geometry> &nominal)
                         nominal->setMasterGeom(this);
                         return true;
 
-                        //TODO emit this->geomNominalsChanged(this->id);
+                        emit this->geomNominalsChanged(this->id);
                     }
                 }
             }else{//first nominal
@@ -82,7 +82,7 @@ bool MasterGeometry::addNominal(const QPointer<Geometry> &nominal)
                 nominal->setMasterGeom(this);
                 return true;
 
-                //TODO emit this->geomNominalsChanged(this->id);
+                emit this->geomNominalsChanged(this->id);
             }
         }else{
             //check feature type of actual and nominal
@@ -93,7 +93,7 @@ bool MasterGeometry::addNominal(const QPointer<Geometry> &nominal)
                     nominal->setMasterGeom(this);
                     return true;
 
-                    //TODO emit this->geomNominalsChanged(this->id);
+                    emit this->geomNominalsChanged(this->id);
                 }
             }
         }
@@ -165,14 +165,14 @@ bool MasterGeometry::setActual(const QPointer<Geometry> &actual)
             actual->setMasterGeom(this);
             return true;
 
-            //TODO emit emit this->geomActualChanged(this->id);
+            emit this->geomActualChanged(this->id);
         }
     }else{
         this->myActual = actual;
         actual->setMasterGeom(this);
         return true;
 
-        //TODO emit emit this->geomActualChanged(this->id);
+        emit this->geomActualChanged(this->id);
     }
     return false;
 }

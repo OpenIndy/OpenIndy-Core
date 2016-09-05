@@ -63,7 +63,8 @@ public:
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
 
 signals:
-    //TODO void geomNominalsChanged(const int &featureId);
+    void geomNominalsChanged(const int &featureId);
+    void geomActualChanged(const int &featureId);
     void geomMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
 
 protected:
