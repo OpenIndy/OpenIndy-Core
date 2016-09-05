@@ -115,6 +115,7 @@ bool MasterGeometry::removeNominal(const QPointer<Geometry> &nominal)
 
     //remove nominal
     return this->myNominals.removeOne(nominal);
+    nominal->removeMasterGeom();
 }
 
 /*!
@@ -187,6 +188,7 @@ bool MasterGeometry::removeActual(const QPointer<Geometry> &actual)
     if(actual.isNull()){
         return false;
     }
+    actual->removeMasterGeom();
     this->myActual.clear();
     return true;
 }
@@ -234,6 +236,11 @@ QDomElement MasterGeometry::toOpenIndyXML(QDomDocument &xmlDoc) const
     return geometry;
 }
 
+/*!
+ * \brief MasterGeometry::fromOpenIndyXML
+ * \param xmlElem
+ * \return
+ */
 bool MasterGeometry::fromOpenIndyXML(QDomElement &xmlElem)
 {
     bool result = Feature::fromOpenIndyXML(xmlElem);
@@ -241,6 +248,35 @@ bool MasterGeometry::fromOpenIndyXML(QDomElement &xmlElem)
     return result;
 }
 
+/*!
+ * \brief MasterGeometry::changeNameofGeometries
+ */
+void MasterGeometry::changeNameOfGeometries()
+{
+    if(!this->myActual.isNull()){
+        this->myActual->setFeatureName(this->getFeatureName());
+    }
+    foreach (QPointer<Geometry> geom, this->myNominals) {
+        geom->setFeatureName(this->getFeatureName());
+    }
+}
+
+/*!
+ * \brief MasterGeometry::changeGroupOfGeometries
+ */
+void MasterGeometry::changeGroupOfGeometries()
+{
+    if(!this->myActual.isNull()){
+        this->myActual->setGroupName(this->getGroupName());
+    }
+    foreach (QPointer<Geometry> geom, this->myNominals) {
+        geom->setGroupName(this->getGroupName());
+    }
+}
+
+/*!
+ * \brief MasterGeometry::recalc
+ */
 void MasterGeometry::recalc()
 {
 }

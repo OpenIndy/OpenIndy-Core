@@ -47,6 +47,9 @@ public:
     virtual QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     virtual bool fromOpenIndyXML(QDomElement &xmlElem);
 
+    void changeNameOfGeometries();
+    void changeGroupOfGeometries();
+
     //###########################
     //reexecute the function list
     //###########################

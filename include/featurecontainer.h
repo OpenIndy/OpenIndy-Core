@@ -85,6 +85,11 @@ public:
     bool featureGroupChanged(const int &featureId, const QString &oldGroup);
     bool geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
 
+    //##########################################################
+    //create new master geometry
+    //##########################################################
+    void createNewMasterGeomFromFeature(QPointer<FeatureWrapper> feature);
+
 private:
 
     //######################
@@ -111,6 +116,19 @@ private:
     QStringList featureGroups;
     QList<QPair<QString, bool> > usedMConfigs;
 
+    void addToFeatureList(QPointer<FeatureWrapper> fw);
+    //void addToGeometriesList(QPointer<FeatureWrapper>fw);
+    void addToFeatureNameMap(QPointer<FeatureWrapper> fw);
+    void addToFeatureGroupMap(QPointer<FeatureWrapper> fw);
+    void verifyAndAddFeatureGroupMap(QPointer<FeatureWrapper> fw, QPointer<FeatureWrapper> masterGeom);
+    void addToGeomMConfigMap(QPointer<MasterGeometry> masterGeom);
+    void addToFeatureIDMap(QPointer<FeatureWrapper> fw);
+
+    void removeFromFeatureList(QPointer<FeatureWrapper> fw);
+    void removeFromFeatureNameMap(QPointer<FeatureWrapper> fw);
+    void removeFromFeatureGroupMap(QPointer<FeatureWrapper> fw);
+    void removeFromGeomMConfigMap(QPointer<MasterGeometry>masterGeom);
+    void removeFromFeatureIDMap(QPointer<FeatureWrapper> fw);
 };
 
 }

@@ -123,7 +123,8 @@ public:
 
     //add or remove reference to master geometry
     bool setMasterGeom(const QPointer<MasterGeometry> &mastergeom);
-    bool removeMasterGeom(const QPointer<MasterGeometry> &mastergeom);
+    bool removeMasterGeom();
+    const QPointer<MasterGeometry> &getMasterGeometry() const;
 
 signals:
 

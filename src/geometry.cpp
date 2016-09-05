@@ -729,8 +729,17 @@ bool Geometry::setMasterGeom(const QPointer<MasterGeometry> &mastergeom)
  * \param mastergeom
  * \return
  */
-bool Geometry::removeMasterGeom(const QPointer<MasterGeometry> &mastergeom)
+bool Geometry::removeMasterGeom()
 {
     this->myMasterGeom.clear();
     return true;
+}
+
+/*!
+ * \brief Geometry::getMasterGeometry
+ * \return
+ */
+const QPointer<MasterGeometry> &Geometry::getMasterGeometry() const
+{
+    return this->myMasterGeom;
 }

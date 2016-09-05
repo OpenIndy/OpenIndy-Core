@@ -865,7 +865,8 @@ bool getIsObservation(const ElementTypes &type){
 bool getIsGeometry(const FeatureTypes &type){
     if(type == eCoordinateSystemFeature
             || type == eStationFeature
-            || type == eTrafoParamFeature){
+            || type == eTrafoParamFeature
+            || type == eMasterGeometryFeature){
         return false;
     }
     return true;

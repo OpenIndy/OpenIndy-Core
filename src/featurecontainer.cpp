@@ -216,16 +216,13 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
         return false;
     }
 
-    //if the feature already exists it is not added
-    if(this->featuresIdMap.contains(feature->getFeature()->getId())){
-        return false;
-    }
+    this->addToFeatureIDMap(feature);
+    this->featuresTypeMap.insert(feature->getFeatureTypeEnum(), feature);
 
     //add the feature to the feature lists and maps
     //this->featuresList.append(feature);
-    this->featuresIdMap.insert(feature->getFeature()->getId(), feature);
     //this->featuresNameMap.insert(feature->getFeature()->getFeatureName(), feature);
-    this->featuresTypeMap.insert(feature->getFeatureTypeEnum(), feature);
+    //this->featuresTypeMap.insert(feature->getFeatureTypeEnum(), feature);
 
     /*if(feature->getFeature()->getGroupName().compare("") != 0){
         this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
@@ -248,38 +245,19 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
     case eMasterGeometryFeature:
             if(!feature->getMasterGeometry().isNull() && !this->geometriesList.contains(feature)){
                 this->geometriesList.append(feature);
-
-                if(!this->featuresList.contains(feature)){
-                    this->featuresList.append(feature);
-                    this->featuresNameMap.insert(feature->getFeature()->getFeatureName(), feature);
-
-                    if(this->featuresNameMap.values(feature->getFeature()->getFeatureName()).size() == 1){
-                        this->featureNames.append(feature->getFeature()->getFeatureName());
-                    }
-
-                    this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
-
-                    if(feature->getFeature()->getGroupName().compare("") != 0){
-                            this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
-                    }
-                    if(feature->getFeature()->getGroupName().compare("") != 0 &&
-                            !this->featureGroups.contains(feature->getFeature()->getGroupName())){
-                        this->featureGroups.append(feature->getFeature()->getGroupName());
-                    }
-                }
+                this->addToFeatureList(feature);
+                this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
+                this->addToFeatureGroupMap(feature);
                 //set mconfig map
-                if(!feature->getMasterGeometry().isNull() && feature->getMasterGeometry()->getMeasurementConfig().getIsValid()){
-                    QPair<QString, bool> key;
-                    key.first = feature->getMasterGeometry()->getMeasurementConfig().getName();
-                    key.second = feature->getMasterGeometry()->getMeasurementConfig().getIsSaved();
-                    this->geometriesMConfigMap.insert(key, feature->getMasterGeometry());
-                }
+                this->addToGeomMConfigMap(feature->getMasterGeometry());
             }
             break;
     default:// all geometries
         if(feature->getGeometry().isNull()){
             break;
         }
+        this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
+
         QPointer<FeatureWrapper> existingMasterGeom;
 
         foreach (QPointer<FeatureWrapper> fwMasterGeom, this->geometriesList) {
@@ -302,22 +280,8 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
                         fwMasterGeom->getMasterGeometry()->setActual(feature->getGeometry());
 
                         //check group names
-                        if(feature->getFeature()->getGroupName().compare("") != 0){
-                            if(fwMasterGeom->getFeature()->getGroupName().compare("") == 0){
-                                fwMasterGeom->getFeature()->setGroupName(feature->getFeature()->getGroupName());
-                                this->featuresGroupMap.insert(fwMasterGeom->getFeature()->getGroupName(),fwMasterGeom);
-                                if(this->featureGroups.contains(fwMasterGeom->getFeature()->getGroupName()) != 0){
-                                    this->featureGroups.append(fwMasterGeom->getFeature()->getGroupName());
-                                }
-                            }
-                        }
-
-                        if(!fwMasterGeom->getMasterGeometry().isNull() && fwMasterGeom->getMasterGeometry()->getMeasurementConfig().getIsValid()){
-                            QPair<QString, bool> key;
-                            key.first = fwMasterGeom->getMasterGeometry()->getMeasurementConfig().getName();
-                            key.second = fwMasterGeom->getMasterGeometry()->getMeasurementConfig().getIsSaved();
-                            this->geometriesMConfigMap.insert(key, fwMasterGeom->getMasterGeometry());
-                        }
+                        this->verifyAndAddFeatureGroupMap(feature,fwMasterGeom);
+                        this->addToGeomMConfigMap(fwMasterGeom->getMasterGeometry());
                         existingMasterGeom = fwMasterGeom;
                         break;
                     }
@@ -329,6 +293,9 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
 
                     if(!fwMasterGeom->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
                         fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
+
+                        //check group names
+                        this->verifyAndAddFeatureGroupMap(feature, fwMasterGeom);
                         existingMasterGeom = fwMasterGeom;
                     }
                 }
@@ -337,13 +304,23 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
                 if(fwMasterGeom->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
                     existingMasterGeom = fwMasterGeom;
                 }else{
+                    bool coordSysExists = false;
+                    bool sameName = false;
+                    bool sameType = false;
                     foreach (QPointer<Geometry> geom, fwMasterGeom->getMasterGeometry()->getNominals()) {
-                        if(geom->getFeatureName() == feature->getFeature()->getFeatureName()
-                                && geom->getFeatureWrapper()->getFeatureTypeEnum() == feature->getFeatureTypeEnum()){
+                        if(geom->getFeatureName() == feature->getFeature()->getFeatureName() && geom->getFeatureWrapper()->getFeatureTypeEnum() == feature->getFeatureTypeEnum()){
 
-                            fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
-                            existingMasterGeom = fwMasterGeom;
+                            sameName = true;
+                            sameType = true;
+                            if(geom->getNominalSystem() == feature->getGeometry()->getNominalSystem()){
+                                coordSysExists = true;
+                            }
                         }
+                    }
+                    if(!coordSysExists && sameName && sameType){
+                        fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
+                        this->verifyAndAddFeatureGroupMap(feature,fwMasterGeom);
+                        existingMasterGeom = fwMasterGeom;
                     }
                 }
             }
@@ -351,84 +328,11 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
 
         if(existingMasterGeom.isNull()){
             //erzeuge mastergeom
-            QPointer<FeatureWrapper> featWMasterGeom = new FeatureWrapper();
-
-            QPointer<MasterGeometry> newMasterGeometry = new MasterGeometry();
-            newMasterGeometry->setFeatureName(feature->getFeature()->getFeatureName());
-            newMasterGeometry->setGroupName(feature->getFeature()->getGroupName());
-
-            if(feature->getGeometry()->getIsNominal()){
-                newMasterGeometry->addNominal(feature->getGeometry());
-            }else{
-                newMasterGeometry->setActual(feature->getGeometry());
-            }
-            featWMasterGeom->setMasterGeometry(newMasterGeometry);
-
-            this->featuresList.append(featWMasterGeom);
-            this->geometriesList.append(featWMasterGeom);
-            this->featuresIdMap.insert(featWMasterGeom->getFeature()->getId(),featWMasterGeom);
-            this->featuresNameMap.insert(featWMasterGeom->getFeature()->getFeatureName(),featWMasterGeom);
-            if(this->featuresNameMap.values(feature->getFeature()->getFeatureName()).size() == 1){
-                this->featureNames.append(feature->getFeature()->getFeatureName());
-            }
-            this->featuresTypeMap.insert(featWMasterGeom->getFeatureTypeEnum(),featWMasterGeom);
-
-            if(feature->getFeature()->getGroupName().compare("") != 0){
-                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), featWMasterGeom);
-            }
-            if(feature->getFeature()->getGroupName().compare("") != 0 &&
-                    !this->featureGroups.contains(feature->getFeature()->getGroupName())){
-                this->featureGroups.append(feature->getFeature()->getGroupName());
-            }
-
-            if(newMasterGeometry->getMeasurementConfig().getIsValid()){
-                QPair<QString, bool> key;
-                key.first = newMasterGeometry->getMeasurementConfig().getName();
-                key.second = newMasterGeometry->getMeasurementConfig().getIsSaved();
-                this->geometriesMConfigMap.insert(key, newMasterGeometry);
-            }
-            if(!feature->getMasterGeometry().isNull() && feature->getMasterGeometry()->getMeasurementConfig().getIsValid()){
-                this->usedMConfigs.append(QPair<QString,bool>(feature->getMasterGeometry()->getMeasurementConfig().getName(),
-                                                              feature->getMasterGeometry()->getMeasurementConfig().getIsSaved()));
-            }
-
+            this->createNewMasterGeomFromFeature(feature);
         }
-
         break;
-
-    /*default: //geometry
-        if(!feature->getGeometry().isNull()){
-            this->geometriesList.append(feature);
-            if(feature->getGeometry()->getMeasurementConfig().getIsValid()){
-                QPair<QString, bool> key;
-                key.first = feature->getGeometry()->getMeasurementConfig().getName();
-                key.second = feature->getGeometry()->getMeasurementConfig().getIsSaved();
-                this->geometriesMConfigMap.insert(key, feature->getGeometry());
-            }
-        }
-        break;*/
     }
-
-    //update lists with ids, names, groups and mConfigs
-    this->featureIds.append(feature->getFeature()->getId());
-    /*if(this->featuresNameMap.values(feature->getFeature()->getFeatureName()).size() == 1){
-        this->featureNames.append(feature->getFeature()->getFeatureName());
-    }*/
-    /*if(feature->getFeature()->getGroupName().compare("") != 0 &&
-            !this->featureGroups.contains(feature->getFeature()->getGroupName())){
-        this->featureGroups.append(feature->getFeature()->getGroupName());
-    }*/
-    /*if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().getIsValid()){
-        this->usedMConfigs.append(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
-                                        feature->getGeometry()->getMeasurementConfig().getIsSaved()));
-    }*/
-    /*if(!feature->getMasterGeometry().isNull() && feature->getMasterGeometry()->getMeasurementConfig().getIsValid()){
-        this->usedMConfigs.append(QPair<QString,bool>(feature->getMasterGeometry()->getMeasurementConfig().getName(),
-                                                      feature->getMasterGeometry()->getMeasurementConfig().getIsSaved()));
-    }*/
-
     return true;
-
 }
 
 /*!
@@ -451,74 +355,65 @@ bool FeatureContainer::removeFeature(const int &featureId){
         return false;
     }
 
-    //remove the feature from lists and map
-    this->featuresList.removeOne(feature);
-    this->featuresIdMap.remove(featureId);
-    this->featuresNameMap.remove(feature->getFeature()->getFeatureName(), feature);
-    this->featuresTypeMap.remove(feature->getFeatureTypeEnum(), feature);
-    if(feature->getFeature()->getGroupName().compare("") != 0){
-        this->featuresGroupMap.remove(feature->getFeature()->getGroupName(), feature);
-    }
     switch(feature->getFeatureTypeEnum()){
     case eCoordinateSystemFeature:
         this->coordSystems.removeOne(feature->getCoordinateSystem());
+        this->removeFromFeatureGroupMap(feature);
+        this->removeFromFeatureNameMap(feature);
         break;
     case eStationFeature:
         this->stationsList.removeOne(feature->getStation());
+        this->removeFromFeatureGroupMap(feature);
+        this->removeFromFeatureNameMap(feature);
         break;
     case eTrafoParamFeature:
         this->trafoParamsList.removeOne(feature->getTrafoParam());
+        this->removeFromFeatureGroupMap(feature);
+        this->removeFromFeatureNameMap(feature);
         break;
     case eMasterGeometryFeature:
-        if(!feature->getMasterGeometry().isNull()){
-            this->geometriesList.removeOne(feature);
-            if(!feature->getMasterGeometry()->getActual().isNull()){
-                this->featuresList.removeOne(feature->getMasterGeometry()->getActual()->getFeatureWrapper());
-            }
-            if(feature->getMasterGeometry()->getMeasurementConfig().getIsValid()){
-                QPair<QString, bool> key;
-                key.first = feature->getMasterGeometry()->getMeasurementConfig().getName();
-                key.second = feature->getMasterGeometry()->getMeasurementConfig().getIsSaved();
-                this->geometriesMConfigMap.remove(key,feature->getMasterGeometry());
-            }
-        }
-    /*default: //geometry
-        if(!feature->getGeometry().isNull()){
-            this->geometriesList.removeOne(feature);
-            if(feature->getGeometry()->getMeasurementConfig().getIsValid()){
-                QPair<QString, bool> key;
-                key.first = feature->getGeometry()->getMeasurementConfig().getName();
-                key.second = feature->getGeometry()->getMeasurementConfig().getIsSaved();
-                this->geometriesMConfigMap.remove(key, feature->getGeometry());
-            }
-        }
-        break;*/
-    }
+        this->geometriesList.removeOne(feature);
+        this->removeFromFeatureList(feature);
+        this->removeFromGeomMConfigMap(feature->getMasterGeometry());
 
-    //update lists with ids, names and groups
-    this->featureIds.removeOne(feature->getFeature()->getId());
-    if(!this->featuresNameMap.contains(feature->getFeature()->getFeatureName())){
-        this->featureNames.removeOne(feature->getFeature()->getFeatureName());
+        //remove actual feature from lists
+        this->featuresTypeMap.remove(feature->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum(),
+                                     feature->getMasterGeometry()->getActual()->getFeatureWrapper());
+        this->removeFromFeatureIDMap(feature->getMasterGeometry()->getActual()->getFeatureWrapper());
+
+        //remove nominal features from lists
+        foreach (QPointer<Geometry>geom, feature->getMasterGeometry()->getNominals()) {
+            this->featuresTypeMap.remove(geom->getFeatureWrapper()->getFeatureTypeEnum(), geom->getFeatureWrapper());
+            this->removeFromFeatureIDMap(geom->getFeatureWrapper());
+        }
+    default: //geometry
+        //delete geometry and also check if mastergeometry still hast attributes. if no, also delete mastergeometry
+        foreach (QPointer<FeatureWrapper> fw, this->geometriesList) {
+            if(fw->getFeatureTypeEnum() == eMasterGeometryFeature){
+                //actual
+                if(fw->getMasterGeometry()->getActual() == feature->getGeometry()){
+                    fw->getMasterGeometry()->removeActual(feature->getGeometry());
+                }
+                //nominal
+                if(fw->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
+                    fw->getMasterGeometry()->removeNominal(feature->getGeometry());
+                }
+                //check if mastergeometry is still valid
+                if(fw->getMasterGeometry()->getActual().isNull() && fw->getMasterGeometry()->getNominals().size() == 0){
+                    this->removeFeature(fw->getFeature()->getId());
+                }
+            }
+        }
+        break;
     }
-    if(feature->getFeature()->getGroupName().compare("") != 0 &&
-            !this->featuresGroupMap.contains(feature->getFeature()->getGroupName())){
-        this->featureGroups.removeOne(feature->getFeature()->getGroupName());
-    }
-    /*if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().getIsValid()){
-        this->usedMConfigs.removeOne(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
-                                           feature->getGeometry()->getMeasurementConfig().getIsSaved()));
-    }*/
-    if(!feature->getMasterGeometry().isNull() && feature->getMasterGeometry()->getMeasurementConfig().getIsValid()){
-        this->usedMConfigs.removeOne(QPair<QString, bool>(feature->getMasterGeometry()->getMeasurementConfig().getName(),
-                                                          feature->getMasterGeometry()->getMeasurementConfig().getIsSaved()));
-    }
+    this->featuresTypeMap.remove(feature->getFeatureTypeEnum(), feature);
+    this->removeFromFeatureIDMap(feature);
 
     //delete the feature
     delete feature->getFeature();
     delete feature;
 
     return true;
-
 }
 
 /*!
@@ -542,7 +437,14 @@ void FeatureContainer::checkAndClean(const int &featureId, const QString &name, 
     }
 
     //clean feature list
-    this->featuresList.removeOne(feature);
+    //this->featuresList.removeOne(feature);
+    this->removeFromFeatureList(feature);
+    this->removeFromFeatureNameMap(feature);
+    this->removeFromFeatureGroupMap(feature);
+
+    this->removeFromFeatureIDMap(feature);
+
+    this->featuresTypeMap.remove(type, feature);
 
     //clean coordinate system list
     if(!feature->getCoordinateSystem().isNull()){
@@ -558,55 +460,28 @@ void FeatureContainer::checkAndClean(const int &featureId, const QString &name, 
     if(!feature->getTrafoParam().isNull()){
         this->trafoParamsList.removeOne(feature->getTrafoParam());
     }
-
     //clean geometry list if feature is a master geometry
     if(!feature->getMasterGeometry().isNull()){
         this->geometriesList.removeOne(feature);
+        this->removeFromGeomMConfigMap(feature->getMasterGeometry());
     }
     //clean geometry list if feature is a regular geometry
     if(!feature->getGeometry().isNull()){
-        foreach (QPointer<FeatureWrapper> mastergeom, this->geometriesList) {
-            if(!mastergeom->getMasterGeometry().isNull() && !mastergeom->getMasterGeometry()->getActual().isNull()
-                    && mastergeom->getMasterGeometry()->getActual()->getId() == feature->getFeature()->getId()){
-
-                mastergeom->getMasterGeometry()->removeActual(feature->getGeometry());
-            }else{
-                foreach (QPointer<Geometry> geom, mastergeom->getMasterGeometry()->getNominals()) {
-                    if(!geom.isNull() && feature->getFeature()->getId() == geom->getId()){
-                        mastergeom->getMasterGeometry()->removeNominal(feature->getGeometry());
-                    }
+        foreach (QPointer<FeatureWrapper> fw, this->geometriesList) {
+            if(fw->getFeatureTypeEnum() == eMasterGeometryFeature){
+                //actual
+                if(fw->getMasterGeometry()->getActual() == feature->getGeometry()){
+                    fw->getMasterGeometry()->removeActual(feature->getGeometry());
+                }
+                //nominal
+                if(fw->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
+                    fw->getMasterGeometry()->removeNominal(feature->getGeometry());
+                }
+                //check if mastergeometry is still valid
+                if(fw->getMasterGeometry()->getActual().isNull() && fw->getMasterGeometry()->getNominals().size() == 0){
+                    this->removeFeature(fw->getFeature()->getId());
                 }
             }
-        }
-    }
-    /*if(!feature->getGeometry().isNull()){
-        this->geometriesList.removeOne(feature);
-    }*/
-
-    //clean feature maps
-    this->featuresIdMap.remove(featureId);
-    this->featuresNameMap.remove(name, feature);
-    this->featuresGroupMap.remove(group, feature);
-    this->featuresTypeMap.remove(type, feature);
-    if(!feature->getMasterGeometry().isNull()){
-        this->geometriesMConfigMap.remove(QPair<QString, bool>(feature->getMasterGeometry()->getMeasurementConfig().getName(),
-                                          feature->getMasterGeometry()->getMeasurementConfig().getIsSaved()), feature->getMasterGeometry());
-    }
-
-    //clean list with ids, names, groups and mConfigs
-    this->featureIds.removeOne(featureId);
-    if(!this->featuresNameMap.contains(name)){
-        this->featureNames.removeOne(name);
-    }
-    if(!this->featuresGroupMap.contains(group)){
-        this->featureGroups.removeOne(group);
-    }
-    if(!feature->getGeometry().isNull()){
-        QPair<QString, bool> mConfig;
-        mConfig.first = feature->getMasterGeometry()->getMeasurementConfig().getName();
-        mConfig.second = feature->getMasterGeometry()->getMeasurementConfig().getIsSaved();
-        if(!this->geometriesMConfigMap.contains(mConfig)){
-            this->usedMConfigs.removeOne(mConfig);
         }
     }
 }
@@ -665,20 +540,25 @@ bool FeatureContainer::featureNameChanged(const int &featureId, const QString &o
     if(feature.isNull() || feature->getFeature().isNull()){
         return false;
     }
+    QPointer<FeatureWrapper> finalWrapper;
+
+    if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
+        finalWrapper = feature;
+    }else if(getIsGeometry(feature->getFeatureTypeEnum())){
+        finalWrapper = feature->getGeometry()->getMasterGeometry()->getFeatureWrapper();
+    }
 
     //update lists and maps
     if(this->featuresNameMap.contains(oldName)){
-        this->featuresNameMap.insert(feature->getFeature()->getFeatureName(), this->featuresNameMap.take(oldName));
+        this->featuresNameMap.insert(finalWrapper->getFeature()->getFeatureName(), this->featuresNameMap.take(oldName));
     }
     if(!this->featuresNameMap.contains(oldName)){
         this->featureNames.removeOne(oldName);
     }
-    if(!this->featureNames.contains(feature->getFeature()->getFeatureName())){
-        this->featureNames.append(feature->getFeature()->getFeatureName());
+    if(!this->featureNames.contains(finalWrapper->getFeature()->getFeatureName())){
+        this->featureNames.append(finalWrapper->getFeature()->getFeatureName());
     }
-
     return true;
-
 }
 
 /*!
@@ -708,40 +588,63 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
 
         //check if the new group is empty
         if(feature->getFeature()->getGroupName().compare("") != 0){
-            this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
-            if(!this->featureGroups.contains(feature->getFeature()->getGroupName())){
-                this->featureGroups.append(feature->getFeature()->getGroupName());
+            if(!feature->getMasterGeometry().isNull()){
+                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
+                if(!this->featureGroups.contains(feature->getFeature()->getGroupName())){
+                    this->featureGroups.append(feature->getFeature()->getGroupName());
+                }
+                feature->getMasterGeometry()->changeGroupOfGeometries();
+
+            }else if(getIsGeometry(feature->getFeatureTypeEnum())){
+                this->featuresGroupMap.insert(feature->getGeometry()->getGroupName(), feature->getMasterGeometry()->getFeatureWrapper());
+                if(!this->featuresGroupMap.contains(feature->getFeature()->getGroupName())){
+                    this->featureGroups.append(feature->getFeature()->getGroupName());
+                    feature->getGeometry()->getMasterGeometry()->setGroupName(feature->getFeature()->getGroupName());
+                    feature->getGeometry()->getMasterGeometry()->changeGroupOfGeometries();
+                }
             }
         }
-
     }else{
-
         //check if the new group is empty
         if(feature->getFeature()->getGroupName().compare("") != 0){
 
-            this->featuresGroupMap.remove(oldGroup, feature);
-            this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
+            if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
 
+                feature->getMasterGeometry()->changeGroupOfGeometries();
+                this->featuresGroupMap.remove(oldGroup,feature);
+                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(),feature);
+
+            }else if(getIsGeometry(feature->getFeatureTypeEnum())){
+
+                feature->getGeometry()->getMasterGeometry()->setFeatureName(feature->getFeature()->getFeatureName());
+                feature->getGeometry()->getMasterGeometry()->changeGroupOfGeometries();
+                this->featuresGroupMap.remove(oldGroup,feature);
+                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(),feature->getGeometry()->getMasterGeometry()->getFeatureWrapper());
+            }
             if(!this->featuresGroupMap.contains(oldGroup)){
                 this->featureGroups.removeOne(oldGroup);
             }
             if(!this->featureGroups.contains(feature->getFeature()->getGroupName())){
                 this->featureGroups.append(feature->getFeature()->getGroupName());
             }
-
         }else{
-
-            this->featuresGroupMap.remove(oldGroup, feature);
-            if(!this->featuresGroupMap.contains(oldGroup)){
-                this->featureGroups.removeOne(oldGroup);
+            if(!feature->getMasterGeometry().isNull()){
+                feature->getMasterGeometry()->changeGroupOfGeometries();
+                this->featuresGroupMap.remove(oldGroup, feature);
+                if(!this->featuresGroupMap.contains(oldGroup)){
+                    this->featureGroups.removeOne(oldGroup);
+                }
+            }else if(getIsGeometry(feature->getFeatureTypeEnum())){
+                feature->getGeometry()->getMasterGeometry()->setGroupName(feature->getFeature()->getFeatureName());
+                feature->getGeometry()->getMasterGeometry()->changeGroupOfGeometries();
+                this->featuresGroupMap.remove(oldGroup, feature->getGeometry()->getMasterGeometry()->getFeatureWrapper());
+                if(!this->featuresGroupMap.contains(oldGroup)){
+                    this->featureGroups.removeOne(oldGroup);
+                }
             }
-
         }
-
     }
-
     return true;
-
 }
 
 /*!
@@ -809,4 +712,207 @@ bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, co
 
     return true;
 
+}
+
+/*!
+ * \brief FeatureContainer::addToFeatureList
+ * \param fw
+ */
+void FeatureContainer::addToFeatureList(QPointer<FeatureWrapper> fw)
+{
+    if(!fw->getGeometry().isNull()){
+        return;
+    }
+    if(!this->featuresList.contains(fw)){
+        this->featuresList.append(fw);
+        this->addToFeatureNameMap(fw);
+    }
+}
+
+/*!
+ * \brief FeatureContainer::addToFeatureNampeMap
+ * \param fw
+ */
+void FeatureContainer::addToFeatureNameMap(QPointer<FeatureWrapper> fw)
+{
+    if(!fw->getGeometry().isNull()){
+        return;
+    }
+    this->featuresNameMap.insert(fw->getFeature()->getFeatureName(),fw);
+    if(!this->featureNames.contains(fw->getFeature()->getFeatureName())){
+        this->featureNames.append(fw->getFeature()->getFeatureName());
+    }
+}
+
+/*!
+ * \brief FeatureContainer::addToFeatureGroupMap
+ * \param fw
+ */
+void FeatureContainer::addToFeatureGroupMap(QPointer<FeatureWrapper> fw)
+{
+    if(!fw->getGeometry().isNull()){
+        return;
+    }
+    if(fw->getFeature()->getGroupName().compare("") != 0){
+        this->featuresGroupMap.insert(fw->getFeature()->getGroupName(),fw);
+        if(!this->featureGroups.contains(fw->getFeature()->getGroupName())){
+            this->featureGroups.append(fw->getFeature()->getGroupName());
+        }
+    }
+}
+
+/*!
+ * \brief FeatureContainer::verifyAndAddFeatureGroupMap
+ * \param fw
+ * \param masterGeom
+ */
+void FeatureContainer::verifyAndAddFeatureGroupMap(QPointer<FeatureWrapper> fw, QPointer<FeatureWrapper> masterGeom)
+{
+    if(!fw->getMasterGeometry().isNull()){
+        return;
+    }
+    if(fw->getFeature()->getGroupName().compare("") != 0){
+        if(masterGeom->getFeature()->getGroupName().compare("") == 0){
+            masterGeom->getFeature()->setGroupName(fw->getFeature()->getGroupName());
+            this->addToFeatureGroupMap(masterGeom);
+        }
+    }
+}
+
+/*!
+ * \brief FeatureContainer::addToGeomMConfigMap
+ * \param masterGeom
+ */
+void FeatureContainer::addToGeomMConfigMap(QPointer<MasterGeometry> masterGeom)
+{
+    if(!masterGeom.isNull() && masterGeom->getMeasurementConfig().getIsValid()){
+        QPair<QString, bool> mConfig;
+        mConfig.first = masterGeom->getMeasurementConfig().getName();
+        mConfig.second = masterGeom->getMeasurementConfig().getIsSaved();
+        this->geometriesMConfigMap.insert(mConfig, masterGeom);
+    }
+    if(!masterGeom.isNull() && masterGeom->getMeasurementConfig().getIsValid()){
+        this->usedMConfigs.append(QPair<QString,bool>(masterGeom->getMeasurementConfig().getName(),
+                                                      masterGeom->getMeasurementConfig().getIsSaved()));
+    }
+}
+
+/*!
+ * \brief FeatureContainer::addToFeatureIDMap
+ * \param fw
+ */
+void FeatureContainer::addToFeatureIDMap(QPointer<FeatureWrapper> fw)
+{
+    //if the feature already exists it is not added
+    if(this->featuresIdMap.contains(fw->getFeature()->getId())){
+        return;
+    }
+    this->featuresIdMap.insert(fw->getFeature()->getId(),fw);
+    if(!this->featureIds.contains(fw->getFeature()->getId())){
+        this->featureIds.append(fw->getFeature()->getId());
+    }
+}
+
+/*!
+ * \brief FeatureContainer::removeFromFeatureList
+ * \param fw
+ */
+void FeatureContainer::removeFromFeatureList(QPointer<FeatureWrapper> fw)
+{
+    if(!fw->getGeometry().isNull()){
+        return;
+    }
+    if(this->featuresList.contains(fw)){
+        this->featuresList.removeOne(fw);
+        this->removeFromFeatureNameMap(fw);
+    }
+}
+
+/*!
+ * \brief FeatureContainer::removeFromFeatureNameMap
+ * \param fw
+ */
+void FeatureContainer::removeFromFeatureNameMap(QPointer<FeatureWrapper> fw)
+{
+    if(!fw->getGeometry().isNull()){
+        return;
+    }
+    if(this->featuresNameMap.contains(fw->getFeature()->getFeatureName(),fw)){
+        this->featuresNameMap.remove(fw->getFeature()->getFeatureName(),fw);
+        if(!this->featuresNameMap.keys().contains(fw->getFeature()->getFeatureName())){
+            this->featureNames.removeOne(fw->getFeature()->getFeatureName());
+        }
+    }
+}
+/*!
+ * \brief FeatureContainer::removeFromFeatureGroupMap
+ * \param fw
+ */
+void FeatureContainer::removeFromFeatureGroupMap(QPointer<FeatureWrapper> fw)
+{
+    if(!fw->getGeometry().isNull()){
+        return;
+    }
+    if(fw->getFeature()->getGroupName().compare("") != 0){
+        this->featuresGroupMap.remove(fw->getFeature()->getGroupName(),fw);
+        if(!this->featuresGroupMap.keys().contains(fw->getFeature()->getGroupName())){
+            this->featureGroups.removeOne(fw->getFeature()->getGroupName());
+        }
+        this->featuresGroupMap.value("");
+    }
+
+}
+
+/*!
+ * \brief FeatureContainer::removeFromGeomMConfigMap
+ * \param masterGeom
+ */
+void FeatureContainer::removeFromGeomMConfigMap(QPointer<MasterGeometry> masterGeom)
+{
+    if(masterGeom->getMeasurementConfig().getIsValid()){
+        QPair<QString, bool> mConfig;
+        mConfig.first = masterGeom->getMeasurementConfig().getName();
+        mConfig.second = masterGeom->getMeasurementConfig().getIsSaved();
+        this->geometriesMConfigMap.remove(mConfig, masterGeom);
+        if(!this->geometriesMConfigMap.contains(mConfig)){
+            this->usedMConfigs.removeOne(mConfig);
+        }
+    }
+}
+/*!
+ * \brief FeatureContainer::removeFromFeatureIDMap
+ * \param fw
+ */
+void FeatureContainer::removeFromFeatureIDMap(QPointer<FeatureWrapper> fw)
+{
+    this->featuresIdMap.remove(fw->getFeature()->getId());
+    this->featureIds.removeOne(fw->getFeature()->getId());
+}
+
+/*!
+ * \brief FeatureContainer::createNewMasterGeomfromFeature
+ * \param feature
+ */
+void FeatureContainer::createNewMasterGeomFromFeature(QPointer<FeatureWrapper> feature)
+{
+    QPointer<FeatureWrapper> featWMasterGeom = new FeatureWrapper();
+
+    QPointer<MasterGeometry> newMasterGeometry = new MasterGeometry();
+    newMasterGeometry->setFeatureName(feature->getFeature()->getFeatureName());
+    newMasterGeometry->setGroupName(feature->getFeature()->getGroupName());
+
+    if(feature->getGeometry()->getIsNominal()){
+        newMasterGeometry->addNominal(feature->getGeometry());
+    }else{
+        newMasterGeometry->setActual(feature->getGeometry());
+        this->addToGeomMConfigMap(newMasterGeometry);
+    }
+    featWMasterGeom->setMasterGeometry(newMasterGeometry);
+
+    this->addToFeatureList(featWMasterGeom);
+    this->geometriesList.append(featWMasterGeom);
+    this->addToFeatureIDMap(featWMasterGeom);
+    this->addToFeatureNameMap(featWMasterGeom);
+    this->featuresTypeMap.insert(featWMasterGeom->getFeatureTypeEnum(),featWMasterGeom);
+    this->addToFeatureGroupMap(featWMasterGeom);
 }
