@@ -72,17 +72,19 @@ bool MasterGeometry::addNominal(const QPointer<Geometry> &nominal)
                     if(!this->myNominals.contains(nominal)){
                         this->myNominals.append(nominal);
                         nominal->setMasterGeom(this);
-                        return true;
 
                         emit this->geomNominalsChanged(this->id);
+
+                        return true;
                     }
                 }
             }else{//first nominal
                 this->myNominals.append(nominal);
                 nominal->setMasterGeom(this);
-                return true;
 
                 emit this->geomNominalsChanged(this->id);
+
+                return true;
             }
         }else{
             //check feature type of actual and nominal
@@ -91,9 +93,10 @@ bool MasterGeometry::addNominal(const QPointer<Geometry> &nominal)
                     this->myNominals.append(nominal);
                     nominal->setActual(this->myActual);
                     nominal->setMasterGeom(this);
-                    return true;
 
                     emit this->geomNominalsChanged(this->id);
+
+                    return true;
                 }
             }
         }
@@ -114,8 +117,9 @@ bool MasterGeometry::removeNominal(const QPointer<Geometry> &nominal)
     }
 
     //remove nominal
-    return this->myNominals.removeOne(nominal);
     nominal->removeMasterGeom();
+    nominal->setActual(QPointer<Geometry> (NULL));
+    return this->myNominals.removeOne(nominal);
 }
 
 /*!
@@ -163,16 +167,18 @@ bool MasterGeometry::setActual(const QPointer<Geometry> &actual)
                 actual->addNominal(this->myNominals.at(i));
             }
             actual->setMasterGeom(this);
-            return true;
 
             emit this->geomActualChanged(this->id);
+
+            return true;
         }
     }else{
         this->myActual = actual;
         actual->setMasterGeom(this);
-        return true;
 
         emit this->geomActualChanged(this->id);
+
+        return true;
     }
     return false;
 }
@@ -190,6 +196,7 @@ bool MasterGeometry::removeActual(const QPointer<Geometry> &actual)
     }
     actual->removeMasterGeom();
     this->myActual.clear();
+
     return true;
 }
 

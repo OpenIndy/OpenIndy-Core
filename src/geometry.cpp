@@ -154,6 +154,10 @@ bool Geometry::addNominal(const QPointer<Geometry> &nominal){
         if(!this->nominals.contains(nominal)){
             this->nominals.append(nominal);
             nominal->setActual(this);
+
+            //add also to nominals of mastergeometry
+            this->myMasterGeom->addNominal(nominal);
+
             emit this->geomNominalsChanged(this->id);
             return true;
         }
@@ -177,6 +181,7 @@ bool Geometry::removeNominal(const QPointer<Geometry> &nominal){
     }
 
     //remove nominal
+    this->myMasterGeom->removeNominal(nominal);
     return this->nominals.removeOne(nominal);
 
 }
@@ -222,6 +227,10 @@ bool Geometry::setActual(const QPointer<Geometry> &actual){
 
     this->actual = actual;
     actual->addNominal(this);
+
+    //also add to mastergeometry
+    this->myMasterGeom->setActual(actual);
+
     emit this->geomActualChanged(this->id);
 
     return true;
