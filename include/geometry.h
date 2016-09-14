@@ -29,6 +29,7 @@ class OI_CORE_EXPORT Geometry : public Feature
 {
     friend class Geometry;
     friend class OiJob;
+    friend class MasterGeometry;
     Q_OBJECT
 
 public:
@@ -48,13 +49,6 @@ public:
     void setCommonState(const bool &isCommon);
 
     const bool &getIsNominal() const;
-
-    const QList<QPointer<Geometry> > &getNominals() const;
-    bool addNominal(const QPointer<Geometry> &nominal);
-    bool removeNominal(const QPointer<Geometry> &nominal);
-
-    const QPointer<Geometry> &getActual() const;
-    bool setActual(const QPointer<Geometry> &actual);
 
     const QList<QPointer<Observation> > &getObservations() const;
     void addObservation(const QPointer<Observation> &obs);
@@ -124,7 +118,7 @@ public:
     //add or remove reference to master geometry
     bool setMasterGeom(const QPointer<MasterGeometry> &mastergeom);
     bool removeMasterGeom();
-    const QPointer<MasterGeometry> &getMasterGeometry() const;
+    const QPointer<MasterGeometry> &getMyMasterGeometry() const;
 
 signals:
 
@@ -172,6 +166,15 @@ protected:
     /*//current measurement config that is used to create readings until the user selects another one
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
     */
+
+    //Mastergeometry
+    const QList<QPointer<Geometry> > &getNominals() const;
+    bool addNominal(const QPointer<Geometry> &nominal);
+    bool removeNominal(const QPointer<Geometry> &nominal);
+
+    const QPointer<Geometry> &getActual() const;
+    bool setActual(const QPointer<Geometry> &actual);
+
 private:
 
     //############################################################################

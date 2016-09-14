@@ -84,6 +84,13 @@ bool OiJob::validateFeatureName(const QString &name, const FeatureTypes &type, c
     //get a list of master geometries with name name
     QList<QPointer<FeatureWrapper> > features = this->featureContainer.getFeaturesByName(name);
 
+    //TODO remove
+    for(int i=0;i<features.size();i++){
+        qDebug() << features.at(i)->getFeature()->getFeatureName();
+        qDebug() << features.at(i)->getFeature()->getId();
+        qDebug() << features.at(i)->getFeatureTypeEnum();
+    }
+
     //accept name if no other feature with that name exists
     if(features.size() == 0){
         return true;
@@ -100,6 +107,7 @@ bool OiJob::validateFeatureName(const QString &name, const FeatureTypes &type, c
     if(getIsGeometry(type)){
         foreach (QPointer<FeatureWrapper> masterGeom, features) {
             if(masterGeom->getFeature()->getFeatureName() == name){
+
                 if((!masterGeom->getMasterGeometry()->getActual().isNull()
                     && masterGeom->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum()
                         == type )||(!masterGeom->getMasterGeometry()->getNominals().isEmpty()
@@ -512,10 +520,21 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             //search corresponding actual
             QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
             foreach(const QPointer<FeatureWrapper> &equal, equalNameFeatures){
-                if(!equal.isNull() && equal->getFeatureTypeEnum() == fAttr.typeOfFeature && !equal->getGeometry()->getIsNominal()){
+
+                if(!equal.isNull() && !equal->getMasterGeometry()->getActual().isNull() && equal->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum()
+                        == fAttr.typeOfFeature){
+
+                    feature->getGeometry()->actual = equal->getMasterGeometry()->getActual();
+                    equal->getMasterGeometry()->addNominal(feature->getGeometry());
+                    equal->getMasterGeometry()->getActual()->addNominal(feature->getGeometry());
+                }
+
+                /*if(!equal.isNull() && equal->getFeatureTypeEnum() == fAttr.typeOfFeature && !equal->getGeometry()->getIsNominal()){
                     feature->getGeometry()->actual = equal->getGeometry();
                     equal->getGeometry()->nominals.append(feature->getGeometry());
-                }
+
+                    equal->getGeometry()->getMyMasterGeometry()->addNominal(feature->getGeometry());
+                }*/
             }
 
             //add and connect feature
@@ -549,8 +568,11 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
             foreach(const QPointer<FeatureWrapper> &equal, equalNameFeatures){
                 if(!equal.isNull() && equal->getFeatureTypeEnum() == fAttr.typeOfFeature && equal->getGeometry()->getIsNominal()){
+
                     equal->getGeometry()->actual = feature->getGeometry();
                     feature->getGeometry()->nominals.append(equal->getGeometry());
+
+                    equal->getGeometry()->getMyMasterGeometry()->setActual(feature->getGeometry());
                 }
             }
 
@@ -599,9 +621,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
 
             //add feature to result list
             result.append(feature);
-
         }
-
     }
 
     //emit signals
@@ -2077,10 +2097,14 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                      this, &OiJob::setActiveFeature, Qt::AutoConnection);
 
     //Mastergeometry connects
-    QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
-                     this, &OiJob::setGeometryNominals, Qt::AutoConnection);
-    QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
-                     this, &OiJob::setGeometryActual, Qt::AutoConnection);
+    if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
+                         this, &OiJob::setGeometryNominals, Qt::AutoConnection);
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
+                         this, &OiJob::setGeometryActual, Qt::AutoConnection);
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
+                         this, &OiJob::setGeometryMeasurementConfig, Qt::AutoConnection);
+    }
 
     //general geometry connects
     if(getIsGeometry(feature->getFeatureTypeEnum())){
@@ -2098,8 +2122,7 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setGeometryStatistic, Qt::AutoConnection);
         QObject::connect(feature->getGeometry().data(), &Geometry::geomSimulationDataChanged,
                          this, &OiJob::setGeometrySimulationData, Qt::AutoConnection);
-        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
-                         this, &OiJob::setGeometryMeasurementConfig, Qt::AutoConnection);
+
     }
 
     //trafo param connects
@@ -2180,10 +2203,14 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                      this, &OiJob::setActiveFeature);
 
     //master geometry disconnects
-    QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
-                     this, &OiJob::setGeometryNominals);
-    QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
-                     this, &OiJob::setGeometryActual);
+    if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
+                         this, &OiJob::setGeometryNominals);
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
+                         this, &OiJob::setGeometryActual);
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
+                         this, &OiJob::setGeometryMeasurementConfig);
+    }
 
     //general geometry connects
     if(getIsGeometry(feature->getFeatureTypeEnum())){
@@ -2201,8 +2228,7 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setGeometryStatistic);
         QObject::disconnect(feature->getGeometry().data(), &Geometry::geomSimulationDataChanged,
                          this, &OiJob::setGeometrySimulationData);
-        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
-                         this, &OiJob::setGeometryMeasurementConfig);
+
     }
 
     //trafo param connects

@@ -72,7 +72,7 @@ Geometry::~Geometry(){
 
         //delete this geometry from the nominal list of its actual
         if(!this->actual.isNull()){
-            this->actual->removeNominal(this);
+            this->myMasterGeom->removeNominal(this);
         }
 
         //delete this geometry from list of nominals in nominal system
@@ -748,7 +748,7 @@ bool Geometry::removeMasterGeom()
  * \brief Geometry::getMasterGeometry
  * \return
  */
-const QPointer<MasterGeometry> &Geometry::getMasterGeometry() const
+const QPointer<MasterGeometry> &Geometry::getMyMasterGeometry() const
 {
     return this->myMasterGeom;
 }

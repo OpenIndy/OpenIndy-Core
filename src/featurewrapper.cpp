@@ -539,7 +539,7 @@ void FeatureWrapper::setScalarEntityMeasurementSeries(const QPointer<ScalarEntit
  */
 void FeatureWrapper::setMasterGeometry(const QPointer<MasterGeometry> &mastergeom)
 {
-    if(mastergeom.isNull() && this->typeOfFeature == eUndefinedFeature){
+    if(!mastergeom.isNull() && this->typeOfFeature == eUndefinedFeature){
         this->feature = mastergeom;
         this->masterGeometry = mastergeom;
         this->typeOfFeature = eMasterGeometryFeature;

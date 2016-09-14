@@ -230,23 +230,33 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
     switch(feature->getFeatureTypeEnum()){
     case eCoordinateSystemFeature:
         this->coordSystems.append(feature->getCoordinateSystem());
+        this->addToFeatureList(feature);
+        this->addToFeatureGroupMap(feature);
         break;
     case eStationFeature:
         this->stationsList.append(feature->getStation());
+        this->addToFeatureList(feature);
+        this->addToFeatureGroupMap(feature);
         if(!feature->getStation()->getCoordinateSystem().isNull()){
             QPointer<FeatureWrapper> stationSystem = new FeatureWrapper();
             stationSystem->setCoordinateSystem(feature->getStation()->getCoordinateSystem());
-            this->featuresIdMap.insert(feature->getStation()->getCoordinateSystem()->getId(), stationSystem);
+            /*this->featuresIdMap.insert(feature->getStation()->getCoordinateSystem()->getId(), stationSystem);
+            this->featureIds.append(feature->getStation()->getCoordinateSystem()->getId());*/
+
+            this->addToFeatureIDMap(feature->getStation()->getCoordinateSystem()->getFeatureWrapper());
+            //TODO also add to other lists???
         }
         break;
     case eTrafoParamFeature:
         this->trafoParamsList.append(feature->getTrafoParam());
+        this->addToFeatureList(feature);
+        this->addToFeatureGroupMap(feature);
         break;
     case eMasterGeometryFeature:
             if(!feature->getMasterGeometry().isNull() && !this->geometriesList.contains(feature)){
                 this->geometriesList.append(feature);
                 this->addToFeatureList(feature);
-                this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
+                //this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
                 this->addToFeatureGroupMap(feature);
                 //set mconfig map
                 this->addToGeomMConfigMap(feature->getMasterGeometry());
@@ -256,7 +266,6 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
         if(feature->getGeometry().isNull()){
             break;
         }
-        this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
 
         QPointer<FeatureWrapper> existingMasterGeom;
 
@@ -292,11 +301,20 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
                         && feature->getFeatureTypeEnum() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum()){
 
                     if(!fwMasterGeom->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
-                        fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
 
-                        //check group names
-                        this->verifyAndAddFeatureGroupMap(feature, fwMasterGeom);
-                        existingMasterGeom = fwMasterGeom;
+                        //check if nominal with coordsys already exist
+                        bool systemExists = false;
+                        foreach (QPointer<Geometry> geom, fwMasterGeom->getMasterGeometry()->getNominals()) {
+                            if(feature->getGeometry()->getNominalSystem() == geom->getNominalSystem()){
+                                systemExists = true;
+                            }
+                        }
+                        if(!systemExists){
+                            fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
+                            //check group names
+                            this->verifyAndAddFeatureGroupMap(feature, fwMasterGeom);
+                            existingMasterGeom = fwMasterGeom;
+                        }
                     }
                 }
             }else if(feature->getGeometry()->getIsNominal() && fwMasterGeom->getMasterGeometry()->getActual().isNull()){
@@ -545,7 +563,7 @@ bool FeatureContainer::featureNameChanged(const int &featureId, const QString &o
     if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
         finalWrapper = feature;
     }else if(getIsGeometry(feature->getFeatureTypeEnum())){
-        finalWrapper = feature->getGeometry()->getMasterGeometry()->getFeatureWrapper();
+        finalWrapper = feature->getGeometry()->getMyMasterGeometry()->getFeatureWrapper();
     }
 
     //update lists and maps
@@ -599,8 +617,8 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
                 this->featuresGroupMap.insert(feature->getGeometry()->getGroupName(), feature->getMasterGeometry()->getFeatureWrapper());
                 if(!this->featuresGroupMap.contains(feature->getFeature()->getGroupName())){
                     this->featureGroups.append(feature->getFeature()->getGroupName());
-                    feature->getGeometry()->getMasterGeometry()->setGroupName(feature->getFeature()->getGroupName());
-                    feature->getGeometry()->getMasterGeometry()->changeGroupOfGeometries();
+                    feature->getGeometry()->getMyMasterGeometry()->setGroupName(feature->getFeature()->getGroupName());
+                    feature->getGeometry()->getMyMasterGeometry()->changeGroupOfGeometries();
                 }
             }
         }
@@ -616,10 +634,10 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
 
             }else if(getIsGeometry(feature->getFeatureTypeEnum())){
 
-                feature->getGeometry()->getMasterGeometry()->setFeatureName(feature->getFeature()->getFeatureName());
-                feature->getGeometry()->getMasterGeometry()->changeGroupOfGeometries();
+                feature->getGeometry()->getMyMasterGeometry()->setFeatureName(feature->getFeature()->getFeatureName());
+                feature->getGeometry()->getMyMasterGeometry()->changeGroupOfGeometries();
                 this->featuresGroupMap.remove(oldGroup,feature);
-                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(),feature->getGeometry()->getMasterGeometry()->getFeatureWrapper());
+                this->featuresGroupMap.insert(feature->getFeature()->getGroupName(),feature->getGeometry()->getMyMasterGeometry()->getFeatureWrapper());
             }
             if(!this->featuresGroupMap.contains(oldGroup)){
                 this->featureGroups.removeOne(oldGroup);
@@ -635,9 +653,9 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
                     this->featureGroups.removeOne(oldGroup);
                 }
             }else if(getIsGeometry(feature->getFeatureTypeEnum())){
-                feature->getGeometry()->getMasterGeometry()->setGroupName(feature->getFeature()->getFeatureName());
-                feature->getGeometry()->getMasterGeometry()->changeGroupOfGeometries();
-                this->featuresGroupMap.remove(oldGroup, feature->getGeometry()->getMasterGeometry()->getFeatureWrapper());
+                feature->getGeometry()->getMyMasterGeometry()->setGroupName(feature->getFeature()->getFeatureName());
+                feature->getGeometry()->getMyMasterGeometry()->changeGroupOfGeometries();
+                this->featuresGroupMap.remove(oldGroup, feature->getGeometry()->getMyMasterGeometry()->getFeatureWrapper());
                 if(!this->featuresGroupMap.contains(oldGroup)){
                     this->featureGroups.removeOne(oldGroup);
                 }
@@ -908,6 +926,8 @@ void FeatureContainer::createNewMasterGeomFromFeature(QPointer<FeatureWrapper> f
         this->addToGeomMConfigMap(newMasterGeometry);
     }
     featWMasterGeom->setMasterGeometry(newMasterGeometry);
+
+    feature->getGeometry()->setMasterGeom(newMasterGeometry);
 
     this->addToFeatureList(featWMasterGeom);
     this->geometriesList.append(featWMasterGeom);

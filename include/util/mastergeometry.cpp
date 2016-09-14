@@ -25,6 +25,7 @@ MasterGeometry::MasterGeometry(const MasterGeometry &copy, QObject *parent) : Fe
     //copy attributes
     this->myActual = copy.myActual;
     this->myNominals = copy.myNominals;
+    this->activeMeasurementConfig = copy.activeMeasurementConfig;
 }
 
 MasterGeometry &MasterGeometry::operator =(const MasterGeometry &copy)
