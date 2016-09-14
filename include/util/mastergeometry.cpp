@@ -139,14 +139,17 @@ const QPointer<Geometry> &MasterGeometry::getActual() const
  */
 bool MasterGeometry::setActual(const QPointer<Geometry> &actual)
 {
-    //check if this is a nominal feature
-    if(!actual->getIsNominal()){
+    /*//check if this is a nominal feature
+    if(actual->getIsNominal()){
         return false;
     }
 
     //check actual
-    if(myActual.isNull() || (!this->myActual.isNull() && this->myActual->getId() == actual->getId())
+    if(!myActual.isNull() || (!this->myActual.isNull() && this->myActual->getId() == actual->getId())
             || actual->getIsNominal()){
+        return false;
+    }*/
+    if(!myActual.isNull() || actual->getIsNominal()){
         return false;
     }
 
@@ -162,12 +165,12 @@ bool MasterGeometry::setActual(const QPointer<Geometry> &actual)
     if(this->myNominals.size()>0){
         if(checkActualNominaltype(actual, this->myNominals.first())){
             this->myActual = actual;
+            actual->setMasterGeom(this);
             //add actual to all nominals
             for(int i=0; i<this->myNominals.size();i++){
                 this->myNominals.at(i)->setActual(this->myActual);
                 actual->addNominal(this->myNominals.at(i));
             }
-            actual->setMasterGeom(this);
 
             emit this->geomActualChanged(this->id);
 

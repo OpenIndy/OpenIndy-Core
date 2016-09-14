@@ -154,18 +154,15 @@ bool Geometry::addNominal(const QPointer<Geometry> &nominal){
         if(!this->nominals.contains(nominal)){
             this->nominals.append(nominal);
             nominal->setActual(this);
-
             //add also to nominals of mastergeometry
-            this->myMasterGeom->addNominal(nominal);
-
+            if(!this->myMasterGeom.isNull() && !this->myMasterGeom->getNominals().contains(nominal)){
+                this->myMasterGeom->addNominal(nominal);
+            }
             emit this->geomNominalsChanged(this->id);
             return true;
         }
-
     }
-
     return false;
-
 }
 
 /*!
@@ -183,7 +180,6 @@ bool Geometry::removeNominal(const QPointer<Geometry> &nominal){
     //remove nominal
     this->myMasterGeom->removeNominal(nominal);
     return this->nominals.removeOne(nominal);
-
 }
 
 /*!

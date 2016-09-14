@@ -220,13 +220,6 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
     this->featuresTypeMap.insert(feature->getFeatureTypeEnum(), feature);
 
     //add the feature to the feature lists and maps
-    //this->featuresList.append(feature);
-    //this->featuresNameMap.insert(feature->getFeature()->getFeatureName(), feature);
-    //this->featuresTypeMap.insert(feature->getFeatureTypeEnum(), feature);
-
-    /*if(feature->getFeature()->getGroupName().compare("") != 0){
-        this->featuresGroupMap.insert(feature->getFeature()->getGroupName(), feature);
-    }*/
     switch(feature->getFeatureTypeEnum()){
     case eCoordinateSystemFeature:
         this->coordSystems.append(feature->getCoordinateSystem());
@@ -300,6 +293,8 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
                 if(feature->getGeometry()->getFeatureName() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureName()
                         && feature->getFeatureTypeEnum() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum()){
 
+                    qDebug() << "fwMastergeom nominals: " << fwMasterGeom->getMasterGeometry()->getNominals().size();
+
                     if(!fwMasterGeom->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
 
                         //check if nominal with coordsys already exist
@@ -315,6 +310,8 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
                             this->verifyAndAddFeatureGroupMap(feature, fwMasterGeom);
                             existingMasterGeom = fwMasterGeom;
                         }
+                    }else{
+                        existingMasterGeom = fwMasterGeom;
                     }
                 }
             }else if(feature->getGeometry()->getIsNominal() && fwMasterGeom->getMasterGeometry()->getActual().isNull()){
@@ -932,7 +929,6 @@ void FeatureContainer::createNewMasterGeomFromFeature(QPointer<FeatureWrapper> f
     this->addToFeatureList(featWMasterGeom);
     this->geometriesList.append(featWMasterGeom);
     this->addToFeatureIDMap(featWMasterGeom);
-    this->addToFeatureNameMap(featWMasterGeom);
     this->featuresTypeMap.insert(featWMasterGeom->getFeatureTypeEnum(),featWMasterGeom);
     this->addToFeatureGroupMap(featWMasterGeom);
 }
