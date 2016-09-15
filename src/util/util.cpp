@@ -105,6 +105,7 @@ void init(){
     elementTypesMap.insert(eReadingDirectionElement, "direction reading");
     elementTypesMap.insert(eReadingTemperatureElement, "temperature reading");
     elementTypesMap.insert(eReadingLevelElement, "level reading");
+    elementTypesMap.insert(eMasterGeometryElement, "master geometry");
 
     //fill element plural map
     elementTypesPluralMap.insert(eCircleElement, "circles");
@@ -139,6 +140,7 @@ void init(){
     elementTypesPluralMap.insert(eReadingDirectionElement, "direction readings");
     elementTypesPluralMap.insert(eReadingTemperatureElement, "temperature readings");
     elementTypesPluralMap.insert(eReadingLevelElement, "level readings");
+    elementTypesPluralMap.insert(eMasterGeometryElement, "master geometries");
 
     //fill feature map
     featureTypesMap.insert(eCircleFeature, "circle");
@@ -163,6 +165,7 @@ void init(){
     featureTypesMap.insert(eCoordinateSystemFeature, "coordinate system");
     featureTypesMap.insert(eStationFeature, "station");
     featureTypesMap.insert(eTrafoParamFeature, "transformation parameters");
+    featureTypesMap.insert(eMasterGeometryFeature, "master geometry");
 
     //fill geometry map
     geometryTypesMap.insert(eCircleGeometry, "circle");

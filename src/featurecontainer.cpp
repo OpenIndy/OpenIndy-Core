@@ -233,11 +233,7 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
         if(!feature->getStation()->getCoordinateSystem().isNull()){
             QPointer<FeatureWrapper> stationSystem = new FeatureWrapper();
             stationSystem->setCoordinateSystem(feature->getStation()->getCoordinateSystem());
-            /*this->featuresIdMap.insert(feature->getStation()->getCoordinateSystem()->getId(), stationSystem);
-            this->featureIds.append(feature->getStation()->getCoordinateSystem()->getId());*/
-
             this->addToFeatureIDMap(feature->getStation()->getCoordinateSystem()->getFeatureWrapper());
-            //TODO also add to other lists???
         }
         break;
     case eTrafoParamFeature:
@@ -249,102 +245,12 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
             if(!feature->getMasterGeometry().isNull() && !this->geometriesList.contains(feature)){
                 this->geometriesList.append(feature);
                 this->addToFeatureList(feature);
-                //this->featuresTypeMap.insert(feature->getFeatureTypeEnum(),feature);
                 this->addToFeatureGroupMap(feature);
                 //set mconfig map
                 this->addToGeomMConfigMap(feature->getMasterGeometry());
             }
             break;
     default:// all geometries
-        if(feature->getGeometry().isNull()){
-            break;
-        }
-
-        QPointer<FeatureWrapper> existingMasterGeom;
-
-        foreach (QPointer<FeatureWrapper> fwMasterGeom, this->geometriesList) {
-            if(fwMasterGeom->getMasterGeometry().isNull()){
-                break;
-            }
-
-            if(!feature->getGeometry()->getIsNominal() && !fwMasterGeom->getMasterGeometry()->getActual().isNull()){
-
-                if(feature->getFeatureTypeEnum() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum()
-                        && feature->getFeature()->getFeatureName() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureName()){
-                    existingMasterGeom = fwMasterGeom;
-                }
-            }else if(!feature->getGeometry()->getIsNominal() && fwMasterGeom->getMasterGeometry()->getActual().isNull()){
-
-                foreach (QPointer<Geometry> geom, fwMasterGeom->getMasterGeometry()->getNominals()) {
-                    if(geom->getFeatureName() == feature->getFeature()->getFeatureName()
-                            && geom->getFeatureWrapper()->getFeatureTypeEnum() == feature->getFeatureTypeEnum()){
-
-                        fwMasterGeom->getMasterGeometry()->setActual(feature->getGeometry());
-
-                        //check group names
-                        this->verifyAndAddFeatureGroupMap(feature,fwMasterGeom);
-                        this->addToGeomMConfigMap(fwMasterGeom->getMasterGeometry());
-                        existingMasterGeom = fwMasterGeom;
-                        break;
-                    }
-                }
-            }else if(feature->getGeometry()->getIsNominal() && !fwMasterGeom->getMasterGeometry()->getActual().isNull()){
-
-                if(feature->getGeometry()->getFeatureName() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureName()
-                        && feature->getFeatureTypeEnum() == fwMasterGeom->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum()){
-
-                    qDebug() << "fwMastergeom nominals: " << fwMasterGeom->getMasterGeometry()->getNominals().size();
-
-                    if(!fwMasterGeom->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
-
-                        //check if nominal with coordsys already exist
-                        bool systemExists = false;
-                        foreach (QPointer<Geometry> geom, fwMasterGeom->getMasterGeometry()->getNominals()) {
-                            if(feature->getGeometry()->getNominalSystem() == geom->getNominalSystem()){
-                                systemExists = true;
-                            }
-                        }
-                        if(!systemExists){
-                            fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
-                            //check group names
-                            this->verifyAndAddFeatureGroupMap(feature, fwMasterGeom);
-                            existingMasterGeom = fwMasterGeom;
-                        }
-                    }else{
-                        existingMasterGeom = fwMasterGeom;
-                    }
-                }
-            }else if(feature->getGeometry()->getIsNominal() && fwMasterGeom->getMasterGeometry()->getActual().isNull()){
-
-                if(fwMasterGeom->getMasterGeometry()->getNominals().contains(feature->getGeometry())){
-                    existingMasterGeom = fwMasterGeom;
-                }else{
-                    bool coordSysExists = false;
-                    bool sameName = false;
-                    bool sameType = false;
-                    foreach (QPointer<Geometry> geom, fwMasterGeom->getMasterGeometry()->getNominals()) {
-                        if(geom->getFeatureName() == feature->getFeature()->getFeatureName() && geom->getFeatureWrapper()->getFeatureTypeEnum() == feature->getFeatureTypeEnum()){
-
-                            sameName = true;
-                            sameType = true;
-                            if(geom->getNominalSystem() == feature->getGeometry()->getNominalSystem()){
-                                coordSysExists = true;
-                            }
-                        }
-                    }
-                    if(!coordSysExists && sameName && sameType){
-                        fwMasterGeom->getMasterGeometry()->addNominal(feature->getGeometry());
-                        this->verifyAndAddFeatureGroupMap(feature,fwMasterGeom);
-                        existingMasterGeom = fwMasterGeom;
-                    }
-                }
-            }
-        }
-
-        if(existingMasterGeom.isNull()){
-            //erzeuge mastergeom
-            this->createNewMasterGeomFromFeature(feature);
-        }
         break;
     }
     return true;
@@ -768,11 +674,10 @@ void FeatureContainer::addToFeatureGroupMap(QPointer<FeatureWrapper> fw)
     if(!fw->getGeometry().isNull()){
         return;
     }
-    if(fw->getFeature()->getGroupName().compare("") != 0){
-        this->featuresGroupMap.insert(fw->getFeature()->getGroupName(),fw);
-        if(!this->featureGroups.contains(fw->getFeature()->getGroupName())){
-            this->featureGroups.append(fw->getFeature()->getGroupName());
-        }
+
+    this->featuresGroupMap.insert(fw->getFeature()->getGroupName(),fw);
+    if(!this->featureGroups.contains(fw->getFeature()->getGroupName())){
+        this->featureGroups.append(fw->getFeature()->getGroupName());
     }
 }
 

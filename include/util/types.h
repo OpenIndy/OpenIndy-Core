@@ -78,6 +78,7 @@ enum ElementTypes{
     eCoordinateSystemElement,
     eStationElement,
     eTrafoParamElement,
+    eMasterGeometryElement,
 
     //observation and reading types
     eObservationElement,
@@ -450,6 +451,17 @@ enum ActualNominalFilter{
     eFilterActual,
     eFilterNominal
 
+};
+
+//#############################
+//Table Tree view feature state
+//#############################
+
+enum FeatureViewState{
+    eActualFeature = 0,
+    eNominalFeature,
+    eDifferenceFeature,
+    eMasterGeomHeader
 };
 
 //##############

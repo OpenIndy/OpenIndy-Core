@@ -303,6 +303,10 @@ private:
 
     void addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features);
 
+    //create new master geometry
+    QPointer<FeatureWrapper> createNewMasterGeomFromFeature(QPointer<FeatureWrapper> feature);
+    void verifyAndAddFeatureGroupMap(QPointer<FeatureWrapper> fw, QPointer<FeatureWrapper> masterGeom);
+
 private:
 
     //#########################
