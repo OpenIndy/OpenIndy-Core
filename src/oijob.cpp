@@ -456,46 +456,28 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
         }
 
     }
-
-    //create and validate feature names
     QStringList featureNames = this->createFeatureNames(fAttr.name, fAttr.count);
-    foreach(const QString &name, featureNames){
-        if(!validateFeatureName(name, fAttr.typeOfFeature, true, nominalSystem)){
-            emit this->sendMessage("No valid feature name specified", eErrorMessage);
-            return result;
+
+    if(fAttr.isActual){
+        //create and validate feature names
+        foreach(const QString &name, featureNames){
+            if(!validateFeatureName(name, fAttr.typeOfFeature, false, nominalSystem)){
+                emit this->sendMessage("No valid feature name specified", eErrorMessage);
+                return result;
+            }
+        }
+    }else if(fAttr.isNominal){
+        //create and validate feature names
+        //QStringList featureNames = this->createFeatureNames(fAttr.name, fAttr.count);
+        foreach(const QString &name, featureNames){
+            if(!validateFeatureName(name, fAttr.typeOfFeature, true, nominalSystem)){
+                emit this->sendMessage("No valid feature name specified", eErrorMessage);
+                return result;
+            }
         }
     }
-    /*if(getIsGeometry(fAttr.typeOfFeature)){
-        if(fAttr.isNominal){
-            foreach(const QString &name, featureNames){
-                if(!validateFeatureName(name, fAttr.typeOfFeature, true, nominalSystem)){
-                    emit this->sendMessage("No valid feature name specified", eErrorMessage);
-                    return result;
-                }
-            }
-        }
-        if(fAttr.isActual){
-            foreach(const QString &name, featureNames){
-                if(!validateFeatureName(name, fAttr.typeOfFeature)){
-                    emit this->sendMessage("No valid feature name specified", eErrorMessage);
-                    return result;
-                }
-            }
-        }
-        foreach(const QString &name, featureNames){
-            if(!validateFeatureName(name, fAttr.typeOfFeature)){
-                emit this->sendMessage("No valid feature name specified", eErrorMessage);
-                return result;
-            }
-        }
-    }else{
-        foreach(const QString &name, featureNames){
-            if(!validateFeatureName(name, fAttr.typeOfFeature)){
-                emit this->sendMessage("No valid feature name specified", eErrorMessage);
-                return result;
-            }
-        }
-    }*/
+
+
 
     //check if the group is a new group
     bool isNewGroup = false;
@@ -532,6 +514,9 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             if(nominalSystem->getIsActiveCoordinateSystem()){
                 feature->getGeometry()->setIsSolved(true);
             }
+
+            //add and connect feature
+            this->featureContainer.addFeature(feature);
 
             //search corresponding actual
 
@@ -572,8 +557,6 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 this->connectFeature(newMasterGeom);
             }
 
-            //add and connect feature
-            this->featureContainer.addFeature(feature);
             this->connectFeature(feature);
 
             //add feature to result list
@@ -595,6 +578,9 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             feature->getFeature()->group = fAttr.group;
             feature->getGeometry()->isNominal = false;
             feature->getGeometry()->isCommon = fAttr.isCommon;
+
+            //add and connect feature
+            this->featureContainer.addFeature(feature);
 
             //search corresponding nominal
 
@@ -624,10 +610,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 this->connectFeature(newMasterGeom);
             }
 
-            //add and connect feature
-            this->featureContainer.addFeature(feature);
             this->connectFeature(feature);
-
             //add feature to result list
             result.append(feature);
         }

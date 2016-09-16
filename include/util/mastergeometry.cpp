@@ -314,6 +314,22 @@ void MasterGeometry::setMeasurementConfig(const MeasurementConfig &myConfig)
 }
 
 /*!
+ * \brief MasterGeometry::getDisplayMeasurementConfig
+ * \return
+ */
+QString MasterGeometry::getDisplayMeasurementConfig() const
+{
+    if(this->activeMeasurementConfig.getIsValid()){
+        if(this->activeMeasurementConfig.getIsSaved()){
+            return this->activeMeasurementConfig.getName();
+        }else{
+            return QString("*%1").arg(this->activeMeasurementConfig.getName());
+        }
+    }
+    return QString("");
+}
+
+/*!
  * \brief MasterGeometry::checkActualNominaltype compares the actual and nominal feature type
  * \param actual
  * \param nominal

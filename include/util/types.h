@@ -461,7 +461,7 @@ enum FeatureViewState{
     eActualFeature = 0,
     eNominalFeature,
     eDifferenceFeature,
-    eMasterGeomHeader
+    eNoMasterGeometry
 };
 
 //##############

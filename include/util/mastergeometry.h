@@ -62,6 +62,9 @@ public:
     //current measurement config that is used to create readings until the user selects another one
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
 
+    //Display functions for model
+    QString getDisplayMeasurementConfig() const;
+
 signals:
     void geomNominalsChanged(const int &featureId);
     void geomActualChanged(const int &featureId);
