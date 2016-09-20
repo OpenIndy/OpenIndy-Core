@@ -475,6 +475,15 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 return result;
             }
         }
+    }else{
+        //create and validate feature names
+        //QStringList featureNames = this->createFeatureNames(fAttr.name, fAttr.count);
+        foreach(const QString &name, featureNames){
+            if(!validateFeatureName(name, fAttr.typeOfFeature, false, nominalSystem)){
+                emit this->sendMessage("No valid feature name specified", eErrorMessage);
+                return result;
+            }
+        }
     }
 
 

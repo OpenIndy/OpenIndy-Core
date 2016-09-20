@@ -731,6 +731,9 @@ void FeatureContainer::addToFeatureIDMap(QPointer<FeatureWrapper> fw)
     if(!this->featureIds.contains(fw->getFeature()->getId())){
         this->featureIds.append(fw->getFeature()->getId());
     }
+    if(fw->getMasterGeometry().isNull()){
+        this->allFeatures.append(fw);
+    }
 }
 
 /*!
@@ -807,6 +810,9 @@ void FeatureContainer::removeFromFeatureIDMap(QPointer<FeatureWrapper> fw)
 {
     this->featuresIdMap.remove(fw->getFeature()->getId());
     this->featureIds.removeOne(fw->getFeature()->getId());
+    if(fw->getMasterGeometry().isNull()){
+        this->allFeatures.removeOne(fw);
+    }
 }
 
 /*!

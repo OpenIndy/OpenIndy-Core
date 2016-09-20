@@ -65,6 +65,8 @@ public:
     //Display functions for model
     QString getDisplayMeasurementConfig() const;
 
+    bool getDisplayCollapsed();
+
 signals:
     void geomNominalsChanged(const int &featureId);
     void geomActualChanged(const int &featureId);
@@ -73,6 +75,8 @@ signals:
 protected:
     QPointer<Geometry> myActual;
     QList<QPointer<Geometry> > myNominals;
+
+    bool displayCollapsed;
 
     bool checkActualNominaltype(QPointer<Geometry>actual, QPointer<Geometry>nominal);
 };

@@ -17,15 +17,18 @@ using namespace oi::math;
  */
 oi::MasterGeometry::MasterGeometry(QObject *parent)
 {
-
+    this->displayCollapsed = false;
 }
 
 MasterGeometry::MasterGeometry(const MasterGeometry &copy, QObject *parent) : Feature(copy, parent)
 {
+    this->displayCollapsed = false;
+
     //copy attributes
     this->myActual = copy.myActual;
     this->myNominals = copy.myNominals;
     this->activeMeasurementConfig = copy.activeMeasurementConfig;
+    this->displayCollapsed = copy.displayCollapsed;
 }
 
 MasterGeometry &MasterGeometry::operator =(const MasterGeometry &copy)
@@ -327,6 +330,15 @@ QString MasterGeometry::getDisplayMeasurementConfig() const
         }
     }
     return QString("");
+}
+
+/*!
+ * \brief MasterGeometry::getDisplayCollapsed
+ * \return
+ */
+bool MasterGeometry::getDisplayCollapsed()
+{
+    return this->displayCollapsed;
 }
 
 /*!

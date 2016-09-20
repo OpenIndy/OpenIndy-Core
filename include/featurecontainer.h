@@ -48,6 +48,7 @@ public:
     const QStringList &getFeatureNameList() const;
     const QStringList &getFeatureGroupList() const;
     const QList<QPair<QString, bool> > &getUsedMeasurementConfigs() const;
+    const QList<QPointer<FeatureWrapper> > getAllFeatures() const;
 
     //getter to access features by id, name, group, type or mConfig
     QPointer<FeatureWrapper> getFeatureById(const int &featureId) const;
@@ -115,6 +116,8 @@ private:
     QStringList featureNames;
     QStringList featureGroups;
     QList<QPair<QString, bool> > usedMConfigs;
+
+    QList<QPointer<FeatureWrapper> > allFeatures;
 
     void addToFeatureList(QPointer<FeatureWrapper> fw);
     //void addToGeometriesList(QPointer<FeatureWrapper>fw);
