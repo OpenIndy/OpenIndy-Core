@@ -535,7 +535,7 @@ bool TrafoParam::fromOpenIndyXML(QDomElement &xmlElem){
         if(!xmlElem.hasAttribute("tx") || !xmlElem.hasAttribute("ty") || !xmlElem.hasAttribute("tz")
                 || !xmlElem.hasAttribute("rx") || !xmlElem.hasAttribute("ry") || !xmlElem.hasAttribute("rz")
                 || !xmlElem.hasAttribute("mx") || !xmlElem.hasAttribute("my") || !xmlElem.hasAttribute("mz")
-                || !xmlElem.hasAttribute("use") || !xmlElem.hasAttribute("movement") || !xmlElem.hasAttribute("datumtrafo")
+                || !xmlElem.hasAttribute("use") || !xmlElem.hasAttribute("datumtrafo")
                 || !xmlElem.hasAttribute("time")){
             return false;
         }
