@@ -543,7 +543,7 @@ QString Reading::getDisplayTime() const{
  * \return
  */
 QString Reading::getDisplaySensor() const{
-    return "";//return this->sensor.getMetaData().name;
+    return this->sConfig.getSensorName();
 }
 
 /*!
