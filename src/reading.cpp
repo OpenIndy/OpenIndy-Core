@@ -844,6 +844,13 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.setAttribute("time", this->measuredAt.toString(Qt::ISODate));
     reading.setAttribute("type", getReadingTypeName(this->typeOfReading));
 
+    //add reference to sensor configuration
+    if(this->sConfig.getName().compare("") != 0){
+        QDomElement sensorConfig = xmlDoc.createElement("sensorConfig");
+        sensorConfig.setAttribute("name", this->sConfig.getName());
+        reading.appendChild(sensorConfig);
+    }
+
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
     switch(this->typeOfReading){
