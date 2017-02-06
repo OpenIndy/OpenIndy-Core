@@ -976,13 +976,20 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     }
 
     //set reading attributes
-    if(!xmlElem.hasAttribute("id") || !xmlElem.hasAttribute("time") || !xmlElem.hasAttribute("type") || !xmlElem.hasAttribute("sensorConfig")){
+    if(!xmlElem.hasAttribute("id") || !xmlElem.hasAttribute("time") || !xmlElem.hasAttribute("type")){
         return false;
     }
     this->id = xmlElem.attribute("id").toInt();
     this->measuredAt = QDateTime::fromString(xmlElem.attribute("time"), Qt::ISODate);
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
-    this->sConfig.setName(xmlElem.attribute("sensorConfig"));
+
+    QDomElement sensorConfig = xmlElem.firstChildElement("sensorConfig");
+    if(sensorConfig.isNull()){
+        return false;
+    }
+    if(sensorConfig.hasAttribute("name")){
+        this->sConfig.setSensorName(sensorConfig.attribute("name"));
+    }
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");
