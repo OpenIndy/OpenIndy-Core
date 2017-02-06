@@ -847,7 +847,7 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     //add reference to sensor configuration
     if(this->sConfig.getName().compare("") != 0){
         QDomElement sensorConfig = xmlDoc.createElement("sensorConfig");
-        sensorConfig.setAttribute("name", this->sConfig.getName());
+        sensorConfig.setAttribute("name", this->sConfig.getSensorName());
         reading.appendChild(sensorConfig);
     }
 
