@@ -207,6 +207,9 @@ public:
 
     const int &getId() const;
 
+    const bool getSupportWeights() const;
+    const void setSupportWeights(bool supports);
+
     //###################
     //get or set elements
     //###################
@@ -316,6 +319,8 @@ protected:
     //##################
 
     int id;
+
+    bool supportsWeights;
 
     Statistic statistic;
 
