@@ -465,6 +465,18 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
             inputElement.setAttribute("ref", input.id);
             inputElement.setAttribute("isUsed", input.isUsed);
             inputElement.setAttribute("shouldBeUsed", input.shouldBeUsed);
+
+            //add ignored destination parameters of the input element
+            QDomElement ignoredDestinationParams = xmlDoc.createElement("ignoredDestinationParams");
+
+            for(int i=0; i< input.ignoredDestinationParams.size();i++){
+                //add all ignored parameters to the element
+                QDomElement ignoredParam = xmlDoc.createElement("ignoredParam");
+                ignoredParam.setAttribute("parameter", getGeometryParameterName(input.ignoredDestinationParams.at(i)));
+                ignoredDestinationParams.appendChild(ignoredParam);
+            }
+            inputElement.appendChild(ignoredDestinationParams);
+
             inputElements.appendChild(inputElement);
         }
     }
