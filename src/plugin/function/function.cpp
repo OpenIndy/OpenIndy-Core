@@ -226,7 +226,7 @@ const int &Function::getId() const{
  * \brief Function::getSupportWeights
  * \return
  */
-const bool Function::getSupportWeights() const
+const bool &Function::getSupportWeights()
 {
     return this->supportsWeights;
 }
@@ -235,7 +235,7 @@ const bool Function::getSupportWeights() const
  * \brief Function::setSupportWeights
  * \return
  */
-const void Function::setSupportWeights(bool supports)
+void Function::setSupportWeights(bool supports)
 {
     this->supportsWeights = supports;
 }

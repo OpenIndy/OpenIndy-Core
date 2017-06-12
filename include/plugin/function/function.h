@@ -207,8 +207,8 @@ public:
 
     const int &getId() const;
 
-    const bool getSupportWeights() const;
-    const void setSupportWeights(bool supports);
+    const bool &getSupportWeights();
+    void setSupportWeights(bool supports);
 
     //###################
     //get or set elements
