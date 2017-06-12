@@ -23,6 +23,7 @@ Function::~Function(){
  */
 void Function::init(){
 
+    this->supportsWeights = false;
 }
 
 /*!
