@@ -8,6 +8,7 @@ using namespace oi;
  */
 Function::Function(QObject *parent) : QObject(parent){
 
+    this->supportsWeights = false;
 }
 
 /*!
@@ -219,6 +220,24 @@ const Statistic &Function::getStatistic() const{
  */
 const int &Function::getId() const{
     return this->id;
+}
+
+/*!
+ * \brief Function::getSupportWeights
+ * \return
+ */
+const bool &Function::getSupportWeights()
+{
+    return this->supportsWeights;
+}
+
+/*!
+ * \brief Function::setSupportWeights
+ * \return
+ */
+void Function::setSupportWeights(bool supports)
+{
+    this->supportsWeights = supports;
 }
 
 /*!
