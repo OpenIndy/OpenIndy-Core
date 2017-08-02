@@ -237,6 +237,19 @@ void CoordinateSystem::setCoordinateSystem(const Position &origin, const Directi
 }
 
 /*!
+ * \brief CoordinateSystem::setOrigin
+ * \param origin
+ */
+void CoordinateSystem::setOrigin(const Position origin)
+{
+    this->origin.setVector(origin.getVector());
+
+    if(!this->station.isNull()){
+        this->station->setPosition(origin);
+    }
+}
+
+/*!
  * \brief CoordinateSystem::getExpansionOrigin
  * \return
  */

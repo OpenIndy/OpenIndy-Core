@@ -47,6 +47,7 @@ public:
 
     //position
     const QPointer<Point> &getPosition() const;
+    void setPosition(const Position pos);
 
     //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;

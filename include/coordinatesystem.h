@@ -65,6 +65,7 @@ public:
     const Direction &getYAxis() const;
     const Direction &getZAxis() const;
     void setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis);
+    void setOrigin(const Position origin);
 
     //expansion origin
     const Position &getExpansionOrigin() const;
@@ -202,7 +203,6 @@ private:
     //nominals
     QList< QPointer<FeatureWrapper> > nominalsList;
     QMap< int, QPointer<FeatureWrapper> > nominalsMap; //same geometries but id as key
-
 };
 
 }

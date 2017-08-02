@@ -155,6 +155,11 @@ const QPointer<Point> &Station::getPosition() const{
     return this->position;
 }
 
+void Station::setPosition(const Position pos)
+{
+    this->position->setPoint(pos);
+}
+
 /*!
  * \brief Station::getCoordinateSystem
  * \return
