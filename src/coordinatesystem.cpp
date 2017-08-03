@@ -750,7 +750,12 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
  * \return
  */
 QString CoordinateSystem::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    return QString::number(convertFromDefault(this->origin.getVector().getAt(0), type), 'f', digits);
+    foreach (QPointer<TrafoParam> trafoP, this->trafoParams) {
+        if(trafoP->getIsUsed()){
+            return QString::number(convertFromDefault(this->origin.getVector().getAt(0), type), 'f', digits);
+        }
+    }
+    return "";
 }
 
 /*!
@@ -761,7 +766,12 @@ QString CoordinateSystem::getDisplayX(const UnitType &type, const int &digits, c
  * \return
  */
 QString CoordinateSystem::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    return QString::number(convertFromDefault(this->origin.getVector().getAt(1), type), 'f', digits);
+    foreach (QPointer<TrafoParam> trafoP, this->trafoParams) {
+        if(trafoP->getIsUsed()){
+            return QString::number(convertFromDefault(this->origin.getVector().getAt(1), type), 'f', digits);
+        }
+    }
+    return "";
 }
 
 /*!
@@ -772,7 +782,12 @@ QString CoordinateSystem::getDisplayY(const UnitType &type, const int &digits, c
  * \return
  */
 QString CoordinateSystem::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    return QString::number(convertFromDefault(this->origin.getVector().getAt(2), type), 'f', digits);
+    foreach (QPointer<TrafoParam> trafoP, this->trafoParams) {
+        if(trafoP->getIsUsed()){
+            return QString::number(convertFromDefault(this->origin.getVector().getAt(2), type), 'f', digits);
+        }
+    }
+    return "";
 }
 
 /*!
