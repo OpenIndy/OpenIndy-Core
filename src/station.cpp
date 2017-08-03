@@ -155,6 +155,11 @@ const QPointer<Point> &Station::getPosition() const{
     return this->position;
 }
 
+void Station::setPosition(const Position pos)
+{
+    this->position->setPoint(pos);
+}
+
 /*!
  * \brief Station::getCoordinateSystem
  * \return
@@ -628,7 +633,7 @@ bool Station::fromOpenIndyXML(QDomElement &xmlElem){
  * \return
  */
 QString Station::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         return this->position->getDisplayX(type, digits, showDiff);
     }
     return QString("-/-");
@@ -642,7 +647,7 @@ QString Station::getDisplayX(const UnitType &type, const int &digits, const bool
  * \return
  */
 QString Station::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         return this->position->getDisplayY(type, digits, showDiff);
     }
     return QString("-/-");
@@ -656,7 +661,7 @@ QString Station::getDisplayY(const UnitType &type, const int &digits, const bool
  * \return
  */
 QString Station::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         return this->position->getDisplayZ(type, digits, showDiff);
     }
     return QString("-/-");
