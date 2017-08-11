@@ -602,6 +602,7 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
 
     //add coordinate system attributes
     coordinateSystem.setAttribute("activeSystem", this->getIsActiveCoordinateSystem());
+    coordinateSystem.setAttribute("isBundleSystem", this->getIsBundleSystem());
 
     //add system definition
     QDomElement position = xmlDoc.createElement("coordinates");
@@ -671,8 +672,35 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
     expansionOrigin.setAttribute("z", this->expansionOrigin.getVector().getAt(2));
     coordinateSystem.appendChild(expansionOrigin);
 
-    return coordinateSystem;
+    //add bundleTemplate
+    QString tmpName = this->bundleTemplate["name"].toString();
+    QString tmpLevelStation = this->bundleTemplate["levelStation"].toString();
+    QString tmpMaxIterations = this->bundleTemplate["maxIterations"].toString();
 
+    QDomElement bundleTmp = xmlDoc.createElement("bundleTemplate");
+    bundleTmp.setAttribute("name", tmpName);
+    bundleTmp.setAttribute("levelStation", tmpLevelStation);
+    bundleTmp.setAttribute("maxIterations", tmpMaxIterations);
+
+    QDomElement parametersTmp = xmlDoc.createElement("parameters");
+    QJsonArray tmpArray = this->bundleTemplate["parameters"].toArray();
+    for(int i=0; i<tmpArray.size();i++){
+        parametersTmp.setAttribute(tmpArray.at(i).toString(),"");
+    }
+    bundleTmp.appendChild(parametersTmp);
+
+    QDomElement pluginTmp = xmlDoc.createElement("plugin");
+    QJsonObject tmpPlugin = this->bundleTemplate["plugin"].toObject();
+
+    if(tmpPlugin.contains("name") && tmpPlugin.contains("pluginName")){
+        pluginTmp.setAttribute("name", tmpPlugin.value("name").toString());
+        pluginTmp.setAttribute("pluginName", tmpPlugin.value("pluginName").toString());
+    }
+    bundleTmp.appendChild(pluginTmp);
+
+    coordinateSystem.appendChild(bundleTmp);
+
+    return coordinateSystem;
 }
 
 /*!
@@ -693,6 +721,9 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
 
         //set coordinate system attributes
         this->isActiveCoordinateSystem = xmlElem.attribute("activeSystem").toInt();
+
+        //set bundle value for coordinate system and trafo params
+        this->isBundleSystem = xmlElem.attribute("isBundleSystem").toInt();
 
         //set coordinate system definition
         QDomElement position = xmlElem.firstChildElement("coordinates");
@@ -734,6 +765,31 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
             this->expansionOrigin.setVector(expansionOrigin.attribute("x").toDouble(),
                                             expansionOrigin.attribute("y").toDouble(),
                                             expansionOrigin.attribute("z").toDouble());
+        }
+
+        //set bundleTemplate
+        QDomElement eBundleTemplate =xmlElem.firstChildElement("bundleTemplate");
+        if(!eBundleTemplate.isNull()){
+            QJsonObject obj;
+
+            QJsonValue name = eBundleTemplate.attribute("name");
+            obj.insert("name", name);
+            QJsonValue levelStation = eBundleTemplate.attribute("levelStation");
+            obj.insert("levelStation", levelStation);
+            QJsonValue maxIterations = eBundleTemplate.attribute("maxIterations");
+            obj.insert("maxIterations", maxIterations);
+
+            QJsonValue parameters = eBundleTemplate.attribute("parameters");
+            obj.insert("parameters", parameters);
+
+            QDomElement eplugin = eBundleTemplate.firstChildElement("plugin");
+            QJsonObject obj2;
+            obj2.insert("name", eplugin.attribute("name"));
+            obj2.insert("pluginName", eplugin.attribute("pluginName"));
+            //QJsonValue plugin(obj2);
+            obj.insert("plugin", obj2);
+
+            this->bundleTemplate = obj;
         }
 
     }
