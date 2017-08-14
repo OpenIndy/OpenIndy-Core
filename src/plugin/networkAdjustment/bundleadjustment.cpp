@@ -349,8 +349,7 @@ bool BundleAdjustment::fromOpenIndyXML(QDomElement &xmlElem){
         return false;
     }
 
-    if(!xmlElem.hasAttribute("name") || !xmlElem.hasAttribute("plugin") || !xmlElem.hasAttribute("executionIndex")
-            || !xmlElem.hasAttribute("type")){
+    if(!xmlElem.hasAttribute("name") || !xmlElem.hasAttribute("plugin") || !xmlElem.hasAttribute("type")){
         return false;
     }
 
