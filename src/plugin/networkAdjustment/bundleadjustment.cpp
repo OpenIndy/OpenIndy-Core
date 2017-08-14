@@ -252,8 +252,9 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
             QMapIterator<GeometryParameters, double> i(bundleGeom.parameters);
             while(i.hasNext()){
                 i.next();
-                bundleGeomelem.setAttribute(QString::number(i.key()), i.value());
+                bundleGeomelem.setAttribute(getGeometryParameterName(i.key()), i.value());
             }
+            bundleGeoms.appendChild(bundleGeomelem);
         }
         bundleStation.appendChild(bundleGeoms);
         bundleStations.appendChild(bundleStation);
@@ -268,7 +269,7 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
         QMapIterator<GeometryParameters, double> i(bGeom.parameters);
         while(i.hasNext()){
             i.next();
-            bundleGeom.setAttribute(QString::number(i.key()), i.value());
+            bundleGeom.setAttribute(getGeometryParameterName(i.key()), i.value());
         }
         bundleGeoemtries.appendChild(bundleGeom);
     }
@@ -286,7 +287,7 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
         QMapIterator<TrafoParamParameters, double> i(bTrafo.parameters);
         while(i.hasNext()){
             i.next();
-            bundleTrafo.setAttribute(QString::number(i.key()), i.value());
+            bundleTrafo.setAttribute(getTrafoParamParameterName(i.key()), i.value());
         }
         bundleTrafos.appendChild(bundleTrafo);
     }
