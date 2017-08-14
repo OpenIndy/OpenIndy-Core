@@ -702,9 +702,7 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
 
     //add bundle adjustment
     if(!this->bundlePlugin.isNull()){
-        QDomElement bundle = xmlDoc.createElement("bundle");
-        QDomElement bundle_func = this->bundlePlugin->toOpenIndyXML(xmlDoc);
-        bundle.appendChild(bundle_func);
+        QDomElement bundle = this->bundlePlugin->toOpenIndyXML(xmlDoc);
         coordinateSystem.appendChild(bundle);
     }
 
