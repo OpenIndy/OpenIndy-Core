@@ -700,6 +700,14 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
 
     coordinateSystem.appendChild(bundleTmp);
 
+    //add bundle adjustment
+    if(!this->bundlePlugin.isNull()){
+        QDomElement bundle = xmlDoc.createElement("bundle");
+        QDomElement bundle_func = this->bundlePlugin->toOpenIndyXML(xmlDoc);
+        bundle.appendChild(bundle_func);
+        coordinateSystem.appendChild(bundle);
+    }
+
     return coordinateSystem;
 }
 
@@ -791,6 +799,8 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
 
             this->bundleTemplate = obj;
         }
+
+        //load bundle adjustment
 
     }
 

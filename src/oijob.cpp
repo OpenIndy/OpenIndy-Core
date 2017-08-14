@@ -1,5 +1,5 @@
 #include "oijob.h"
-
+#include "bundleadjustment.h"
 using namespace oi;
 
 /*!
@@ -3031,6 +3031,10 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
                 feature->getStation()->getPosition()->job = this;
             }
 
+        }else if(!feature->getCoordinateSystem().isNull()){
+            if(feature->getCoordinateSystem()->getIsBundleSystem()){
+                feature->getCoordinateSystem()->getBundlePlugin()->setCurrentJob(this);
+            }
         }
 
         //connect the feature's signals to slots in OiJob
