@@ -241,9 +241,57 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
         bundleStation.setAttribute("ry", station.ry);
         bundleStation.setAttribute("rz", station.rz);
         bundleStation.setAttribute("m", station.m);
+
+        //add bundle geometries
+        QDomElement bundleGeoms =xmlDoc.createElement("bundleGeometries");
+        foreach (BundleGeometry bundleGeom, station.geometries) {
+            QDomElement bundleGeomelem = xmlDoc.createElement("bundleGeometry");
+            bundleGeomelem.setAttribute("id", bundleGeom.id);
+            //add parameter list
+            QMapIterator<GeometryParameters, double> i(bundleGeom.parameters);
+            while(i.hasNext()){
+                i.next();
+                bundleGeomelem.setAttribute(getGeometryParameterName(i.key()), i.value());
+            }
+            bundleGeoms.appendChild(bundleGeomelem);
+        }
+        bundleStation.appendChild(bundleGeoms);
         bundleStations.appendChild(bundleStation);
     }
     bundle.appendChild(bundleStations);
+
+    //save geometries
+    QDomElement bundleGeoemtries = xmlDoc.createElement("bundleGeometries");
+    foreach (BundleGeometry bGeom, this->geometries) {
+        QDomElement bundleGeom = xmlDoc.createElement("bundleGeom");
+        bundleGeom.setAttribute("id", bGeom.id);
+        QMapIterator<GeometryParameters, double> i(bGeom.parameters);
+        while(i.hasNext()){
+            i.next();
+            bundleGeom.setAttribute(getGeometryParameterName(i.key()), i.value());
+        }
+        bundleGeoemtries.appendChild(bundleGeom);
+    }
+    bundle.appendChild(bundleGeoemtries);
+
+    //save bundle coordinate system
+    QDomElement bundleCoordSys = xmlDoc.createElement("bundleCoordinateSystem");
+    bundleCoordSys.setAttribute("ref", this->bundleSystem->getId());
+    bundle.appendChild(bundleCoordSys);
+
+    //save bundleTransformations
+    QDomElement bundleTrafos = xmlDoc.createElement("bundleTransformations");
+    foreach (BundleTransformation bTrafo, this->transformations) {
+        QDomElement bundleTrafo = xmlDoc.createElement("bundleTransformation");
+        bundleTrafo.setAttribute("id", bTrafo.id);
+        QMapIterator<TrafoParamParameters, double> i(bTrafo.parameters);
+        while(i.hasNext()){
+            i.next();
+            bundleTrafo.setAttribute(getTrafoParamParameterName(i.key()), i.value());
+        }
+        bundleTrafos.appendChild(bundleTrafo);
+    }
+    bundle.appendChild(bundleTrafos);
 
     //add base bundle system
     QDomElement baseSystem = xmlDoc.createElement("baseSystem");
@@ -301,8 +349,7 @@ bool BundleAdjustment::fromOpenIndyXML(QDomElement &xmlElem){
         return false;
     }
 
-    if(!xmlElem.hasAttribute("name") || !xmlElem.hasAttribute("plugin") || !xmlElem.hasAttribute("executionIndex")
-            || !xmlElem.hasAttribute("type")){
+    if(!xmlElem.hasAttribute("name") || !xmlElem.hasAttribute("plugin") || !xmlElem.hasAttribute("type")){
         return false;
     }
 
@@ -325,8 +372,66 @@ bool BundleAdjustment::fromOpenIndyXML(QDomElement &xmlElem){
                 bundleStation.ry = station.attribute("ry").toInt();
                 bundleStation.rz = station.attribute("rz").toInt();
                 bundleStation.m = station.attribute("m").toInt();
+
+                //load geometries
+                QDomNodeList geoms = station.childNodes();
+                if(geoms.size() == 1){
+                    QDomElement geomNodes = station.childNodes().at(0).toElement();
+                    QDomNodeList geomList = geomNodes.childNodes();
+                    for(int i=0; i<geomList.size(); i++){
+                        BundleGeometry bGeom;
+                        bGeom.id = geomList.at(i).toElement().attribute("id").toInt();
+                        QDomNamedNodeMap attributeMap = geomList.at(i).toElement().attributes();
+                        for(int k=0; k< attributeMap.size(); k++){
+                            QString name = attributeMap.item(k).nodeName();
+                            QString value = attributeMap.item(k).nodeValue();
+                            if(name.compare("id") != 0){
+                                bGeom.parameters.insert(getGeometryParameterEnum(name), value.toDouble());
+                            }
+                        }
+                        bundleStation.geometries.append(bGeom);
+                   }
+                }
                 this->stations.append(bundleStation);
             }
+        }
+    }
+
+    //load geometries
+    QDomElement bundleGeometries = xmlElem.firstChildElement("bundleGeometries");
+    if(!bundleGeometries.isNull()){
+        QDomNodeList geoms = bundleGeometries.childNodes();
+        for(int i=0; i<geoms.size(); i++){
+            BundleGeometry bGeom;
+            bGeom.id = geoms.at(i).toElement().attribute("id").toInt();
+            QDomNamedNodeMap attributeMap = geoms.at(i).toElement().attributes();
+            for(int k=0; k< attributeMap.size(); k++){
+                QString name = attributeMap.item(k).nodeName();
+                QString value = attributeMap.item(k).nodeValue();
+                if(name.compare("id") != 0){
+                    bGeom.parameters.insert(getGeometryParameterEnum(name), value.toDouble());
+                }
+            }
+            this->geometries.append(bGeom);
+        }
+    }
+
+    //load transformations
+    QDomElement bundleTrafos = xmlElem.firstChildElement("bundleTransformations");
+    if(!bundleTrafos.isNull()){
+        QDomNodeList trafos = bundleTrafos.childNodes();
+        for(int i=0; i<trafos.size(); i++){
+            BundleTransformation bTrafo;
+            bTrafo.id = trafos.at(i).toElement().attribute("id").toInt();
+            QDomNamedNodeMap attributeMap = trafos.at(i).toElement().attributes();
+            for(int k=0; k< attributeMap.size(); k++){
+                QString name = attributeMap.item(k).nodeName();
+                QString value = attributeMap.item(k).nodeValue();
+                if(name.compare("id") != 0){
+                    bTrafo.parameters.insert(getTrafoParamParameterEnum(name),value.toDouble());
+                }
+            }
+            this->transformations.append(bTrafo);
         }
     }
 
