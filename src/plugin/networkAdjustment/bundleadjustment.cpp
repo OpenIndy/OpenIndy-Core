@@ -277,7 +277,8 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //save bundle coordinate system
     QDomElement bundleCoordSys = xmlDoc.createElement("bundleCoordinateSystem");
-    bundleCoordSys.setAttribute("red", this->bundleSystem->getId());
+    bundleCoordSys.setAttribute("ref", this->bundleSystem->getId());
+    bundle.appendChild(bundleCoordSys);
 
     //save bundleTransformations
     QDomElement bundleTrafos = xmlDoc.createElement("bundleTransformations");
