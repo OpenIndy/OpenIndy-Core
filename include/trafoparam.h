@@ -50,7 +50,6 @@ public:
 
     //bundle
     const bool &getIsBundle() const;
-    void setIsBundle(const bool &isBundle);
 
     //statistic
     const Statistic &getStatistic() const;
@@ -145,7 +144,6 @@ private:
 
     bool isDatumTrafo;
     bool isUsed; //true if this trafo param object is used for transformation (false if not)
-    bool isBundleTrafo; //true if the transformation represents a bundle adjustment
 
     //#########################
     //transformation parameters

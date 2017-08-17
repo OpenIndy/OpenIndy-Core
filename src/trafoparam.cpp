@@ -20,7 +20,6 @@ TrafoParam::TrafoParam(QObject *parent) : Feature(parent), scale(3), rotation(3)
     //default values for trafo param attributes
     this->isUsed = false;
     this->isDatumTrafo = false;
-    this->isBundleTrafo = false;
 
     //default values for transformation parameters
     this->scale.setAt(0, 1.0);
@@ -48,7 +47,6 @@ TrafoParam::TrafoParam(const TrafoParam &copy, QObject *parent) : Feature(copy, 
     //copy attributes
     this->isUsed = copy.isUsed;
     this->isDatumTrafo = copy.isDatumTrafo;
-    this->isBundleTrafo = copy.isBundleTrafo;
 
     //copy transformation parameters
     this->rotation = copy.rotation;
@@ -73,7 +71,6 @@ TrafoParam &TrafoParam::operator=(const TrafoParam &copy){
     //copy attributes
     this->isUsed = copy.isUsed;
     this->isDatumTrafo = copy.isDatumTrafo;
-    this->isBundleTrafo = copy.isBundleTrafo;
 
     //copy transformation parameters
     this->rotation = copy.rotation;
@@ -187,18 +184,14 @@ bool TrafoParam::setCoordinateSystems(const QPointer<CoordinateSystem> &from, co
  * \return
  */
 const bool &TrafoParam::getIsBundle() const{
-    return this->isBundleTrafo;
-}
 
-/*!
- * \brief TrafoParam::setIsBundle
- * \param isBundle
- */
-void TrafoParam::setIsBundle(const bool &isBundle){
-    if(this->isBundleTrafo != isBundle){
-        this->isBundleTrafo = isBundle;
-        emit this->isBundleChanged(this->id);
+    if(!this->from.isNull() && !this->to.isNull()){
+        if(this->from->getIsBundleSystem() || this->to->getIsBundleSystem()){
+            return true;
+        }
     }
+    return false;
+
 }
 
 /*!
