@@ -673,10 +673,12 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
     coordinateSystem.appendChild(expansionOrigin);
 
     //add bundleTemplate
+    //temp variables
     QString tmpName = this->bundleTemplate["name"].toString();
     QString tmpLevelStation = this->bundleTemplate["levelStation"].toString();
     QString tmpMaxIterations = this->bundleTemplate["maxIterations"].toString();
 
+    //add bundleTemplate
     QDomElement bundleTmp = xmlDoc.createElement("bundleTemplate");
     bundleTmp.setAttribute("name", tmpName);
     bundleTmp.setAttribute("levelStation", tmpLevelStation);
@@ -776,26 +778,25 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
         //set bundleTemplate
         QDomElement eBundleTemplate =xmlElem.firstChildElement("bundleTemplate");
         if(!eBundleTemplate.isNull()){
-            QJsonObject obj;
-
+            QJsonObject objBundleTemp;
             QJsonValue name = eBundleTemplate.attribute("name");
-            obj.insert("name", name);
+            objBundleTemp.insert("name", name);
             QJsonValue levelStation = eBundleTemplate.attribute("levelStation");
-            obj.insert("levelStation", levelStation);
+            objBundleTemp.insert("levelStation", levelStation);
             QJsonValue maxIterations = eBundleTemplate.attribute("maxIterations");
-            obj.insert("maxIterations", maxIterations);
+            objBundleTemp.insert("maxIterations", maxIterations);
 
             QJsonValue parameters = eBundleTemplate.attribute("parameters");
-            obj.insert("parameters", parameters);
+            objBundleTemp.insert("parameters", parameters);
 
             QDomElement eplugin = eBundleTemplate.firstChildElement("plugin");
-            QJsonObject obj2;
-            obj2.insert("name", eplugin.attribute("name"));
-            obj2.insert("pluginName", eplugin.attribute("pluginName"));
+            QJsonObject objBundleTmpPLugin;
+            objBundleTmpPLugin.insert("name", eplugin.attribute("name"));
+            objBundleTmpPLugin.insert("pluginName", eplugin.attribute("pluginName"));
             //QJsonValue plugin(obj2);
-            obj.insert("plugin", obj2);
+            objBundleTemp.insert("plugin", objBundleTmpPLugin);
 
-            this->bundleTemplate = obj;
+            this->bundleTemplate = objBundleTemp;
         }
 
         //load bundle adjustment

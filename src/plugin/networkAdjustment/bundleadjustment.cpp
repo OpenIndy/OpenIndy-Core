@@ -242,7 +242,6 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
         bundleStation.setAttribute("rz", station.rz);
         bundleStation.setAttribute("m", station.m);
 
-
         //add bundle geometries
         QDomElement bundleGeoms =xmlDoc.createElement("bundleGeometries");
         foreach (BundleGeometry bundleGeom, station.geometries) {
