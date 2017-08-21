@@ -21,7 +21,6 @@ public:
         this->isNominal = false;
         this->isCommon = false;
         this->isBundleSystem = false;
-        this->isBundleTrafo = false;
     }
 
     //general attributes
@@ -43,7 +42,6 @@ public:
     //only when typeOfFeature specifies a trafo param
     QString startSystem;
     QString destinationSystem;
-    bool isBundleTrafo;
 
     //only when typeOfFeature specifies a coordinate system
     bool isBundleSystem;

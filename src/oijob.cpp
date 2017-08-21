@@ -620,7 +620,6 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 feature->getTrafoParam()->to = destSystem;
                 startSystem->trafoParams.append(feature->getTrafoParam());
                 destSystem->trafoParams.append(feature->getTrafoParam());
-                feature->getTrafoParam()->setIsBundle(fAttr.isBundleTrafo);
             }
 
             //if type of feature is a coordinate system
