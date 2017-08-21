@@ -226,6 +226,8 @@ void TrafoParam::setIsDatumTrafo(const bool &isDatumTrafo){
     if(this->isDatumTrafo != isDatumTrafo){
         this->isDatumTrafo = isDatumTrafo;
     }
+
+    emit this->isDatumTrafoChanged(this->id);
 }
 
 /*!

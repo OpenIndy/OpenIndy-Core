@@ -128,6 +128,7 @@ signals:
     //void validTimeChanged(const int &tpId);
     //void isMovementChanged(const int &tpId);
     void isBundleChanged(const int &tpId);
+    void isDatumTrafoChanged(const int &tpId);
 
 private:
 

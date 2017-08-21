@@ -2069,6 +2069,15 @@ void OiJob::setTrafoParamIsUsed(const int &featureId){
 }
 
 /*!
+ * \brief OiJob::setTrafoParamIsDatum
+ * \param featureId
+ */
+void OiJob::setTrafoParamIsDatum(const int &featureId)
+{
+    emit this->trafoParamIsDatumChanged(featureId);
+}
+
+/*!
  * \brief OiJob::setTrafoParamValidTime
  * \param featureId
  */
@@ -2168,6 +2177,8 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setTrafoParamValidTime, Qt::AutoConnection);*/
         /*QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
                          this, &OiJob::setTrafoParamIsMovement, Qt::AutoConnection);*/
+        QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isDatumTrafoChanged,
+                         this, &OiJob::setTrafoParamIsDatum, Qt::AutoConnection);
     }
 
     //station connects
@@ -2265,6 +2276,8 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setTrafoParamValidTime);*/
         /*QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
                          this, &OiJob::setTrafoParamIsMovement);*/
+        QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isDatumTrafoChanged,
+                         this, &OiJob::setTrafoParamIsDatum);
     }
 
     //station connects
