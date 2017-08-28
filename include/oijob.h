@@ -83,7 +83,7 @@ public:
     QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByGroup(const QString &group) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByType(const FeatureTypes &type) const;
-    QList<QPointer<Geometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;
+    QList<QPointer<MasterGeometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;
 
     //access active features
     const QPointer<FeatureWrapper> &getActiveFeature() const;
@@ -304,6 +304,10 @@ private:
     //###################################################################################
 
     void addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features);
+
+    //create new master geometry
+    QPointer<FeatureWrapper> createNewMasterGeomFromFeature(QPointer<FeatureWrapper> feature);
+    void verifyAndAddFeatureGroupMap(QPointer<FeatureWrapper> fw, QPointer<FeatureWrapper> masterGeom);
 
 private:
 

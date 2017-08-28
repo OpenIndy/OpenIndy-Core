@@ -5,6 +5,7 @@
 #include "observation.h"
 #include "station.h"
 #include "function.h"
+#include "mastergeometry.h"
 
 using namespace oi;
 using namespace oi::math;
@@ -30,7 +31,6 @@ Geometry::Geometry(const Geometry &copy, QObject *parent) : Feature(copy, parent
     this->isCommon = copy.isCommon;
     this->statistic = copy.statistic;
     this->simulationData = copy.simulationData;
-    this->activeMeasurementConfig = copy.activeMeasurementConfig;
 
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
@@ -52,7 +52,6 @@ Geometry &Geometry::operator=(const Geometry &copy){
     this->isCommon = copy.isCommon;
     this->statistic = copy.statistic;
     this->simulationData = copy.simulationData;
-    this->activeMeasurementConfig = copy.activeMeasurementConfig;
 
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
@@ -73,7 +72,7 @@ Geometry::~Geometry(){
 
         //delete this geometry from the nominal list of its actual
         if(!this->actual.isNull()){
-            this->actual->removeNominal(this);
+            this->myMasterGeom->removeNominal(this);
         }
 
         //delete this geometry from list of nominals in nominal system
@@ -155,14 +154,15 @@ bool Geometry::addNominal(const QPointer<Geometry> &nominal){
         if(!this->nominals.contains(nominal)){
             this->nominals.append(nominal);
             nominal->setActual(this);
+            //add also to nominals of mastergeometry
+            if(!this->myMasterGeom.isNull() && !this->myMasterGeom->getNominals().contains(nominal)){
+                this->myMasterGeom->addNominal(nominal);
+            }
             emit this->geomNominalsChanged(this->id);
             return true;
         }
-
     }
-
     return false;
-
 }
 
 /*!
@@ -178,8 +178,8 @@ bool Geometry::removeNominal(const QPointer<Geometry> &nominal){
     }
 
     //remove nominal
+    this->myMasterGeom->removeNominal(nominal);
     return this->nominals.removeOne(nominal);
-
 }
 
 /*!
@@ -223,6 +223,10 @@ bool Geometry::setActual(const QPointer<Geometry> &actual){
 
     this->actual = actual;
     actual->addNominal(this);
+
+    //also add to mastergeometry
+    this->myMasterGeom->setActual(actual);
+
     emit this->geomActualChanged(this->id);
 
     return true;
@@ -341,20 +345,20 @@ bool Geometry::setNominalSystem(const QPointer<CoordinateSystem> &nomSys){
  * \brief Geometry::getMeasurementConfig
  * \return
  */
-const MeasurementConfig &Geometry::getMeasurementConfig() const{
+/*const MeasurementConfig &Geometry::getMeasurementConfig() const{
     return this->activeMeasurementConfig;
-}
+}*/
 
 /*!
  * \brief Geometry::setMeasurementConfig
  * \param myConfig
  */
-void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
+/*void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
     QString oldName = this->activeMeasurementConfig.getName();
     bool oldIsSaved = this->activeMeasurementConfig.getIsSaved();
     this->activeMeasurementConfig = myConfig;
     emit this->geomMeasurementConfigChanged(this->id, oldName, oldIsSaved);
-}
+}*/
 
 /*!
  * \brief Geometry::getStatistic
@@ -588,12 +592,12 @@ QDomElement Geometry::toOpenIndyXML(QDomDocument &xmlDoc) const{
         geometry.appendChild(nominals);
     }
 
-    //add measurement config
+    /*//add measurement config
     if(!this->isNominal){
         QDomElement mConfig = xmlDoc.createElement("measurementConfig");
         mConfig.setAttribute("name", this->activeMeasurementConfig.getName());
         geometry.appendChild(mConfig);
-    }
+    }*/
 
     return geometry;
 
@@ -647,7 +651,7 @@ QString Geometry::getDisplayStDev(const UnitType &type, const int &digits) const
  * \brief Geometry::getDisplayMeasurementConfig
  * \return
  */
-QString Geometry::getDisplayMeasurementConfig() const{
+/*QString Geometry::getDisplayMeasurementConfig() const{
     if(this->activeMeasurementConfig.getIsValid()){
         if(this->activeMeasurementConfig.getIsSaved()){
             return this->activeMeasurementConfig.getName();
@@ -656,7 +660,7 @@ QString Geometry::getDisplayMeasurementConfig() const{
         }
     }
     return QString("");
-}
+}*/
 
 /*!
  * \brief Geometry::getDisplayObservations
@@ -709,4 +713,38 @@ QString Geometry::getDisplayObservations() const{
  */
 QString Geometry::getDisplayIsCommon() const{
     return this->isCommon?"true":"false";
+}
+
+/*!
+ * \brief Geometry::setMasterGeom
+ * \param mastergeom
+ * \return
+ */
+bool Geometry::setMasterGeom(const QPointer<MasterGeometry> &mastergeom)
+{
+    if(!mastergeom.isNull()){
+        this->myMasterGeom = mastergeom;
+        return true;
+    }
+    return false;
+}
+
+/*!
+ * \brief Geometry::removeMasterGeom
+ * \param mastergeom
+ * \return
+ */
+bool Geometry::removeMasterGeom()
+{
+    this->myMasterGeom.clear();
+    return true;
+}
+
+/*!
+ * \brief Geometry::getMasterGeometry
+ * \return
+ */
+const QPointer<MasterGeometry> &Geometry::getMyMasterGeometry() const
+{
+    return this->myMasterGeom;
 }

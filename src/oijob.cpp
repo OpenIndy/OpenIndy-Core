@@ -81,72 +81,51 @@ bool OiJob::validateFeatureName(const QString &name, const FeatureTypes &type, c
         return false;
     }
 
-    //get a list of features with name name
+    //get a list of master geometries with name name
     QList<QPointer<FeatureWrapper> > features = this->featureContainer.getFeaturesByName(name);
 
     //accept name if no other feature with that name exists
     if(features.size() == 0){
         return true;
     }
+    if(type == eMasterGeometryFeature){ //master geometry
 
-    if(getIsGeometry(type) && isNominal == true){ //nominal geometry
-
-        //check if nominal system is valid
-        if(nominalSystem.isNull()){
-            return false;
-        }
-
-        //all equal name features have to be geometries, but no nominal with the same type and nominal system
-        foreach(const QPointer<FeatureWrapper> &feature, features){
-
-            //check if feature is valid
-            if(feature.isNull()){
-                continue;
-            }
-
-            //check if feature is a geometry
-            if(feature->getGeometry().isNull()){
+        foreach (QPointer<FeatureWrapper> masterGeom, features) {
+            if(masterGeom->getFeature()->getFeatureName() == name){
                 return false;
             }
-
-            //check if feature is a nominal with same type and nominal system
-            if(feature->getFeatureTypeEnum() == type && feature->getGeometry()->getIsNominal()
-                    && feature->getGeometry()->getNominalSystem() == nominalSystem){
-                return false;
-            }
-
         }
-
         return true;
+    }
+    if(getIsGeometry(type)){
+        foreach (QPointer<FeatureWrapper> masterGeom, features) {
+            if(masterGeom->getFeature()->getFeatureName() == name){
 
-    }else if(getIsGeometry(type)){ //actual geometry
+                //check if actual or nominal already exist with the same name and coord system
+                if(isNominal){
+                    if(!masterGeom->getMasterGeometry()->getNominals().isEmpty() &&
+                            masterGeom->getMasterGeometry()->getNominals().first()->getFeatureWrapper()->getFeatureTypeEnum() == type){
 
-        //all equal name features have to be geometries, but no actual with the same type
-        foreach(const QPointer<FeatureWrapper> &feature, features){
-
-            //check if feature is valid
-            if(feature.isNull()){
-                continue;
+                        foreach (QPointer<Geometry> geom, masterGeom->getMasterGeometry()->getNominals()) {
+                            if(geom->getNominalSystem() == nominalSystem){
+                                return false;
+                            }
+                        }
+                    }
+                    return true;
+                }else{
+                    if(!masterGeom->getMasterGeometry()->getActual().isNull() &&
+                            masterGeom->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum() == type){
+                        return false;
+                    }
+                    return true;
+                }
             }
-
-            //check if feature is a geometry
-            if(feature->getGeometry().isNull()){
-                return false;
-            }
-
-            //check if feature is an actual with same type
-            if(feature->getFeatureTypeEnum() == type && !feature->getGeometry()->getIsNominal()){
-                return false;
-            }
-
         }
-
         return true;
-
     }else{ //non-geometry feature
         return false;
     }
-
 }
 
 /*!
@@ -322,7 +301,7 @@ QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByType(const FeatureTypes &ty
  * \param mConfig
  * \return
  */
-QList<QPointer<Geometry> > OiJob::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
+QList<QPointer<MasterGeometry> > OiJob::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
     return this->featureContainer.getGeometriesByMConfig(mConfig);
 }
 
@@ -413,9 +392,7 @@ bool OiJob::addFeature(const QPointer<FeatureWrapper> &feature){
     }else{
         emit this->geometrySetChanged();
     }
-
     return true;
-
 }
 
 /*!
@@ -479,34 +456,37 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
         }
 
     }
-
-    //create and validate feature names
     QStringList featureNames = this->createFeatureNames(fAttr.name, fAttr.count);
-    if(getIsGeometry(fAttr.typeOfFeature)){
-        if(fAttr.isNominal){
-            foreach(const QString &name, featureNames){
-                if(!validateFeatureName(name, fAttr.typeOfFeature, true, nominalSystem)){
-                    emit this->sendMessage("No valid feature name specified", eErrorMessage);
-                    return result;
-                }
+
+    if(fAttr.isActual){
+        //create and validate feature names
+        foreach(const QString &name, featureNames){
+            if(!validateFeatureName(name, fAttr.typeOfFeature, false, nominalSystem)){
+                emit this->sendMessage("No valid feature name specified", eErrorMessage);
+                return result;
             }
         }
-        if(fAttr.isActual){
-            foreach(const QString &name, featureNames){
-                if(!validateFeatureName(name, fAttr.typeOfFeature)){
-                    emit this->sendMessage("No valid feature name specified", eErrorMessage);
-                    return result;
-                }
+    }else if(fAttr.isNominal){
+        //create and validate feature names
+        //QStringList featureNames = this->createFeatureNames(fAttr.name, fAttr.count);
+        foreach(const QString &name, featureNames){
+            if(!validateFeatureName(name, fAttr.typeOfFeature, true, nominalSystem)){
+                emit this->sendMessage("No valid feature name specified", eErrorMessage);
+                return result;
             }
         }
     }else{
+        //create and validate feature names
+        //QStringList featureNames = this->createFeatureNames(fAttr.name, fAttr.count);
         foreach(const QString &name, featureNames){
-            if(!validateFeatureName(name, fAttr.typeOfFeature)){
+            if(!validateFeatureName(name, fAttr.typeOfFeature, false, nominalSystem)){
                 emit this->sendMessage("No valid feature name specified", eErrorMessage);
                 return result;
             }
         }
     }
+
+
 
     //check if the group is a new group
     bool isNewGroup = false;
@@ -544,24 +524,53 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 feature->getGeometry()->setIsSolved(true);
             }
 
+            //add and connect feature
+            this->featureContainer.addFeature(feature);
+
             //search corresponding actual
+
+            bool exists= false;
+
             QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
             foreach(const QPointer<FeatureWrapper> &equal, equalNameFeatures){
-                if(!equal.isNull() && equal->getFeatureTypeEnum() == fAttr.typeOfFeature && !equal->getGeometry()->getIsNominal()){
-                    feature->getGeometry()->actual = equal->getGeometry();
-                    equal->getGeometry()->nominals.append(feature->getGeometry());
+
+                if(!equal.isNull() && !equal->getMasterGeometry().isNull()){
+
+                    if(!equal->getMasterGeometry()->getActual().isNull()
+                            && equal->getMasterGeometry()->getActual()->getFeatureWrapper()->getFeatureTypeEnum() == fAttr.typeOfFeature){
+
+                        feature->getGeometry()->actual = equal->getMasterGeometry()->getActual();
+                        equal->getMasterGeometry()->addNominal(feature->getGeometry());
+                        equal->getMasterGeometry()->getActual()->addNominal(feature->getGeometry());
+
+                        feature->getGeometry()->setMasterGeom(equal->getMasterGeometry());
+                        exists = true;
+
+                        this->verifyAndAddFeatureGroupMap(feature, equal);
+
+                    }else if(equal->getMasterGeometry()->getActual().isNull() && equal->getMasterGeometry()->getNominals().size() > 0
+                             && equal->getMasterGeometry()->getNominals().first()->getFeatureWrapper()->getFeatureTypeEnum() == feature->getFeatureTypeEnum()){
+
+                        equal->getMasterGeometry()->addNominal(feature->getGeometry());
+                        feature->getGeometry()->setMasterGeom(equal->getMasterGeometry());
+                        this->verifyAndAddFeatureGroupMap(feature, equal);
+                        exists = true;
+                    }
                 }
             }
 
-            //add and connect feature
-            this->featureContainer.addFeature(feature);
+            if(!exists){
+                QPointer<FeatureWrapper> newMasterGeom = this->createNewMasterGeomFromFeature(feature);
+                newMasterGeom->getMasterGeometry()->setJob(this);
+                this->featureContainer.addFeature(newMasterGeom);
+                this->connectFeature(newMasterGeom);
+            }
+
             this->connectFeature(feature);
 
             //add feature to result list
             result.append(feature);
-
         }
-
         //create actual
         if(getIsGeometry(fAttr.typeOfFeature) && fAttr.isActual){
 
@@ -570,7 +579,6 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             if(feature.isNull() || feature->getGeometry().isNull()){
                 continue;
             }
-
             //pass the job to the feature
             feature->getFeature()->setJob(this);
 
@@ -580,22 +588,40 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             feature->getGeometry()->isNominal = false;
             feature->getGeometry()->isCommon = fAttr.isCommon;
 
-            //search corresponding nominal
-            QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
-            foreach(const QPointer<FeatureWrapper> &equal, equalNameFeatures){
-                if(!equal.isNull() && equal->getFeatureTypeEnum() == fAttr.typeOfFeature && equal->getGeometry()->getIsNominal()){
-                    equal->getGeometry()->actual = feature->getGeometry();
-                    feature->getGeometry()->nominals.append(equal->getGeometry());
-                }
-            }
-
             //add and connect feature
             this->featureContainer.addFeature(feature);
-            this->connectFeature(feature);
 
+            //search corresponding nominal
+
+            bool exists = false;
+
+            QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
+            foreach(const QPointer<FeatureWrapper> &equal, equalNameFeatures){
+                if(!equal.isNull() && !equal->getMasterGeometry().isNull() && equal->getMasterGeometry()->getNominals().size() > 0 &&
+                        equal->getMasterGeometry()->getNominals().first()->getFeatureWrapper()->getFeatureTypeEnum() ==
+                        fAttr.typeOfFeature ){
+
+                    equal->getMasterGeometry()->setActual(feature->getGeometry());
+                    feature->getGeometry()->setMasterGeom(equal->getMasterGeometry());
+
+                    foreach (QPointer<Geometry> geom, equal->getMasterGeometry()->getNominals()) {
+                        geom->setActual(feature->getGeometry());
+                        feature->getGeometry()->addNominal(geom);
+                    }
+                    this->verifyAndAddFeatureGroupMap(feature, equal);
+                    exists = true;
+                }
+            }
+            if(!exists){
+                QPointer<FeatureWrapper> newMasterGeom = this->createNewMasterGeomFromFeature(feature);
+                newMasterGeom->getMasterGeometry()->setJob(this);
+                this->featureContainer.addFeature(newMasterGeom);
+                this->connectFeature(newMasterGeom);
+            }
+
+            this->connectFeature(feature);
             //add feature to result list
             result.append(feature);
-
         }
 
         //create non-geometry feature
@@ -633,9 +659,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
 
             //add feature to result list
             result.append(feature);
-
         }
-
     }
 
     //emit signals
@@ -1763,9 +1787,7 @@ void OiJob::setActiveCoordinateSystem(const int &featureId){
             emit this->activeCoordinateSystemChanged();
             return;
         }
-
     }
-
 }
 
 /*!
@@ -1784,59 +1806,37 @@ void OiJob::setFeatureName(const int &featureId, const QString &oldName){
     //save the ids of renamed features
     QList<int> renamedFeatures;
 
-    //update geometry relations
-    if(getIsGeometry(feature->getFeatureTypeEnum())){
+    //master geometry
+    if(!feature->getMasterGeometry().isNull()){
+        feature->getMasterGeometry()->changeNameOfGeometries();
+        if(!feature->getMasterGeometry()->getActual().isNull()){
+            renamedFeatures.append(feature->getMasterGeometry()->getActual()->getId());
+        }
+        foreach (QPointer<Geometry>geom, feature->getMasterGeometry()->getNominals()) {
+            renamedFeatures.append(geom->getId());
+        }
+    }
 
+    //update geometry / mastergeometry relations
+    if(getIsGeometry(feature->getFeatureTypeEnum())){
         //check geometry
         if(feature->getGeometry().isNull()){
             return;
         }
-
         //clear old relations
-        if(!feature->getGeometry().isNull()){
-            if(feature->getGeometry()->getIsNominal() && !feature->getGeometry()->getActual().isNull()){
-
-                //remove this nominal from its actual
-                feature->getGeometry()->getActual()->removeNominal(feature->getGeometry());
-                feature->getGeometry()->actual = QPointer<Geometry>(NULL);
-
-            }else if(!feature->getGeometry()->getIsNominal()){
-
-                //rename all nominals of this actual
-                foreach(const QPointer<Geometry> &geometry, feature->getGeometry()->getNominals()){
-
-                    //check geometry
-                    if(geometry.isNull() || geometry->getFeatureWrapper().isNull()){
-                        continue;
-                    }
-
-                    //validate the new feature name and update the name or remove the nominal from its actual
-                    if(this->validateFeatureName(feature->getFeature()->getFeatureName(), geometry->getFeatureWrapper()->getFeatureTypeEnum(),
-                                                 true, geometry->getNominalSystem())){
-                        geometry->name = feature->getFeature()->getFeatureName();
-                        renamedFeatures.append(geometry->getId());
-                    }else{
-                        feature->getGeometry()->removeNominal(geometry);
-                        geometry->actual = QPointer<Geometry>(NULL);
-                    }
-
-                }
-
-            }
+        //rename mastergeometry
+        feature->getMasterGeometry()->setFeatureName(feature->getFeature()->getFeatureName());
+        renamedFeatures.append(feature->getMasterGeometry()->getId());
+        //rename actual
+        if(!feature->getMasterGeometry()->getActual().isNull()){
+            feature->getMasterGeometry()->getActual()->setFeatureName(feature->getFeature()->getFeatureName());
+            renamedFeatures.append(feature->getMasterGeometry()->getActual()->getId());
         }
-
-        //set up new relations
-        QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(feature->getFeature()->getFeatureName());
-        foreach(const QPointer<FeatureWrapper> &other, equalNameFeatures){
-            if(!other.isNull() && !other->getFeature().isNull() && feature->getFeatureTypeEnum() == other->getFeatureTypeEnum()){
-                if(!feature->getGeometry()->getIsNominal()){ //if feature is an actual
-                    feature->getGeometry()->addNominal(other->getGeometry());
-                }else if(!other->getGeometry()->getIsNominal()){ //if feature is a nominal and other is an actual
-                    other->getGeometry()->addNominal(feature->getGeometry());
-                }
-            }
+        //rename all nominals
+        foreach (QPointer<Geometry> geom, feature->getMasterGeometry()->getNominals()) {
+            geom->setFeatureName(feature->getFeature()->getFeatureName());
+            renamedFeatures.append(geom->getId());
         }
-
     }
 
     //update feature container
@@ -1844,10 +1844,8 @@ void OiJob::setFeatureName(const int &featureId, const QString &oldName){
     foreach(const int &id, renamedFeatures){
         this->featureContainer.featureNameChanged(id, oldName);
     }
-
     emit this->featureAttributesChanged();
     emit this->featureNameChanged(featureId, oldName);
-
 }
 
 /*!
@@ -2145,6 +2143,16 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
     QObject::connect(feature->getFeature().data(), &Feature::featureIsActiveChanged,
                      this, &OiJob::setActiveFeature, Qt::AutoConnection);
 
+    //Mastergeometry connects
+    if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
+                         this, &OiJob::setGeometryNominals, Qt::AutoConnection);
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
+                         this, &OiJob::setGeometryActual, Qt::AutoConnection);
+        QObject::connect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
+                         this, &OiJob::setGeometryMeasurementConfig, Qt::AutoConnection);
+    }
+
     //general geometry connects
     if(getIsGeometry(feature->getFeatureTypeEnum())){
         QObject::connect(feature->getGeometry().data(), &Geometry::geomIsCommonChanged,
@@ -2161,8 +2169,7 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setGeometryStatistic, Qt::AutoConnection);
         QObject::connect(feature->getGeometry().data(), &Geometry::geomSimulationDataChanged,
                          this, &OiJob::setGeometrySimulationData, Qt::AutoConnection);
-        QObject::connect(feature->getGeometry().data(), &Geometry::geomMeasurementConfigChanged,
-                         this, &OiJob::setGeometryMeasurementConfig, Qt::AutoConnection);
+
     }
 
     //trafo param connects
@@ -2244,9 +2251,19 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
     QObject::disconnect(feature->getFeature().data(), &Feature::featureIsActiveChanged,
                      this, &OiJob::setActiveFeature);
 
+    //master geometry disconnects
+    if(feature->getFeatureTypeEnum() == eMasterGeometryFeature){
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomNominalsChanged,
+                         this, &OiJob::setGeometryNominals);
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomActualChanged,
+                         this, &OiJob::setGeometryActual);
+        QObject::disconnect(feature->getMasterGeometry().data(), &MasterGeometry::geomMeasurementConfigChanged,
+                         this, &OiJob::setGeometryMeasurementConfig);
+    }
+
     //general geometry connects
     if(getIsGeometry(feature->getFeatureTypeEnum())){
-        QObject::connect(feature->getGeometry().data(), &Geometry::geomIsCommonChanged,
+        QObject::disconnect(feature->getGeometry().data(), &Geometry::geomIsCommonChanged,
                          this, &OiJob::setGeometryIsCommon);
         QObject::disconnect(feature->getGeometry().data(), &Geometry::geomNominalsChanged,
                          this, &OiJob::setGeometryNominals);
@@ -2260,8 +2277,7 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setGeometryStatistic);
         QObject::disconnect(feature->getGeometry().data(), &Geometry::geomSimulationDataChanged,
                          this, &OiJob::setGeometrySimulationData);
-        QObject::disconnect(feature->getGeometry().data(), &Geometry::geomMeasurementConfigChanged,
-                         this, &OiJob::setGeometryMeasurementConfig);
+
     }
 
     //trafo param connects
@@ -3074,7 +3090,66 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
         if(!feature->getStation().isNull() && feature->getStation()->getIsActiveStation()){
             this->activeStation = feature->getStation();
         }
-
     }
+}
 
+/*!
+ * \brief OiJob::createNewMasterGeomFromFeature
+ * \param feature
+ * \return
+ */
+QPointer<FeatureWrapper> OiJob::createNewMasterGeomFromFeature(QPointer<FeatureWrapper> feature)
+{
+    QPointer<FeatureWrapper> featWMasterGeom = new FeatureWrapper();
+
+    QPointer<MasterGeometry> newMasterGeometry = new MasterGeometry();
+    newMasterGeometry->setFeatureName(feature->getFeature()->getFeatureName());
+    newMasterGeometry->setGroupName(feature->getFeature()->getGroupName());
+
+    if(feature->getGeometry()->getIsNominal()){
+        newMasterGeometry->addNominal(feature->getGeometry());
+    }else{
+        newMasterGeometry->setActual(feature->getGeometry());
+        //this->featureContainer.addToGeomMConfigMap(newMasterGeometry);
+    }
+    featWMasterGeom->setMasterGeometry(newMasterGeometry);
+
+    feature->getGeometry()->setMasterGeom(newMasterGeometry);
+
+    return featWMasterGeom;
+}
+
+/*!
+ * \brief OiJob::verifyAndAddFeatureGroupMap
+ * \param fw
+ * \param masterGeom
+ */
+void OiJob::verifyAndAddFeatureGroupMap(QPointer<FeatureWrapper> fw, QPointer<FeatureWrapper> masterGeom)
+{
+    if(!fw->getMasterGeometry().isNull()){
+        return;
+    }
+    QString oldGroup = "";
+
+    if(fw->getFeature()->getGroupName().compare("") != 0){
+        if(masterGeom->getFeature()->getGroupName().compare("") == 0){
+
+            oldGroup = masterGeom->getFeature()->getGroupName();
+            masterGeom->getFeature()->setGroupName(fw->getFeature()->getGroupName());
+            this->featureContainer.featureGroupChanged(masterGeom->getFeature()->getId(),oldGroup);
+
+            if(!masterGeom->getMasterGeometry()->getActual().isNull()){
+                oldGroup = masterGeom->getMasterGeometry()->getActual()->getGroupName();
+                masterGeom->getMasterGeometry()->getActual()->setGroupName(masterGeom->getMasterGeometry()->getGroupName());
+                this->featureContainer.featureGroupChanged(masterGeom->getMasterGeometry()->getActual()->getId(),oldGroup);
+            }
+            if(masterGeom->getMasterGeometry()->getNominals().size() > 0){
+                foreach (QPointer<Geometry> geom, masterGeom->getMasterGeometry()->getNominals()) {
+                    oldGroup = geom->getGroupName();
+                    geom->setGroupName(masterGeom->getMasterGeometry()->getGroupName());
+                    this->featureContainer.featureGroupChanged(geom->getId(), oldGroup);
+                }
+            }
+        }
+    }
 }

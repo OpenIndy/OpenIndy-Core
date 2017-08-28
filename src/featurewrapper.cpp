@@ -242,6 +242,15 @@ const QPointer<ScalarEntityMeasurementSeries> &FeatureWrapper::getScalarEntityMe
 }
 
 /*!
+ * \brief FeatureWrapper::getMasterGeometry
+ * \return
+ */
+const QPointer<MasterGeometry> &FeatureWrapper::getMasterGeometry() const
+{
+    return this->masterGeometry;
+}
+
+/*!
  * \brief FeatureWrapper::setCoordinateSystem
  * \param coordSystem
  */
@@ -521,5 +530,18 @@ void FeatureWrapper::setScalarEntityMeasurementSeries(const QPointer<ScalarEntit
         this->geometry = measurementSeries;
         this->measurementSeries = measurementSeries;
         this->typeOfFeature = eScalarEntityMeasurementSeriesFeature;
+    }
+}
+
+/*!
+ * \brief FeatureWrapper::setMasterGeometry
+ * \param mastergeom
+ */
+void FeatureWrapper::setMasterGeometry(const QPointer<MasterGeometry> &mastergeom)
+{
+    if(!mastergeom.isNull() && this->typeOfFeature == eUndefinedFeature){
+        this->feature = mastergeom;
+        this->masterGeometry = mastergeom;
+        this->typeOfFeature = eMasterGeometryFeature;
     }
 }

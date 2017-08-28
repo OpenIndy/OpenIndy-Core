@@ -13,9 +13,11 @@
 #include "radius.h"
 #include "direction.h"
 #include "position.h"
+#include "mastergeometry.h"
 
 namespace oi{
 
+//class MasterGeometry;
 class Observation;
 class CoordinateSystem;
 
@@ -27,6 +29,7 @@ class OI_CORE_EXPORT Geometry : public Feature
 {
     friend class Geometry;
     friend class OiJob;
+    friend class MasterGeometry;
     Q_OBJECT
 
 public:
@@ -47,13 +50,6 @@ public:
 
     const bool &getIsNominal() const;
 
-    const QList<QPointer<Geometry> > &getNominals() const;
-    bool addNominal(const QPointer<Geometry> &nominal);
-    bool removeNominal(const QPointer<Geometry> &nominal);
-
-    const QPointer<Geometry> &getActual() const;
-    bool setActual(const QPointer<Geometry> &actual);
-
     const QList<QPointer<Observation> > &getObservations() const;
     void addObservation(const QPointer<Observation> &obs);
     void removeObservation(const QPointer<Observation> &obs);
@@ -61,8 +57,8 @@ public:
     const QPointer<CoordinateSystem> &getNominalSystem() const;
     bool setNominalSystem(const QPointer<CoordinateSystem> &nomSys);
 	
-    const MeasurementConfig &getMeasurementConfig() const;
-    void setMeasurementConfig(const MeasurementConfig &myConfig);
+    //const MeasurementConfig &getMeasurementConfig() const;
+    //void setMeasurementConfig(const MeasurementConfig &myConfig);
 
     const Statistic &getStatistic() const;
     void setStatistic(const Statistic &myStatistic);
@@ -115,9 +111,14 @@ public:
 
     QString getDisplayStDev(const UnitType &type, const int &digits) const;
 
-    QString getDisplayMeasurementConfig() const;
+    //QString getDisplayMeasurementConfig() const;
     QString getDisplayObservations() const;
     QString getDisplayIsCommon() const;
+
+    //add or remove reference to master geometry
+    bool setMasterGeom(const QPointer<MasterGeometry> &mastergeom);
+    bool removeMasterGeom();
+    const QPointer<MasterGeometry> &getMyMasterGeometry() const;
 
 signals:
 
@@ -162,8 +163,17 @@ protected:
     //reading types
     QList<ReadingTypes> usedReadingTypes;
 
-    //current measurement config that is used to create readings until the user selects another one
+    /*//current measurement config that is used to create readings until the user selects another one
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
+    */
+
+    //Mastergeometry
+    const QList<QPointer<Geometry> > &getNominals() const;
+    bool addNominal(const QPointer<Geometry> &nominal);
+    bool removeNominal(const QPointer<Geometry> &nominal);
+
+    const QPointer<Geometry> &getActual() const;
+    bool setActual(const QPointer<Geometry> &actual);
 
 private:
 
@@ -174,6 +184,8 @@ private:
     Position dummyPosition;
     Direction dummyDirection;
     Radius dummyRadius;
+
+    QPointer<MasterGeometry> myMasterGeom;
 
 };
 

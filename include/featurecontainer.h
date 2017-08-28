@@ -48,13 +48,14 @@ public:
     const QStringList &getFeatureNameList() const;
     const QStringList &getFeatureGroupList() const;
     const QList<QPair<QString, bool> > &getUsedMeasurementConfigs() const;
+    const QList<QPointer<FeatureWrapper> > getAllFeatures() const;
 
     //getter to access features by id, name, group, type or mConfig
     QPointer<FeatureWrapper> getFeatureById(const int &featureId) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByGroup(const QString &group) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByType(const FeatureTypes &type) const;
-    QList<QPointer<Geometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;
+    QList<QPointer<MasterGeometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;
 
     //######################
     //get number of features
@@ -85,6 +86,11 @@ public:
     bool featureGroupChanged(const int &featureId, const QString &oldGroup);
     bool geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
 
+    //##########################################################
+    //create new master geometry
+    //##########################################################
+    void createNewMasterGeomFromFeature(QPointer<FeatureWrapper> feature);
+
 private:
 
     //######################
@@ -103,7 +109,7 @@ private:
     QMultiMap<QString, QPointer<FeatureWrapper> > featuresNameMap; //map of all features in OpenIndy with their name as key
     QMultiMap<QString, QPointer<FeatureWrapper> > featuresGroupMap; //map of all features in OpenIndy with their group as key
     QMultiMap<FeatureTypes, QPointer<FeatureWrapper> > featuresTypeMap; // map of all features in OpenIndy with their type as key
-    QMultiMap<QPair<QString, bool>, QPointer<Geometry> > geometriesMConfigMap; //map of all geometries in OpenIndy with their measurement config name and saved state as key
+    QMultiMap<QPair<QString, bool>, QPointer<MasterGeometry> > geometriesMConfigMap; //map of all geometries in OpenIndy with their measurement config name and saved state as key
 
     //lists with ids, names, groups and measurement configs
     QList<int> featureIds;
@@ -111,6 +117,21 @@ private:
     QStringList featureGroups;
     QList<QPair<QString, bool> > usedMConfigs;
 
+    QList<QPointer<FeatureWrapper> > allFeatures;
+
+    void addToFeatureList(QPointer<FeatureWrapper> fw);
+    //void addToGeometriesList(QPointer<FeatureWrapper>fw);
+    void addToFeatureNameMap(QPointer<FeatureWrapper> fw);
+    void addToFeatureGroupMap(QPointer<FeatureWrapper> fw);
+    void verifyAndAddFeatureGroupMap(QPointer<FeatureWrapper> fw, QPointer<FeatureWrapper> masterGeom);
+    void addToGeomMConfigMap(QPointer<MasterGeometry> masterGeom);
+    void addToFeatureIDMap(QPointer<FeatureWrapper> fw);
+
+    void removeFromFeatureList(QPointer<FeatureWrapper> fw);
+    void removeFromFeatureNameMap(QPointer<FeatureWrapper> fw);
+    void removeFromFeatureGroupMap(QPointer<FeatureWrapper> fw);
+    void removeFromGeomMConfigMap(QPointer<MasterGeometry>masterGeom);
+    void removeFromFeatureIDMap(QPointer<FeatureWrapper> fw);
 };
 
 }
