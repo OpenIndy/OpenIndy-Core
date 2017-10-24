@@ -2054,8 +2054,13 @@ QList<QString> getMaterials()
  * \param nominal
  * \return
  */
-const double &getTemperatureExpansion(const QString material, double actual, double nominal)
+const double getTemperatureExpansion(const QString material, double actual, double nominal)
 {
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
     double exp = internal::materialValuesMap.value(internal::materialStringsMap.key(material));
     double expansion = (actual - nominal) * exp;
 

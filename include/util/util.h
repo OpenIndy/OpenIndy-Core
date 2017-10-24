@@ -156,7 +156,7 @@ ActualNominalFilter OI_CORE_EXPORT getActualNominalFilterEnum(const QString &nam
 
 const QString OI_CORE_EXPORT &getMaterialName(const MaterialsTempComp &material);
 const double OI_CORE_EXPORT &getMaterialValue(const MaterialsTempComp &material);
-const double OI_CORE_EXPORT &getTemperatureExpansion(const QString material, double actual, double nominal);
+const double OI_CORE_EXPORT getTemperatureExpansion(const QString material, double actual, double nominal);
 QList<QString> OI_CORE_EXPORT getMaterials();
 
 }
