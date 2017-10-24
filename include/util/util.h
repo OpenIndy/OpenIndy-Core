@@ -154,6 +154,10 @@ QList<ActualNominalFilter> OI_CORE_EXPORT getAvailableActualNominalFilters();
 const QString OI_CORE_EXPORT &getActualNominalFilterName(const ActualNominalFilter &type);
 ActualNominalFilter OI_CORE_EXPORT getActualNominalFilterEnum(const QString &name);
 
+const QString OI_CORE_EXPORT &getMaterialName(const MaterialsTempComp &material);
+const double OI_CORE_EXPORT &getMaterialValue(const MaterialsTempComp &material);
+QList<QString> OI_CORE_EXPORT getMaterials();
+
 }
 
 #endif // UTIL_H
