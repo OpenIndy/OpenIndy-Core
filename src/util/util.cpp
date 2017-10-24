@@ -2047,4 +2047,19 @@ QList<QString> getMaterials()
     return internal::materialStringsMap.values();
 }
 
+/*!
+ * \brief getTemperatureExpansion
+ * \param material
+ * \param actual
+ * \param nominal
+ * \return
+ */
+const double &getTemperatureExpansion(const QString material, double actual, double nominal)
+{
+    double exp = internal::materialValuesMap.value(internal::materialStringsMap.key(material));
+    double expansion = (actual - nominal) * exp;
+
+    return 1.0 / (1.0+expansion);
+}
+
 }
