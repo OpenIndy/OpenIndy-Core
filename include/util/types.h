@@ -452,6 +452,24 @@ enum ActualNominalFilter{
 
 };
 
+//######################################
+//materials for temperature compensation
+//######################################
+enum MaterialsTempComp{
+
+    eMaterialSteel = 0,
+    eMaterialAluminum,
+    eMaterialPlumb,
+    eMaterialIron,
+    eMaterialGrayCastIron,
+    eMaterialCopper,
+    eMaterialBrass,
+    eMaterialZinc,
+    eMaterialPlatinum,
+    eMaterialConcrete,
+    eMaterialReinforcedConcrete
+};
+
 //##############
 //helper classes
 //##############

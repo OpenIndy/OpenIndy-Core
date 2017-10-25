@@ -48,6 +48,9 @@ QMap<ActualNominalFilter, QString> actualNominalFilterMap;
 
 QString undefined = "";
 
+QMap<MaterialsTempComp, QString> materialStringsMap;
+QMap<MaterialsTempComp, double> materialValuesMap;
+
 bool isInit = false;
 
 void init(){
@@ -71,6 +74,8 @@ void init(){
     messageTypesMap.clear();
     geometryParametersMap.clear();
     actualNominalFilterMap.clear();
+    materialStringsMap.clear();
+    materialValuesMap.clear();
 
     //fill element map
     elementTypesMap.insert(eCircleElement, "circle");
@@ -471,6 +476,31 @@ void init(){
     actualNominalFilterMap.insert(eFilterActualNominal, "All Features");
     actualNominalFilterMap.insert(eFilterActual, "Actuals");
     actualNominalFilterMap.insert(eFilterNominal, "Nominals");
+
+    //fill material maps
+    materialStringsMap.insert(eMaterialSteel, "steel");
+    materialStringsMap.insert(eMaterialAluminum, "aluminum");
+    materialStringsMap.insert(eMaterialPlumb, "plumb");
+    materialStringsMap.insert(eMaterialIron, "iron");
+    materialStringsMap.insert(eMaterialGrayCastIron, "gray cast iron");
+    materialStringsMap.insert(eMaterialCopper, "copper");
+    materialStringsMap.insert(eMaterialBrass, "brass");
+    materialStringsMap.insert(eMaterialZinc, "zinc");
+    materialStringsMap.insert(eMaterialPlatinum, "platinum");
+    materialStringsMap.insert(eMaterialConcrete, "concrete");
+    materialStringsMap.insert(eMaterialReinforcedConcrete, "reinforced concrete");
+
+    materialValuesMap.insert(eMaterialSteel, 0.000016);
+    materialValuesMap.insert(eMaterialAluminum, 0.000024);
+    materialValuesMap.insert(eMaterialPlumb, 0.000030);
+    materialValuesMap.insert(eMaterialIron, 0.000012);
+    materialValuesMap.insert(eMaterialGrayCastIron, 0.000009);
+    materialValuesMap.insert(eMaterialCopper, 0.000017);
+    materialValuesMap.insert(eMaterialBrass, 0.000018);
+    materialValuesMap.insert(eMaterialZinc, 0.000027);
+    materialValuesMap.insert(eMaterialPlatinum, 0.000009);
+    materialValuesMap.insert(eMaterialConcrete, 0.000012);
+    materialValuesMap.insert(eMaterialReinforcedConcrete, 0.000013);
 
     isInit = true;
 
@@ -1963,6 +1993,78 @@ ActualNominalFilter getActualNominalFilterEnum(const QString &name){
     //get the corresponding actual nominal filter enum value
     return internal::actualNominalFilterMap.key(name, eFilterActualNominal);
 
+}
+
+/*!
+ * \brief getMaterialName
+ * \param material
+ * \return
+ */
+const QString &getMaterialName(const MaterialsTempComp &material)
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding actual nominal filter name
+    if(internal::materialStringsMap.contains(material)){
+        return internal::materialStringsMap[material];
+    }
+    return internal::undefined;
+}
+
+/*!
+ * \brief getMaterialValue
+ * \param material
+ * \return
+ */
+const double &getMaterialValue(const MaterialsTempComp &material)
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding actual nominal filter name
+    if(internal::materialValuesMap.contains(material)){
+        return internal::materialValuesMap[material];
+    }
+    return 0.0;
+}
+
+/*!
+ * \brief getMaterials
+ * \return
+ */
+QList<QString> getMaterials()
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    return internal::materialStringsMap.values();
+}
+
+/*!
+ * \brief getTemperatureExpansion
+ * \param material
+ * \param actual
+ * \param nominal
+ * \return
+ */
+const double getTemperatureExpansion(const QString material, double actual, double nominal)
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    double exp = internal::materialValuesMap.value(internal::materialStringsMap.key(material));
+    double expansion = (actual - nominal) * exp;
+
+    return 1.0 / (1.0+expansion);
 }
 
 }
