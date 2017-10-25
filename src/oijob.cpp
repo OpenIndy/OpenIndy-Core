@@ -620,6 +620,19 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 feature->getTrafoParam()->to = destSystem;
                 startSystem->trafoParams.append(feature->getTrafoParam());
                 destSystem->trafoParams.append(feature->getTrafoParam());
+
+                //check if one system is station and one system is coordinate system, then set datum to true
+                if((startSystem->getIsStationSystem() || startSystem->getIsBundleSystem()) && (!destSystem->getIsBundleSystem()) && !destSystem->getIsStationSystem()){
+                    feature->getTrafoParam()->setIsDatumTrafo(true);
+                }else if((destSystem->getIsStationSystem() || destSystem->getIsBundleSystem()) && (!startSystem->getIsBundleSystem() && !startSystem->getIsStationSystem())){
+                    feature->getTrafoParam()->setIsDatumTrafo(true);
+                }else{
+                    feature->getTrafoParam()->setIsDatumTrafo(false);
+                }
+
+                //set used-state to "use" as default
+                feature->getTrafoParam()->setIsUsed(true);
+
             }
 
             //if type of feature is a coordinate system
