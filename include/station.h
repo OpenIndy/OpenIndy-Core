@@ -135,6 +135,8 @@ signals:
     //measure
     void measure(const int &geomId, const MeasurementConfig &mConfig);
 
+    void measurementDone(bool success);
+
     //general sensor actions
     void move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
               const bool &measure, const int &geomId = -1, const MeasurementConfig &mConfig = MeasurementConfig());

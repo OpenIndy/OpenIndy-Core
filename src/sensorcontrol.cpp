@@ -864,6 +864,7 @@ void SensorControl::connectSensorWorker(){
     //connect sensor action results
     QObject::connect(this->worker, &SensorWorker::commandFinished, this, &SensorControl::commandFinished, Qt::QueuedConnection);
     QObject::connect(this->worker, &SensorWorker::measurementFinished, this, &SensorControl::measurementFinished, Qt::QueuedConnection);
+    QObject::connect(this->worker, &SensorWorker::measurementDone, this, &SensorControl::measurementDone, Qt::QueuedConnection);
 
     //connect streaming results
     QObject::connect(this->worker, &SensorWorker::realTimeReading, this, &SensorControl::realTimeReading, Qt::QueuedConnection);
