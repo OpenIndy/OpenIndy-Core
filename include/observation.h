@@ -130,6 +130,8 @@ private:
     QList< QPointer<Geometry> > targetGeometriesList;
     QMap<int, QPointer<Geometry> > targetGeometriesMap;
 
+    QPointer<Geometry> measuredTargetGeometry;
+
     QPointer<Reading> reading;
 
     //###################################################

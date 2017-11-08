@@ -303,6 +303,10 @@ void Observation::addTargetGeometry(const QPointer<Geometry> &targetGeometry){
 
         targetGeometry->addObservation(this);
 
+        if(this->measuredTargetGeometry.isNull()){
+            this->measuredTargetGeometry = targetGeometry;
+        }
+
     }
 
 }
