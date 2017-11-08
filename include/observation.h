@@ -76,6 +76,7 @@ public:
     void addTargetGeometry(const QPointer<Geometry> &targetGeometry);
     void removeTargetGeometry(const QPointer<Geometry> &targetGeometry);
     void removeTargetGeometry(const int &geomId);
+    const QPointer<Geometry> &getMeasuredTargetGeometry() const;
 
     const QPointer<Reading> &getReading() const;
 

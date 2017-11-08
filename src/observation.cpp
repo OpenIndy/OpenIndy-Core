@@ -343,6 +343,15 @@ void Observation::removeTargetGeometry(const int &geomId){
 }
 
 /*!
+ * \brief Observation::getMeasuredTargetGeometry
+ * \return
+ */
+const QPointer<Geometry> &Observation::getMeasuredTargetGeometry() const
+{
+    return this->measuredTargetGeometry;
+}
+
+/*!
  * \brief Observation::getReading
  * \return
  */
