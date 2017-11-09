@@ -340,6 +340,10 @@ void Observation::removeTargetGeometry(const QPointer<Geometry> &targetGeometry)
 void Observation::removeTargetGeometry(const int &geomId){
     QPointer<Geometry> targetGeometry = this->targetGeometriesMap.value(geomId, QPointer<Geometry>());
     this->removeTargetGeometry(targetGeometry);
+
+    if(this->measuredTargetGeometry.isNull() && this->targetGeometriesList.size() == 1){
+        this->measuredTargetGeometry = this->targetGeometriesList.at(0);
+    }
 }
 
 /*!
@@ -349,6 +353,17 @@ void Observation::removeTargetGeometry(const int &geomId){
 const QPointer<Geometry> &Observation::getMeasuredTargetGeometry() const
 {
     return this->measuredTargetGeometry;
+}
+
+/*!
+ * \brief Observation::setMeasuredTargetGeometry
+ * \param measuredTargetGeom
+ */
+void Observation::setMeasuredTargetGeometry(const QPointer<Geometry> &measuredTargetGeom)
+{
+    if(!measuredTargetGeom.isNull()){
+        this->measuredTargetGeometry = measuredTargetGeom;
+    }
 }
 
 /*!
@@ -693,6 +708,13 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
         if(!reading.isNull()){
             observation.appendChild(reading);
         }
+    }
+
+    //add measuredTargetGeometry
+    if(!this->measuredTargetGeometry.isNull()){
+        QDomElement measuredTargetGeometry = xmlDoc.createElement("measuredTargetGeometry");
+        measuredTargetGeometry.setAttribute("ref", this->measuredTargetGeometry->getId());
+        observation.appendChild(measuredTargetGeometry);
     }
 
     return observation;
