@@ -2117,6 +2117,8 @@ void OiJob::elementAboutToBeDeleted(const int &elementId, const QString &name, c
 
     //disconnect feature
     QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(elementId);
+
+    qDebug() << "recalc after delete in oijob";
     emit this->recalcFeature(feature->getFeature());
     this->disconnectFeature(feature);
 
