@@ -216,6 +216,7 @@ signals:
     //##############################
 
     void recalcFeature(const QPointer<Feature> &feature);
+    void recalcFeatureSet();
 
     //#####################################
     //signals forwarded from FeatureUpdater

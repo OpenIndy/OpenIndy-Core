@@ -753,6 +753,8 @@ bool OiJob::removeFeature(const int &featureId){
 
     emit this->featureSetChanged();
 
+    emit this->recalcFeatureSet();
+
     return success;
 
 }
@@ -787,6 +789,8 @@ bool OiJob::removeFeature(const QPointer<FeatureWrapper> &feature){
     bool success = this->featureContainer.removeFeature(feature->getFeature()->getId());
 
     emit this->featureSetChanged();
+
+    emit this->recalcFeatureSet();
 
     return success;
 
@@ -829,6 +833,8 @@ bool OiJob::removeFeatures(const QSet<int> &featureIds){
     emit this->activeGroupChanged();
     emit this->featureSetChanged();
 
+    emit this->recalcFeatureSet();
+
     return success;
 
 }
@@ -868,6 +874,8 @@ bool OiJob::removeFeatures(const QList<QPointer<FeatureWrapper> > &features){
 
     emit this->activeGroupChanged();
     emit this->featureSetChanged();
+
+    emit this->recalcFeatureSet();
 
     return success;
 
@@ -2115,15 +2123,9 @@ void OiJob::setTrafoParamIsDatum(const int &featureId)
  */
 void OiJob::elementAboutToBeDeleted(const int &elementId, const QString &name, const QString &group, const FeatureTypes &type){
 
-    //disconnect feature
     QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(elementId);
-
-    qDebug() << "recalc after delete in oijob";
-    emit this->recalcFeature(feature->getFeature());
     this->disconnectFeature(feature);
-
     this->featureContainer.checkAndClean(elementId, name, group, type);
-
 }
 
 /*!
