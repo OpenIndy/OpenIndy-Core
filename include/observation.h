@@ -76,6 +76,8 @@ public:
     void addTargetGeometry(const QPointer<Geometry> &targetGeometry);
     void removeTargetGeometry(const QPointer<Geometry> &targetGeometry);
     void removeTargetGeometry(const int &geomId);
+    const QPointer<Geometry> &getMeasuredTargetGeometry() const;
+    void setMeasuredTargetGeometry(const QPointer<Geometry> &measuredTargetGeom);
 
     const QPointer<Reading> &getReading() const;
 
@@ -129,6 +131,8 @@ private:
 
     QList< QPointer<Geometry> > targetGeometriesList;
     QMap<int, QPointer<Geometry> > targetGeometriesMap;
+
+    QPointer<Geometry> measuredTargetGeometry;
 
     QPointer<Reading> reading;
 

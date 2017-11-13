@@ -68,7 +68,7 @@ Feature &Feature::operator=(const Feature &copy){
 Feature::~Feature(){
 
     //check and update features which need this feature to recalc
-    if(this->usedForList.size() > 0 && this->selfFeature.isNull()){
+    if(this->usedForList.size() > 0 && !this->selfFeature.isNull()){
         foreach(const QPointer<FeatureWrapper> &feature, this->usedForList){
 
             //check feature
