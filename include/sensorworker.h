@@ -48,6 +48,7 @@ signals:
     //sensor action callbacks
     void commandFinished(bool success, QString msg);
     void measurementFinished(int geomId, QList<QPointer<Reading> > readings);
+    void measurementDone(bool success);
 
     //#######################
     //special sensor messages
