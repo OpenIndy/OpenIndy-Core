@@ -359,6 +359,8 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
 
     }
 
+    emit this->measurementDone(success);
+
     emit this->commandFinished(success, msg);
     if(success){
         emit this->measurementFinished(geomId, readings);

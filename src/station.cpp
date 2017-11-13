@@ -780,6 +780,7 @@ void Station::connectSensorControl(){
     QObject::connect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished, Qt::AutoConnection);
+    QObject::connect(this->sensorControl.data(), &SensorControl::measurementDone, this, &Station::measurementDone, Qt::QueuedConnection);
 
     //connect sensor streaming results
     QObject::connect(this->sensorControl.data(), &SensorControl::realTimeReading, this, &Station::realTimeReading, Qt::AutoConnection);
@@ -831,6 +832,7 @@ void Station::disconnectSensorControl(){
     QObject::disconnect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished);
     QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings);
     QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementDone, this, &Station::measurementDone);
 
     //disconnect sensor streaming results
     QObject::disconnect(this->sensorControl.data(), &SensorControl::realTimeReading, this, &Station::realTimeReading);
