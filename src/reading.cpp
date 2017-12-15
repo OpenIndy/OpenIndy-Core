@@ -12,6 +12,9 @@ using namespace oi::math;
  */
 Reading::Reading(QObject *parent) : Element(parent), hasBackup(false){
 
+    //set default attributes
+    this->measuredAt = QDateTime::currentDateTime();
+    this->face = eFrontSide;
 }
 
 /*!
