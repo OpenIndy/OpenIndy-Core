@@ -501,9 +501,21 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
     }
     function.appendChild(inputElements);
 
+    ScalarInputParams params;
+    if(!this->scalarInputParams.isValid){
+        params.doubleParameter = this->doubleParameters;
+        params.intParameter = this->integerParameters;
+        QStringList keys = this->stringParameters.keys();
+        foreach(const QString &key, keys){
+            params.stringParameter.insert(key, this->stringParameters.value(key));
+        }
+    }else{
+        params = this->scalarInputParams;
+    }
+
     //add integer parameters
     QDomElement integerParams = xmlDoc.createElement("integerParameters");
-    QMapIterator<QString, int> intIterator(this->scalarInputParams.intParameter);
+    QMapIterator<QString, int> intIterator(params.intParameter);
     while (intIterator.hasNext()) {
         intIterator.next();
         QDomElement intParam = xmlDoc.createElement("parameter");
@@ -515,7 +527,7 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //add double parameters
     QDomElement doubleParams = xmlDoc.createElement("doubleParameters");
-    QMapIterator<QString, double> doubleIterator(this->scalarInputParams.doubleParameter);
+    QMapIterator<QString, double> doubleIterator(params.doubleParameter);
     while (doubleIterator.hasNext()) {
         doubleIterator.next();
         QDomElement doubleParam = xmlDoc.createElement("parameter");
@@ -527,7 +539,7 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //add string parameters
     QDomElement stringParams = xmlDoc.createElement("stringParameters");
-    QMapIterator<QString, QString> stringIterator(this->scalarInputParams.stringParameter);
+    QMapIterator<QString, QString> stringIterator(params.stringParameter);
     while (stringIterator.hasNext()) {
         stringIterator.next();
         QDomElement stringParam = xmlDoc.createElement("parameter");
