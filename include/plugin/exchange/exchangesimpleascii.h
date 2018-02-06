@@ -4,6 +4,7 @@
 #include <QVariantList>
 
 #include "exchangeinterface.h"
+#include "oijob.h"
 
 namespace oi{
 
@@ -74,6 +75,9 @@ public:
     const QString &getUsedDelimiter() const;
     void setDelimiter(const QString &usedDelimiter);
 
+    void setCurrentJob(QPointer<OiJob> job);
+    QPointer<OiJob> getCurrentJob();
+
 protected:
 
     //###########################
@@ -86,6 +90,8 @@ protected:
     QString usedDelimiter; //the delimiter that shall be used when parsing the file
 
     QStringList supportedDelimiters;
+
+    QPointer<OiJob> currentJob;
 
 };
 

@@ -127,3 +127,21 @@ const QString &ExchangeSimpleAscii::getUsedDelimiter() const{
 void ExchangeSimpleAscii::setDelimiter(const QString &usedDelimiter){
     this->usedDelimiter = usedDelimiter;
 }
+
+/*!
+ * \brief ExchangeSimpleAscii::setCurrentJob
+ * \param job
+ */
+void ExchangeSimpleAscii::setCurrentJob(QPointer<OiJob> job)
+{
+    this->currentJob = job;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::getCurrentJob
+ * \return
+ */
+QPointer<OiJob> ExchangeSimpleAscii::getCurrentJob()
+{
+    return this->currentJob;
+}
