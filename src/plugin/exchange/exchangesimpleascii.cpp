@@ -8,6 +8,9 @@ using namespace oi;
  */
 ExchangeSimpleAscii::ExchangeSimpleAscii(QObject *parent) : ExchangeInterface(parent), typeOfGeometry(eUndefinedGeometry){
 
+    this->distanceDigits = 2;
+    this->angleDigits = 6;
+    this->temperatureDigits = 1;
 }
 
 /*!
@@ -144,4 +147,58 @@ void ExchangeSimpleAscii::setCurrentJob(QPointer<OiJob> job)
 QPointer<OiJob> ExchangeSimpleAscii::getCurrentJob()
 {
     return this->currentJob;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::setDistanceDigits
+ * \param value
+ */
+void ExchangeSimpleAscii::setDistanceDigits(double value)
+{
+    this->distanceDigits = value;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::getDistanceDigits
+ * \return
+ */
+double ExchangeSimpleAscii::getDistanceDigits()
+{
+    return this->distanceDigits;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::setAngleDigits
+ * \param value
+ */
+void ExchangeSimpleAscii::setAngleDigits(double value)
+{
+    this->angleDigits = value;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::getAngleDigits
+ * \return
+ */
+double ExchangeSimpleAscii::getAngleDigits()
+{
+    return this->angleDigits;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::setTemperatureDigits
+ * \param value
+ */
+void ExchangeSimpleAscii::setTemperatureDigits(double value)
+{
+    this->temperatureDigits = value;
+}
+
+/*!
+ * \brief ExchangeSimpleAscii::getTemperatureDigits
+ * \return
+ */
+double ExchangeSimpleAscii::getTemperatureDigits()
+{
+    return this->temperatureDigits;
 }

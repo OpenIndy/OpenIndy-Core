@@ -78,6 +78,15 @@ public:
     void setCurrentJob(QPointer<OiJob> job);
     QPointer<OiJob> getCurrentJob();
 
+    void setDistanceDigits(double value);
+    double getDistanceDigits();
+
+    void setAngleDigits(double value);
+    double getAngleDigits();
+
+    void setTemperatureDigits(double value);
+    double getTemperatureDigits();
+
 protected:
 
     //###########################
@@ -92,6 +101,10 @@ protected:
     QStringList supportedDelimiters;
 
     QPointer<OiJob> currentJob;
+
+    double distanceDigits;
+    double angleDigits;
+    double temperatureDigits;
 
 };
 
