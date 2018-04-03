@@ -47,6 +47,7 @@ public:
 
     //position
     const QPointer<Point> &getPosition() const;
+    void setPosition(const Position pos);
 
     //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;
@@ -63,6 +64,9 @@ public:
 
     //previously used sensors
     const QList<Sensor> &getUsedSensors() const;
+
+    //get geometries measured from this station
+    QList<QPointer<Geometry> > getTargetGeometries() const;
 
     //####################################################
     //get information about the currently connected sensor
@@ -130,6 +134,8 @@ signals:
 
     //measure
     void measure(const int &geomId, const MeasurementConfig &mConfig);
+
+    void measurementDone(bool success);
 
     //general sensor actions
     void move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,

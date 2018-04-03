@@ -26,8 +26,6 @@ SensorWorker::~SensorWorker(){
  */
 Sensor SensorWorker::getSensor(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         return Sensor();
@@ -42,8 +40,6 @@ Sensor SensorWorker::getSensor(){
  * \param sensor
  */
 void SensorWorker::setSensor(QPointer<Sensor> sensor){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     if(!sensor.isNull()){
 
@@ -62,8 +58,6 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
  * \return
  */
 QPointer<Sensor> SensorWorker::takeSensor(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //save sensor pointer
     QPointer<Sensor> sensor = this->sensor;
@@ -84,8 +78,6 @@ QPointer<Sensor> SensorWorker::takeSensor(){
  * \brief SensorWorker::resetSensor
  */
 void SensorWorker::resetSensor(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     if(!this->sensor.isNull()){
 
@@ -108,14 +100,12 @@ void SensorWorker::resetSensor(){
  */
 bool SensorWorker::getIsSensorConnected(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         return false;
     }
 
-    this->sensor->getConnectionState();
+    return this->sensor->getConnectionState();
 
 }
 
@@ -125,14 +115,12 @@ bool SensorWorker::getIsSensorConnected(){
  */
 bool SensorWorker::getIsReadyForMeasurement(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull() || !this->sensor->getConnectionState()){
         return false;
     }
 
-    this->sensor->getIsReadyForMeasurement();
+    return this->sensor->getIsReadyForMeasurement();
 
 }
 
@@ -142,14 +130,12 @@ bool SensorWorker::getIsReadyForMeasurement(){
  */
 bool SensorWorker::getIsBusy(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull() || !this->sensor->getConnectionState()){
         return false;
     }
 
-    this->sensor->getIsBusy();
+    return this->sensor->getIsBusy();
 
 }
 
@@ -159,14 +145,12 @@ bool SensorWorker::getIsBusy(){
  */
 QMap<QString, QString> SensorWorker::getSensorStatus(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull() || !this->sensor->getConnectionState()){
         return QMap<QString, QString>();
     }
 
-    this->sensor->getSensorStatus();
+    return this->sensor->getSensorStatus();
 
 }
 
@@ -175,8 +159,6 @@ QMap<QString, QString> SensorWorker::getSensorStatus(){
  * \return
  */
 SensorTypes SensorWorker::getActiveSensorType(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -194,8 +176,6 @@ SensorTypes SensorWorker::getActiveSensorType(){
  */
 QList<ReadingTypes> SensorWorker::getSupportedReadingTypes(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         return QList<ReadingTypes>();
@@ -211,8 +191,6 @@ QList<ReadingTypes> SensorWorker::getSupportedReadingTypes(){
  * \return
  */
 QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -230,8 +208,6 @@ QList<ConnectionTypes> SensorWorker::getSupportedConnectionTypes(){
  */
 QList<SensorFunctions> SensorWorker::getSupportedSensorActions(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         return QList<SensorFunctions>();
@@ -247,8 +223,6 @@ QList<SensorFunctions> SensorWorker::getSupportedSensorActions(){
  * \return
  */
 QStringList SensorWorker::getSelfDefinedActions(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -266,8 +240,6 @@ QStringList SensorWorker::getSelfDefinedActions(){
  */
 SensorConfiguration SensorWorker::getSensorConfiguration(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         return SensorConfiguration();
@@ -284,8 +256,6 @@ SensorConfiguration SensorWorker::getSensorConfiguration(){
  */
 void SensorWorker::setSensorConfiguration(SensorConfiguration sConfig){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         return;
@@ -299,8 +269,6 @@ void SensorWorker::setSensorConfiguration(SensorConfiguration sConfig){
  * \brief SensorWorker::connectSensor
  */
 void SensorWorker::connectSensor(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -333,8 +301,6 @@ void SensorWorker::connectSensor(){
  * \brief SensorWorker::disconnectSensor
  */
 void SensorWorker::disconnectSensor(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -370,8 +336,6 @@ void SensorWorker::disconnectSensor(){
  */
 void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
@@ -395,6 +359,8 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
 
     }
 
+    emit this->measurementDone(success);
+
     emit this->commandFinished(success, msg);
     if(success){
         emit this->measurementFinished(geomId, readings);
@@ -413,8 +379,6 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
  * \param mConfig
  */
 void SensorWorker::move(double azimuth, double zenith, double distance, bool isRelative, bool measure, int geomId, MeasurementConfig mConfig){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -479,8 +443,6 @@ void SensorWorker::move(double azimuth, double zenith, double distance, bool isR
  */
 void SensorWorker::move(double x, double y, double z, bool measure, int geomId, MeasurementConfig mConfig){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
@@ -538,8 +500,6 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
  */
 void SensorWorker::initialize(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
@@ -569,8 +529,6 @@ void SensorWorker::initialize(){
  * \brief SensorWorker::motorState
  */
 void SensorWorker::motorState(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -602,8 +560,6 @@ void SensorWorker::motorState(){
  */
 void SensorWorker::home(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
@@ -634,8 +590,6 @@ void SensorWorker::home(){
  */
 void SensorWorker::toggleSight(){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
@@ -665,8 +619,6 @@ void SensorWorker::toggleSight(){
  * \brief SensorWorker::compensation
  */
 void SensorWorker::compensation(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -699,8 +651,6 @@ void SensorWorker::compensation(){
  */
 void SensorWorker::selfDefinedAction(QString action){
 
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
@@ -731,8 +681,6 @@ void SensorWorker::selfDefinedAction(QString action){
  * \return
  */
 ReadingTypes SensorWorker::getStreamFormat(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
     return this->streamFormat;
 }
 
@@ -741,8 +689,6 @@ ReadingTypes SensorWorker::getStreamFormat(){
  * \param streamFormat
  */
 void SensorWorker::setStreamFormat(ReadingTypes streamFormat){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
     this->streamFormat = streamFormat;
 }
 
@@ -750,8 +696,6 @@ void SensorWorker::setStreamFormat(ReadingTypes streamFormat){
  * \brief SensorWorker::startReadingStream
  */
 void SensorWorker::startReadingStream(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -776,8 +720,6 @@ void SensorWorker::startReadingStream(){
  * \brief SensorWorker::stopReadingStream
  */
 void SensorWorker::stopReadingStream(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
     this->isReadingStreamStarted = false;
 }
 
@@ -785,8 +727,6 @@ void SensorWorker::stopReadingStream(){
  * \brief SensorWorker::startConnectionMonitoringStream
  */
 void SensorWorker::startConnectionMonitoringStream(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -810,8 +750,6 @@ void SensorWorker::startConnectionMonitoringStream(){
  * \brief SensorWorker::stopConnectionMonitoringStream
  */
 void SensorWorker::stopConnectionMonitoringStream(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
     this->isConnectionStreamStarted = false;
 }
 
@@ -819,8 +757,6 @@ void SensorWorker::stopConnectionMonitoringStream(){
  * \brief SensorWorker::startStatusMonitoringStream
  */
 void SensorWorker::startStatusMonitoringStream(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check sensor
     if(this->sensor.isNull()){
@@ -844,8 +780,6 @@ void SensorWorker::startStatusMonitoringStream(){
  * \brief SensorWorker::stopStatusMonitoringStream
  */
 void SensorWorker::stopStatusMonitoringStream(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
     this->isStatusStreamStarted = false;
 }
 
@@ -853,8 +787,6 @@ void SensorWorker::stopStatusMonitoringStream(){
  * \brief SensorWorker::streamReading
  */
 void SensorWorker::streamReading(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check streaming status
     if(!this->isReadingStreamStarted){
@@ -880,8 +812,6 @@ void SensorWorker::streamReading(){
  * \brief SensorWorker::monitorConnectionStatus
  */
 void SensorWorker::monitorConnectionStatus(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check streaming status
     if(!this->isConnectionStreamStarted){
@@ -913,8 +843,6 @@ void SensorWorker::monitorConnectionStatus(){
  * \brief SensorWorker::streamStatus
  */
 void SensorWorker::streamStatus(){
-
-    qDebug() << Q_FUNC_INFO << QThread::currentThreadId();
 
     //check streaming status
     if(!this->isStatusStreamStarted){

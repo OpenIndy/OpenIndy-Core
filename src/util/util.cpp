@@ -48,6 +48,9 @@ QMap<ActualNominalFilter, QString> actualNominalFilterMap;
 
 QString undefined = "";
 
+QMap<MaterialsTempComp, QString> materialStringsMap;
+QMap<MaterialsTempComp, double> materialValuesMap;
+
 bool isInit = false;
 
 void init(){
@@ -71,6 +74,8 @@ void init(){
     messageTypesMap.clear();
     geometryParametersMap.clear();
     actualNominalFilterMap.clear();
+    materialStringsMap.clear();
+    materialValuesMap.clear();
 
     //fill element map
     elementTypesMap.insert(eCircleElement, "circle");
@@ -259,6 +264,7 @@ void init(){
     featureDisplayAttributesMap.insert(eFeatureDisplayIsSolved, "solved");
     featureDisplayAttributesMap.insert(eFeatureDisplayIsUpdated, "updated");
     featureDisplayAttributesMap.insert(eFeatureDisplayFunctions, "functions");
+    featureDisplayAttributesMap.insert(eFeatureDisplayIsCommon, "common");
     featureDisplayAttributesMap.insert(eFeatureDisplayUsedFor, "used for");
     featureDisplayAttributesMap.insert(eFeatureDisplayPreviouslyNeeded, "previously needed");
     featureDisplayAttributesMap.insert(eFeatureDisplayStDev, "stdev");
@@ -295,9 +301,15 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayX, "x");
     observationDisplayAttributesMap.insert(eObservationDisplayY, "y");
     observationDisplayAttributesMap.insert(eObservationDisplayZ, "z");
+    observationDisplayAttributesMap.insert(eObservationDisplayI, "i");
+    observationDisplayAttributesMap.insert(eObservationDisplayJ, "j");
+    observationDisplayAttributesMap.insert(eObservationDisplayK, "k");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaX, "sigma x");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaY, "sigma y");
     observationDisplayAttributesMap.insert(eObservationDisplaySigmaZ, "sigma z");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaI, "sigma i");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaJ, "sigma j");
+    observationDisplayAttributesMap.insert(eObservationDisplaySigmaK, "sigma k");
     observationDisplayAttributesMap.insert(eObservationDisplayIsValid, "valid");
     observationDisplayAttributesMap.insert(eObservationDisplayIsSolved, "solved");
     observationDisplayAttributesMap.insert(eObservationDisplayVX, "vx");
@@ -318,9 +330,9 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplayX, "x");
     readingDisplayAttributesMap.insert(eReadingDisplayY, "y");
     readingDisplayAttributesMap.insert(eReadingDisplayZ, "z");
-    readingDisplayAttributesMap.insert(eReadingDisplayRX, "RX");
-    readingDisplayAttributesMap.insert(eReadingDisplayRY, "RY");
-    readingDisplayAttributesMap.insert(eReadingDisplayRZ, "RZ");
+    readingDisplayAttributesMap.insert(eReadingDisplayI, "i");
+    readingDisplayAttributesMap.insert(eReadingDisplayJ, "j");
+    readingDisplayAttributesMap.insert(eReadingDisplayK, "k");
     readingDisplayAttributesMap.insert(eReadingDisplayTemperature, "temperature");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaAzimuth, "sigma azimuth");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaZenith, "sigma zenith");
@@ -328,9 +340,9 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaX, "sigma x");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaY, "sigma y");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaZ, "sigma z");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaRX, "sigma RX");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaRY, "sigma RY");
-    readingDisplayAttributesMap.insert(eReadingDisplaySigmaRZ, "sigma RZ");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaI, "sigma i");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaJ, "sigma j");
+    readingDisplayAttributesMap.insert(eReadingDisplaySigmaK, "sigma k");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaTemperature, "sigma temperature");
 
     //fill trafo param display attributes map
@@ -364,7 +376,7 @@ void init(){
     for(int i = 0; i < 10; i++){ //general feature attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 100; i < 102; i++){ //geometry specific attributes
+    for(int i = 100; i < 103; i++){ //geometry specific attributes
         featureDisplayAttributes.append(i);
     }
     for(int i = 200; i < 220; i++){ //unknown geometry parameters
@@ -464,6 +476,31 @@ void init(){
     actualNominalFilterMap.insert(eFilterActualNominal, "All Features");
     actualNominalFilterMap.insert(eFilterActual, "Actuals");
     actualNominalFilterMap.insert(eFilterNominal, "Nominals");
+
+    //fill material maps
+    materialStringsMap.insert(eMaterialSteel, "steel");
+    materialStringsMap.insert(eMaterialAluminum, "aluminum");
+    materialStringsMap.insert(eMaterialPlumb, "plumb");
+    materialStringsMap.insert(eMaterialIron, "iron");
+    materialStringsMap.insert(eMaterialGrayCastIron, "gray cast iron");
+    materialStringsMap.insert(eMaterialCopper, "copper");
+    materialStringsMap.insert(eMaterialBrass, "brass");
+    materialStringsMap.insert(eMaterialZinc, "zinc");
+    materialStringsMap.insert(eMaterialPlatinum, "platinum");
+    materialStringsMap.insert(eMaterialConcrete, "concrete");
+    materialStringsMap.insert(eMaterialReinforcedConcrete, "reinforced concrete");
+
+    materialValuesMap.insert(eMaterialSteel, 0.000016);
+    materialValuesMap.insert(eMaterialAluminum, 0.000024);
+    materialValuesMap.insert(eMaterialPlumb, 0.000030);
+    materialValuesMap.insert(eMaterialIron, 0.000012);
+    materialValuesMap.insert(eMaterialGrayCastIron, 0.000009);
+    materialValuesMap.insert(eMaterialCopper, 0.000017);
+    materialValuesMap.insert(eMaterialBrass, 0.000018);
+    materialValuesMap.insert(eMaterialZinc, 0.000027);
+    materialValuesMap.insert(eMaterialPlatinum, 0.000009);
+    materialValuesMap.insert(eMaterialConcrete, 0.000012);
+    materialValuesMap.insert(eMaterialReinforcedConcrete, 0.000013);
 
     isInit = true;
 
@@ -1009,7 +1046,7 @@ const QList<ReadingDisplayAttributes> &getReadingDisplayAttributes(){
  * \return
  */
 bool getIsFeatureDisplayAttribute(const int &attr){
-    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 102) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
+    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 103) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
         return true;
     }
     return false;
@@ -1122,17 +1159,17 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
             return false;
         }
         break;
-    case eReadingDisplayRX:
+    case eReadingDisplayI:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplayRY:
+    case eReadingDisplayJ:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplayRZ:
+    case eReadingDisplayK:
         if(type != eLevelReading){
             return false;
         }
@@ -1172,17 +1209,17 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
             return false;
         }
         break;
-    case eReadingDisplaySigmaRX:
+    case eReadingDisplaySigmaI:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplaySigmaRY:
+    case eReadingDisplaySigmaJ:
         if(type != eLevelReading){
             return false;
         }
         break;
-    case eReadingDisplaySigmaRZ:
+    case eReadingDisplaySigmaK:
         if(type != eLevelReading){
             return false;
         }
@@ -1956,6 +1993,108 @@ ActualNominalFilter getActualNominalFilterEnum(const QString &name){
     //get the corresponding actual nominal filter enum value
     return internal::actualNominalFilterMap.key(name, eFilterActualNominal);
 
+}
+
+/*!
+ * \brief getMaterialName
+ * \param material
+ * \return
+ */
+const QString &getMaterialName(const MaterialsTempComp &material)
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding actual nominal filter name
+    if(internal::materialStringsMap.contains(material)){
+        return internal::materialStringsMap[material];
+    }
+    return internal::undefined;
+}
+
+/*!
+ * \brief getMaterialValue
+ * \param material
+ * \return
+ */
+const double &getMaterialValue(const MaterialsTempComp &material)
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    //get the corresponding actual nominal filter name
+    if(internal::materialValuesMap.contains(material)){
+        return internal::materialValuesMap[material];
+    }
+    return 0.0;
+}
+
+/*!
+ * \brief getMaterials
+ * \return
+ */
+QList<QString> getMaterials()
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    return internal::materialStringsMap.values();
+}
+
+/*!
+ * \brief getTemperatureExpansion
+ * \param material
+ * \param actual
+ * \param nominal
+ * \return
+ */
+const double getTemperatureExpansion(const QString material, double actual, double nominal)
+{
+    //fill helper maps if not yet done
+    if(!internal::isInit){
+        internal::init();
+    }
+
+    double exp = internal::materialValuesMap.value(internal::materialStringsMap.key(material));
+    double expansion = (actual - nominal) * exp;
+
+    return 1.0 / (1.0+expansion);
+}
+
+/*!
+ * \brief getDropDownMenuSize
+ * \param list
+ * \param menuSize
+ * \return
+ */
+const int &getDropDownMenuSize(QStringList list, const int menuSize)
+{
+    //get largest string in list
+    QString largestString = "";
+    foreach (const QString &filter, list) {
+        if(filter.length() > largestString.length()){
+            largestString = filter;
+        }
+    }
+
+    //calculate width of popup dependend of list
+    QFont font;
+    QFontMetrics fm(font);
+    int width = fm.width(largestString);
+
+    //get largest width
+    if((width + (0.1 * width)) > menuSize){
+        return (width + (0.1 * width));
+    }else{
+        return menuSize;
+    }
+    return menuSize;
 }
 
 }

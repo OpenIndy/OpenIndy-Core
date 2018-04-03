@@ -5,6 +5,7 @@
 #include "geometry.h"
 #include "trafoparam.h"
 #include "oijob.h"
+#include "bundleadjustment.h"
 
 using namespace oi;
 using namespace oi::math;
@@ -13,7 +14,21 @@ using namespace oi::math;
  * \brief CoordinateSystem::CoordinateSystem
  * \param parent
  */
-CoordinateSystem::CoordinateSystem(QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isStationSystem(false){
+CoordinateSystem::CoordinateSystem(QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isStationSystem(false), isBundleSystem(false){
+
+    //set up feature wrapper
+    if(!this->selfFeature.isNull()){
+        this->selfFeature->setCoordinateSystem(this);
+    }
+
+}
+
+/*!
+ * \brief CoordinateSystem::CoordinateSystem
+ * \param isBundleSystem
+ * \param parent
+ */
+CoordinateSystem::CoordinateSystem(bool isBundleSystem, QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isStationSystem(false), isBundleSystem(isBundleSystem){
 
     //set up feature wrapper
     if(!this->selfFeature.isNull()){
@@ -27,7 +42,7 @@ CoordinateSystem::CoordinateSystem(QObject *parent) : Feature(parent), isActiveC
  * \param station
  * \param parent
  */
-CoordinateSystem::CoordinateSystem(const QPointer<Station> &station, QObject *parent) : Feature(parent), isActiveCoordinateSystem(false){
+CoordinateSystem::CoordinateSystem(const QPointer<Station> &station, QObject *parent) : Feature(parent), isActiveCoordinateSystem(false), isBundleSystem(false){
 
     //set up feature wrapper
     if(!this->selfFeature.isNull()){
@@ -62,7 +77,7 @@ CoordinateSystem::CoordinateSystem(const CoordinateSystem &copy, QObject *parent
     this->yAxis = copy.yAxis;
     this->zAxis = copy.zAxis;
     this->isStationSystem = copy.isStationSystem;
-    //this->station = copy.station;
+    this->isBundleSystem = copy.isBundleSystem;
     this->isActiveCoordinateSystem = copy.isActiveCoordinateSystem;
     this->expansionOrigin = copy.expansionOrigin;
 
@@ -88,7 +103,7 @@ CoordinateSystem &CoordinateSystem::operator=(const CoordinateSystem &copy){
     this->yAxis = copy.yAxis;
     this->zAxis = copy.zAxis;
     this->isStationSystem = copy.isStationSystem;
-    //this->station = copy.station;
+    this->isBundleSystem = copy.isBundleSystem;
     this->isActiveCoordinateSystem = copy.isActiveCoordinateSystem;
     this->expansionOrigin = copy.expansionOrigin;
 
@@ -117,12 +132,17 @@ CoordinateSystem::~CoordinateSystem(){
 
     //delete nominals of this coordinate system
     foreach(const QPointer<FeatureWrapper> &nominal, this->nominalsList){
-        if(nominal.isNull()){
-            if(nominal->getFeature().isNull()){
+        if(!nominal.isNull()){
+            if(!nominal->getFeature().isNull()){
                 delete nominal->getFeature();
             }
             delete nominal;
         }
+    }
+
+    //delete bundle adjustment
+    if(!this->bundlePlugin.isNull()){
+        delete this->bundlePlugin;
     }
 
 }
@@ -160,6 +180,14 @@ const bool &CoordinateSystem::getIsStationSystem() const{
  */
 const QPointer<Station> &CoordinateSystem::getStation() const{
     return this->station;
+}
+
+/*!
+ * \brief CoordinateSystem::getIsBundleSystem
+ * \return
+ */
+const bool &CoordinateSystem::getIsBundleSystem() const{
+    return this->isBundleSystem;
 }
 
 /*!
@@ -206,6 +234,19 @@ void CoordinateSystem::setCoordinateSystem(const Position &origin, const Directi
     this->xAxis = xAxis;
     this->yAxis = yAxis;
     this->zAxis = zAxis;
+}
+
+/*!
+ * \brief CoordinateSystem::setOrigin
+ * \param origin
+ */
+void CoordinateSystem::setOrigin(const Position origin)
+{
+    this->origin.setVector(origin.getVector());
+
+    if(!this->station.isNull()){
+        this->station->setPosition(origin);
+    }
 }
 
 /*!
@@ -489,6 +530,55 @@ bool CoordinateSystem::removeNominal(const int &featureId){
 }
 
 /*!
+ * \brief CoordinateSystem::getBundleTemplate
+ * \return
+ */
+const QJsonObject &CoordinateSystem::getBundleTemplate() const{
+    return this->bundleTemplate;
+}
+
+/*!
+ * \brief CoordinateSystem::setBundleTemplate
+ * \param bundleTemplate
+ */
+void CoordinateSystem::setBundleTemplate(const QJsonObject &bundleTemplate){
+    this->bundleTemplate = bundleTemplate;
+}
+
+/*!
+ * \brief CoordinateSystem::getBundlePlugin
+ * \return
+ */
+const QPointer<BundleAdjustment> &CoordinateSystem::getBundlePlugin() const{
+    return this->bundlePlugin;
+}
+
+/*!
+ * \brief CoordinateSystem::setBundlePlugin
+ * \param bundle
+ */
+void CoordinateSystem::setBundlePlugin(const QPointer<BundleAdjustment> &bundle){
+
+    //check if the system is a bundle system
+    if(!this->isBundleSystem){
+        return;
+    }
+
+    //check bundle plugin
+    if(bundle.isNull()){
+        return;
+    }
+
+    //pass coordinate system to bundle plugin
+    bundle->setBundleSystem(this);
+
+    //set bundle
+    this->bundlePlugin = bundle;
+    emit this->bundlePluginChanged(this->id);
+
+}
+
+/*!
  * \brief CoordinateSystem::recalc
  */
 void CoordinateSystem::recalc(){
@@ -512,6 +602,7 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
 
     //add coordinate system attributes
     coordinateSystem.setAttribute("activeSystem", this->getIsActiveCoordinateSystem());
+    coordinateSystem.setAttribute("isBundleSystem", this->getIsBundleSystem());
 
     //add system definition
     QDomElement position = xmlDoc.createElement("coordinates");
@@ -581,8 +672,43 @@ QDomElement CoordinateSystem::toOpenIndyXML(QDomDocument &xmlDoc){
     expansionOrigin.setAttribute("z", this->expansionOrigin.getVector().getAt(2));
     coordinateSystem.appendChild(expansionOrigin);
 
-    return coordinateSystem;
+    //add bundleTemplate
+    //temp variables
+    QString tmpName = this->bundleTemplate["name"].toString();
+    QString tmpLevelStation = this->bundleTemplate["levelStation"].toString();
+    QString tmpMaxIterations = this->bundleTemplate["maxIterations"].toString();
 
+    //add bundleTemplate
+    QDomElement bundleTmp = xmlDoc.createElement("bundleTemplate");
+    bundleTmp.setAttribute("name", tmpName);
+    bundleTmp.setAttribute("levelStation", tmpLevelStation);
+    bundleTmp.setAttribute("maxIterations", tmpMaxIterations);
+
+    QDomElement parametersTmp = xmlDoc.createElement("parameters");
+    QJsonArray tmpArray = this->bundleTemplate["parameters"].toArray();
+    for(int i=0; i<tmpArray.size();i++){
+        parametersTmp.setAttribute(tmpArray.at(i).toString(),"");
+    }
+    bundleTmp.appendChild(parametersTmp);
+
+    QDomElement pluginTmp = xmlDoc.createElement("plugin");
+    QJsonObject tmpPlugin = this->bundleTemplate["plugin"].toObject();
+
+    if(tmpPlugin.contains("name") && tmpPlugin.contains("pluginName")){
+        pluginTmp.setAttribute("name", tmpPlugin.value("name").toString());
+        pluginTmp.setAttribute("pluginName", tmpPlugin.value("pluginName").toString());
+    }
+    bundleTmp.appendChild(pluginTmp);
+
+    coordinateSystem.appendChild(bundleTmp);
+
+    //add bundle adjustment
+    if(!this->bundlePlugin.isNull()){
+        QDomElement bundle = this->bundlePlugin->toOpenIndyXML(xmlDoc);
+        coordinateSystem.appendChild(bundle);
+    }
+
+    return coordinateSystem;
 }
 
 /*!
@@ -603,6 +729,9 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
 
         //set coordinate system attributes
         this->isActiveCoordinateSystem = xmlElem.attribute("activeSystem").toInt();
+
+        //set bundle value for coordinate system and trafo params
+        this->isBundleSystem = xmlElem.attribute("isBundleSystem").toInt();
 
         //set coordinate system definition
         QDomElement position = xmlElem.firstChildElement("coordinates");
@@ -646,6 +775,32 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
                                             expansionOrigin.attribute("z").toDouble());
         }
 
+        //set bundleTemplate
+        QDomElement eBundleTemplate =xmlElem.firstChildElement("bundleTemplate");
+        if(!eBundleTemplate.isNull()){
+            QJsonObject objBundleTemp;
+            QJsonValue name = eBundleTemplate.attribute("name");
+            objBundleTemp.insert("name", name);
+            QJsonValue levelStation = eBundleTemplate.attribute("levelStation");
+            objBundleTemp.insert("levelStation", levelStation);
+            QJsonValue maxIterations = eBundleTemplate.attribute("maxIterations");
+            objBundleTemp.insert("maxIterations", maxIterations);
+
+            QJsonValue parameters = eBundleTemplate.attribute("parameters");
+            objBundleTemp.insert("parameters", parameters);
+
+            QDomElement eplugin = eBundleTemplate.firstChildElement("plugin");
+            QJsonObject objBundleTmpPLugin;
+            objBundleTmpPLugin.insert("name", eplugin.attribute("name"));
+            objBundleTmpPLugin.insert("pluginName", eplugin.attribute("pluginName"));
+            //QJsonValue plugin(obj2);
+            objBundleTemp.insert("plugin", objBundleTmpPLugin);
+
+            this->bundleTemplate = objBundleTemp;
+        }
+
+        //load bundle adjustment
+
     }
 
     return result;
@@ -660,7 +815,16 @@ bool CoordinateSystem::fromOpenIndyXML(QDomElement &xmlElem){
  * \return
  */
 QString CoordinateSystem::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    return QString::number(convertFromDefault(this->origin.getVector().getAt(0), type), 'f', digits);
+
+    if(this->getIsActiveCoordinateSystem()){
+        return QString::number(convertFromDefault(this->origin.getVector().getAt(0), type), 'f', digits);
+    }
+    foreach (QPointer<TrafoParam> trafoP, this->trafoParams) {
+        if(trafoP->getIsUsed()){
+            return QString::number(convertFromDefault(this->origin.getVector().getAt(0), type), 'f', digits);
+        }
+    }
+    return "";
 }
 
 /*!
@@ -671,7 +835,16 @@ QString CoordinateSystem::getDisplayX(const UnitType &type, const int &digits, c
  * \return
  */
 QString CoordinateSystem::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    return QString::number(convertFromDefault(this->origin.getVector().getAt(1), type), 'f', digits);
+
+    if(this->getIsActiveCoordinateSystem()){
+        return QString::number(convertFromDefault(this->origin.getVector().getAt(1), type), 'f', digits);
+    }
+    foreach (QPointer<TrafoParam> trafoP, this->trafoParams) {
+        if(trafoP->getIsUsed()){
+            return QString::number(convertFromDefault(this->origin.getVector().getAt(1), type), 'f', digits);
+        }
+    }
+    return "";
 }
 
 /*!
@@ -682,7 +855,16 @@ QString CoordinateSystem::getDisplayY(const UnitType &type, const int &digits, c
  * \return
  */
 QString CoordinateSystem::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    return QString::number(convertFromDefault(this->origin.getVector().getAt(2), type), 'f', digits);
+
+    if(this->getIsActiveCoordinateSystem()){
+        return QString::number(convertFromDefault(this->origin.getVector().getAt(2), type), 'f', digits);
+    }
+    foreach (QPointer<TrafoParam> trafoP, this->trafoParams) {
+        if(trafoP->getIsUsed()){
+            return QString::number(convertFromDefault(this->origin.getVector().getAt(2), type), 'f', digits);
+        }
+    }
+    return "";
 }
 
 /*!

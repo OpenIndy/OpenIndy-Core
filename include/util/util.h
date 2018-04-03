@@ -4,6 +4,8 @@
 #include <QString>
 #include <QStringList>
 #include <QMap>
+#include <QFont>
+#include <QFontMetrics>
 
 #include "types.h"
 
@@ -153,6 +155,13 @@ TrafoParamParameters OI_CORE_EXPORT getTrafoParamParameterEnum(const QString &na
 QList<ActualNominalFilter> OI_CORE_EXPORT getAvailableActualNominalFilters();
 const QString OI_CORE_EXPORT &getActualNominalFilterName(const ActualNominalFilter &type);
 ActualNominalFilter OI_CORE_EXPORT getActualNominalFilterEnum(const QString &name);
+
+const QString OI_CORE_EXPORT &getMaterialName(const MaterialsTempComp &material);
+const double OI_CORE_EXPORT &getMaterialValue(const MaterialsTempComp &material);
+const double OI_CORE_EXPORT getTemperatureExpansion(const QString material, double actual, double nominal);
+QList<QString> OI_CORE_EXPORT getMaterials();
+
+const int OI_CORE_EXPORT &getDropDownMenuSize(QStringList list, const int menuSize);
 
 }
 

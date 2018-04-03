@@ -155,6 +155,11 @@ const QPointer<Point> &Station::getPosition() const{
     return this->position;
 }
 
+void Station::setPosition(const Position pos)
+{
+    this->position->setPoint(pos);
+}
+
 /*!
  * \brief Station::getCoordinateSystem
  * \return
@@ -280,6 +285,60 @@ const QList<Sensor> &Station::getUsedSensors() const{
     }
 
     return this->sensorControl->getUsedSensors();
+
+}
+
+/*!
+ * \brief Station::getTargetGeometries
+ * \return
+ */
+QList<QPointer<Geometry> > Station::getTargetGeometries() const{
+
+    QList<QPointer<Geometry> > geometries;
+
+    //get a list of all readings
+    QList<QPointer<Reading> > readings;
+    foreach(const QPointer<Reading> &reading, this->cartesianReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->directionReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->distanceReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->polarReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->levelReadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->temperatureRadings){
+        readings.append(reading);
+    }
+    foreach(const QPointer<Reading> &reading, this->undefinedReadings){
+        readings.append(reading);
+    }
+
+    //get target geometries
+    foreach(const QPointer<Reading> &reading, readings){
+
+        //check reading
+        if(reading.isNull() || reading->getObservation().isNull()){
+            continue;
+        }
+
+        //add target geometries of the observation
+        const QList<QPointer<Geometry> > &targetGeometries = reading->getObservation()->getTargetGeometries();
+        foreach(const QPointer<Geometry> &geom, targetGeometries){
+            if(!geom.isNull() && !geometries.contains(geom)){
+                geometries.append(geom);
+            }
+        }
+
+    }
+
+    return geometries;
 
 }
 
@@ -574,7 +633,7 @@ bool Station::fromOpenIndyXML(QDomElement &xmlElem){
  * \return
  */
 QString Station::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         return this->position->getDisplayX(type, digits, showDiff);
     }
     return QString("-/-");
@@ -588,7 +647,7 @@ QString Station::getDisplayX(const UnitType &type, const int &digits, const bool
  * \return
  */
 QString Station::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         return this->position->getDisplayY(type, digits, showDiff);
     }
     return QString("-/-");
@@ -602,7 +661,7 @@ QString Station::getDisplayY(const UnitType &type, const int &digits, const bool
  * \return
  */
 QString Station::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->position.isNull()){
+    if(!this->position.isNull()){
         return this->position->getDisplayZ(type, digits, showDiff);
     }
     return QString("-/-");
@@ -721,6 +780,7 @@ void Station::connectSensorControl(){
     QObject::connect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings, Qt::AutoConnection);
     QObject::connect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished, Qt::AutoConnection);
+    QObject::connect(this->sensorControl.data(), &SensorControl::measurementDone, this, &Station::measurementDone, Qt::QueuedConnection);
 
     //connect sensor streaming results
     QObject::connect(this->sensorControl.data(), &SensorControl::realTimeReading, this, &Station::realTimeReading, Qt::AutoConnection);
@@ -772,6 +832,7 @@ void Station::disconnectSensorControl(){
     QObject::disconnect(this->sensorControl.data(), &SensorControl::commandFinished, this, &Station::commandFinished);
     QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::addReadings);
     QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementFinished, this, &Station::measurementFinished);
+    QObject::disconnect(this->sensorControl.data(), &SensorControl::measurementDone, this, &Station::measurementDone);
 
     //disconnect sensor streaming results
     QObject::disconnect(this->sensorControl.data(), &SensorControl::realTimeReading, this, &Station::realTimeReading);

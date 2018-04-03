@@ -47,6 +47,20 @@ QList<QPointer<CoordinateSystem> > FeatureContainer::getStationSystemsList() con
 }
 
 /*!
+ * \brief FeatureContainer::getBundleSystemList
+ * \return
+ */
+QList<QPointer<CoordinateSystem> > FeatureContainer::getBundleSystemList() const{
+    QList<QPointer<CoordinateSystem> > bundleSystems;
+    foreach(const QPointer<CoordinateSystem> &system, this->coordSystems){
+        if(!system.isNull() && system->getIsBundleSystem()){
+            bundleSystems.append(system);
+        }
+    }
+    return bundleSystems;
+}
+
+/*!
  * \brief FeatureContainer::getStationsList
  * \return
  */

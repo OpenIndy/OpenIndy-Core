@@ -1,5 +1,5 @@
 #include "oijob.h"
-
+#include "bundleadjustment.h"
 using namespace oi;
 
 /*!
@@ -247,6 +247,14 @@ const QList<QPointer<CoordinateSystem> > &OiJob::getCoordinateSystemsList() cons
  */
 QList<QPointer<CoordinateSystem> > OiJob::getStationSystemsList() const{
     return this->featureContainer.getStationSystemsList();
+}
+
+/*!
+ * \brief OiJob::getBundleSystemList
+ * \return
+ */
+QList<QPointer<CoordinateSystem> > OiJob::getBundleSystemList() const{
+    return this->featureContainer.getBundleSystemList();
 }
 
 /*!
@@ -570,6 +578,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             feature->getFeature()->name = name;
             feature->getFeature()->group = fAttr.group;
             feature->getGeometry()->isNominal = false;
+            feature->getGeometry()->isCommon = fAttr.isCommon;
 
             //search corresponding nominal
             QList<QPointer<FeatureWrapper> > equalNameFeatures = this->featureContainer.getFeaturesByName(name);
@@ -611,6 +620,24 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
                 feature->getTrafoParam()->to = destSystem;
                 startSystem->trafoParams.append(feature->getTrafoParam());
                 destSystem->trafoParams.append(feature->getTrafoParam());
+
+                //check if one system is station and one system is coordinate system, then set datum to true
+                if((startSystem->getIsStationSystem() || startSystem->getIsBundleSystem()) && (!destSystem->getIsBundleSystem()) && !destSystem->getIsStationSystem()){
+                    feature->getTrafoParam()->setIsDatumTrafo(true);
+                }else if((destSystem->getIsStationSystem() || destSystem->getIsBundleSystem()) && (!startSystem->getIsBundleSystem() && !startSystem->getIsStationSystem())){
+                    feature->getTrafoParam()->setIsDatumTrafo(true);
+                }else{
+                    feature->getTrafoParam()->setIsDatumTrafo(false);
+                }
+
+                //set used-state to "use" as default
+                feature->getTrafoParam()->setIsUsed(true);
+
+            }
+
+            //if type of feature is a coordinate system
+            if(fAttr.typeOfFeature == eCoordinateSystemFeature){
+                feature->getCoordinateSystem()->isBundleSystem = fAttr.isBundleSystem;
             }
 
             //add and connect feature
@@ -726,6 +753,8 @@ bool OiJob::removeFeature(const int &featureId){
 
     emit this->featureSetChanged();
 
+    emit this->recalcFeatureSet();
+
     return success;
 
 }
@@ -760,6 +789,8 @@ bool OiJob::removeFeature(const QPointer<FeatureWrapper> &feature){
     bool success = this->featureContainer.removeFeature(feature->getFeature()->getId());
 
     emit this->featureSetChanged();
+
+    emit this->recalcFeatureSet();
 
     return success;
 
@@ -802,6 +833,8 @@ bool OiJob::removeFeatures(const QSet<int> &featureIds){
     emit this->activeGroupChanged();
     emit this->featureSetChanged();
 
+    emit this->recalcFeatureSet();
+
     return success;
 
 }
@@ -841,6 +874,8 @@ bool OiJob::removeFeatures(const QList<QPointer<FeatureWrapper> > &features){
 
     emit this->activeGroupChanged();
     emit this->featureSetChanged();
+
+    emit this->recalcFeatureSet();
 
     return success;
 
@@ -2055,20 +2090,29 @@ void OiJob::setTrafoParamIsUsed(const int &featureId){
 }
 
 /*!
+ * \brief OiJob::setTrafoParamIsDatum
+ * \param featureId
+ */
+void OiJob::setTrafoParamIsDatum(const int &featureId)
+{
+    emit this->trafoParamIsDatumChanged(featureId);
+}
+
+/*!
  * \brief OiJob::setTrafoParamValidTime
  * \param featureId
  */
-void OiJob::setTrafoParamValidTime(const int &featureId){
+/*void OiJob::setTrafoParamValidTime(const int &featureId){
     emit this->trafoParamValidTimeChanged(featureId);
-}
+}*/
 
 /*!
  * \brief OiJob::setTrafoParamIsMovement
  * \param featureId
  */
-void OiJob::setTrafoParamIsMovement(const int &featureId){
+/*void OiJob::setTrafoParamIsMovement(const int &featureId){
     emit this->trafoParamIsMovementChanged(featureId);
-}
+}*/
 
 /*!
  * \brief OiJob::elementAboutToBeDeleted
@@ -2079,12 +2123,9 @@ void OiJob::setTrafoParamIsMovement(const int &featureId){
  */
 void OiJob::elementAboutToBeDeleted(const int &elementId, const QString &name, const QString &group, const FeatureTypes &type){
 
-    //disconnect feature
     QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(elementId);
     this->disconnectFeature(feature);
-
     this->featureContainer.checkAndClean(elementId, name, group, type);
-
 }
 
 /*!
@@ -2150,10 +2191,12 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setTrafoParamSystems, Qt::AutoConnection);
         QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isUsedChanged,
                          this, &OiJob::setTrafoParamIsUsed, Qt::AutoConnection);
-        QObject::connect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
-                         this, &OiJob::setTrafoParamValidTime, Qt::AutoConnection);
-        QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
-                         this, &OiJob::setTrafoParamIsMovement, Qt::AutoConnection);
+        /*QObject::connect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
+                         this, &OiJob::setTrafoParamValidTime, Qt::AutoConnection);*/
+        /*QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
+                         this, &OiJob::setTrafoParamIsMovement, Qt::AutoConnection);*/
+        QObject::connect(feature->getTrafoParam().data(), &TrafoParam::isDatumTrafoChanged,
+                         this, &OiJob::setTrafoParamIsDatum, Qt::AutoConnection);
     }
 
     //station connects
@@ -2247,10 +2290,12 @@ void OiJob::disconnectFeature(const QPointer<FeatureWrapper> &feature){
                          this, &OiJob::setTrafoParamSystems);
         QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isUsedChanged,
                          this, &OiJob::setTrafoParamIsUsed);
-        QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
-                         this, &OiJob::setTrafoParamValidTime);
-        QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
-                         this, &OiJob::setTrafoParamIsMovement);
+        /*QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::validTimeChanged,
+                         this, &OiJob::setTrafoParamValidTime);*/
+        /*QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isMovementChanged,
+                         this, &OiJob::setTrafoParamIsMovement);*/
+        QObject::disconnect(feature->getTrafoParam().data(), &TrafoParam::isDatumTrafoChanged,
+                         this, &OiJob::setTrafoParamIsDatum);
     }
 
     //station connects
@@ -3016,6 +3061,12 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
                 feature->getStation()->getPosition()->job = this;
             }
 
+        }else if(!feature->getCoordinateSystem().isNull()){
+            if(feature->getCoordinateSystem()->getIsBundleSystem()){
+                if(!feature->getCoordinateSystem()->getBundlePlugin().isNull()){
+                    feature->getCoordinateSystem()->getBundlePlugin()->setCurrentJob(this);
+                }
+            }
         }
 
         //connect the feature's signals to slots in OiJob

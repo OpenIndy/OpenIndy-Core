@@ -19,8 +19,6 @@ TrafoParam::TrafoParam(QObject *parent) : Feature(parent), scale(3), rotation(3)
 
     //default values for trafo param attributes
     this->isUsed = false;
-    this->validTime = QDateTime::currentDateTime();
-    this->isMovement = false;
     this->isDatumTrafo = false;
 
     //default values for transformation parameters
@@ -47,11 +45,7 @@ TrafoParam::TrafoParam(const TrafoParam &copy, QObject *parent) : Feature(copy, 
     }
 
     //copy attributes
-    //this->from = copy.from;
-    //this->to = copy.to;
     this->isUsed = copy.isUsed;
-    this->validTime = copy.validTime;
-    this->isMovement = copy.isMovement;
     this->isDatumTrafo = copy.isDatumTrafo;
 
     //copy transformation parameters
@@ -75,11 +69,7 @@ TrafoParam &TrafoParam::operator=(const TrafoParam &copy){
     }
 
     //copy attributes
-    //this->from = copy.from;
-    //this->to = copy.to;
     this->isUsed = copy.isUsed;
-    this->validTime = copy.validTime;
-    this->isMovement = copy.isMovement;
     this->isDatumTrafo = copy.isDatumTrafo;
 
     //copy transformation parameters
@@ -123,8 +113,12 @@ const bool &TrafoParam::getIsUsed() const{
  */
 void TrafoParam::setIsUsed(const bool &isUsed){
     if(this->isUsed != isUsed){
+
+        //set used state
         this->isUsed = isUsed;
+
         emit this->isUsedChanged(this->id);
+
     }
 }
 
@@ -157,7 +151,7 @@ bool TrafoParam::setCoordinateSystems(const QPointer<CoordinateSystem> &from, co
         return false;
     }
 
-    if(!from.isNull() && !to.isNull() && from != to){
+    if(!from.isNull() && !to.isNull()){
 
         //check if to and from are in the same job
         if(!this->job.isNull()){
@@ -186,41 +180,18 @@ bool TrafoParam::setCoordinateSystems(const QPointer<CoordinateSystem> &from, co
 }
 
 /*!
- * \brief TrafoParam::getIsMovement
+ * \brief TrafoParam::getIsBundle
  * \return
  */
-const bool &TrafoParam::getIsMovement() const{
-    return this->isMovement;
-}
+const bool &TrafoParam::getIsBundle() const{
 
-/*!
- * \brief TrafoParam::setIsMovement
- * \param isMovement
- */
-void TrafoParam::setIsMovement(const bool &isMovement){
-    if(this->isMovement != isMovement){
-        this->isMovement = isMovement;
-        emit this->isMovementChanged(this->id);
+    if(!this->from.isNull() && !this->to.isNull()){
+        if(this->from->getIsBundleSystem() || this->to->getIsBundleSystem()){
+            return true;
+        }
     }
-}
+    return false;
 
-/*!
- * \brief TrafoParam::getValidTime
- * \return
- */
-const QDateTime &TrafoParam::getValidTime() const{
-    return this->validTime;
-}
-
-/*!
- * \brief TrafoParam::setValidTime
- * \param validTime
- */
-void TrafoParam::setValidTime(const QDateTime &validTime){
-    if(this->validTime != validTime){
-        this->validTime = validTime;
-        emit this->validTimeChanged(this->id);
-    }
 }
 
 /*!
@@ -243,7 +214,7 @@ void TrafoParam::setStatistic(const Statistic &statistic){
  * \brief TrafoParam::getIsDatumTrafo
  * \return
  */
-const bool &TrafoParam::getIsDatumTrafo(){
+const bool &TrafoParam::getIsDatumTrafo() const{
     return this->isDatumTrafo;
 }
 
@@ -255,6 +226,8 @@ void TrafoParam::setIsDatumTrafo(const bool &isDatumTrafo){
     if(this->isDatumTrafo != isDatumTrafo){
         this->isDatumTrafo = isDatumTrafo;
     }
+
+    emit this->isDatumTrafoChanged(this->id);
 }
 
 /*!
@@ -525,10 +498,8 @@ QDomElement TrafoParam::toOpenIndyXML(QDomDocument &xmlDoc){
         trafoParam.setAttribute("my", this->scale.getAt(1));
         trafoParam.setAttribute("mz", this->scale.getAt(2));
     }
-    trafoParam.setAttribute("movement", this->isMovement);
     trafoParam.setAttribute("datumtrafo", this->isDatumTrafo);
     trafoParam.setAttribute("use", this->isUsed);
-    trafoParam.setAttribute("time", this->validTime.toString(Qt::ISODate));
 
     //add from and to coordinate systems
     if(!this->from.isNull() && !this->to.isNull()){
@@ -559,8 +530,7 @@ bool TrafoParam::fromOpenIndyXML(QDomElement &xmlElem){
         if(!xmlElem.hasAttribute("tx") || !xmlElem.hasAttribute("ty") || !xmlElem.hasAttribute("tz")
                 || !xmlElem.hasAttribute("rx") || !xmlElem.hasAttribute("ry") || !xmlElem.hasAttribute("rz")
                 || !xmlElem.hasAttribute("mx") || !xmlElem.hasAttribute("my") || !xmlElem.hasAttribute("mz")
-                || !xmlElem.hasAttribute("use") || !xmlElem.hasAttribute("movement") || !xmlElem.hasAttribute("datumtrafo")
-                || !xmlElem.hasAttribute("time")){
+                || !xmlElem.hasAttribute("use") || !xmlElem.hasAttribute("datumtrafo")){
             return false;
         }
         this->translation.setAt(0, xmlElem.attribute("tx").toDouble());
@@ -573,9 +543,7 @@ bool TrafoParam::fromOpenIndyXML(QDomElement &xmlElem){
         this->scale.setAt(1, xmlElem.attribute("my").toDouble());
         this->scale.setAt(2, xmlElem.attribute("mz").toDouble());
         this->isUsed = xmlElem.attribute("use").toInt();
-        this->isMovement = xmlElem.attribute("movement").toInt();
         this->isDatumTrafo = xmlElem.attribute("datumtrafo").toInt();
-        this->validTime = QDateTime::fromString(xmlElem.attribute("time"), Qt::ISODate);
 
         //calculate homogeneous matrix
         OiMat tmpTranslation(4,4);
@@ -766,22 +734,6 @@ QString TrafoParam::getDisplayScaleZ(const int &digits) const{
  */
 QString TrafoParam::getDisplayIsUsed() const{
     return this->isUsed?"true":"false";
-}
-
-/*!
- * \brief TrafoParam::getDisplayValidTime
- * \return
- */
-QString TrafoParam::getDisplayValidTime() const{
-    return this->validTime.toString(Qt::ISODate);
-}
-
-/*!
- * \brief TrafoParam::getDisplayIsMovement
- * \return
- */
-QString TrafoParam::getDisplayIsMovement() const{
-    return this->isMovement?"true":"false";
 }
 
 /*!

@@ -4,6 +4,7 @@
 #include <QVariantList>
 
 #include "exchangeinterface.h"
+#include "oijob.h"
 
 namespace oi{
 
@@ -74,6 +75,18 @@ public:
     const QString &getUsedDelimiter() const;
     void setDelimiter(const QString &usedDelimiter);
 
+    void setCurrentJob(QPointer<OiJob> job);
+    QPointer<OiJob> getCurrentJob();
+
+    void setDistanceDigits(double value);
+    double getDistanceDigits();
+
+    void setAngleDigits(double value);
+    double getAngleDigits();
+
+    void setTemperatureDigits(double value);
+    double getTemperatureDigits();
+
 protected:
 
     //###########################
@@ -86,6 +99,12 @@ protected:
     QString usedDelimiter; //the delimiter that shall be used when parsing the file
 
     QStringList supportedDelimiters;
+
+    QPointer<OiJob> currentJob;
+
+    double distanceDigits;
+    double angleDigits;
+    double temperatureDigits;
 
 };
 

@@ -55,6 +55,16 @@ public:
 
     const OiVec &getOriginalSigmaXyz() const;
 
+    const OiVec &getIJK() const;
+    void setIJK(const OiVec &ijk);
+
+    const OiVec &getOriginalIJK() const;
+
+    const OiVec &getSigmaIJK() const;
+    void setSigmaIjk(const OiVec &sigmaIjk);
+
+    const OiVec &getOriginalSigmaIjk() const;
+
     //##################################################
     //get and set station, reading and target geometries
     //##################################################
@@ -66,6 +76,8 @@ public:
     void addTargetGeometry(const QPointer<Geometry> &targetGeometry);
     void removeTargetGeometry(const QPointer<Geometry> &targetGeometry);
     void removeTargetGeometry(const int &geomId);
+    const QPointer<Geometry> &getMeasuredTargetGeometry() const;
+    void setMeasuredTargetGeometry(const QPointer<Geometry> &measuredTargetGeom);
 
     const QPointer<Reading> &getReading() const;
 
@@ -77,6 +89,8 @@ public:
 
     void setIsSolved(const bool &isSolved);
     const bool &getIsSolved() const;
+
+    const bool &getHasDirection() const;
 
     //###############
     //display methods
@@ -91,6 +105,12 @@ public:
     QString getDisplaySigmaX(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaY(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaZ(const UnitType &type, const int &digits) const;
+    QString getDisplayI(const int &digits) const;
+    QString getDisplayJ(const int &digits) const;
+    QString getDisplayK(const int &digits) const;
+    QString getDisplaySigmaI(const int &digits) const;
+    QString getDisplaySigmaJ(const int &digits) const;
+    QString getDisplaySigmaK(const int &digits) const;
     QString getDisplayIsValid() const;
     QString getDisplayIsSolved() const;
 
@@ -112,14 +132,17 @@ private:
     QList< QPointer<Geometry> > targetGeometriesList;
     QMap<int, QPointer<Geometry> > targetGeometriesMap;
 
+    QPointer<Geometry> measuredTargetGeometry;
+
     QPointer<Reading> reading;
 
     //###################################################
     //booleans that indicate the state of the observation
     //###################################################
 
-    bool isValid; //defines if the reading can be transformed, without any function, to a xyz observation
+    bool isValid; //defines if the reading can be transformed, without any function, to a xyz/ijk observation
     bool isSolved; //defines wether this observation is valid in current coordinate system
+    bool hasDirection; //defines if the observation has a valid ijk direction
 
     //#############################
     //xyz coordinates and statistic
@@ -130,6 +153,16 @@ private:
 
     OiVec sigmaXyz; //the homogeneous stdev vector in the current display coordinate system
     OiVec originalSigmaXyz; //the homogeneous stdev vector in the station system that produced this observation
+
+    //###############################
+    //ijk - unit vector and statistic
+    //###############################
+
+    OiVec ijk; // unit vector
+    OiVec originalIjk; // orignal unit vector
+
+    OiVec sigmaIjk; // stdev unit vector
+    OiVec originalSigmaIjk; // orignal sigma unit vector
 
 };
 

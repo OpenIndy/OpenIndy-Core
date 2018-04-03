@@ -8,12 +8,20 @@ using namespace oi;
  */
 Function::Function(QObject *parent) : QObject(parent){
 
+    this->supportsWeights = false;
 }
 
 /*!
  * \brief Function::~Function
  */
 Function::~Function(){
+
+}
+
+/*!
+ * \brief Function::init
+ */
+void Function::init(){
 
 }
 
@@ -215,6 +223,24 @@ const int &Function::getId() const{
 }
 
 /*!
+ * \brief Function::getSupportWeights
+ * \return
+ */
+const bool &Function::getSupportWeights()
+{
+    return this->supportsWeights;
+}
+
+/*!
+ * \brief Function::setSupportWeights
+ * \return
+ */
+void Function::setSupportWeights(bool supports)
+{
+    this->supportsWeights = supports;
+}
+
+/*!
  * \brief Function::getInputElements
  * \return
  */
@@ -355,6 +381,8 @@ bool Function::getIsUsed(const int &position, const int &id){
         }
     }
 
+    return false;
+
 }
 
 /*!
@@ -371,6 +399,8 @@ bool Function::getShouldBeUsed(const int &position, const int &id){
             return this->inputElements[position][index].shouldBeUsed;
         }
     }
+
+    return false;
 
 }
 
@@ -454,14 +484,38 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
             inputElement.setAttribute("ref", input.id);
             inputElement.setAttribute("isUsed", input.isUsed);
             inputElement.setAttribute("shouldBeUsed", input.shouldBeUsed);
+
+            //add ignored destination parameters of the input element
+            QDomElement ignoredDestinationParams = xmlDoc.createElement("ignoredDestinationParams");
+
+            for(int i=0; i< input.ignoredDestinationParams.size();i++){
+                //add all ignored parameters to the element
+                QDomElement ignoredParam = xmlDoc.createElement("ignoredParam");
+                ignoredParam.setAttribute("parameter", getGeometryParameterName(input.ignoredDestinationParams.at(i)));
+                ignoredDestinationParams.appendChild(ignoredParam);
+            }
+            inputElement.appendChild(ignoredDestinationParams);
+
             inputElements.appendChild(inputElement);
         }
     }
     function.appendChild(inputElements);
 
+    ScalarInputParams params;
+    if(!this->scalarInputParams.isValid){
+        params.doubleParameter = this->doubleParameters;
+        params.intParameter = this->integerParameters;
+        QStringList keys = this->stringParameters.keys();
+        foreach(const QString &key, keys){
+            params.stringParameter.insert(key, this->stringParameters.value(key));
+        }
+    }else{
+        params = this->scalarInputParams;
+    }
+
     //add integer parameters
     QDomElement integerParams = xmlDoc.createElement("integerParameters");
-    QMapIterator<QString, int> intIterator(this->scalarInputParams.intParameter);
+    QMapIterator<QString, int> intIterator(params.intParameter);
     while (intIterator.hasNext()) {
         intIterator.next();
         QDomElement intParam = xmlDoc.createElement("parameter");
@@ -473,7 +527,7 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //add double parameters
     QDomElement doubleParams = xmlDoc.createElement("doubleParameters");
-    QMapIterator<QString, double> doubleIterator(this->scalarInputParams.doubleParameter);
+    QMapIterator<QString, double> doubleIterator(params.doubleParameter);
     while (doubleIterator.hasNext()) {
         doubleIterator.next();
         QDomElement doubleParam = xmlDoc.createElement("parameter");
@@ -485,7 +539,7 @@ QDomElement Function::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //add string parameters
     QDomElement stringParams = xmlDoc.createElement("stringParameters");
-    QMapIterator<QString, QString> stringIterator(this->scalarInputParams.stringParameter);
+    QMapIterator<QString, QString> stringIterator(params.stringParameter);
     while (stringIterator.hasNext()) {
         stringIterator.next();
         QDomElement stringParam = xmlDoc.createElement("parameter");
@@ -557,13 +611,6 @@ bool Function::fromOpenIndyXML(QDomElement &xmlElem){
     this->scalarInputParams.isValid = true;
 
     return true;
-
-}
-
-/*!
- * \brief Function::init
- */
-void Function::init(){
 
 }
 

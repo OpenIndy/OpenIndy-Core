@@ -92,7 +92,8 @@ SOURCES += \
     $$PWD/../src/sensorworker.cpp \
     $$PWD/../src/station.cpp \
     $$PWD/../src/statistic.cpp \
-    $$PWD/../src/trafoparam.cpp
+    $$PWD/../src/trafoparam.cpp \
+    $$PWD/../src/plugin/networkAdjustment/bundleadjustment.cpp
 
 # header files
 HEADERS  += \
@@ -127,7 +128,6 @@ HEADERS  += \
     $$PWD/../include/plugin/function/geodeticfunction.h \
     $$PWD/../include/plugin/function/objecttransformation.h \
     $$PWD/../include/plugin/function/systemtransformation.h \
-    $$PWD/../include/plugin/networkAdjustment/networkadjustment.h \
     $$PWD/../include/plugin/sensor/lasertracker.h \
     $$PWD/../include/plugin/sensor/sensor.h \
     $$PWD/../include/plugin/sensor/totalstation.h \
@@ -155,4 +155,5 @@ HEADERS  += \
     $$PWD/../include/sensorworker.h \
     $$PWD/../include/station.h \
     $$PWD/../include/statistic.h \
-    $$PWD/../include/trafoparam.h
+    $$PWD/../include/trafoparam.h \
+    $$PWD/../include/plugin/networkAdjustment/bundleadjustment.h

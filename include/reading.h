@@ -114,12 +114,12 @@ public:
  */
 class OI_CORE_EXPORT ReadingLevel{
 public:
-    double RX;
-    double RY;
-    double RZ;
-    double sigmaRX;
-    double sigmaRY;
-    double sigmaRZ;
+    double i;
+    double j;
+    double k;
+    double sigmaI;
+    double sigmaJ;
+    double sigmaK;
     bool isValid;
 };
 
@@ -228,9 +228,9 @@ public:
     QString getDisplayX(const UnitType &type, const int &digits) const;
     QString getDisplayY(const UnitType &type, const int &digits) const;
     QString getDisplayZ(const UnitType &type, const int &digits) const;
-    QString getDisplayRX(const UnitType &type, const int &digits) const;
-    QString getDisplayRY(const UnitType &type, const int &digits) const;
-    QString getDisplayRZ(const UnitType &type, const int &digits) const;
+    QString getDisplayI(const int &digits) const;
+    QString getDisplayJ(const int &digits) const;
+    QString getDisplayK(const int &digits) const;
     QString getDisplayTemperature(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaAzimuth(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaZenith(const UnitType &type, const int &digits) const;
@@ -238,9 +238,9 @@ public:
     QString getDisplaySigmaX(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaY(const UnitType &type, const int &digits) const;
     QString getDisplaySigmaZ(const UnitType &type, const int &digits) const;
-    QString getDisplaySigmaRX(const UnitType &type, const int &digits) const;
-    QString getDisplaySigmaRY(const UnitType &type, const int &digits) const;
-    QString getDisplaySigmaRZ(const UnitType &type, const int &digits) const;
+    QString getDisplaySigmaI(const int &digits) const;
+    QString getDisplaySigmaJ(const int &digits) const;
+    QString getDisplaySigmaK(const int &digits) const;
     QString getDisplaySigmaTemperature(const UnitType &type, const int &digits) const;
 
     //#################

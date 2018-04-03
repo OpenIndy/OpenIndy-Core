@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QStringList>
+#include <QMap>
 #include <QtCore/QtGlobal>
 
 #if defined(OI_CORE_LIB)
@@ -233,6 +234,7 @@ enum FeatureDisplayAttributes{
     //geometry specific
     eFeatureDisplayMeasurementConfig = 100,
     eFeatureDisplayObservations,
+    eFeatureDisplayIsCommon,
 
     //unknown parameters
     eFeatureDisplayX = 200,
@@ -304,9 +306,15 @@ enum ObservationDisplayAttributes{
     eObservationDisplayX,
     eObservationDisplayY,
     eObservationDisplayZ,
+    eObservationDisplayI,
+    eObservationDisplayJ,
+    eObservationDisplayK,
     eObservationDisplaySigmaX,
     eObservationDisplaySigmaY,
     eObservationDisplaySigmaZ,
+    eObservationDisplaySigmaI,
+    eObservationDisplaySigmaJ,
+    eObservationDisplaySigmaK,
     eObservationDisplayIsValid,
     eObservationDisplayIsSolved,
     eObservationDisplayVX,
@@ -330,9 +338,9 @@ enum ReadingDisplayAttributes{
     eReadingDisplayX,
     eReadingDisplayY,
     eReadingDisplayZ,
-    eReadingDisplayRX,
-    eReadingDisplayRY,
-    eReadingDisplayRZ,
+    eReadingDisplayI,
+    eReadingDisplayJ,
+    eReadingDisplayK,
     eReadingDisplayTemperature,
     eReadingDisplaySigmaAzimuth,
     eReadingDisplaySigmaZenith,
@@ -340,9 +348,9 @@ enum ReadingDisplayAttributes{
     eReadingDisplaySigmaX,
     eReadingDisplaySigmaY,
     eReadingDisplaySigmaZ,
-    eReadingDisplaySigmaRX,
-    eReadingDisplaySigmaRY,
-    eReadingDisplaySigmaRZ,
+    eReadingDisplaySigmaI,
+    eReadingDisplaySigmaJ,
+    eReadingDisplaySigmaK,
     eReadingDisplaySigmaTemperature
 
 };
@@ -442,6 +450,44 @@ enum ActualNominalFilter{
     eFilterActual,
     eFilterNominal
 
+};
+
+//######################################
+//materials for temperature compensation
+//######################################
+enum MaterialsTempComp{
+
+    eMaterialSteel = 0,
+    eMaterialAluminum,
+    eMaterialPlumb,
+    eMaterialIron,
+    eMaterialGrayCastIron,
+    eMaterialCopper,
+    eMaterialBrass,
+    eMaterialZinc,
+    eMaterialPlatinum,
+    eMaterialConcrete,
+    eMaterialReinforcedConcrete
+};
+
+//##############
+//helper classes
+//##############
+
+/*!
+ * \brief The ScalarInputParams class
+ * Save user specified non-element scalar input parameters
+ */
+class ScalarInputParams{
+public:
+    ScalarInputParams(){
+        isValid = false;
+    }
+
+    bool isValid;
+    QMap<QString, double> doubleParameter;
+    QMap<QString, int> intParameter;
+    QMap<QString, QString> stringParameter;
 };
 
 }
