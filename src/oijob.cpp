@@ -688,7 +688,7 @@ bool OiJob::addFeatures(const QList<QPointer<FeatureWrapper> > &features, bool o
         }
 
         //check attributes and set up relations
-        if(!this->checkAndSetUpNewFeature(feature)){
+        if(!this->checkAndSetUpNewFeature(feature, overwrite)){
             continue;
         }
 
