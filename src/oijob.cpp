@@ -2521,6 +2521,8 @@ bool OiJob::checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature, boo
                 if(fw->getGeometry()->getIsNominal() && fw->getGeometry()->getNominalSystem() == feature->getGeometry()->getNominalSystem()){
                     //overwrite existing position with new position
                     fw->getPoint()->setPoint(feature->getPoint()->getPosition());
+                    emit this->sendMessage("changed values of existing features", eWarningMessage);
+                    return false;
                 }
             }
         }else{
