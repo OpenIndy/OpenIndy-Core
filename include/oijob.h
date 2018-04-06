@@ -101,7 +101,7 @@ public:
     //add features
     bool addFeature(const QPointer<FeatureWrapper> &feature);
     QList<QPointer<FeatureWrapper> > addFeatures(const FeatureAttributes &fAttr);
-    bool addFeatures(const QList<QPointer<FeatureWrapper> > &features);
+    bool addFeatures(const QList<QPointer<FeatureWrapper> > &features, bool overwrite =false);
 
     //remove features
     bool removeFeature(const int &featureId);
@@ -291,7 +291,7 @@ private:
 
     QStringList createFeatureNames(const QString &name, const int &count) const;
     QPointer<FeatureWrapper> createFeatureWrapper(const FeatureTypes &type, bool isNominal = false) const;
-    bool checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature);
+    bool checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature, bool overwrite = false);
 
     bool canRemoveFeature(const QPointer<FeatureWrapper> &feature) const;
 
