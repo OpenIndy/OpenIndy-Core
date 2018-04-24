@@ -2362,6 +2362,9 @@ QStringList OiJob::createFeatureNames(const QString &name, const int &count) con
     numLeadingZeros = numLeadingZeros + postFix.length();
 
     int postFixInt = postFix.toInt();
+    if(postFixInt == 0){
+        postFixInt++;
+    }
     QString leadZeros = "";
 
     for(int i = 0; i < count; i++){
@@ -2375,6 +2378,10 @@ QStringList OiJob::createFeatureNames(const QString &name, const int &count) con
             for(int j = 0; j < diff; j++){
                 leadZeros.append("0");
             }
+        }
+
+        if(leadZeros.compare("") == 0 && postFix.toInt() < 10){
+            leadZeros.append("0");
         }
 
         result.append(QString("%1%2%3").arg(baseName).arg(leadZeros).arg(postFix));
