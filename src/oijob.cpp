@@ -676,7 +676,7 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
  * \param features
  * \return
  */
-bool OiJob::addFeatures(const QList<QPointer<FeatureWrapper> > &features){
+bool OiJob::addFeatures(const QList<QPointer<FeatureWrapper> > &features, bool overwrite){
 
     QList<FeatureTypes> addedFeatureTypes;
 
@@ -688,7 +688,7 @@ bool OiJob::addFeatures(const QList<QPointer<FeatureWrapper> > &features){
         }
 
         //check attributes and set up relations
-        if(!this->checkAndSetUpNewFeature(feature)){
+        if(!this->checkAndSetUpNewFeature(feature, overwrite)){
             continue;
         }
 
@@ -2362,6 +2362,9 @@ QStringList OiJob::createFeatureNames(const QString &name, const int &count) con
     numLeadingZeros = numLeadingZeros + postFix.length();
 
     int postFixInt = postFix.toInt();
+    if(postFixInt == 0){
+        postFixInt++;
+    }
     QString leadZeros = "";
 
     for(int i = 0; i < count; i++){
@@ -2375,6 +2378,10 @@ QStringList OiJob::createFeatureNames(const QString &name, const int &count) con
             for(int j = 0; j < diff; j++){
                 leadZeros.append("0");
             }
+        }
+
+        if(leadZeros.compare("") == 0 && postFix.toInt() < 10){
+            leadZeros.append("0");
         }
 
         result.append(QString("%1%2%3").arg(baseName).arg(leadZeros).arg(postFix));
@@ -2499,7 +2506,7 @@ QPointer<FeatureWrapper> OiJob::createFeatureWrapper(const FeatureTypes &type, b
  * \param feature
  * \return
  */
-bool OiJob::checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature){
+bool OiJob::checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature, bool overwrite){
 
     //pass the job to the feature
     feature->getFeature()->setJob(this);
@@ -2509,8 +2516,26 @@ bool OiJob::checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature){
     QPointer<CoordinateSystem> nominalSystem = isNominal?feature->getGeometry()->getNominalSystem():QPointer<CoordinateSystem>(NULL);
     if(!this->validateFeatureName(feature->getFeature()->getFeatureName(), feature->getFeatureTypeEnum(),
                                  isNominal, nominalSystem)){
-        emit this->sendMessage("feature name already exists", eWarningMessage);
-        return false;
+
+        //check if feature should be overwritten
+        if(overwrite && feature->getFeatureTypeEnum() == ePointFeature){
+
+            //get existing feature and set new values
+            //get a list of features with name name
+            QList<QPointer<FeatureWrapper> > features = this->featureContainer.getFeaturesByName(feature->getFeature()->getFeatureName());
+
+            foreach (QPointer<FeatureWrapper> fw, features) {
+                if(fw->getGeometry()->getIsNominal() && fw->getGeometry()->getNominalSystem() == feature->getGeometry()->getNominalSystem()){
+                    //overwrite existing position with new position
+                    fw->getPoint()->setPoint(feature->getPoint()->getPosition());
+                    emit this->sendMessage("changed values of existing features", eWarningMessage);
+                    return false;
+                }
+            }
+        }else{
+            emit this->sendMessage("feature name already exists", eWarningMessage);
+            return false;
+        }
     }
 
     //new feature shall not be active

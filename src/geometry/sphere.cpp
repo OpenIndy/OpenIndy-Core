@@ -300,7 +300,7 @@ QString Sphere::getDisplayZ(const UnitType &type, const int &digits, const bool 
  */
 QString Sphere::getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff) const{
     if(this->isSolved){
-        return QString::number(convertToDefault(this->radius.getRadius(), type), 'f', digits);
+        return QString::number(convertFromDefault(this->radius.getRadius(), type), 'f', digits);
     }
     return QString("");
 }
