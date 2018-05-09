@@ -145,6 +145,7 @@ private slots:
     void streamReading();
     void monitorConnectionStatus();
     void streamStatus();
+    void asyncSensorResponseReceived(const QJsonObject &response);
 
 private:
 

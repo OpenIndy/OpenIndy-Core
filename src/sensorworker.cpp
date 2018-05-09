@@ -48,7 +48,7 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
 
         //connect sensor
         QObject::connect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage, Qt::AutoConnection);
-
+        QObject::connect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived, Qt::AutoConnection);
     }
 
 }
@@ -65,6 +65,7 @@ QPointer<Sensor> SensorWorker::takeSensor(){
     //disconnect sensor
     if(!sensor.isNull()){
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
+        QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
     }
 
     //set sensor pointer to NULL pointer
@@ -86,6 +87,7 @@ void SensorWorker::resetSensor(){
             this->sensor->disconnectSensor();
         }
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
+        QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
 
         //delete sensor
         delete this->sensor;
@@ -294,14 +296,12 @@ void SensorWorker::connectSensor(){
             }
 
         }
+        emit this->commandFinished(success, msg);
     }else{
         QJsonObject request;
-        request.insert("method", "Connect");
+        request.insert("method", "connect");
         this->sensor->performAsyncSensorCommand(request);
     }
-
-
-    emit this->commandFinished(success, msg);
 
 }
 
@@ -870,4 +870,16 @@ void SensorWorker::streamStatus(){
     //put connection stream into event queue again
     QMetaObject::invokeMethod(this, "streamStatus", Qt::QueuedConnection);
 
+}
+
+void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
+{
+    bool success = false;
+    QString msg = "";
+    if(response.value("error") != QJsonValue::Undefined){
+        msg = response.value("error").toObject().value("message").toString();
+    } else {
+        success = true;
+    }
+    emit this->commandFinished(success, msg);
 }
