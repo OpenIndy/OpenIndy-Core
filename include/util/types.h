@@ -425,8 +425,10 @@ enum SensorFunctions{
     eToggleSight,
     eInitialize,
     eHome,
-    eCompensation
-
+    eCompensation,
+    eMeasure,
+    eConnect,
+    eDisconnect
 };
 
 //################################

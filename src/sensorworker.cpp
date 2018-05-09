@@ -279,19 +279,27 @@ void SensorWorker::connectSensor(){
     //check wether the sensor is already connected
     QString msg = "sensor connected";
     bool success = false;
-    if(this->sensor->getConnectionState()){
-        msg = "sensor is already connected";
-    }else{
 
-        //connect sensor
-        success = this->sensor->connectSensor();
-        if(!success){
-            msg = "failed to connect sensor";
+    if(!this->sensor->isSensorAsync()){
+        if(this->sensor->getConnectionState()){
+            msg = "sensor is already connected";
         }else{
-            this->isSensorConnected = true;
-        }
 
+            //connect sensor
+            success = this->sensor->connectSensor();
+            if(!success){
+                msg = "failed to connect sensor";
+            }else{
+                this->isSensorConnected = true;
+            }
+
+        }
+    }else{
+        QJsonObject request;
+        request.insert("method", "Connect");
+        this->sensor->performAsyncSensorCommand(request);
     }
+
 
     emit this->commandFinished(success, msg);
 
