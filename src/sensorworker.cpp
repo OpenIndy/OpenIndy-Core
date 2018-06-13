@@ -300,7 +300,10 @@ void SensorWorker::connectSensor(){
     }else{
         QJsonObject request;
         request.insert("method", "connect");
-        this->sensor->performAsyncSensorCommand(request);
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
 
 }
