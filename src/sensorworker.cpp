@@ -515,21 +515,27 @@ void SensorWorker::initialize(){
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to initialize sensor";
-    bool success = false;
-    if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
-    }else{
+    if(!this->sensor->isSensorAsync()){
+        QString msg = "failed to initialize sensor";
+        bool success = false;
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+        }else{
 
-        //initialize sensor
-        success = this->sensor->accept(eInitialize, SensorAttributes());
-        if(success){
-            msg = "initializing finished";
+            //initialize sensor
+            success = this->sensor->accept(eInitialize, SensorAttributes());
+            if(success){
+                msg = "initializing finished";
+            }
+
         }
 
+        emit this->commandFinished(success, msg);
+    }else{
+        QJsonObject request;
+        request.insert("method", "initialize");
+        this->sensor->performAsyncSensorCommand(request);
     }
-
-    emit this->commandFinished(success, msg);
 
 }
 
@@ -879,6 +885,7 @@ void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
     if(response.value("error") != QJsonValue::Undefined){
         msg = response.value("error").toObject().value("message").toString();
     } else {
+        msg = response.value("result").toString();
         success = true;
     }
     emit this->commandFinished(success, msg);
