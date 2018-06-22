@@ -710,6 +710,14 @@ QString Feature::getDisplayIsCommon() const{
 }
 
 /*!
+ * \brief Feature::getDisplayIsActual
+ * \return
+ */
+QString Feature::getDisplayIsActual() const{
+    return QString("-/-");
+}
+
+/*!
  * \brief Feature::getDisplayX
  * \param type
  * \param digits
