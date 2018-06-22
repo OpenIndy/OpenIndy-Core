@@ -118,6 +118,7 @@ public:
     QString getDisplayMeasurementConfig() const;
     QString getDisplayObservations() const;
     QString getDisplayIsCommon() const;
+    QString getDisplayIsActual() const;
 
 signals:
 
