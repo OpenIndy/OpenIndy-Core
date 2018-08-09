@@ -293,6 +293,7 @@ void init(){
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginX, "expansion x");
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginY, "expansion y");
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginZ, "expansion z");
+    featureDisplayAttributesMap.insert(eFeatureDisplayIsActual, "actual feature");
 
     //fill observation display attributes map
     observationDisplayAttributesMap.insert(eObservationDisplayId, "id");
@@ -376,7 +377,7 @@ void init(){
     for(int i = 0; i < 10; i++){ //general feature attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 100; i < 103; i++){ //geometry specific attributes
+    for(int i = 100; i < 104; i++){ //geometry specific attributes
         featureDisplayAttributes.append(i);
     }
     for(int i = 200; i < 220; i++){ //unknown geometry parameters
@@ -1049,7 +1050,7 @@ const QList<ReadingDisplayAttributes> &getReadingDisplayAttributes(){
  * \return
  */
 bool getIsFeatureDisplayAttribute(const int &attr){
-    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 103) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
+    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 104) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
         return true;
     }
     return false;

@@ -235,6 +235,7 @@ enum FeatureDisplayAttributes{
     eFeatureDisplayMeasurementConfig = 100,
     eFeatureDisplayObservations,
     eFeatureDisplayIsCommon,
+    eFeatureDisplayIsActual,
 
     //unknown parameters
     eFeatureDisplayX = 200,

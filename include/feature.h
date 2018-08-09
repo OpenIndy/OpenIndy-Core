@@ -102,6 +102,7 @@ public:
     virtual QString getDisplayMeasurementConfig() const;
     virtual QString getDisplayObservations() const;
     virtual QString getDisplayIsCommon() const;
+    virtual QString getDisplayIsActual() const;
 
     //unknown geometry parameters
     virtual QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;

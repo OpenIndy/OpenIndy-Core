@@ -710,3 +710,19 @@ QString Geometry::getDisplayObservations() const{
 QString Geometry::getDisplayIsCommon() const{
     return this->isCommon?"true":"false";
 }
+
+/*!
+ * \brief Geometry::getDisplayIsActual
+ * \return
+ */
+QString Geometry::getDisplayIsActual() const
+{
+    if(this->getIsNominal()){
+        QString output = "";
+        output.append("nominal ");
+        output.append(this->getNominalSystem()->getFeatureName());
+        return output;
+    }else{
+        return "actual";
+    }
+}
