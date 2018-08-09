@@ -90,6 +90,15 @@ void Sensor::setSensorConfiguration(const SensorConfiguration &sConfig){
 }
 
 /*!
+ * \brief Sensor::setMeasurementConfig
+ * \param mConfig
+ */
+void Sensor::setMeasurementConfig(const MeasurementConfig &mConfig)
+{
+    this->actualMeasurementConfig = mConfig;
+}
+
+/*!
  * \brief Sensor::getLastReading
  * \return
  */

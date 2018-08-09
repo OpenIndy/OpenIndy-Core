@@ -49,6 +49,7 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
         //connect sensor
         QObject::connect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage, Qt::AutoConnection);
         QObject::connect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived, Qt::AutoConnection);
+        QObject::connect(sensor, &Sensor::asyncMeasurementResult, this, &SensorWorker::asyncSensorMeasurementReceived, Qt::AutoConnection);
     }
 
 }
@@ -66,6 +67,7 @@ QPointer<Sensor> SensorWorker::takeSensor(){
     if(!sensor.isNull()){
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
         QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
+        QObject::disconnect(sensor, &Sensor::asyncMeasurementResult, this, &SensorWorker::asyncSensorMeasurementReceived);
     }
 
     //set sensor pointer to NULL pointer
@@ -88,6 +90,7 @@ void SensorWorker::resetSensor(){
         }
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
         QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
+        QObject::disconnect(sensor, &Sensor::asyncMeasurementResult, this, &SensorWorker::asyncSensorMeasurementReceived);
 
         //delete sensor
         delete this->sensor;
@@ -392,6 +395,7 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
     }else{
         QJsonObject request;
         request.insert("method", "measure");
+        request.insert("geomId", geomId);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
             emit this->commandFinished(false, "connection was blocked - please try again");
@@ -558,7 +562,10 @@ void SensorWorker::initialize(){
     }else{
         QJsonObject request;
         request.insert("method", "initialize");
-        this->sensor->performAsyncSensorCommand(request);
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
 
 }
@@ -913,4 +920,19 @@ void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
         success = true;
     }
     emit this->commandFinished(success, msg);
+}
+
+void SensorWorker::asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements)
+{
+    emit this->measurementDone(true);
+
+    if(measurements.size() > 0) {
+        emit this->commandFinished(true, "measurement data received");
+
+    }else {
+        emit this->commandFinished(true, "measurement did not deliver any results");
+    }
+
+    emit this->measurementFinished(geomId, measurements);
+
 }

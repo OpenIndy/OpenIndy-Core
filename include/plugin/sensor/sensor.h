@@ -69,6 +69,8 @@ public:
     const SensorConfiguration &getSensorConfiguration() const;
     virtual void setSensorConfiguration(const SensorConfiguration &sConfig);
 
+    void setMeasurementConfig(const MeasurementConfig &mConfig);
+
     const QPair<ReadingTypes, QPointer<Reading> > &getLastReading() const;
 
     virtual bool isSensorAsync() const;
@@ -150,6 +152,7 @@ protected:
     //#########################
 
     SensorConfiguration sensorConfiguration;
+    MeasurementConfig actualMeasurementConfig;
 
     QPair<ReadingTypes, QPointer<Reading> > lastReading; //the last reading produced by this sensor
 
