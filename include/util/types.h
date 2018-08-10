@@ -429,7 +429,8 @@ enum SensorFunctions{
     eCompensation,
     eMeasure,
     eConnect,
-    eDisconnect
+    eDisconnect,
+    eStream
 };
 
 //################################
