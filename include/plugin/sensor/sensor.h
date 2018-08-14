@@ -8,6 +8,7 @@
 #include <QMap>
 #include <QVariant>
 #include <QPair>
+#include <QJsonObject>
 
 #include "pluginmetadata.h"
 #include "sensorconfiguration.h"
@@ -68,7 +69,11 @@ public:
     const SensorConfiguration &getSensorConfiguration() const;
     virtual void setSensorConfiguration(const SensorConfiguration &sConfig);
 
+    void setMeasurementConfig(const MeasurementConfig &mConfig);
+
     const QPair<ReadingTypes, QPointer<Reading> > &getLastReading() const;
+
+    virtual bool isSensorAsync() const;
 
     //#########################################################
     //methods to get or set further information to use a sensor
@@ -99,6 +104,8 @@ public:
 
     //sensor actions
     virtual bool accept(const SensorFunctions &method, const SensorAttributes &sAttr);
+
+    virtual QJsonObject performAsyncSensorCommand(const QJsonObject &request);
 
     //abort actions
     virtual bool abortAction();
@@ -134,6 +141,10 @@ signals:
     //##############################################
 
     void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
+    void asyncSensorResponse(const QJsonObject &response);
+    void asyncMeasurementResult(const int &geomId, const QList<QPointer<Reading>> &measurements);
+    void asyncStreamResult(const QVariantMap &reading);
+    void asyncSensorNotification(const QJsonObject &response);
 
 protected:
 
@@ -142,6 +153,7 @@ protected:
     //#########################
 
     SensorConfiguration sensorConfiguration;
+    MeasurementConfig actualMeasurementConfig;
 
     QPair<ReadingTypes, QPointer<Reading> > lastReading; //the last reading produced by this sensor
 
