@@ -48,7 +48,9 @@ void SensorWorker::setSensor(QPointer<Sensor> sensor){
 
         //connect sensor
         QObject::connect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage, Qt::AutoConnection);
-
+        QObject::connect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived, Qt::AutoConnection);
+        QObject::connect(sensor, &Sensor::asyncMeasurementResult, this, &SensorWorker::asyncSensorMeasurementReceived, Qt::AutoConnection);
+        QObject::connect(sensor, &Sensor::asyncStreamResult, this, &SensorWorker::asyncSensorStreamDataReceived, Qt::AutoConnection);
     }
 
 }
@@ -65,6 +67,9 @@ QPointer<Sensor> SensorWorker::takeSensor(){
     //disconnect sensor
     if(!sensor.isNull()){
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
+        QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
+        QObject::disconnect(sensor, &Sensor::asyncMeasurementResult, this, &SensorWorker::asyncSensorMeasurementReceived);
+        QObject::disconnect(sensor, &Sensor::asyncStreamResult, this, &SensorWorker::asyncSensorStreamDataReceived);
     }
 
     //set sensor pointer to NULL pointer
@@ -86,6 +91,9 @@ void SensorWorker::resetSensor(){
             this->sensor->disconnectSensor();
         }
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
+        QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
+        QObject::disconnect(sensor, &Sensor::asyncMeasurementResult, this, &SensorWorker::asyncSensorMeasurementReceived);
+        QObject::disconnect(sensor, &Sensor::asyncStreamResult, this, &SensorWorker::asyncSensorStreamDataReceived);
 
         //delete sensor
         delete this->sensor;
@@ -279,21 +287,30 @@ void SensorWorker::connectSensor(){
     //check wether the sensor is already connected
     QString msg = "sensor connected";
     bool success = false;
-    if(this->sensor->getConnectionState()){
-        msg = "sensor is already connected";
-    }else{
 
-        //connect sensor
-        success = this->sensor->connectSensor();
-        if(!success){
-            msg = "failed to connect sensor";
+    if(!this->sensor->isSensorAsync()){
+        if(this->sensor->getConnectionState()){
+            msg = "sensor is already connected";
         }else{
-            this->isSensorConnected = true;
+
+            //connect sensor
+            success = this->sensor->connectSensor();
+            if(!success){
+                msg = "failed to connect sensor";
+            }else{
+                this->isSensorConnected = true;
+            }
+
         }
-
+        emit this->commandFinished(success, msg);
+    }else{
+        QJsonObject request;
+        request.insert("method", "connect");
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
-
-    emit this->commandFinished(success, msg);
 
 }
 
@@ -311,19 +328,30 @@ void SensorWorker::disconnectSensor(){
     //check wether the sensor is already connected
     QString msg = "sensor disconnected";
     bool success = false;
-    if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
-    }else{
 
-        //disconnect sensor
-        success = this->sensor->disconnectSensor();
-        if(!success){
-            msg = "failed to disconnect sensor";
+    if(!this->sensor->isSensorAsync()){
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
         }else{
-            this->isSensorConnected = false;
-        }
 
+            //disconnect sensor
+            success = this->sensor->disconnectSensor();
+            if(!success){
+                msg = "failed to disconnect sensor";
+            }else{
+                this->isSensorConnected = false;
+            }
+
+        }
+    }else{
+        QJsonObject request;
+        request.insert("method", "disconnect");
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
+
 
     emit this->commandFinished(success, msg);
 
@@ -346,24 +374,36 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
     QString msg = "failed to measure";
     bool success = false;
     QList<QPointer<Reading> > readings;
-    if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
-    }else{
 
-        //measure
-        readings = this->sensor->measure(mConfig);
-        if(readings.size() > 0){
-            msg = "measurement finished";
-            success = true;
+    if(!this->sensor->isSensorAsync()){
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+        }else{
+
+            //measure
+            readings = this->sensor->measure(mConfig);
+            if(readings.size() > 0){
+                msg = "measurement finished";
+                success = true;
+            }
+
         }
 
-    }
+        emit this->measurementDone(success);
 
-    emit this->measurementDone(success);
-
-    emit this->commandFinished(success, msg);
-    if(success){
-        emit this->measurementFinished(geomId, readings);
+        emit this->commandFinished(success, msg);
+        if(success){
+            emit this->measurementFinished(geomId, readings);
+        }
+    }else{
+        QJsonObject request;
+        request.insert("method", "measure");
+        request.insert("geomId", geomId);
+        this->sensor->setMeasurementConfig(mConfig);
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
 
 }
@@ -449,49 +489,62 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
         return;
     }
 
-    //check wether the sensor is already connected
-    QString msg = "failed to move sensor";
-    bool success = false;
-    QList<QPointer<Reading> > readings;
-    if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
-    }else{
+    if(!this->sensor->isSensorAsync()){
+        //check wether the sensor is already connected
+        QString msg = "failed to move sensor";
+        bool success = false;
+        QList<QPointer<Reading> > readings;
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+        }else{
 
-        //set up sensor attributes
-        SensorAttributes attr;
-        attr.moveX = x;
-        attr.moveY = y;
-        attr.moveZ = z;
-        attr.moveIsRelative = false;
+            //set up sensor attributes
+            SensorAttributes attr;
+            attr.moveX = x;
+            attr.moveY = y;
+            attr.moveZ = z;
+            attr.moveIsRelative = false;
 
-        //move
-        success = this->sensor->accept(eMoveXYZ, attr);
-        if(success){
+            //move
+            success = this->sensor->accept(eMoveXYZ, attr);
+            if(success){
 
-            msg = "moving sensor finished";
+                msg = "moving sensor finished";
 
-            //optionally perform measurement after move
-            if(measure){
+                //optionally perform measurement after move
+                if(measure){
 
-                //start measure
-                readings = this->sensor->measure(mConfig);
-                if(readings.size() > 0){
-                    msg.append(", measurement finished");
-                }else{
-                    msg.append(", failed to measure");
-                    success = false;
+                    //start measure
+                    readings = this->sensor->measure(mConfig);
+                    if(readings.size() > 0){
+                        msg.append(", measurement finished");
+                    }else{
+                        msg.append(", failed to measure");
+                        success = false;
+                    }
+
                 }
 
             }
 
         }
 
+        emit this->commandFinished(success, msg);
+        if(success && measure){
+            emit this->measurementFinished(geomId, readings);
+        }
+    }else{
+        QJsonObject request;
+        request.insert("method", "move (cartesian)");
+        request.insert("x", x);
+        request.insert("y", y);
+        request.insert("z", z);
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
 
-    emit this->commandFinished(success, msg);
-    if(success && measure){
-        emit this->measurementFinished(geomId, readings);
-    }
 
 }
 
@@ -507,21 +560,30 @@ void SensorWorker::initialize(){
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to initialize sensor";
-    bool success = false;
-    if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
-    }else{
+    if(!this->sensor->isSensorAsync()){
+        QString msg = "failed to initialize sensor";
+        bool success = false;
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+        }else{
 
-        //initialize sensor
-        success = this->sensor->accept(eInitialize, SensorAttributes());
-        if(success){
-            msg = "initializing finished";
+            //initialize sensor
+            success = this->sensor->accept(eInitialize, SensorAttributes());
+            if(success){
+                msg = "initializing finished";
+            }
+
         }
 
+        emit this->commandFinished(success, msg);
+    }else{
+        QJsonObject request;
+        request.insert("method", "initialize");
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
-
-    emit this->commandFinished(success, msg);
 
 }
 
@@ -599,19 +661,30 @@ void SensorWorker::toggleSight(){
     //check wether the sensor is already connected
     QString msg = "failed to toggle sight orientation";
     bool success = false;
-    if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
-    }else{
 
-        //toggle sight
-        success = this->sensor->accept(eToggleSight, SensorAttributes());
-        if(success){
-            msg = "toggle sight orientation finished";
+    if(!this->sensor->isSensorAsync()){
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+        }else{
+
+            //toggle sight
+            success = this->sensor->accept(eToggleSight, SensorAttributes());
+            if(success){
+                msg = "toggle sight orientation finished";
+            }
+
         }
 
+        emit this->commandFinished(success, msg);
+    }else{
+        QJsonObject request;
+        request.insert("method", "toggle sight orientation");
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
     }
 
-    emit this->commandFinished(success, msg);
 
 }
 
@@ -799,12 +872,22 @@ void SensorWorker::streamReading(){
         return;
     }
 
-    //get real time reading
-    QVariantMap reading = this->sensor->readingStream(this->streamFormat);
-    emit this->realTimeReading(reading);
+    if(!this->sensor->isSensorAsync()){
+        //get real time reading
+        QVariantMap reading = this->sensor->readingStream(this->streamFormat);
+        emit this->realTimeReading(reading);
 
-    //put reading stream into event queue again
-    QMetaObject::invokeMethod(this, "streamReading", Qt::QueuedConnection);
+        //put reading stream into event queue again
+        QMetaObject::invokeMethod(this, "streamReading", Qt::QueuedConnection);
+    }else{
+        QJsonObject request;
+        request.insert("method", "stream");
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
+    }
+
 
 }
 
@@ -862,4 +945,40 @@ void SensorWorker::streamStatus(){
     //put connection stream into event queue again
     QMetaObject::invokeMethod(this, "streamStatus", Qt::QueuedConnection);
 
+}
+
+void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
+{
+    bool success = false;
+    QString msg = "";
+    if(response.value("error") != QJsonValue::Undefined){
+        msg = response.value("error").toObject().value("message").toString();
+    } else {
+        msg = response.value("result").toString();
+        success = true;
+    }
+    emit this->commandFinished(success, msg);
+}
+
+void SensorWorker::asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements)
+{
+    emit this->measurementDone(true);
+
+    if(measurements.size() > 0) {
+        emit this->commandFinished(true, "measurement data received");
+
+    }else {
+        emit this->commandFinished(true, "measurement did not deliver any results");
+    }
+
+    emit this->measurementFinished(geomId, measurements);
+
+}
+
+void SensorWorker::asyncSensorStreamDataReceived(const QVariantMap &reading)
+{
+    emit this->realTimeReading(reading);
+
+    //put reading stream into event queue again
+    QMetaObject::invokeMethod(this, "streamReading", Qt::QueuedConnection);
 }

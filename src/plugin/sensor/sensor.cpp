@@ -90,6 +90,15 @@ void Sensor::setSensorConfiguration(const SensorConfiguration &sConfig){
 }
 
 /*!
+ * \brief Sensor::setMeasurementConfig
+ * \param mConfig
+ */
+void Sensor::setMeasurementConfig(const MeasurementConfig &mConfig)
+{
+    this->actualMeasurementConfig = mConfig;
+}
+
+/*!
  * \brief Sensor::getLastReading
  * \return
  */
@@ -103,6 +112,14 @@ const QPair<ReadingTypes, QPointer<Reading> > &Sensor::getLastReading() const{
  */
 const QList<ReadingTypes> &Sensor::getSupportedReadingTypes() const{
     return this->supportedReadingTypes;
+}
+
+/*!
+ * \brief Sensor::isSensorAsync
+ * \return
+ */
+bool Sensor::isSensorAsync() const{
+    return false;
 }
 
 /*!
@@ -178,6 +195,25 @@ const Accuracy &Sensor::getDefaultAccuracy() const{
  */
 bool Sensor::accept(const SensorFunctions &method, const SensorAttributes &sAttr){
     return false;
+}
+
+/*!
+ * \brief Sensor::performAsyncSensorCommand
+ * Calls the appropriate internal sensor method asynchronously
+ * \param request
+ * \return
+ */
+QJsonObject Sensor::performAsyncSensorCommand(const QJsonObject &request) {
+
+    QJsonObject response;
+    QJsonObject error;
+    error.insert("code", -32000);
+    error.insert("message", "this sensor does not implement the interface methode for asynchronous commands");
+    response.insert("jsonrpc", "2.0");
+    response.insert("error", error);
+    response.insert("id", request.value("id"));
+    return response;
+
 }
 
 /*!
