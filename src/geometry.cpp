@@ -664,6 +664,10 @@ QString Geometry::getDisplayMeasurementConfig() const{
  */
 QString Geometry::getDisplayObservations() const{
 
+    if(this->isNominal){
+        return "";
+    }
+
     int validObs = 0;
     int totalObs = this->observations.size();
 
@@ -690,17 +694,13 @@ QString Geometry::getDisplayObservations() const{
                         validObs++;
                     }
                 }
-
             }
-
         }
 
         return QString("%1/%2").arg(validObs).arg(totalObs);
-
     }
 
     return QString("0/%1").arg(totalObs);
-
 }
 
 /*!
