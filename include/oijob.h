@@ -135,6 +135,7 @@ public:
 
     //remove existing observations
     void removeObservations(const int &featureId);
+    void removeObservations(const int &featureId, const QList<int> selectedIds);
     void removeAllObservations();
 
     //###############################

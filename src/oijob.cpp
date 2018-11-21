@@ -1565,6 +1565,31 @@ void OiJob::removeObservations(const int &featureId){
 }
 
 /*!
+ * \brief OiJob::removeObservations
+ * \param featureId
+ * \param selectedIds
+ */
+void OiJob::removeObservations(const int &featureId, const QList<int> selectedIds)
+{
+    //get and check feature with the id featureId
+    QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
+    if(feature.isNull() || feature->getGeometry().isNull()){
+        return;
+    }
+
+    //run through all observations of the feature
+    QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
+    foreach(const QPointer<Observation> &obs, observations){
+        if (selectedIds.contains(obs->getId())) {
+            delete obs;
+        }
+    }
+
+    //recalculate the feature
+    emit this->recalcFeature(feature->getFeature());
+}
+
+/*!
  * \brief OiJob::removeAllObservations
  */
 void OiJob::removeAllObservations(){
