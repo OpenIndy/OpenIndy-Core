@@ -495,7 +495,7 @@ void init(){
     materialStringsMap.insert(eMaterialConcrete, "concrete");
     materialStringsMap.insert(eMaterialReinforcedConcrete, "reinforced concrete");
 
-    materialValuesMap.insert(eMaterialSteel, 0.000016);
+    materialValuesMap.insert(eMaterialSteel, 0.00001139);
     materialValuesMap.insert(eMaterialAluminum, 0.000024);
     materialValuesMap.insert(eMaterialPlumb, 0.000030);
     materialValuesMap.insert(eMaterialIron, 0.000012);
