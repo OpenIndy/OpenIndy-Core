@@ -47,6 +47,9 @@ public:
     const QPointer<QIODevice> &getJobDevice() const;
     void setJobDevice(const QPointer<QIODevice> &jobDevice);
 
+    void setDigest(const QString &);
+    const QString &getDigest() const;
+
     int generateUniqueId();
 
     bool validateFeatureName(const QString &name, const FeatureTypes &type, const bool &isNominal = false,
@@ -318,6 +321,7 @@ private:
     QString jobName; //the name under that the job is saved
     QPointer<QIODevice> jobDevice; //the device where the job is saved
 
+    QString digest;
     //################################
     //active features and active group
     //################################
