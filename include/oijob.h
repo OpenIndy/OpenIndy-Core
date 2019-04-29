@@ -137,6 +137,8 @@ public:
     void removeObservations(const int &featureId);
     void removeObservations(const int &featureId, const QList<int> selectedIds);
     void removeAllObservations();
+    void enableObservations(const int &featureId);
+    void disableObservations(const int &featureId);
 
     //###############################
     //set use state of input elements

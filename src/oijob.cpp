@@ -1564,6 +1564,62 @@ void OiJob::removeObservations(const int &featureId){
 
 }
 
+void OiJob::enableObservations(const int &featureId)
+{
+    bool use = true;
+    int functionIndex = 0;
+    int neededElementIndex = 0;
+    //get and check feature with the id featureId
+    QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
+    if(feature.isNull() || feature->getGeometry().isNull()){
+        return;
+    }
+
+    //run through all observations of the feature
+    QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
+    foreach(const QPointer<Observation> &obs, observations){
+        int elementId = obs->getId();
+
+        //check if the current use state already equals the new use state
+        if(feature->getFeature()->getFunctions()[functionIndex]->getShouldBeUsed(neededElementIndex, elementId) == use){
+            continue;
+        }
+
+        //set should use
+        feature->getFeature()->getFunctions()[functionIndex]->setShouldBeUsed(neededElementIndex, elementId, use);
+    }
+
+    //recalculate the feature
+    emit this->recalcFeature(feature->getFeature());
+}
+void OiJob::disableObservations(const int &featureId)
+{
+    bool use = false;
+    int functionIndex = 0;
+    int neededElementIndex = 0;
+    //get and check feature with the id featureId
+    QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
+    if(feature.isNull() || feature->getGeometry().isNull()){
+        return;
+    }
+
+    //run through all observations of the feature
+    QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
+    foreach(const QPointer<Observation> &obs, observations){
+        int elementId = obs->getId();
+
+        //check if the current use state already equals the new use state
+        if(feature->getFeature()->getFunctions()[functionIndex]->getShouldBeUsed(neededElementIndex, elementId) == use){
+            continue;
+        }
+
+        //set should use
+        feature->getFeature()->getFunctions()[functionIndex]->setShouldBeUsed(neededElementIndex, elementId, use);
+    }
+
+    //recalculate the feature
+    emit this->recalcFeature(feature->getFeature());
+}
 /*!
  * \brief OiJob::removeObservations
  * \param featureId
