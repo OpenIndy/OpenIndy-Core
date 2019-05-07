@@ -338,6 +338,7 @@ private:
 
     int nextId; //the next free id an element of this job could get
 
+    void enableOrDisableObservations(const int &featureId, bool enable);
 };
 
 }
