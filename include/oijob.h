@@ -321,7 +321,9 @@ private:
     QString jobName; //the name under that the job is saved
     QPointer<QIODevice> jobDevice; //the device where the job is saved
 
+    // the digest of the job content
     QString digest;
+
     //################################
     //active features and active group
     //################################

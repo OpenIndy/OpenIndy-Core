@@ -57,10 +57,16 @@ void OiJob::setJobDevice(const QPointer<QIODevice> &jobDevice){
     this->jobDevice = jobDevice;
 }
 
+/*!
+ * \return the digest of the job content
+ */
 const QString &OiJob::getDigest() const {
     return this->digest;
 }
 
+/*!
+ * \brief set the digest of the job content
+ */
 void OiJob::setDigest(const QString &digest) {
     this->digest = digest;
 }
