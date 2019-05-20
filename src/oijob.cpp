@@ -58,6 +58,20 @@ void OiJob::setJobDevice(const QPointer<QIODevice> &jobDevice){
 }
 
 /*!
+ * \return the last calculated digest of the job content
+ */
+const QString &OiJob::getDigest() const {
+    return this->digest;
+}
+
+/*!
+ * \brief set the digest of the job content
+ */
+void OiJob::setDigest(const QString &digest) {
+    this->digest = digest;
+}
+
+/*!
  * \brief OiJob::generateUniqueId
  * \return
  */
