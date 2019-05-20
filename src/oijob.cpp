@@ -58,7 +58,7 @@ void OiJob::setJobDevice(const QPointer<QIODevice> &jobDevice){
 }
 
 /*!
- * \return the digest of the job content
+ * \return the last calculated digest of the job content
  */
 const QString &OiJob::getDigest() const {
     return this->digest;
