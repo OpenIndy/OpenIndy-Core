@@ -352,7 +352,8 @@ enum ReadingDisplayAttributes{
     eReadingDisplaySigmaI,
     eReadingDisplaySigmaJ,
     eReadingDisplaySigmaK,
-    eReadingDisplaySigmaTemperature
+    eReadingDisplaySigmaTemperature,
+    eReadingDisplayImported
 
 };
 

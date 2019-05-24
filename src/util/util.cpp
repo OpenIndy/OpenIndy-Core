@@ -345,6 +345,7 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaJ, "sigma j");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaK, "sigma k");
     readingDisplayAttributesMap.insert(eReadingDisplaySigmaTemperature, "sigma temperature");
+    readingDisplayAttributesMap.insert(eReadingDisplayImported, "imported");
 
     //fill trafo param display attributes map
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayType, "type");
