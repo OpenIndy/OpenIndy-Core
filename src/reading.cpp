@@ -15,6 +15,7 @@ Reading::Reading(QObject *parent) : Element(parent), hasBackup(false){
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 }
 
 /*!
@@ -33,6 +34,7 @@ Reading::Reading(const ReadingPolar &reading, QObject *parent) : Element(parent)
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -56,6 +58,7 @@ Reading::Reading(const ReadingCartesian &reading, QObject *parent) : Element(par
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -73,6 +76,7 @@ Reading::Reading(const ReadingDirection &reading, QObject *parent) : Element(par
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -90,6 +94,7 @@ Reading::Reading(const ReadingDistance &reading, QObject *parent) : Element(pare
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -107,6 +112,7 @@ Reading::Reading(const ReadingTemperature &reading, QObject *parent) : Element(p
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -124,6 +130,7 @@ Reading::Reading(const ReadingLevel &reading, QObject *parent) : Element(parent)
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -141,6 +148,7 @@ Reading::Reading(const ReadingUndefined &reading, QObject *parent) : Element(par
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -158,6 +166,7 @@ Reading::Reading(const Reading &copy, QObject *parent) : Element(copy, parent){
     this->sConfig = copy.sConfig;
     this->observation = copy.observation;
     this->hasBackup = copy.hasBackup;
+    this->imported = copy.imported;
 
     //copy readings
     this->typeOfReading = copy.typeOfReading;
@@ -192,6 +201,7 @@ Reading &Reading::operator=(const Reading &copy){
     this->sConfig = copy.sConfig;
     this->observation = copy.observation;
     this->hasBackup = copy.hasBackup;
+    this->imported = copy.imported;
 
     //copy readings
     this->typeOfReading = copy.typeOfReading;
