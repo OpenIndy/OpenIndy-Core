@@ -872,6 +872,7 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.setAttribute("id", this->id);
     reading.setAttribute("time", this->measuredAt.toString(Qt::ISODate));
     reading.setAttribute("type", getReadingTypeName(this->typeOfReading));
+    reading.setAttribute("imported", this->isImported());
 
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
@@ -1004,6 +1005,7 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->id = xmlElem.attribute("id").toInt();
     this->measuredAt = QDateTime::fromString(xmlElem.attribute("time"), Qt::ISODate);
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
+    this->setImported(xmlElem.attribute("imported").toInt());
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");
