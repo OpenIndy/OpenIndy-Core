@@ -203,6 +203,9 @@ public:
     const SensorFaces &getFace() const;
     void setSensorFace(const SensorFaces &face);
 
+    const bool &isImported() const;
+    void setImported(const bool &imported);
+
     //#################################################
     //get and set sensor configuration and observations
     //#################################################
@@ -285,6 +288,7 @@ private:
     QDateTime measuredAt;
     MeasurementConfig mConfig; //the configuration that the sensor used to produce this reading
     SensorFaces face;
+    bool imported; // indicate that "reading" was not measured but imported
 
     //######################
     //sensor and observation
