@@ -425,6 +425,22 @@ void Reading::setSensorFace(const SensorFaces &face){
 }
 
 /*!
+ * \brief indicate that "reading" was not measured but imported
+ * \return
+ */
+const bool &Reading::isImported() const{
+    return this->imported;
+}
+
+/*!
+ * \brief indicate that "reading" was not measured but imported
+ * \param imported
+ */
+void Reading::setImported(const bool &imported){
+    this->imported = imported;
+}
+
+/*!
  * \brief Reading::getSensorConfiguration
  * \return
  */
