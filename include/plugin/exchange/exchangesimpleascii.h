@@ -50,7 +50,8 @@ public:
         eColumnDistance,
         eColumnMeasurementSeries,
         eColumnTemperature,
-        eColumnLength
+        eColumnLength,
+        eColumnCommonState
     };
 
     //#########################################

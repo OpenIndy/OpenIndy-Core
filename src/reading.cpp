@@ -15,6 +15,7 @@ Reading::Reading(QObject *parent) : Element(parent), hasBackup(false){
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 }
 
 /*!
@@ -33,6 +34,7 @@ Reading::Reading(const ReadingPolar &reading, QObject *parent) : Element(parent)
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -56,6 +58,7 @@ Reading::Reading(const ReadingCartesian &reading, QObject *parent) : Element(par
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -73,6 +76,7 @@ Reading::Reading(const ReadingDirection &reading, QObject *parent) : Element(par
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -90,6 +94,7 @@ Reading::Reading(const ReadingDistance &reading, QObject *parent) : Element(pare
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -107,6 +112,7 @@ Reading::Reading(const ReadingTemperature &reading, QObject *parent) : Element(p
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -124,6 +130,7 @@ Reading::Reading(const ReadingLevel &reading, QObject *parent) : Element(parent)
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -141,6 +148,7 @@ Reading::Reading(const ReadingUndefined &reading, QObject *parent) : Element(par
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
     this->face = eFrontSide;
+    this->imported = false;
 
 }
 
@@ -158,6 +166,7 @@ Reading::Reading(const Reading &copy, QObject *parent) : Element(copy, parent){
     this->sConfig = copy.sConfig;
     this->observation = copy.observation;
     this->hasBackup = copy.hasBackup;
+    this->imported = copy.imported;
 
     //copy readings
     this->typeOfReading = copy.typeOfReading;
@@ -192,6 +201,7 @@ Reading &Reading::operator=(const Reading &copy){
     this->sConfig = copy.sConfig;
     this->observation = copy.observation;
     this->hasBackup = copy.hasBackup;
+    this->imported = copy.imported;
 
     //copy readings
     this->typeOfReading = copy.typeOfReading;
@@ -422,6 +432,22 @@ const SensorFaces &Reading::getFace() const{
  */
 void Reading::setSensorFace(const SensorFaces &face){
     this->face = face;
+}
+
+/*!
+ * \brief indicate that "reading" was not measured but imported
+ * \return
+ */
+const bool &Reading::isImported() const{
+    return this->imported;
+}
+
+/*!
+ * \brief indicate that "reading" was not measured but imported
+ * \param imported
+ */
+void Reading::setImported(const bool &imported){
+    this->imported = imported;
 }
 
 /*!
@@ -846,6 +872,7 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.setAttribute("id", this->id);
     reading.setAttribute("time", this->measuredAt.toString(Qt::ISODate));
     reading.setAttribute("type", getReadingTypeName(this->typeOfReading));
+    reading.setAttribute("imported", this->isImported());
 
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
@@ -978,6 +1005,7 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->id = xmlElem.attribute("id").toInt();
     this->measuredAt = QDateTime::fromString(xmlElem.attribute("time"), Qt::ISODate);
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
+    this->setImported(xmlElem.attribute("imported").toInt());
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");
