@@ -1016,7 +1016,7 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->measuredAt = QDateTime::fromString(xmlElem.attribute("time"), Qt::ISODate);
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
     this->setImported(xmlElem.attribute("imported").toInt());
-    this->setSensorFace((SensorFaces)(xmlElem.attribute("face").toInt()));
+    this->setSensorFace(xmlElem.attribute("face").isEmpty() ? eUndefinedSide : (SensorFaces)(xmlElem.attribute("face").toInt()));
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");
