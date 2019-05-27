@@ -332,7 +332,7 @@ enum ReadingDisplayAttributes{
     eReadingDisplayType,
     eReadingDisplayTime,
     eReadingDisplaySensor,
-    eReadingDisplayIsFrontSide,
+    eReadingDisplaySide,
     eReadingDisplayAzimuth,
     eReadingDisplayZenith,
     eReadingDisplayDistance,

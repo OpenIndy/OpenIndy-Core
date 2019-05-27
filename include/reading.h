@@ -224,7 +224,7 @@ public:
     QString getDisplayType() const;
     QString getDisplayTime() const;
     QString getDisplaySensor() const;
-    QString getDisplayIsFrontside() const;
+    QString getDisplaySide() const;
     QString getDisplayAzimuth(const UnitType &type, const int &digits) const;
     QString getDisplayZenith(const UnitType &type, const int &digits) const;
     QString getDisplayDistance(const UnitType &type, const int &digits) const;

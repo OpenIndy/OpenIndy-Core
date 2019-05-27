@@ -576,10 +576,10 @@ QString Reading::getDisplaySensor() const{
 }
 
 /*!
- * \brief Reading::getDisplayIsFrontside
+ * \brief Reading::getDisplaySide
  * \return
  */
-QString Reading::getDisplayIsFrontside() const{
+QString Reading::getDisplaySide() const{
     switch(this->face){
     case eFrontSide:
         return "FS";
