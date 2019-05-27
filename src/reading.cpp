@@ -588,7 +588,7 @@ QString Reading::getDisplaySide() const{
         return "BS";
         break;
     default:
-        return "-";
+        return "";
     }
 }
 
