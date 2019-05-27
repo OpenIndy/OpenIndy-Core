@@ -580,7 +580,16 @@ QString Reading::getDisplaySensor() const{
  * \return
  */
 QString Reading::getDisplayIsFrontside() const{
-    return (this->face == eFrontSide)?"true":"false";
+    switch(this->face){
+    case eFrontSide:
+        return "FS";
+        break;
+    case eBackSide:
+        return "BS";
+        break;
+    default:
+        return "-";
+    }
 }
 
 /*!
