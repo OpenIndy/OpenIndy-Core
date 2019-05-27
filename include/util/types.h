@@ -408,7 +408,8 @@ enum SensorTypes{
 enum SensorFaces{
 
     eFrontSide = 0,
-    eBackSide
+    eBackSide,
+    eUndefinedSide // e.g. not measured
 
 };
 
