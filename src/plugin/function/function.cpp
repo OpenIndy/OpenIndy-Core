@@ -851,3 +851,19 @@ void Function::setIsUsed(const int &position, const int &id, const bool &state){
     }
 
 }
+
+void Function::filterObservations(QList<QPointer<Observation> > allUsableObservations, QList<QPointer<Observation> > inputObservations) {
+    foreach(const InputElement &element, this->getInputElements()[0]){
+        if(!element.observation.isNull()
+                && element.observation->getIsSolved()
+                && element.observation->getIsValid()) {
+            allUsableObservations.append(element.observation);
+            this->setIsUsed(0, element.id, element.shouldBeUsed);
+            if(element.shouldBeUsed){
+                inputObservations.append(element.observation);
+            }
+            continue;
+        }
+        this->setIsUsed(0, element.id, false);
+    }
+}
