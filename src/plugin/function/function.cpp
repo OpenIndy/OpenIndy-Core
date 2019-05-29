@@ -852,7 +852,7 @@ void Function::setIsUsed(const int &position, const int &id, const bool &state){
 
 }
 
-void Function::filterObservations(QList<QPointer<Observation> > allUsableObservations, QList<QPointer<Observation> > inputObservations) {
+void Function::filterObservations(QList<QPointer<Observation> > &allUsableObservations, QList<QPointer<Observation> > &inputObservations) {
     foreach(const InputElement &element, this->getInputElements()[0]){
         if(!element.observation.isNull()
                 && element.observation->getIsSolved()
