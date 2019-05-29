@@ -867,3 +867,14 @@ void Function::filterObservations(QList<QPointer<Observation> > &allUsableObserv
         this->setIsUsed(0, element.id, false);
     }
 }
+
+void Function::addDisplayResidual(int elementId, double vx, double vy, double vz, double v) {
+    Residual residual;
+    residual.elementId = elementId;
+    residual.dimension = eMetric;
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVX), vx);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVY), vy);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVZ), vz);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayV), v);
+    this->statistic.addDisplayResidual(residual);
+}
