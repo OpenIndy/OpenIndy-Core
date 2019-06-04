@@ -1073,8 +1073,8 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         }
     }
 
-    this->toCartesian();
-    this->toPolar();
+    this->toCartesian(); // if necessary and posible
+    this->toPolar(); // if necessary and posible
 
     return true;
 }
@@ -1084,8 +1084,8 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
  */
 void Reading::toCartesian(){
 
-    //check if the polar reading is valid
-    if(!this->rPolar.isValid){
+    if(!this->rPolar.isValid //check if the polar reading is not valid
+        || this->rCartesian.isValid){ //cartesian reading available
         return;
     }
 
@@ -1102,8 +1102,8 @@ void Reading::toCartesian(){
  */
 void Reading::toPolar(){
 
-    //check if the cartesian reading is valid
-    if(!this->rCartesian.isValid){
+    if(!this->rPolar.isValid //check if the polar reading is not valid
+        || this->rCartesian.isValid){ //cartesian reading available
         return;
     }
 
@@ -1114,6 +1114,7 @@ void Reading::toPolar(){
     this->rPolar.azimuth = qAtan2(y,x);
     this->rPolar.distance = qSqrt(x*x+y*y+z*z);
     this->rPolar.zenith = acos(z/this->rPolar.distance);
+    this->rPolar.isValid = true;
 
 }
 
