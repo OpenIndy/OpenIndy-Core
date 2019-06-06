@@ -14,7 +14,7 @@ Reading::Reading(QObject *parent) : Element(parent), hasBackup(false){
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 }
 
@@ -33,7 +33,7 @@ Reading::Reading(const ReadingPolar &reading, QObject *parent) : Element(parent)
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -57,7 +57,7 @@ Reading::Reading(const ReadingCartesian &reading, QObject *parent) : Element(par
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -75,7 +75,7 @@ Reading::Reading(const ReadingDirection &reading, QObject *parent) : Element(par
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -93,7 +93,7 @@ Reading::Reading(const ReadingDistance &reading, QObject *parent) : Element(pare
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -111,7 +111,7 @@ Reading::Reading(const ReadingTemperature &reading, QObject *parent) : Element(p
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -129,7 +129,7 @@ Reading::Reading(const ReadingLevel &reading, QObject *parent) : Element(parent)
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -147,7 +147,7 @@ Reading::Reading(const ReadingUndefined &reading, QObject *parent) : Element(par
 
     //set default attributes
     this->measuredAt = QDateTime::currentDateTime();
-    this->face = eFrontSide;
+    this->face = eUndefinedSide;
     this->imported = false;
 
 }
@@ -576,11 +576,20 @@ QString Reading::getDisplaySensor() const{
 }
 
 /*!
- * \brief Reading::getDisplayIsFrontside
+ * \brief Reading::getDisplaySide
  * \return
  */
-QString Reading::getDisplayIsFrontside() const{
-    return (this->face == eFrontSide)?"true":"false";
+QString Reading::getDisplaySide() const{
+    switch(this->face){
+    case eFrontSide:
+        return "FS";
+        break;
+    case eBackSide:
+        return "BS";
+        break;
+    default:
+        return "";
+    }
 }
 
 /*!
@@ -873,6 +882,7 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.setAttribute("time", this->measuredAt.toString(Qt::ISODate));
     reading.setAttribute("type", getReadingTypeName(this->typeOfReading));
     reading.setAttribute("imported", this->isImported());
+    reading.setAttribute("face", (int)this->getFace());
 
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
@@ -1006,6 +1016,7 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->measuredAt = QDateTime::fromString(xmlElem.attribute("time"), Qt::ISODate);
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
     this->setImported(xmlElem.attribute("imported").toInt());
+    this->setSensorFace(xmlElem.attribute("face").isEmpty() ? eUndefinedSide : (SensorFaces)(xmlElem.attribute("face").toInt()));
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");
@@ -1062,8 +1073,8 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         }
     }
 
-    this->toCartesian();
-    this->toPolar();
+    this->toCartesian(); // if necessary and posible
+    this->toPolar(); // if necessary and posible
 
     return true;
 }
@@ -1073,8 +1084,8 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
  */
 void Reading::toCartesian(){
 
-    //check if the polar reading is valid
-    if(!this->rPolar.isValid){
+    if(!this->rPolar.isValid //check if the polar reading is not valid
+        || this->rCartesian.isValid){ //cartesian reading available
         return;
     }
 
@@ -1091,8 +1102,8 @@ void Reading::toCartesian(){
  */
 void Reading::toPolar(){
 
-    //check if the cartesian reading is valid
-    if(!this->rCartesian.isValid){
+    if(!this->rPolar.isValid //check if the polar reading is not valid
+        || this->rCartesian.isValid){ //cartesian reading available
         return;
     }
 
@@ -1103,6 +1114,7 @@ void Reading::toPolar(){
     this->rPolar.azimuth = qAtan2(y,x);
     this->rPolar.distance = qSqrt(x*x+y*y+z*z);
     this->rPolar.zenith = acos(z/this->rPolar.distance);
+    this->rPolar.isValid = true;
 
 }
 

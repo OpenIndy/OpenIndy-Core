@@ -332,7 +332,7 @@ enum ReadingDisplayAttributes{
     eReadingDisplayType,
     eReadingDisplayTime,
     eReadingDisplaySensor,
-    eReadingDisplayIsFrontSide,
+    eReadingDisplaySide,
     eReadingDisplayAzimuth,
     eReadingDisplayZenith,
     eReadingDisplayDistance,
@@ -408,7 +408,8 @@ enum SensorTypes{
 enum SensorFaces{
 
     eFrontSide = 0,
-    eBackSide
+    eBackSide,
+    eUndefinedSide // e.g. not measured
 
 };
 
