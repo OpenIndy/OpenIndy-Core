@@ -326,6 +326,9 @@ protected:
 
     QMap<int, QList<InputElement> > inputElements;
 
+    void filterObservations(QList<QPointer<Observation> > &allUsableObservations, QList<QPointer<Observation> > &inputObservations);
+    void addDisplayResidual(int elementId, double vx, double vy, double vz, double v);
+
 };
 
 }
