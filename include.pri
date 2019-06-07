@@ -41,9 +41,9 @@ HEADERS  += \
 # libraries
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/bin/release/ -lopenIndyCore1
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/bin/debug/ -lopenIndyCore1
-else:unix:CONFIG(release, debug|release): LIBS += -L$$PWD/bin/release/ -lopenIndyCore1
-else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/bin/debug/ -lopenIndyCore1
+else:unix:CONFIG(release, debug|release): LIBS += -L$$PWD/bin/release/ -lopenIndyCore
+else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/bin/debug/ -lopenIndyCore
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release/ -lopenIndyMath1
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug/ -lopenIndyMath1
-else:unix:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release/ -lopenIndyMath1
-else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug/ -lopenIndyMath1
+else:unix:CONFIG(release, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/release/ -lopenIndyMath
+else:unix:CONFIG(debug, debug|release): LIBS += -L$$PWD/lib/OpenIndy-Math/bin/debug/ -lopenIndyMath
