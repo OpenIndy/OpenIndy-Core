@@ -755,7 +755,7 @@ void Station::connectSensorControl(){
                                       const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
-    QObject::connect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot);
+    //QObject::connect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot); // TODO OI-482
     void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z,
@@ -807,7 +807,7 @@ void Station::disconnectSensorControl(){
                                       const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *movePolarSlot)(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &SensorControl::move;
-    QObject::disconnect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot);
+    //QObject::disconnect(this, movePolarSignal, this->sensorControl.data(), movePolarSlot); // TODO OI-482
     void (Station:: *moveCartesianSignal)(const double &x, const double &y, const double &z,
                                           const bool &measure, const int &geomId, const MeasurementConfig &mConfig) = &Station::move;
     void (SensorControl:: *moveCartesianSlot)(const double &x, const double &y, const double &z,
