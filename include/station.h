@@ -23,7 +23,7 @@ class Sensor;
 class OI_CORE_EXPORT Station : public Feature
 {
     friend class OiJob;
-    friend class ProjectExchanger;
+    friend class ::ProjectExchanger;
     friend class Observation;
     Q_OBJECT
 
