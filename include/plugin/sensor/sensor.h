@@ -142,7 +142,7 @@ signals:
 
     void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
     void asyncSensorResponse(const QJsonObject &response);
-    void asyncMeasurementResult(const int &geomId, const QList<QPointer<Reading>> &measurements);
+    void asyncMeasurementResult(const int &geomId, const QList<QPointer<Reading> > &measurements);
     void asyncStreamResult(const QVariantMap &reading);
     void asyncSensorNotification(const QJsonObject &response);
 
