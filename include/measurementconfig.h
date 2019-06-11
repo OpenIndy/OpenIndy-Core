@@ -67,6 +67,9 @@ public:
     const ReadingTypes &getTypeOfReading() const;
     void setTypeOfReading(const ReadingTypes &type);
 
+    const bool &getMeasureWithAim() const;
+    void setMeasureWithAim(const bool &measureWithAim);
+
     //#################
     //save and load XML
     //#################
@@ -91,6 +94,7 @@ private:
     long timeInterval; //time interval in which the sensor shall measure
     double distanceInterval; //distance interval in which the sensor shall measure
     ReadingTypes typeOfReading; //the type of reading which the sensor shall return
+    bool measureWithAim; //true search target / aim then measure
 
 };
 

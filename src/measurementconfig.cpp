@@ -16,6 +16,7 @@ MeasurementConfig::MeasurementConfig() : isSaved(false){
     this->timeInterval = 0;
     this->distanceInterval = 0.0;
     this->typeOfReading = ePolarReading;
+    this->measureWithAim = false;
 
 }
 
@@ -36,6 +37,7 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
+    this->measureWithAim = copy.measureWithAim;
 
 }
 
@@ -57,7 +59,7 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
-
+    this->measureWithAim = copy.measureWithAim;
     return *this;
 
 }
@@ -154,6 +156,23 @@ const bool &MeasurementConfig::getMeasureTwoSides() const{
  */
 void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
     this->measureTwoSides = measureTwoSides;
+    this->isSaved = false;
+}
+
+/*!
+ * \brief MeasurementConfig::getMeasureWithAim
+ * \return
+ */
+const bool &MeasurementConfig::getMeasureWithAim() const{
+    return this->measureWithAim;
+}
+
+/*!
+ * \brief MeasurementConfig::setMeasureWithAim
+ * \param twoSides
+ */
+void MeasurementConfig::setMeasureWithAim(const bool &measureWithAim){
+    this->measureWithAim = measureWithAim;
     this->isSaved = false;
 }
 
@@ -266,6 +285,7 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     mConfig.setAttribute("timeInterval", QString::number(this->timeInterval));
     mConfig.setAttribute("distanceInterval", this->distanceInterval);
     mConfig.setAttribute("typeOfReading", this->typeOfReading);
+    mConfig.setAttribute("measureWithAim", this->measureWithAim);
 
     return mConfig;
 
@@ -298,6 +318,7 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
     this->typeOfReading = (ReadingTypes)xmlElem.attribute("typeOfReading").toInt();
+    this->measureWithAim = xmlElem.attribute("measureWithAim").toInt();
 
     if(xmlElem.hasAttribute("isSaved")){
         this->isSaved = xmlElem.attribute("isSaved").toInt();
