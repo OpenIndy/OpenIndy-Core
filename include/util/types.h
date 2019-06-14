@@ -148,6 +148,7 @@ enum GeometryTypes{
     eSphereGeometry,
     eTorusGeometry,
 
+    ePlaneLevelGeometry, // special plane
     eUndefinedGeometry
 
 };
