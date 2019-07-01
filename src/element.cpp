@@ -8,10 +8,12 @@ Element::Element(QObject *parent) : QObject(parent), id(-1){
 
 Element::Element(const Element &copy, QObject *parent) : QObject(parent){
     this->id = copy.id;
+    this->isNullObject = copy.isNullObject;
 }
 
 Element &Element::operator=(const Element &copy){
     this->id = copy.id;
+    this->isNullObject = copy.isNullObject;
     return *this;
 }
 
@@ -76,5 +78,11 @@ bool Element::fromOpenIndyXML(QDomElement &xmlElem){
 
 }
 
-
-
+/*!
+ * null object or invalid object
+ * @brief Element::isNull
+ * @return
+ */
+bool Element::isNull() {
+    return isNullObject;
+}

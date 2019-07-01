@@ -13,6 +13,13 @@ Position::Position(QObject *parent) : Element(parent){
     this->xyzH.add(1.0);
 }
 
+Position::Position(bool isNullObject, QObject *parent) : Element(parent){
+    this->xyz = OiVec(3);
+    this->xyzH = OiVec(3);
+    this->xyzH.add(1.0);
+    this->isNullObject = isNullObject;
+}
+
 /*!
  * \brief Position::Position
  * \param v
@@ -71,7 +78,7 @@ Position &Position::operator=(const Position &copy){
 
     this->xyz = copy.xyz;
     this->xyzH = copy.xyzH;
-
+    this->isNullObject = copy.isNullObject;
     return *this;
 
 }
@@ -134,3 +141,5 @@ const OiVec &Position::getVector() const{
 const OiVec &Position::getVectorH() const{
     return this->xyzH;
 }
+
+const Position Position::NullObject = Position(true);
