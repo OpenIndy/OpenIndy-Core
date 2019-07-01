@@ -41,6 +41,8 @@ public:
     virtual QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     virtual bool fromOpenIndyXML(QDomElement &xmlElem);
 
+    bool isNull();
+
 signals:
 
     //#######################################
@@ -52,6 +54,9 @@ signals:
 protected:
     int id;
 
+private:
+    // indicates null object or invalid object
+    bool isNullObject;
 };
 
 }

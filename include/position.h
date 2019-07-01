@@ -19,6 +19,7 @@ class OI_CORE_EXPORT Position : public Element
 
 public:
     explicit Position(QObject *parent = 0);
+    explicit Position(bool isNullObject, QObject *parent = 0);
     explicit Position(const OiVec &v, QObject *parent = 0);
     explicit Position(const double &x, const double &y, const double &z, const double &h = 1.0, QObject *parent = 0);
 
@@ -37,6 +38,8 @@ public:
 
     const OiVec &getVector() const;
     const OiVec &getVectorH() const;
+
+    const static Position NullObject;
 
 protected:
     OiVec xyz; //vector of size 3 (x, y, z)
