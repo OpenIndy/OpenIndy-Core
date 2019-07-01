@@ -75,10 +75,11 @@ Position::Position(const Position &copy, QObject *parent) : Element(copy, parent
  * \return
  */
 Position &Position::operator=(const Position &copy){
+    Element::operator=(copy);
 
     this->xyz = copy.xyz;
     this->xyzH = copy.xyzH;
-    this->isNullObject = copy.isNullObject;
+
     return *this;
 
 }
