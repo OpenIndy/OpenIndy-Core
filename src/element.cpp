@@ -2,7 +2,7 @@
 
 using namespace oi;
 
-Element::Element(QObject *parent) : QObject(parent), id(-1){
+Element::Element(QObject *parent) : QObject(parent), id(-1), isNullObject(false){
 
 }
 
