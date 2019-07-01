@@ -53,10 +53,9 @@ signals:
 
 protected:
     int id;
-
-private:
     // indicates null object or invalid object
     bool isNullObject;
+
 };
 
 }
