@@ -45,7 +45,7 @@ void OiJob::setJobName(const QString &jobName){
  * \brief OiJob::getJobDevice
  * \return
  */
-const QPointer<QIODevice> &OiJob::getJobDevice() const{
+const QPointer<QFileDevice> &OiJob::getJobDevice() const{
     return this->jobDevice;
 }
 
@@ -53,7 +53,7 @@ const QPointer<QIODevice> &OiJob::getJobDevice() const{
  * \brief OiJob::setJobDevice
  * \param jobDevice
  */
-void OiJob::setJobDevice(const QPointer<QIODevice> &jobDevice){
+void OiJob::setJobDevice(const QPointer<QFileDevice> &jobDevice){
     this->jobDevice = jobDevice;
 }
 
