@@ -318,8 +318,8 @@ private:
     //meta information of a job
     //#########################
 
-    QString jobName; //the name under that the job is saved
-    QPointer<QFileDevice> jobDevice; //the device where the job is saved
+    QString jobName; // the name under that the job is saved
+    QPointer<QFileDevice> jobDevice; // the device where the job is saved
 
     // the last calculated digest of the job content
     QString digest;
