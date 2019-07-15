@@ -45,7 +45,7 @@ void OiJob::setJobName(const QString &jobName){
  * \brief OiJob::getJobDevice
  * \return
  */
-const QPointer<QIODevice> &OiJob::getJobDevice() const{
+const QPointer<QFileDevice> &OiJob::getJobDevice() const{
     return this->jobDevice;
 }
 
@@ -53,7 +53,7 @@ const QPointer<QIODevice> &OiJob::getJobDevice() const{
  * \brief OiJob::setJobDevice
  * \param jobDevice
  */
-void OiJob::setJobDevice(const QPointer<QIODevice> &jobDevice){
+void OiJob::setJobDevice(const QPointer<QFileDevice> &jobDevice){
     this->jobDevice = jobDevice;
 }
 
@@ -3148,6 +3148,10 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
 
         //pass the job instance to the feature
         feature->getFeature()->job = this;
+        for(QPointer<Function> function : feature->getFeature()->getFunctions()) {
+            QObject::connect(function.data(), &Function::sendMessage, this, &OiJob::sendMessage, Qt::AutoConnection);
+        }
+
         if(!feature->getStation().isNull()){
 
             //pass job to the station system
