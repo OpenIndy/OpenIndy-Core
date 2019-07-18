@@ -22,7 +22,7 @@ ExchangeInterface::~ExchangeInterface(){
 
     //delete device if not deleted yet
     if(!this->device.isNull()){
-        delete this->device;
+        delete this->device.data();
     }
 
 }
