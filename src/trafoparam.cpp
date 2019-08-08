@@ -183,7 +183,7 @@ bool TrafoParam::setCoordinateSystems(const QPointer<CoordinateSystem> &from, co
  * \brief TrafoParam::getIsBundle
  * \return
  */
-const bool &TrafoParam::getIsBundle() const{
+const bool TrafoParam::getIsBundle() const{
 
     if(!this->from.isNull() && !this->to.isNull()){
         if(this->from->getIsBundleSystem() || this->to->getIsBundleSystem()){

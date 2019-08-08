@@ -277,7 +277,7 @@ void Station::resetSensor(){
  * \brief Station::getUsedSensors
  * \return
  */
-const QList<Sensor> &Station::getUsedSensors() const{
+const QList<Sensor> Station::getUsedSensors() const{
 
     //check sensor control
     if(this->sensorControl.isNull()){
