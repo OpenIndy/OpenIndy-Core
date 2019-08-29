@@ -89,7 +89,7 @@ private:
     bool timeDependent; //true if the sensor shall measure in a special timeInterval (false if not)
     bool distanceDependent; //true if the sensor shall measure in a special distanceInterval (false if not)
     long timeInterval; //time interval in which the sensor shall measure
-    double distanceInterval; //distance interval in which the sensor shall measure
+    double distanceInterval; //distance interval in which the sensor shall measure [mm]
     ReadingTypes typeOfReading; //the type of reading which the sensor shall return
 
 };
