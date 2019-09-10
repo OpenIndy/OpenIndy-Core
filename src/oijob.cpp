@@ -2227,7 +2227,7 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
     //QObject::connect(feature->getFeature().data(), &Feature::featureIsUpdatedChanged,
     //                 this, &OiJob::setFeatureIsUpdated, Qt::AutoConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureIsSolvedChanged,
-                     this, &OiJob::setFeatureIsSolved, Qt::AutoConnection);
+                     this, &OiJob::setFeatureIsSolved, Qt::QueuedConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureFunctionListChanged,
                      this, &OiJob::setFeatureFunctions, Qt::AutoConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureUsedForChanged,
