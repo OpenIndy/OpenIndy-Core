@@ -210,7 +210,7 @@ void MeasurementConfig::setTimeInterval(const long &interval){
 
 /*!
  * \brief MeasurementConfig::getDistanceInterval
- * \return
+ * \return interval [mm]
  */
 const double &MeasurementConfig::getDistanceInterval() const{
     return this->distanceInterval;
@@ -218,7 +218,7 @@ const double &MeasurementConfig::getDistanceInterval() const{
 
 /*!
  * \brief MeasurementConfig::setDistanceInterval
- * \param interval
+ * \param interval [mm]
  */
 void MeasurementConfig::setDistanceInterval(const double &interval){
     this->distanceInterval = interval;

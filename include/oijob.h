@@ -44,8 +44,8 @@ public:
     const QString &getJobName() const;
     void setJobName(const QString &jobName);
 
-    const QPointer<QIODevice> &getJobDevice() const;
-    void setJobDevice(const QPointer<QIODevice> &jobDevice);
+    const QPointer<QFileDevice> &getJobDevice() const;
+    void setJobDevice(const QPointer<QFileDevice> &jobDevice);
 
     void setDigest(const QString &);
     const QString &getDigest() const;
@@ -318,8 +318,8 @@ private:
     //meta information of a job
     //#########################
 
-    QString jobName; //the name under that the job is saved
-    QPointer<QIODevice> jobDevice; //the device where the job is saved
+    QString jobName; // the name under that the job is saved
+    QPointer<QFileDevice> jobDevice; // the device where the job is saved
 
     // the last calculated digest of the job content
     QString digest;

@@ -113,17 +113,17 @@ Station::~Station(){
 
     //delete corresponding coordinate system with all observations made from this station
     if(!this->stationSystem.isNull()){
-        delete this->stationSystem;
+        delete this->stationSystem.data();
     }
 
     //delete position of this station
     if(!this->position.isNull()){
-        delete this->position;
+        delete this->position.data();
     }
 
     //delete sensor control
     if(!this->sensorControl.isNull()){
-        delete this->sensorControl;
+        delete this->sensorControl.data();
     }
 
 }

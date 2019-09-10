@@ -189,6 +189,7 @@ void init(){
     geometryTypesMap.insert(eSlottedHoleGeometry, "slotted hole");
     geometryTypesMap.insert(eSphereGeometry, "sphere");
     geometryTypesMap.insert(eTorusGeometry, "torus");
+    geometryTypesMap.insert(ePlaneLevelGeometry, "level");
 
     //fill element type icons
     elementTypeIcons.insert(eCircleElement, ":/icons/icons/toolbars/feature/Circle.png");
