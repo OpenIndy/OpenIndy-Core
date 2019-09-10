@@ -146,7 +146,7 @@ private slots:
     void monitorConnectionStatus();
     void streamStatus();
     void asyncSensorResponseReceived(const QJsonObject &response);
-    void asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading>> &measurements);
+    void asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements);
     void asyncSensorStreamDataReceived(const QVariantMap &reading);
 
 private:

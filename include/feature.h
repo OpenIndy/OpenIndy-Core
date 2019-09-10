@@ -20,7 +20,6 @@ class Function;
 class OI_CORE_EXPORT Feature : public Element
 {
     friend class OiJob;
-    friend class Feature;
     Q_OBJECT
 
 public:

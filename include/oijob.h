@@ -29,7 +29,7 @@ namespace oi{
  */
 class OI_CORE_EXPORT OiJob : public QObject
 {
-    friend class ProjectExchanger;
+    friend class ::ProjectExchanger;
     Q_OBJECT
 
 public:

@@ -2026,7 +2026,7 @@ const QString &getMaterialName(const MaterialsTempComp &material)
  * \param material
  * \return
  */
-const double &getMaterialValue(const MaterialsTempComp &material)
+const double getMaterialValue(const MaterialsTempComp &material)
 {
     //fill helper maps if not yet done
     if(!internal::isInit){
@@ -2080,7 +2080,7 @@ const double getTemperatureExpansion(const QString material, double actual, doub
  * \param menuSize
  * \return
  */
-const int &getDropDownMenuSize(QStringList list, const int menuSize)
+const int getDropDownMenuSize(QStringList list, const int menuSize)
 {
     //get largest string in list
     QString largestString = "";

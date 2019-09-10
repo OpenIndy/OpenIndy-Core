@@ -157,11 +157,11 @@ const QString OI_CORE_EXPORT &getActualNominalFilterName(const ActualNominalFilt
 ActualNominalFilter OI_CORE_EXPORT getActualNominalFilterEnum(const QString &name);
 
 const QString OI_CORE_EXPORT &getMaterialName(const MaterialsTempComp &material);
-const double OI_CORE_EXPORT &getMaterialValue(const MaterialsTempComp &material);
+const double OI_CORE_EXPORT getMaterialValue(const MaterialsTempComp &material);
 const double OI_CORE_EXPORT getTemperatureExpansion(const QString material, double actual, double nominal);
 QList<QString> OI_CORE_EXPORT getMaterials();
 
-const int OI_CORE_EXPORT &getDropDownMenuSize(QStringList list, const int menuSize);
+const int OI_CORE_EXPORT getDropDownMenuSize(QStringList list, const int menuSize);
 
 }
 
