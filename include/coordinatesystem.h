@@ -28,8 +28,8 @@ class OI_CORE_EXPORT CoordinateSystem : public Feature
 {
     friend class Station;
     friend class OiJob;
-    friend class TrafoController;
-    friend class ProjectExchanger;
+    friend class ::TrafoController;
+    friend class ::ProjectExchanger;
     friend class Observation;
     Q_OBJECT
 

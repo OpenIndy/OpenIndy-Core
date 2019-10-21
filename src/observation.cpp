@@ -141,7 +141,7 @@ Observation::~Observation(){
     }
 
     //delete the corresponding reading
-    delete this->getReading();
+    delete this->getReading().data();
 
 }
 

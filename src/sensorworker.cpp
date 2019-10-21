@@ -96,7 +96,7 @@ void SensorWorker::resetSensor(){
         QObject::disconnect(sensor, &Sensor::asyncStreamResult, this, &SensorWorker::asyncSensorStreamDataReceived);
 
         //delete sensor
-        delete this->sensor;
+        delete this->sensor.data();
 
     }
 

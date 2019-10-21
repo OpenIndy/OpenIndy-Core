@@ -25,7 +25,6 @@ class CoordinateSystem;
  */
 class OI_CORE_EXPORT Geometry : public Feature
 {
-    friend class Geometry;
     friend class OiJob;
     Q_OBJECT
 

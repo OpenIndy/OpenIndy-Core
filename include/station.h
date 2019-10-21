@@ -23,7 +23,7 @@ class Sensor;
 class OI_CORE_EXPORT Station : public Feature
 {
     friend class OiJob;
-    friend class ProjectExchanger;
+    friend class ::ProjectExchanger;
     friend class Observation;
     Q_OBJECT
 
@@ -63,7 +63,7 @@ public:
     void resetSensor();
 
     //previously used sensors
-    const QList<Sensor> &getUsedSensors() const;
+    const QList<Sensor> getUsedSensors() const;
 
     //get geometries measured from this station
     QList<QPointer<Geometry> > getTargetGeometries() const;

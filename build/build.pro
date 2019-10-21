@@ -3,7 +3,7 @@
 # Project created by QtCreator 2013-09-18T14:25:09
 #
 #-------------------------------------------------
-
+CONFIG += c++11
 QT       += core svg serialport network xml
 
 greaterThan(QT_MAJOR_VERSION, 4):

@@ -20,7 +20,7 @@ OiJob::~OiJob(){
 
     //delete device pointer
     if(!this->jobDevice.isNull()){
-        delete this->jobDevice;
+        delete this->jobDevice.data();
     }
 
 }
@@ -989,7 +989,7 @@ void OiJob::removeFunction(const int &functionIndex){
 
     //remove and delete the function
     this->activeFeature->getFeature()->removeFunction(functionIndex);
-    delete function;
+    delete function.data();
 
 }
 
@@ -1504,7 +1504,7 @@ void OiJob::addMeasurementResults(const int &geomId, const QList<QPointer<Readin
     if(activeStation.isNull() || activeStation->getCoordinateSystem().isNull()){
         foreach(const QPointer<Reading> &reading, readings){
             if(!reading.isNull()){
-                delete reading;
+                delete reading.data();
             }
         }
         return;
@@ -1515,7 +1515,7 @@ void OiJob::addMeasurementResults(const int &geomId, const QList<QPointer<Readin
     if(feature.isNull() || feature->getGeometry().isNull()){
         foreach(const QPointer<Reading> &reading, readings){
             if(!reading.isNull()){
-                delete reading;
+                delete reading.data();
             }
         }
         return;
@@ -1570,7 +1570,7 @@ void OiJob::removeObservations(const int &featureId){
     //run through all observations of the feature
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
-        delete obs;
+        delete obs.data();
     }
 
     //recalculate the feature
@@ -1630,7 +1630,7 @@ void OiJob::removeObservations(const int &featureId, const QList<int> selectedId
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
         if (selectedIds.contains(obs->getId())) {
-            delete obs;
+            delete obs.data();
         }
     }
 
@@ -2227,7 +2227,7 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
     //QObject::connect(feature->getFeature().data(), &Feature::featureIsUpdatedChanged,
     //                 this, &OiJob::setFeatureIsUpdated, Qt::AutoConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureIsSolvedChanged,
-                     this, &OiJob::setFeatureIsSolved, Qt::AutoConnection);
+                     this, &OiJob::setFeatureIsSolved, Qt::QueuedConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureFunctionListChanged,
                      this, &OiJob::setFeatureFunctions, Qt::AutoConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureUsedForChanged,
@@ -2566,7 +2566,7 @@ QPointer<FeatureWrapper> OiJob::createFeatureWrapper(const FeatureTypes &type, b
         feature->setTorus(torus);
         break;
     }default:{
-        delete feature;
+        delete feature.data();
     }
     }
 

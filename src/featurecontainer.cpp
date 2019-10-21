@@ -341,8 +341,8 @@ bool FeatureContainer::removeFeature(const int &featureId){
     }
 
     //delete the feature
-    delete feature->getFeature();
-    delete feature;
+    delete feature->getFeature().data();
+    delete feature.data();
 
     return true;
 
@@ -430,9 +430,9 @@ void FeatureContainer::removeAll(){
     foreach(const QPointer<FeatureWrapper> &feature, this->featuresList){
         if(!feature.isNull()){
             if(feature->getFeature().isNull()){
-                delete feature->getFeature();
+                delete feature->getFeature().data();
             }
-            delete feature;
+            delete feature.data();
         }
     }
 
