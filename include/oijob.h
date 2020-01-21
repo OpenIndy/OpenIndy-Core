@@ -345,6 +345,9 @@ private:
     int nextId; //the next free id an element of this job could get
 
     void enableOrDisableObservations(const int &featureId, bool enable);
+    void enableOrDisableStationObservations(QPointer<Station> station, bool enable);
+    void enableOrDisableGeometryObservations(const int &featureId, bool enable, QPointer<Station> station);
+
 };
 
 }

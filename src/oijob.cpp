@@ -1579,17 +1579,42 @@ void OiJob::removeObservations(const int &featureId){
 }
 
 void OiJob::enableOrDisableObservations(const int &featureId, bool enable) {
+    QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
+    if(feature.isNull()) {
+        emit this->sendMessage(QString("Cannot enable or disable observations from %1").arg(feature.isNull() ? QString("feature id: %1").arg(featureId) : feature->getFeature()->getFeatureName()), eWarningMessage);
+        return;
+    }
+
+    QPointer<Station> station = feature->getStation();
+    if(!station.isNull()) { // is station
+        enableOrDisableStationObservations(station, enable);
+    } else {
+        enableOrDisableGeometryObservations(featureId, enable, QPointer<Station>());
+    }
+}
+
+void OiJob::enableOrDisableStationObservations(QPointer<Station> station, bool enable) {
+    foreach(int featureId, this->featureContainer.getFeatureIdList()) {
+        enableOrDisableGeometryObservations(featureId, enable, station);
+    }
+}
+
+void OiJob::enableOrDisableGeometryObservations(const int &featureId, bool enable, QPointer<Station> station) {
     int functionIndex = 0;
     int neededElementIndex = 0;
     //get and check feature with the id featureId
     QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
     if(feature.isNull() || feature->getGeometry().isNull()){
+        emit this->sendMessage(QString("Cannot enable or disable observations from %1").arg(feature.isNull() ? QString("feature id: %1").arg(featureId) : feature->getFeature()->getFeatureName()), eWarningMessage);
         return;
     }
 
     //run through all observations of the feature
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
+        if(!station.isNull() && station->getId() != obs->getStation()->getId()) {
+            continue; // skip
+        }
         int elementId = obs->getId();
 
         //check if the current use state already equals the new use state
