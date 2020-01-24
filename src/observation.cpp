@@ -61,6 +61,25 @@ Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Elem
 }
 
 /*!
+ * \brief Observation::Observation
+ * \param xyz
+ * \param observation id
+ * \param isValid
+ * \param parent
+ */
+Observation::Observation(const OiVec &xyz, int id, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
+    isValid(isValid), isSolved(false) , hasDirection(false) {
+
+    this->id = id;
+
+    if(xyz.getSize() == this->xyz.getSize()){
+        this->xyz = xyz;
+        this->originalXyz = xyz;
+        this->isSolved = true;
+    }
+
+}
+/*!
  * \brief Observation::operator =
  * \param copy
  * \return
