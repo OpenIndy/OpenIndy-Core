@@ -70,6 +70,9 @@ public:
     Residual getDisplayResidual(const int &elementId) const;
     void addDisplayResidual(const Residual &residual);
 
+    void setFormError(const double &formError);
+    const double &getFormError() const;
+
 private:
     bool isValid;
 
@@ -87,6 +90,8 @@ private:
 
     OiVec v; //vertical distances from geometry surface
     QMap<int, Residual> displayResidualsMap; //map of display residuals (key: element id that the residual belongs to)
+
+    double formError;
 
 };
 

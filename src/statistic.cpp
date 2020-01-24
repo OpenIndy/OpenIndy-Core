@@ -13,6 +13,7 @@ Statistic::Statistic(){
     this->s0_apriori = 0.0;
     this->s0_aposteriori = 0.0;
     this->stdev = 0.0;
+    this->formError = 0.0;
 
 }
 
@@ -25,6 +26,7 @@ Statistic::Statistic(const Statistic &copy){
     this->s0_apriori = copy.s0_apriori;
     this->s0_aposteriori = copy.s0_aposteriori;
     this->stdev = copy.stdev;
+    this->formError = copy.formError;
 
     //this->displayResiduals = copy.displayResiduals;
     this->isValid = copy.isValid;
@@ -45,6 +47,7 @@ Statistic& Statistic::operator =(const Statistic &other){
     this->s0_apriori = other.s0_apriori;
     this->s0_aposteriori = other.s0_aposteriori;
     this->stdev = other.stdev;
+    this->formError = other.formError;
 
     //this->displayResiduals = other.displayResiduals;
     this->isValid = other.isValid;
@@ -84,6 +87,7 @@ void Statistic::reset(){
     this->s0_apriori = 0.0;
     this->s0_aposteriori = 0.0;
     this->stdev = 0.0;
+    this->formError = 0.0;
 
     OiMat resetMat;
     this->p.replace(resetMat);
@@ -224,4 +228,14 @@ void Statistic::addDisplayResidual(const Residual &residual){
     this->displayResidualsMap.insert(residual.elementId, residual);
 }
 
+void Statistic::setFormError(const double &formError) {
+    this->formError = formError;
+}
 
+/**
+ * \brief Statistic::getFormError
+ * \return form error depends on function / feature
+ */
+const double &Statistic::getFormError() const {
+    return this->formError;
+}
