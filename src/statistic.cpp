@@ -91,7 +91,6 @@ void Statistic::reset(){
     OiVec resetVec;
     this->v.replace(resetVec);
 
-    this->displayResidualsList.clear();
     this->displayResidualsMap.clear();
 
 }
@@ -205,7 +204,7 @@ void Statistic::setV(const OiVec &v){
  * \return
  */
 const QList<Residual> &Statistic::getDisplayResiduals() const{
-    return this->displayResidualsList;
+    return this->displayResidualsMap.values();
 }
 
 /*!
@@ -222,7 +221,6 @@ Residual Statistic::getDisplayResidual(const int &elementId) const{
  * \param residual
  */
 void Statistic::addDisplayResidual(const Residual &residual){
-    this->displayResidualsList.append(residual);
     this->displayResidualsMap.insert(residual.elementId, residual);
 }
 
