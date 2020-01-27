@@ -378,19 +378,19 @@ void init(){
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsDatumTransformation, "datum transformation");
 
     //fill available display attributes
-    for(int i = 0; i < 10; i++){ //general feature attributes
+    for(int i = eFeatureDisplayType; i <= eFeatureDisplayStDev; i++){ //general feature attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 100; i < 104; i++){ //geometry specific attributes
+    for(int i = eFeatureDisplayMeasurementConfig; i <= eFeatureDisplayIsActual; i++){ //geometry specific attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 200; i < 220; i++){ //unknown geometry parameters
+    for(int i = eFeatureDisplayX; i <= eFeatureDisplayFormError; i++){ //unknown geometry parameters
         featureDisplayAttributes.append(i);
     }
-    for(int i = 300; i < 303; i++){ //coordinate system specific
+    for(int i = eFeatureDisplayExpansionOriginX; i <= eFeatureDisplayExpansionOriginZ; i++){ //coordinate system specific
         featureDisplayAttributes.append(i);
     }
-    for(int i = 400; i < 415; i++){ //trafo param specific
+    for(int i = eTrafoParamDisplayStartSystem; i <= eTrafoParamDisplayIsDatumTransformation; i++){ //trafo param specific
         featureDisplayAttributes.append(i);
     }
 

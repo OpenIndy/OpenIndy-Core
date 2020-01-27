@@ -231,14 +231,14 @@ enum FeatureDisplayAttributes{
     eFeatureDisplayUsedFor,
     eFeatureDisplayPreviouslyNeeded,
     eFeatureDisplayStDev,
-    // for new enum check range in util.cpp getIsFeatureDisplayAttribute
+    // for new enum check range in util.cpp getIsFeatureDisplayAttribute && featureDisplayAttributes.append(i)
 
     //geometry specific
     eFeatureDisplayMeasurementConfig = 100,
     eFeatureDisplayObservations,
     eFeatureDisplayIsCommon,
     eFeatureDisplayIsActual,
-    // for new enum check range in util.cpp getIsFeatureDisplayAttribute
+    // for new enum check range in util.cpp getIsFeatureDisplayAttribute  && featureDisplayAttributes.append(i)
 
     //unknown parameters
     eFeatureDisplayX = 200,
@@ -262,13 +262,13 @@ enum FeatureDisplayAttributes{
     eFeatureDisplayTemperature,
     eFeatureDisplayLength,
     eFeatureDisplayFormError,
-    // for new enum check range in util.cpp getIsFeatureDisplayAttribute
+    // for new enum check range in util.cpp getIsFeatureDisplayAttribute && featureDisplayAttributes.append(i)
 
     //coordinate system specific
     eFeatureDisplayExpansionOriginX = 300,
     eFeatureDisplayExpansionOriginY,
     eFeatureDisplayExpansionOriginZ
-    // for new enum check range in util.cpp getIsFeatureDisplayAttribute
+    // for new enum check range in util.cpp getIsFeatureDisplayAttribute && featureDisplayAttributes.append(i)
 
 };
 
@@ -302,7 +302,7 @@ enum TrafoParamDisplayAttributes{
     eTrafoParamDisplayValidTime,
     eTrafoParamDisplayIsMovement,
     eTrafoParamDisplayIsDatumTransformation
-
+    // for new enum check range featureDisplayAttributes.append(i)
 };
 
 enum ObservationDisplayAttributes{
