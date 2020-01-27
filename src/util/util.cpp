@@ -1055,7 +1055,10 @@ const QList<ReadingDisplayAttributes> &getReadingDisplayAttributes(){
  * \return
  */
 bool getIsFeatureDisplayAttribute(const int &attr){
-    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 104) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
+    if( (   attr >= eFeatureDisplayType && attr <= eFeatureDisplayStDev)
+            || (attr >= eFeatureDisplayMeasurementConfig && attr <= eFeatureDisplayIsActual)
+            || (attr >= eFeatureDisplayX && attr <= eFeatureDisplayFormError)
+            || (attr >= eFeatureDisplayExpansionOriginX && attr <= eFeatureDisplayExpansionOriginZ) ){
         return true;
     }
     return false;
