@@ -259,6 +259,7 @@ enum FeatureDisplayAttributes{
     eFeatureDisplayMeasurementSeries,
     eFeatureDisplayTemperature,
     eFeatureDisplayLength,
+    eFeatureDisplayFormError,
 
     //coordinate system specific
     eFeatureDisplayExpansionOriginX = 300,

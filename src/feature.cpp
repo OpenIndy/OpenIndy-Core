@@ -1178,6 +1178,17 @@ QString Feature::getDisplayIsDatumTransformation() const{
 }
 
 /*!
+ * \brief Feature::getDisplayFormError
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Feature::getDisplayFormError(const UnitType &type, const int &digits, const bool &showDiff) const{
+    return QString("-/-");
+}
+
+/*!
  * \brief Feature::setUpFeatureId
  * Generate a new unique id when the current job was set
  */

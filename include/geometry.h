@@ -113,6 +113,7 @@ public:
     //###############
 
     QString getDisplayStDev(const UnitType &type, const int &digits) const;
+    QString getDisplayFormError(const UnitType &type, const int &digits) const;
 
     QString getDisplayMeasurementConfig() const;
     QString getDisplayObservations() const;

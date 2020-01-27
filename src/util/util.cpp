@@ -295,6 +295,7 @@ void init(){
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginY, "expansion y");
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginZ, "expansion z");
     featureDisplayAttributesMap.insert(eFeatureDisplayIsActual, "actual feature");
+    featureDisplayAttributesMap.insert(eFeatureDisplayFormError, "form error");
 
     //fill observation display attributes map
     observationDisplayAttributesMap.insert(eObservationDisplayId, "id");
