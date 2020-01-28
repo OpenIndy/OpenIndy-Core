@@ -1184,7 +1184,7 @@ QString Feature::getDisplayIsDatumTransformation() const{
  * \param showDiff
  * \return
  */
-QString Feature::getDisplayFormError(const UnitType &type, const int &digits, const bool &showDiff) const{
+QString Feature::getDisplayFormError(const UnitType &type, const int &digits) const{
     return QString("-/-");
 }
 
