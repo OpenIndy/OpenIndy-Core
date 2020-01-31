@@ -66,7 +66,7 @@ public:
     const OiVec &getV() const;
     void setV(const OiVec &v);
 
-    const QList<Residual> &getDisplayResiduals() const;
+    const QList<Residual> getDisplayResiduals() const;
     Residual getDisplayResidual(const int &elementId) const;
     void addDisplayResidual(const Residual &residual);
 

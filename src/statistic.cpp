@@ -207,7 +207,7 @@ void Statistic::setV(const OiVec &v){
  * \brief Statistic::getDisplayResiduals
  * \return
  */
-const QList<Residual> &Statistic::getDisplayResiduals() const{
+const QList<Residual> Statistic::getDisplayResiduals() const{
     return this->displayResidualsMap.values();
 }
 
