@@ -36,6 +36,7 @@ public:
 
     Observation(const Observation &copy, QObject *parent = 0);
     Observation(const OiVec &xyz, bool isValid, QObject *parent = 0);
+    Observation(const OiVec &xyz, int id, bool isValid, QObject *parent = 0);
 
     Observation &operator=(const Observation &copy);
 

@@ -644,6 +644,18 @@ QString Geometry::getDisplayStDev(const UnitType &type, const int &digits) const
 }
 
 /*!
+ * \brief Geometry::getDisplayFormError
+ * \param type
+ * \param digits
+ * \return
+ */
+QString Geometry::getDisplayFormError(const UnitType &type, const int &digits) const{
+    if(this->statistic.getIsValid()){
+        return QString::number(convertFromDefault(this->statistic.getFormError(), type), 'f', digits);
+    }
+    return QString("");
+}
+/*!
  * \brief Geometry::getDisplayMeasurementConfig
  * \return
  */
