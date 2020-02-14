@@ -717,6 +717,7 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     observation.setAttribute("isValid", this->isValid);
     observation.setAttribute("isSolved", this->isSolved);
+    observation.setAttribute("isDummyPoint", this->isDummyPoint);
 
     //add station
     if(!this->station.isNull()){
@@ -763,6 +764,7 @@ bool Observation::fromOpenIndyXML(QDomElement &xmlElem){
         }
         this->isValid = xmlElem.attribute("isValid").toInt();
         this->isSolved = xmlElem.attribute("isSolved").toInt();
+        this->isDummyPoint = xmlElem.hasAttribute("isDummyPoint") ? xmlElem.attribute("isDummyPoint").toInt() : false;
         this->xyz.setAt(0, xmlElem.attribute("x").toDouble());
         this->xyz.setAt(1, xmlElem.attribute("y").toDouble());
         this->xyz.setAt(2, xmlElem.attribute("z").toDouble());
