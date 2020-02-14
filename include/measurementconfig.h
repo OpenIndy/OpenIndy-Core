@@ -67,7 +67,7 @@ public:
     const ReadingTypes &getTypeOfReading() const;
     void setTypeOfReading(const ReadingTypes &type);
 
-    const QVariant &getTransientData(const QString key) const;
+    const QVariant getTransientData(const QString key) const;
     void setTransientData(const QString key, const QVariant value);
 
     //#################

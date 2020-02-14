@@ -312,7 +312,7 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
 
 }
 
-const QVariant &MeasurementConfig::getTransientData(const QString key) const {
+const QVariant MeasurementConfig::getTransientData(const QString key) const {
     return this->transientData.value(key);
 }
 void MeasurementConfig::setTransientData(const QString key, const QVariant value) {
