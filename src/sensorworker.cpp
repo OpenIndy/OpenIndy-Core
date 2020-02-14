@@ -383,6 +383,12 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
             //measure
             readings = this->sensor->measure(mConfig);
             if(readings.size() > 0){
+                foreach(QPointer<Reading> r, readings) {
+                    QVariant p =  mConfig.getTransientData("isDummyPoint");
+                    if(p.isValid()) {
+                        r->setProperty("isDummyPoint", p);
+                    }
+                }
                 msg = "measurement finished";
                 success = true;
             }
