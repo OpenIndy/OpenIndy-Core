@@ -443,6 +443,10 @@ const bool &Observation::getHasDirection() const{
     return this->hasDirection;
 }
 
+const bool &Observation::getIsDummyPoint() const{
+    return this->isDummyPoint;
+}
+
 /*!
  * \brief Observation::getDisplayId
  * \return
