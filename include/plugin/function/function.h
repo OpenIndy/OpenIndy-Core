@@ -44,6 +44,13 @@ namespace oi{
 //helper classes to define function parameters
 //############################################
 
+enum InputElementKey {
+    eNotSet = -1,
+    eDefault = 0,
+    // ...
+    eDummyPoint = 10000
+};
+
 /*!
  * \brief The NeededElement class
  * Save the needed element types that are necessary to solve a function
