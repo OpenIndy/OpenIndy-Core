@@ -60,6 +60,7 @@ public:
     ElementTypes typeOfElement; //type of the needed input element
     QString description; //optional description for the needed element to show in the GUI
     bool infinite; //only one element or as many elements as one wants?
+    InputElementKey key = eNotSet;
 };
 
 /*!
