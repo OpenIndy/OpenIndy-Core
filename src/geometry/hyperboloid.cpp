@@ -51,8 +51,8 @@ Hyperboloid::Hyperboloid(const Hyperboloid &copy, QObject *parent) : Geometry(co
         this->selfFeature->setHyperboloid(this);
     }
 
-    this->center = copy.center;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->a = copy.a;
     this->c = copy.c;
 
@@ -70,8 +70,8 @@ Hyperboloid &Hyperboloid::operator=(const Hyperboloid &copy){
         this->selfFeature->setHyperboloid(this);
     }
 
-    this->center = copy.center;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->a = copy.a;
     this->c = copy.c;
 
@@ -103,24 +103,6 @@ bool Hyperboloid::hasPosition() const{
 }
 
 /*!
- * \brief Hyperboloid::getDirection
- * Returns the rotation axis of the hyperboloid
- * \return
- */
-const Direction &Hyperboloid::getDirection() const{
-    return this->axis;
-}
-
-/*!
- * \brief Hyperboloid::getPosition
- * Returns the center of the hyperboloid
- * \return
- */
-const Position &Hyperboloid::getPosition() const{
-    return this->center;
-}
-
-/*!
  * \brief Hyperboloid::getA
  * \return
  */
@@ -146,8 +128,8 @@ const double &Hyperboloid::getC() const{
 void Hyperboloid::setHyperboloid(const Position &center, const Direction &axis, const double &a, const double &c){
 
     //set the given parameters
-    this->center = center;
-    this->axis = axis;
+    this->xyz = center;
+    this->ijk = axis;
     this->a = a;
     this->c = c;
 
@@ -185,8 +167,8 @@ QMap<GeometryParameters, QString> Hyperboloid::getUnknownParameters(const QMap<D
 void Hyperboloid::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->center.getVector();
-    OiVec direction = this->axis.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
     double a = this->a;
     double c = this->c;
 
@@ -238,8 +220,8 @@ void Hyperboloid::recalc(){
 
     //reset hyperboloid definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->center.setVector(0.0, 0.0, 0.0);
-        this->axis.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->a = 0.0;
         this->c = 0.0;
     }
@@ -309,10 +291,10 @@ bool Hyperboloid::fromOpenIndyXML(QDomElement &xmlElem){
 
         this->a = a.attribute("value").toDouble();
         this->c = c.attribute("value").toDouble();
-        this->axis.setVector(axis.attribute("i").toDouble(),
+        this->ijk.setVector(axis.attribute("i").toDouble(),
                              axis.attribute("j").toDouble(),
                              axis.attribute("k").toDouble());
-        this->center.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                                center.attribute("y").toDouble(),
                                center.attribute("z").toDouble());
 
@@ -320,87 +302,6 @@ bool Hyperboloid::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Hyperboloid::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Hyperboloid::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Hyperboloid::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Hyperboloid::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Hyperboloid::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Hyperboloid::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Hyperboloid::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Hyperboloid::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Hyperboloid::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Hyperboloid::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Hyperboloid::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Hyperboloid::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
 }
 
 /*!

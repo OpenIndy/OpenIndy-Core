@@ -52,8 +52,8 @@ Ellipse::Ellipse(const Ellipse &copy, QObject *parent) : Geometry(copy, parent){
         this->selfFeature->setEllipse(this);
     }
 
-    this->center = copy.center;
-    this->normal = copy.normal;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->a = copy.a;
     this->b = copy.b;
     this->semiMajorAxis = copy.semiMajorAxis;
@@ -72,8 +72,8 @@ Ellipse &Ellipse::operator=(const Ellipse &copy){
         this->selfFeature->setEllipse(this);
     }
 
-    this->center = copy.center;
-    this->normal = copy.normal;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->a = copy.a;
     this->b = copy.b;
     this->semiMajorAxis = copy.semiMajorAxis;
@@ -103,24 +103,6 @@ bool Ellipse::hasDirection() const{
  */
 bool Ellipse::hasPosition() const{
     return true;
-}
-
-/*!
- * \brief Ellipse::getDirection
- * Returns the normal vector of the ellipse
- * \return
- */
-const Direction &Ellipse::getDirection() const{
-    return this->normal;
-}
-
-/*!
- * \brief Ellipse::getPosition
- * Returns the center of the ellipse
- * \return
- */
-const Position &Ellipse::getPosition() const{
-    return this->center;
 }
 
 /*!
@@ -161,8 +143,8 @@ const Direction &Ellipse::getSemiMajorAxisDirection() const{
 void Ellipse::setEllipse(const Position &center, const Direction &normal, const double &a, const double &b, const Direction &semiMajorAxis){
 
     //set the given parameters
-    this->center = center;
-    this->normal = normal;
+    this->xyz = center;
+    this->ijk = normal;
     this->a = a;
     this->b = b;
     this->semiMajorAxis = semiMajorAxis;
@@ -204,8 +186,8 @@ QMap<GeometryParameters, QString> Ellipse::getUnknownParameters(const QMap<Dimen
 void Ellipse::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->center.getVector();
-    OiVec directionA = this->normal.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec directionA = this->ijk.getVector();
     OiVec directionB = this->semiMajorAxis.getVector();
     double a = this->a;
     double b = this->b;
@@ -269,8 +251,8 @@ void Ellipse::recalc(){
 
     //reset ellipse definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->center.setVector(0.0, 0.0, 0.0);
-        this->normal.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->a = 0.0;
         this->b = 0.0;
         this->semiMajorAxis.setVector(0.0, 0.0, 0.0);
@@ -359,10 +341,10 @@ bool Ellipse::fromOpenIndyXML(QDomElement &xmlElem){
         this->semiMajorAxis.setVector(semiMajorAxis.attribute("i").toDouble(),
                                       semiMajorAxis.attribute("j").toDouble(),
                                       semiMajorAxis.attribute("k").toDouble());
-        this->normal.setVector(normal.attribute("i").toDouble(),
+        this->ijk.setVector(normal.attribute("i").toDouble(),
                                normal.attribute("j").toDouble(),
                                normal.attribute("k").toDouble());
-        this->center.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                                center.attribute("y").toDouble(),
                                center.attribute("z").toDouble());
 
@@ -370,87 +352,6 @@ bool Ellipse::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Ellipse::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipse::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipse::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipse::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipse::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipse::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipse::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipse::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipse::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipse::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipse::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipse::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
 }
 
 /*!

@@ -52,8 +52,8 @@ public:
     //get or set plane parameters
     //###########################
 
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
+    //const Direction &getDirection() const;
+    //const Position &getPosition() const;
 
     const double &getDistanceFromOrigin() const;
 
@@ -81,25 +81,11 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
-    //###############
-    //display methods
-    //###############
-
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
-
 private:
 
     //################
     //plane attributes
     //################
-
-    Position xyz; //arbitrary point on the plane
-    Direction normal; //normal vector
 
     double d; //smallest distance from origin
 

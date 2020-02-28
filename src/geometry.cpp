@@ -32,6 +32,10 @@ Geometry::Geometry(const Geometry &copy, QObject *parent) : Feature(copy, parent
     this->simulationData = copy.simulationData;
     this->activeMeasurementConfig = copy.activeMeasurementConfig;
 
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
+    this->radius = copy.radius;
+
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
     //this->actual = copy.actual;
@@ -53,6 +57,10 @@ Geometry &Geometry::operator=(const Geometry &copy){
     this->statistic = copy.statistic;
     this->simulationData = copy.simulationData;
     this->activeMeasurementConfig = copy.activeMeasurementConfig;
+
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
+    this->radius = copy.radius;
 
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
@@ -425,7 +433,7 @@ bool Geometry::hasRadius() const{
  * \return
  */
 const Radius &Geometry::getRadius() const{
-    return this->dummyRadius;
+    return this->radius;
 }
 
 /*!
@@ -433,17 +441,27 @@ const Radius &Geometry::getRadius() const{
  * \return
  */
 const Direction &Geometry::getDirection() const{
-    return this->dummyDirection;
+    return this->ijk;
 }
+
+void Geometry::setDirection(Direction &ijk) {
+    this->ijk = ijk;
+    emit this->geomParametersChanged(this->id);
+}
+
 
 /*!
  * \brief Geometry::getPosition
  * \return
  */
 const Position &Geometry::getPosition() const{
-    return this->dummyPosition;
+    return this->xyz;
 }
 
+void Geometry::setPosition(Position &xyz) {
+    this->xyz = xyz;
+    emit this->geomParametersChanged(this->id);
+}
 /*!
  * \brief Geometry::getUnknownParameters
  * \param displayUnits
@@ -737,4 +755,100 @@ QString Geometry::getDisplayIsActual() const
     }else{
         return "actual";
     }
+}
+
+
+/*!
+ * \brief Plane::getDisplayX
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(convertFromDefault(this->xyz.getVector().getAt(0), type), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Plane::getDisplayY
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(convertFromDefault(this->xyz.getVector().getAt(1), type), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Plane::getDisplayZ
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(convertFromDefault(this->xyz.getVector().getAt(2), type), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryI
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(this->ijk.getVector().getAt(0), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryJ
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(this->ijk.getVector().getAt(1), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryK
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(this->ijk.getVector().getAt(2), 'f', digits);
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Cylinder::getDisplayRadiusA
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Geometry::getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff) const{
+    if(this->isSolved){
+        return QString::number(convertFromDefault(this->radius.getRadius(), type), 'f', digits);
+    }
+    return QString("");
 }

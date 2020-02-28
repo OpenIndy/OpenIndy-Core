@@ -50,9 +50,9 @@ Circle::Circle(const Circle &copy, QObject *parent) : Geometry(copy, parent){
         this->selfFeature->setCircle(this);
     }
 
-    this->center = copy.center;
+    this->xyz = copy.xyz;
     this->radius = copy.radius;
-    this->normal = copy.normal;
+    this->ijk = copy.ijk;
 
 }
 
@@ -68,9 +68,9 @@ Circle &Circle::operator=(const Circle &copy){
         this->selfFeature->setCircle(this);
     }
 
-    this->center = copy.center;
+    this->xyz = copy.xyz;
     this->radius = copy.radius;
-    this->normal = copy.normal;
+    this->ijk = copy.ijk;
 
     return *this;
 
@@ -106,33 +106,6 @@ bool Circle::hasRadius() const{
 }
 
 /*!
- * \brief Circle::getRadius
- * Returns the radius of the circle
- * \return
- */
-const Radius &Circle::getRadius() const{
-    return this->radius;
-}
-
-/*!
- * \brief Circle::getDirection
- * Returns the normal vector of the circle
- * \return
- */
-const Direction &Circle::getDirection() const{
-    return this->normal;
-}
-
-/*!
- * \brief Circle::getPosition
- * Returns the center of the circle
- * \return
- */
-const Position &Circle::getPosition() const{
-    return this->center;
-}
-
-/*!
  * \brief Circle::setCircle
  * \param center
  * \param normal
@@ -141,8 +114,8 @@ const Position &Circle::getPosition() const{
 void Circle::setCircle(const Position &center, const Direction &normal, const Radius &radius){
 
     //set the given parameters
-    this->center = center;
-    this->normal = normal;
+    this->xyz = center;
+    this->ijk = normal;
     this->radius = radius;
 
     emit this->geomParametersChanged(this->id);
@@ -178,8 +151,8 @@ QMap<GeometryParameters, QString> Circle::getUnknownParameters(const QMap<Dimens
 void Circle::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->center.getVector();
-    OiVec direction = this->normal.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
     double radius = this->radius.getRadius();
 
     //update parameters
@@ -228,8 +201,8 @@ void Circle::recalc(){
 
     //reset circle definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->center.setVector(0.0, 0.0, 0.0);
-        this->normal.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->radius.setRadius(0.0);
     }
 
@@ -277,10 +250,10 @@ bool Circle::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         this->radius.setRadius(radius.attribute("value").toDouble());
-        this->normal.setVector(normalVector.attribute("i").toDouble(),
+        this->ijk.setVector(normalVector.attribute("i").toDouble(),
                                normalVector.attribute("j").toDouble(),
                                normalVector.attribute("k").toDouble());
-        this->center.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                                center.attribute("y").toDouble(),
                                center.attribute("z").toDouble());
 
@@ -288,99 +261,4 @@ bool Circle::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Circle::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Circle::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Circle::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Circle::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Circle::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Circle::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Circle::getDisplayRadiusA
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Circle::getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->radius.getRadius(), type), 'f', digits);
-    }
-    return QString("");
 }
