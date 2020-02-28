@@ -52,8 +52,8 @@ public:
     //get or set plane parameters
     //###########################
 
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
+    //const Direction &getDirection() const;
+    //const Position &getPosition() const;
 
     const double &getDistanceFromOrigin() const;
 
@@ -97,9 +97,6 @@ private:
     //################
     //plane attributes
     //################
-
-    Position xyz; //arbitrary point on the plane
-    Direction normal; //normal vector
 
     double d; //smallest distance from origin
 

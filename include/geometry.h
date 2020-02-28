@@ -85,6 +85,7 @@ public:
 
     virtual const Radius &getRadius() const;
     virtual const Direction &getDirection() const;
+    virtual void setDirection(Direction &direction);
     virtual const Position &getPosition() const;
 
     //#############################
@@ -166,15 +167,9 @@ protected:
     //current measurement config that is used to create readings until the user selects another one
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
 
-private:
-
-    //############################################################################
-    //helper variables used for geometries without a radius, direction or position
-    //############################################################################
-
-    Position dummyPosition;
-    Direction dummyDirection;
-    Radius dummyRadius;
+    Position xyz;
+    Direction ijk;
+    Radius radius;
 
 };
 

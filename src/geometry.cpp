@@ -32,6 +32,10 @@ Geometry::Geometry(const Geometry &copy, QObject *parent) : Feature(copy, parent
     this->simulationData = copy.simulationData;
     this->activeMeasurementConfig = copy.activeMeasurementConfig;
 
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
+    this->radius = copy.radius;
+
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
     //this->actual = copy.actual;
@@ -53,6 +57,10 @@ Geometry &Geometry::operator=(const Geometry &copy){
     this->statistic = copy.statistic;
     this->simulationData = copy.simulationData;
     this->activeMeasurementConfig = copy.activeMeasurementConfig;
+
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
+    this->radius = copy.radius;
 
     //copy nominals, actual, observations
     //this->nominals = copy.nominals;
@@ -425,7 +433,7 @@ bool Geometry::hasRadius() const{
  * \return
  */
 const Radius &Geometry::getRadius() const{
-    return this->dummyRadius;
+    return this->radius;
 }
 
 /*!
@@ -433,15 +441,21 @@ const Radius &Geometry::getRadius() const{
  * \return
  */
 const Direction &Geometry::getDirection() const{
-    return this->dummyDirection;
+    return this->ijk;
 }
+
+void Geometry::setDirection(Direction &ijk) {
+    this->ijk = ijk;
+    emit this->geomParametersChanged(this->id);
+}
+
 
 /*!
  * \brief Geometry::getPosition
  * \return
  */
 const Position &Geometry::getPosition() const{
-    return this->dummyPosition;
+    return this->xyz;
 }
 
 /*!
