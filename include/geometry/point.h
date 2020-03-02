@@ -51,6 +51,9 @@ public:
 
     void setPoint(const Position &xyz);
 
+    const double &getDistance() const;
+    void setDistance(const double distance);
+
     //#############################
     //get or set unknown parameters
     //#############################
@@ -79,6 +82,7 @@ public:
     QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayDistance(const UnitType &type, const int &digits, const bool &showDiff) const;
 
 private:
 
@@ -87,6 +91,7 @@ private:
     //################
 
     Position xyz; //position
+    double distance; // depends on function
 
 };
 
