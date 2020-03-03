@@ -876,6 +876,36 @@ QString CoordinateSystem::getDisplayZ(const UnitType &type, const int &digits, c
 }
 
 /*!
+ * \brief Plane::getDisplayPrimaryI
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString CoordinateSystem::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
+    return QString::number(this->ijk.getVector().getAt(0), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryJ
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString CoordinateSystem::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
+    return QString::number(this->ijk.getVector().getAt(1), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryK
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString CoordinateSystem::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
+    return QString::number(this->ijk.getVector().getAt(2), 'f', digits);
+}
+
+/*!
  * \brief CoordinateSystem::getDisplayExpansionOriginX
  * \param type
  * \param digits
