@@ -49,6 +49,7 @@ public:
     const QPointer<Point> &getPosition() const;
     void setPosition(const Position xyz);
     void setDirection(const Direction ijk);
+    const Direction &getDirection() const;
 
     //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;

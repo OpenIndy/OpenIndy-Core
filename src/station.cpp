@@ -164,6 +164,10 @@ void Station::setDirection(const Direction ijk) {
     this->ijk = ijk;
 }
 
+const Direction &Station::getDirection() const {
+    return this->ijk;
+}
+
 /*!
  * \brief Station::getCoordinateSystem
  * \return
