@@ -67,6 +67,7 @@ public:
     void setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis);
     void setOrigin(const Position origin);
     void setDirection(const Direction ijk);
+    const Direction &getDirection() const;
 
     //expansion origin
     const Position &getExpansionOrigin() const;

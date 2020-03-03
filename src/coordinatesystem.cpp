@@ -257,6 +257,11 @@ void CoordinateSystem::setDirection(const Direction ijk)
         this->station->setDirection(ijk);
     }
 }
+
+const Direction &CoordinateSystem::getDirection() const {
+    return this->ijk;
+}
+
 /*!
  * \brief CoordinateSystem::getExpansionOrigin
  * \return
