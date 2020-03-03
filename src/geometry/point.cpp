@@ -238,10 +238,6 @@ bool Point::fromOpenIndyXML(QDomElement &xmlElem){
 
 }
 
-    }
-    return QString("");
-}
-
 /*!
  * \brief Point::getDisplayDistance
  * \param type
@@ -252,3 +248,6 @@ bool Point::fromOpenIndyXML(QDomElement &xmlElem){
 QString Point::getDisplayDistance(const UnitType &type, const int &digits, const bool &showDiff) const{
     if(this->isSolved && this->distance > 0.){
         return QString::number(convertFromDefault(this->distance, type), 'f', digits);
+    }
+    return QString("");
+}
