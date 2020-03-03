@@ -807,6 +807,9 @@ QString Geometry::getDisplayZ(const UnitType &type, const int &digits, const boo
  * \return
  */
 QString Geometry::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
+    if(!this->hasDirection()) {
+        return Feature::getDisplayPrimaryI(digits, showDiff);
+    }
     if(this->isSolved){
         return QString::number(this->ijk.getVector().getAt(0), 'f', digits);
     }
@@ -820,6 +823,9 @@ QString Geometry::getDisplayPrimaryI(const int &digits, const bool &showDiff) co
  * \return
  */
 QString Geometry::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
+    if(!this->hasDirection()) {
+        return Feature::getDisplayPrimaryJ(digits, showDiff);
+    }
     if(this->isSolved){
         return QString::number(this->ijk.getVector().getAt(1), 'f', digits);
     }
@@ -833,6 +839,9 @@ QString Geometry::getDisplayPrimaryJ(const int &digits, const bool &showDiff) co
  * \return
  */
 QString Geometry::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
+    if(!this->hasDirection()) {
+        return Feature::getDisplayPrimaryK(digits, showDiff);
+    }
     if(this->isSolved){
         return QString::number(this->ijk.getVector().getAt(2), 'f', digits);
     }
