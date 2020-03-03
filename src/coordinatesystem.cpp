@@ -251,7 +251,7 @@ void CoordinateSystem::setOrigin(const Position origin)
 
 void CoordinateSystem::setDirection(const Direction ijk)
 {
-    this->direction.setVector(ijk.getVector());
+    this->ijk.setVector(ijk.getVector());
 
     if(!this->station.isNull()){
         this->station->setDirection(ijk);

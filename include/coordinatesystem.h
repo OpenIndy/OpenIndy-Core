@@ -172,7 +172,7 @@ private:
 
     //system parameters
     Position origin; //origin of the coordinate system in the current display coordinate system
-    Direction direction; // normal
+    Direction ijk; // normal
     Direction xAxis; //x axis of the coordinate system in the current display coordinate system
     Direction yAxis; //y axis of the coordinate system in the current display coordinate system
     Direction zAxis; //z axis of the coordinate system in the current display coordinate system
