@@ -93,6 +93,8 @@ public:
 
     const bool &getHasDirection() const;
 
+    const bool &getIsDummyPoint() const;
+
     //###############
     //display methods
     //###############
@@ -164,6 +166,8 @@ private:
 
     OiVec sigmaIjk; // stdev unit vector
     OiVec originalSigmaIjk; // orignal sigma unit vector
+
+    bool isDummyPoint; // is dummy observation
 
 };
 

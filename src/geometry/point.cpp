@@ -10,7 +10,7 @@ using namespace oi::math;
  * \param isNominal
  * \param parent
  */
-Point::Point(const bool &isNominal, QObject *parent) : Geometry(isNominal, parent){
+Point::Point(const bool &isNominal, QObject *parent) : Geometry(isNominal, parent), distance(-1.){
 
     //set up feature wrapper
     if(!this->selfFeature.isNull()){
@@ -25,7 +25,7 @@ Point::Point(const bool &isNominal, QObject *parent) : Geometry(isNominal, paren
  * \param xyz
  * \param parent
  */
-Point::Point(const bool &isNominal, const Position &xyz, QObject *parent) : Geometry(isNominal, parent){
+Point::Point(const bool &isNominal, const Position &xyz, QObject *parent) : Geometry(isNominal, parent), distance(-1.){
 
     //set up feature wrapper
     if(!this->selfFeature.isNull()){
@@ -49,6 +49,7 @@ Point::Point(const Point &copy, QObject *parent) : Geometry(copy, parent){
     }
 
     this->xyz = copy.xyz;
+    this->distance = copy.distance;
 
 }
 
@@ -65,6 +66,7 @@ Point &Point::operator=(const Point &copy){
     }
 
     this->xyz = copy.xyz;
+    this->distance = copy.distance;
 
     return *this;
 
@@ -105,6 +107,25 @@ void Point::setPoint(const Position &xyz){
 
     emit this->geomParametersChanged(this->id);
 
+}
+
+/*!
+ * \brief Point::setDistance
+ * \param distance
+ */
+void Point::setDistance(const double distance){
+
+    this->distance = distance;
+
+    emit this->geomParametersChanged(this->id);
+}
+
+/*!
+ * \brief Point::getDistance depends on function
+ * \return
+ */
+const double &Point::getDistance() const{
+    return this->distance;
 }
 
 /*!
@@ -216,3 +237,18 @@ bool Point::fromOpenIndyXML(QDomElement &xmlElem){
     return result;
 
 }
+
+    }
+    return QString("");
+}
+
+/*!
+ * \brief Point::getDisplayDistance
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Point::getDisplayDistance(const UnitType &type, const int &digits, const bool &showDiff) const{
+    if(this->isSolved && this->distance > 0.){
+        return QString::number(convertFromDefault(this->distance, type), 'f', digits);

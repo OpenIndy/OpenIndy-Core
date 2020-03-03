@@ -67,6 +67,9 @@ public:
     const ReadingTypes &getTypeOfReading() const;
     void setTypeOfReading(const ReadingTypes &type);
 
+    const QVariant getTransientData(const QString key) const;
+    void setTransientData(const QString key, const QVariant value);
+
     //#################
     //save and load XML
     //#################
@@ -91,6 +94,8 @@ private:
     long timeInterval; //time interval in which the sensor shall measure
     double distanceInterval; //distance interval in which the sensor shall measure [mm]
     ReadingTypes typeOfReading; //the type of reading which the sensor shall return
+
+    QMap<QString, QVariant> transientData;
 
 };
 

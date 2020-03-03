@@ -1541,7 +1541,7 @@ void OiJob::addMeasurementResults(const int &geomId, const QList<QPointer<Readin
                 && !feature->getGeometry()->getFunctions().at(0).isNull()
                 && feature->getGeometry()->getFunctions().at(0)->getNeededElements().size() > 0
                 && feature->getGeometry()->getFunctions().at(0)->getNeededElements().at(0).typeOfElement == eObservationElement){
-            this->addInputObservation(feature, 0, 0, observation);
+            this->addInputObservation(feature, 0, observation->getIsDummyPoint() ? InputElementKey::eDummyPoint : InputElementKey::eDefault, observation);
         }
 
     }

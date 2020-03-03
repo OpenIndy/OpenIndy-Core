@@ -51,6 +51,9 @@ public:
 
     void setPoint(const Position &xyz);
 
+    const double &getDistance() const;
+    void setDistance(const double distance);
+
     //#############################
     //get or set unknown parameters
     //#############################
@@ -72,6 +75,8 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
+    QString getDisplayDistance(const UnitType &type, const int &digits, const bool &showDiff) const;
+    double distance; // depends on function
 };
 
 }

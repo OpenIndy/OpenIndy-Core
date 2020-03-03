@@ -44,6 +44,13 @@ namespace oi{
 //helper classes to define function parameters
 //############################################
 
+enum InputElementKey {
+    eNotSet = -1,
+    eDefault = 0,
+    // ...
+    eDummyPoint = 10000
+};
+
 /*!
  * \brief The NeededElement class
  * Save the needed element types that are necessary to solve a function
@@ -53,6 +60,7 @@ public:
     ElementTypes typeOfElement; //type of the needed input element
     QString description; //optional description for the needed element to show in the GUI
     bool infinite; //only one element or as many elements as one wants?
+    InputElementKey key = eNotSet; // if key not set InputElementKey is NeedeElement index
 };
 
 /*!

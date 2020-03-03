@@ -37,6 +37,8 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
 
+    this->transientData = copy.transientData;
+    this->transientData.detach();
 }
 
 /*!
@@ -57,6 +59,9 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
+
+    this->transientData = copy.transientData;
+    this->transientData.detach();
 
     return *this;
 
@@ -305,4 +310,11 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
 
     return true;
 
+}
+
+const QVariant MeasurementConfig::getTransientData(const QString key) const {
+    return this->transientData.value(key);
+}
+void MeasurementConfig::setTransientData(const QString key, const QVariant value) {
+    this->transientData.insert(key, value);
 }
