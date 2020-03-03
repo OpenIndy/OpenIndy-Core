@@ -115,6 +115,9 @@ public:
     QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
 
 signals:
 

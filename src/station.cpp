@@ -672,6 +672,36 @@ QString Station::getDisplayZ(const UnitType &type, const int &digits, const bool
 }
 
 /*!
+ * \brief Plane::getDisplayPrimaryI
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Station::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
+    return QString::number(this->ijk.getVector().getAt(0), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryJ
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Station::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
+    return QString::number(this->ijk.getVector().getAt(1), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryK
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Station::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
+    return QString::number(this->ijk.getVector().getAt(2), 'f', digits);
+}
+
+/*!
  * \brief Station::setUpFeatureId
  * Generate a new unique id when the current job was set
  */
