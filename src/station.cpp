@@ -155,9 +155,13 @@ const QPointer<Point> &Station::getPosition() const{
     return this->position;
 }
 
-void Station::setPosition(const Position pos)
+void Station::setPosition(const Position xyz)
 {
-    this->position->setPoint(pos);
+    this->position->setPoint(xyz);
+}
+
+void Station::setDirection(const Direction ijk) {
+    this->ijk = ijk;
 }
 
 /*!
