@@ -234,18 +234,9 @@ void CoordinateSystem::setCoordinateSystem(const Position &origin, const Directi
     this->xAxis = xAxis;
     this->yAxis = yAxis;
     this->zAxis = zAxis;
-}
-
-/*!
- * \brief CoordinateSystem::setOrigin
- * \param origin
- */
-void CoordinateSystem::setOrigin(const Position origin)
-{
-    this->origin.setVector(origin.getVector());
 
     if(!this->station.isNull()){
-        this->station->setPosition(origin);
+        this->station->setCoordinateSystem(origin, xAxis, yAxis, zAxis);
     }
 }
 
@@ -868,6 +859,36 @@ QString CoordinateSystem::getDisplayZ(const UnitType &type, const int &digits, c
 }
 
 /*!
+ * \brief Plane::getDisplayPrimaryI
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString CoordinateSystem::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
+    return QString::number(this->zAxis.getVector().getAt(0), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryJ
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString CoordinateSystem::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
+    return QString::number(this->zAxis.getVector().getAt(1), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryK
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString CoordinateSystem::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
+    return QString::number(this->zAxis.getVector().getAt(2), 'f', digits);
+}
+
+/*!
  * \brief CoordinateSystem::getDisplayExpansionOriginX
  * \param type
  * \param digits
@@ -1014,4 +1035,94 @@ void CoordinateSystem::removeObservation(const QPointer<Observation> &obs){
     this->observationsList.removeOne(obs);
     this->observationsMap.remove(obs->getId());
 
+}
+
+void CoordinateSystem::resetOriginAndAxis() {
+    OiVec o;
+    o.add(0.0);
+    o.add(0.0);
+    o.add(0.0);
+    Position origin;
+    origin.setVector(o);
+
+    OiVec x;
+    x.add(1.0);
+    x.add(0.0);
+    x.add(0.0);
+    x.add(1.0);
+    Direction xAxis;
+    xAxis.setVector(x);
+
+    OiVec y;
+    y.add(0.0);
+    y.add(1.0);
+    y.add(0.0);
+    y.add(1.0);
+    Direction yAxis;
+    yAxis.setVector(y);
+
+    OiVec z;
+    z.add(0.0);
+    z.add(0.0);
+    z.add(1.0);
+    z.add(1.0);
+    Direction zAxis;
+    zAxis.setVector(z);
+
+    this->setCoordinateSystem(origin, xAxis, yAxis, zAxis);
+}
+
+void CoordinateSystem::transformOriginAndAxis(OiMat trafoMat) {
+    //create homogeneous rotation matrix
+    OiMat rotMat = trafoMat;
+    rotMat.setAt(0, 3, 0.0);
+    rotMat.setAt(1, 3, 0.0);
+    rotMat.setAt(2, 3, 0.0);
+
+    OiVec o;
+    o.add(0.0);
+    o.add(0.0);
+    o.add(0.0);
+    o.add(1.0);
+    OiVec ot = trafoMat * o;
+    Position origin;
+    origin.setVector(ot);
+
+    OiVec x;
+    x.add(1.0);
+    x.add(0.0);
+    x.add(0.0);
+    x.add(1.0);
+    OiVec xt = rotMat * x;
+    xt.removeLast();
+    xt.normalize();
+    xt.add(1.0);
+    Direction xAxis;
+    xAxis.setVector(xt);
+
+    OiVec y;
+    y.add(0.0);
+    y.add(1.0);
+    y.add(0.0);
+    y.add(1.0);
+    OiVec yt = rotMat * y;
+    yt.removeLast();
+    yt.normalize();
+    yt.add(1.0);
+    Direction yAxis;
+    yAxis.setVector(yt);
+
+    OiVec z;
+    z.add(0.0);
+    z.add(0.0);
+    z.add(1.0);
+    z.add(1.0);
+    OiVec zt = rotMat * z;
+    zt.removeLast();
+    zt.normalize();
+    zt.add(1.0);
+    Direction zAxis;
+    zAxis.setVector(zt);
+
+    this->setCoordinateSystem(origin, xAxis, yAxis, zAxis);
 }

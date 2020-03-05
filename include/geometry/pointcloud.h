@@ -67,9 +67,6 @@ public:
     const QList<QPointer<Point_PC> > &getPointCloudPoints() const;
     void addPointCloudPoint(const QPointer<Point_PC> &point);
 
-    const Position &getPosition() const;
-    void setPosition(const Position &mainFocus);
-
     const BoundingBox_PC &getBoundingBox() const;
     void setBoundingBox(const BoundingBox_PC &bbox);
 
@@ -90,10 +87,6 @@ public:
     //display methods
     //###############
 
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-
 signals:
     void pcSegmentAdded(const QPointer<FeatureWrapper> &segment);
 
@@ -104,7 +97,6 @@ private:
     //######################
 
     QList<QPointer<Point_PC> > points; //all points of the pointcloud
-    Position mainFocus; //centroid of the pointcloud
     BoundingBox_PC bbox; //bounding box of the pointcloud
 
     QList<QPointer<FeatureWrapper> > detectedSegments; //geometry-segments that were detected in the pointcloud

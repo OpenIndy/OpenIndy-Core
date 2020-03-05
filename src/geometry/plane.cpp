@@ -68,7 +68,7 @@ Plane::Plane(const Plane &copy, QObject *parent) : Geometry(copy, parent){
     }
 
     this->xyz = copy.xyz;
-    this->normal = copy.normal;
+    this->ijk = copy.ijk;
     this->d = copy.d;
 
 }
@@ -86,7 +86,7 @@ Plane &Plane::operator=(const Plane &copy){
     }
 
     this->xyz = copy.xyz;
-    this->normal = copy.normal;
+    this->ijk = copy.ijk;
     this->d = copy.d;
 
     return *this;
@@ -116,23 +116,6 @@ bool Plane::hasPosition() const{
     return true;
 }
 
-/*!
- * \brief Plane::getDirection
- * Returns the normal vector of the plane
- * \return
- */
-const Direction &Plane::getDirection() const{
-    return this->normal;
-}
-
-/*!
- * \brief Plane::getPosition
- * Returns a point on the plane
- * \return
- */
-const Position &Plane::getPosition() const{
-    return this->xyz;
-}
 
 /*!
  * \brief Plane::getDistanceFromOrigin
@@ -152,7 +135,7 @@ void Plane::setPlane(const Position &xyz, const Direction &normal){
 
     //set the given parameters
     this->xyz.setVector(xyz.getVector());
-    this->normal = normal;
+    this->ijk = normal;
 
     //calculate the other parameters
     OiVec n0 = normal.getVector();
@@ -171,11 +154,11 @@ void Plane::setPlane(const Position &xyz, const Direction &normal){
 void Plane::setPlane(const Direction &normal, const double &d){
 
     //set the given parameters
-    this->normal = normal;
+    this->ijk = ijk;
     this->d = d;
 
     //calculate the other parameters
-    this->xyz.setVector(this->d * this->normal.getVector());
+    this->xyz.setVector(this->d * this->ijk.getVector());
 
     emit this->geomParametersChanged(this->id);
 
@@ -210,7 +193,7 @@ void Plane::setUnknownParameters(const QMap<GeometryParameters, double> &paramet
 
     //get current parameters
     OiVec position = this->xyz.getVector();
-    OiVec direction = this->normal.getVector();
+    OiVec direction = this->ijk.getVector();
 
     //update parameters
     QList<GeometryParameters> keys = parameters.keys();
@@ -255,7 +238,7 @@ void Plane::recalc(){
     //reset plane definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
         this->xyz.setVector(0.0, 0.0, 0.0);
-        this->normal.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->d = 0.0;
     }
 
@@ -301,7 +284,7 @@ bool Plane::fromOpenIndyXML(QDomElement &xmlElem){
             return false;
         }
 
-        this->normal.setVector(normalVector.attribute("i").toDouble(),
+        this->ijk.setVector(normalVector.attribute("i").toDouble(),
                                normalVector.attribute("j").toDouble(),
                                normalVector.attribute("k").toDouble());
         this->xyz.setVector(pointOnPlane.attribute("x").toDouble(),
@@ -312,85 +295,4 @@ bool Plane::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Plane::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Plane::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Plane::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Plane::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Plane::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Plane::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Plane::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Plane::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Plane::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Plane::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Plane::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Plane::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
 }

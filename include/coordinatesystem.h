@@ -65,7 +65,8 @@ public:
     const Direction &getYAxis() const;
     const Direction &getZAxis() const;
     void setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis);
-    void setOrigin(const Position origin);
+    void resetOriginAndAxis(); // TODO OI-42 to feature ?
+    void transformOriginAndAxis(OiMat trafoMat);// TODO OI-42 to feature ?
 
     //expansion origin
     const Position &getExpansionOrigin() const;
@@ -121,6 +122,9 @@ public:
     QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
 
     QString getDisplayExpansionOriginX(const UnitType &type, const int &digits) const;
     QString getDisplayExpansionOriginY(const UnitType &type, const int &digits) const;
@@ -173,7 +177,7 @@ private:
     Position origin; //origin of the coordinate system in the current display coordinate system
     Direction xAxis; //x axis of the coordinate system in the current display coordinate system
     Direction yAxis; //y axis of the coordinate system in the current display coordinate system
-    Direction zAxis; //z axis of the coordinate system in the current display coordinate system
+    Direction zAxis; //z (ijk / normal) axis of the coordinate system in the current display coordinate system
 
     bool isStationSystem; //true if the coordinate system is a station system
     bool isBundleSystem; //true if the coordinate system is a bundle system

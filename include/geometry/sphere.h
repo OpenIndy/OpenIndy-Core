@@ -50,9 +50,6 @@ public:
     //get or set sphere parameters
     //############################
 
-    const Radius &getRadius() const;
-    const Position &getPosition() const;
-
     void setSphere(const Position &center, const Radius &radius);
 
     //#############################
@@ -79,20 +76,6 @@ public:
     //###############
     //display methods
     //###############
-
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-
-private:
-
-    //#################
-    //sphere attributes
-    //#################
-
-    Position center; //center
-    Radius radius; //radius
 
 };
 

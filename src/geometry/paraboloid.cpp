@@ -50,8 +50,8 @@ Paraboloid::Paraboloid(const Paraboloid &copy, QObject *parent) : Geometry(copy,
         this->selfFeature->setParaboloid(this);
     }
 
-    this->apex = copy.apex;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
 
 }
 
@@ -67,8 +67,8 @@ Paraboloid &Paraboloid::operator=(const Paraboloid &copy){
         this->selfFeature->setParaboloid(this);
     }
 
-    this->apex = copy.apex;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
 
     return *this;
 
@@ -98,24 +98,6 @@ bool Paraboloid::hasPosition() const{
 }
 
 /*!
- * \brief Paraboloid::getDirection
- * Returns the axis vector that points from the apex inside the paraboloid (rotation axis)
- * \return
- */
-const Direction &Paraboloid::getDirection() const{
-    return this->axis;
-}
-
-/*!
- * \brief Paraboloid::getPosition
- * Returns the peak of the paraboloid
- * \return
- */
-const Position &Paraboloid::getPosition() const{
-    return this->apex;
-}
-
-/*!
  * \brief Paraboloid::getA
  * Returns the compression or streatch parameter
  * \return
@@ -133,8 +115,8 @@ const double &Paraboloid::getA() const{
 void Paraboloid::setParaboloid(const Position &apex, const Direction &axis, const double &a){
 
     //set the given parameters
-    this->apex = apex;
-    this->axis = axis;
+    this->xyz = apex;
+    this->ijk = axis;
     this->a = a;
 
     emit this->geomParametersChanged(this->id);
@@ -170,8 +152,8 @@ QMap<GeometryParameters, QString> Paraboloid::getUnknownParameters(const QMap<Di
 void Paraboloid::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->apex.getVector();
-    OiVec direction = this->axis.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
     double a = this->a;
 
     //update parameters
@@ -219,8 +201,8 @@ void Paraboloid::recalc(){
 
     //reset paraboloid definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->apex.setVector(0.0, 0.0, 0.0);
-        this->axis.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->a = 0.0;
     }
 
@@ -277,10 +259,10 @@ bool Paraboloid::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         this->a = a.attribute("value").toDouble();
-        this->axis.setVector(axis.attribute("i").toDouble(),
+        this->ijk.setVector(axis.attribute("i").toDouble(),
                                axis.attribute("j").toDouble(),
                                axis.attribute("k").toDouble());
-        this->apex.setVector(apex.attribute("x").toDouble(),
+        this->xyz.setVector(apex.attribute("x").toDouble(),
                              apex.attribute("y").toDouble(),
                              apex.attribute("z").toDouble());
 
@@ -288,87 +270,6 @@ bool Paraboloid::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Paraboloid::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Paraboloid::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->apex.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Paraboloid::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Paraboloid::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->apex.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Paraboloid::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Paraboloid::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->apex.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Paraboloid::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Paraboloid::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Paraboloid::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Paraboloid::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Paraboloid::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Paraboloid::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
 }
 
 /*!

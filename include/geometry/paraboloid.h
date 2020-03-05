@@ -53,9 +53,6 @@ public:
     //get or set paraboloid parameters
     //################################
 
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
-
     const double &getA() const;
 
     void setParaboloid(const Position &apex, const Direction &axis, const double &a);
@@ -85,12 +82,6 @@ public:
     //display methods
     //###############
 
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
     QString getDisplayA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
 
 private:
@@ -99,8 +90,6 @@ private:
     //paraboloid attributes
     //#####################
 
-    Position apex; //the peak of the paraboloid
-    Direction axis; //the axis vector that points from the apex inside the paraboloid (rotation axis)
     double a; //compression or streatch parameter
 
 };

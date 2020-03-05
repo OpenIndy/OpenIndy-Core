@@ -54,9 +54,6 @@ public:
     //get or set hyperboloid parameters
     //#################################
 
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
-
     const double &getA() const;
     const double &getC() const;
 
@@ -87,12 +84,6 @@ public:
     //display methods
     //###############
 
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
     QString getDisplayA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayC(const UnitType &type, const int &digits, const bool &showDiff = false) const;
 
@@ -102,8 +93,6 @@ private:
     //hyperboloid attributes
     //######################
 
-    Position center; //center
-    Direction axis; //the rotation axis
     double a;
     double c;
 

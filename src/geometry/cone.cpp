@@ -50,8 +50,8 @@ Cone::Cone(const Cone &copy, QObject *parent) : Geometry(copy, parent){
         this->selfFeature->setCone(this);
     }
 
-    this->apex = copy.apex;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->aperture = copy.aperture;
 
 }
@@ -68,8 +68,8 @@ Cone &Cone::operator=(const Cone &copy){
         this->selfFeature->setCone(this);
     }
 
-    this->apex = copy.apex;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->aperture = copy.aperture;
 
     return *this;
@@ -100,24 +100,6 @@ bool Cone::hasPosition() const{
 }
 
 /*!
- * \brief Cone::getDirection
- * Returns the vector pointing from the apex inside the cone
- * \return
- */
-const Direction &Cone::getDirection() const{
-    return this->axis;
-}
-
-/*!
- * \brief Cone::getPosition
- * Returns the apex of the cone
- * \return
- */
-const Position &Cone::getPosition() const{
-    return this->apex;
-}
-
-/*!
  * \brief Cone::getAperture
  * Returns the aperture of the cone
  * \return
@@ -135,8 +117,8 @@ const double &Cone::getAperture() const{
 void Cone::setCone(const Position &apex, const Direction &axis, const double &aperture){
 
     //set the given parameters
-    this->apex = apex;
-    this->axis = axis;
+    this->xyz = apex;
+    this->ijk = axis;
     this->aperture = aperture;
 
     emit this->geomParametersChanged(this->id);
@@ -172,8 +154,8 @@ QMap<GeometryParameters, QString> Cone::getUnknownParameters(const QMap<Dimensio
 void Cone::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->apex.getVector();
-    OiVec direction = this->axis.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
     double aperture = this->getAperture();
 
     //update parameters
@@ -221,8 +203,8 @@ void Cone::recalc(){
 
     //reset cone definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->apex.setVector(0.0, 0.0, 0.0);
-        this->axis.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->aperture = 0.0;
     }
 
@@ -279,10 +261,10 @@ bool Cone::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         this->aperture = aperture.attribute("value").toDouble();
-        this->axis.setVector(axis.attribute("i").toDouble(),
+        this->ijk.setVector(axis.attribute("i").toDouble(),
                              axis.attribute("j").toDouble(),
                              axis.attribute("k").toDouble());
-        this->apex.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                              center.attribute("y").toDouble(),
                              center.attribute("z").toDouble());
 
@@ -290,99 +272,4 @@ bool Cone::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Cone::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->apex.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cone::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->apex.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cone::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->apex.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cone::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cone::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cone::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cone::getDisplayAperture
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cone::getDisplayAperture(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->aperture, type), 'f', digits);
-    }
-    return QString("");
 }

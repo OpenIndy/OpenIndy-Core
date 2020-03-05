@@ -50,14 +50,6 @@ public:
     bool hasPosition() const;
     bool hasRadius() const;
 
-    //############################
-    //get or set circle parameters
-    //############################
-
-    const Radius &getRadius() const;
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
-
     void setCircle(const Position &center, const Direction &normal, const Radius &radius);
 
     //#############################
@@ -81,27 +73,6 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
-    //###############
-    //display methods
-    //###############
-
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-
-private:
-
-    //#################
-    //circle attributes
-    //#################
-
-    Position center; //center
-    Direction normal; //normal vector
-    Radius radius; //radius
 
 };
 

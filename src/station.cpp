@@ -155,9 +155,42 @@ const QPointer<Point> &Station::getPosition() const{
     return this->position;
 }
 
-void Station::setPosition(const Position pos)
-{
-    this->position->setPoint(pos);
+/*!
+* \brief Station::getXAxis
+* \return
+*/
+const Direction &Station::getXAxis() const{
+   return this->xAxis;
+}
+
+/*!
+* \brief Station::getYAxis
+* \return
+*/
+const Direction &Station::getYAxis() const{
+   return this->yAxis;
+}
+
+/*!
+* \brief Station::getZAxis
+* \return
+*/
+const Direction &Station::getZAxis() const{
+   return this->zAxis;
+}
+
+/*!
+* \brief Station::setCoordinateSystem
+* \param origin
+* \param xAxis
+* \param yAxis
+* \param zAxis
+*/
+void Station::setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis){
+   this->position->setPoint(origin);
+   this->xAxis = xAxis;
+   this->yAxis = yAxis;
+   this->zAxis = zAxis;
 }
 
 /*!
@@ -665,6 +698,36 @@ QString Station::getDisplayZ(const UnitType &type, const int &digits, const bool
         return this->position->getDisplayZ(type, digits, showDiff);
     }
     return QString("-/-");
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryI
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Station::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
+    return QString::number(this->zAxis.getVector().getAt(0), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryJ
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Station::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
+    return QString::number(this->zAxis.getVector().getAt(1), 'f', digits);
+}
+
+/*!
+ * \brief Plane::getDisplayPrimaryK
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Station::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
+    return QString::number(this->zAxis.getVector().getAt(2), 'f', digits);
 }
 
 /*!

@@ -56,10 +56,6 @@ public:
     //get or set torus parameters
     //###########################
 
-    const Radius &getRadius() const;
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
-
     const Radius &getSmallRadius() const;
 
     void setTorus(const Position &center, const Direction &normal, const Radius &radiusA, const Radius &radiusB);
@@ -89,13 +85,6 @@ public:
     //display methods
     //###############
 
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayRadiusB(const UnitType &type, const int &digits, const bool &showDiff = false) const;
 
 private:
@@ -104,9 +93,6 @@ private:
     //torus attributes
     //################
 
-    Position center; //center of the torus
-    Direction normal; //normal vector
-    Radius radiusA; //distance of the center to the center curve of the torus
     Radius radiusB; //distance of the center curve to the torus surface (radiusA > radiusB)
 
 };
