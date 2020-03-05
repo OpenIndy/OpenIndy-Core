@@ -65,9 +65,8 @@ public:
     const Direction &getYAxis() const;
     const Direction &getZAxis() const;
     void setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis);
-    void setOrigin(const Position origin);
-    void setDirection(const Direction ijk);
-    const Direction &getDirection() const;
+    void resetOriginAndAxis(); // TODO OI-42 to feature ?
+    void transformOriginAndAxis(OiMat trafoMat);// TODO OI-42 to feature ?
 
     //expansion origin
     const Position &getExpansionOrigin() const;
@@ -176,10 +175,9 @@ private:
 
     //system parameters
     Position origin; //origin of the coordinate system in the current display coordinate system
-    Direction ijk; // normal
     Direction xAxis; //x axis of the coordinate system in the current display coordinate system
     Direction yAxis; //y axis of the coordinate system in the current display coordinate system
-    Direction zAxis; //z axis of the coordinate system in the current display coordinate system
+    Direction zAxis; //z (ijk / normal) axis of the coordinate system in the current display coordinate system
 
     bool isStationSystem; //true if the coordinate system is a station system
     bool isBundleSystem; //true if the coordinate system is a bundle system

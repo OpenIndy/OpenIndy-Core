@@ -47,9 +47,11 @@ public:
 
     //position
     const QPointer<Point> &getPosition() const;
-    void setPosition(const Position xyz);
-    void setDirection(const Direction ijk);
-    const Direction &getDirection() const;
+    const Direction &getXAxis() const;
+    const Direction &getYAxis() const;
+    const Direction &getZAxis() const;
+    void setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis);
+
 
     //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;
@@ -217,7 +219,9 @@ private:
 
     //the position of the station
     QPointer<Point> position;
-    Direction ijk;
+    Direction xAxis; //x axis of the coordinate system in the current display coordinate system
+    Direction yAxis; //y axis of the coordinate system in the current display coordinate system
+    Direction zAxis; //z (ijk / normal) axis of the coordinate system in the current display coordinate system
 
     //sensor communication
     QPointer<SensorControl> sensorControl;

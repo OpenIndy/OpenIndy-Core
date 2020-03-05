@@ -155,17 +155,42 @@ const QPointer<Point> &Station::getPosition() const{
     return this->position;
 }
 
-void Station::setPosition(const Position xyz)
-{
-    this->position->setPoint(xyz);
+/*!
+* \brief Station::getXAxis
+* \return
+*/
+const Direction &Station::getXAxis() const{
+   return this->xAxis;
 }
 
-void Station::setDirection(const Direction ijk) {
-    this->ijk = ijk;
+/*!
+* \brief Station::getYAxis
+* \return
+*/
+const Direction &Station::getYAxis() const{
+   return this->yAxis;
 }
 
-const Direction &Station::getDirection() const {
-    return this->ijk;
+/*!
+* \brief Station::getZAxis
+* \return
+*/
+const Direction &Station::getZAxis() const{
+   return this->zAxis;
+}
+
+/*!
+* \brief Station::setCoordinateSystem
+* \param origin
+* \param xAxis
+* \param yAxis
+* \param zAxis
+*/
+void Station::setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis){
+   this->position->setPoint(origin);
+   this->xAxis = xAxis;
+   this->yAxis = yAxis;
+   this->zAxis = zAxis;
 }
 
 /*!
@@ -682,7 +707,7 @@ QString Station::getDisplayZ(const UnitType &type, const int &digits, const bool
  * \return
  */
 QString Station::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    return QString::number(this->ijk.getVector().getAt(0), 'f', digits);
+    return QString::number(this->zAxis.getVector().getAt(0), 'f', digits);
 }
 
 /*!
@@ -692,7 +717,7 @@ QString Station::getDisplayPrimaryI(const int &digits, const bool &showDiff) con
  * \return
  */
 QString Station::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    return QString::number(this->ijk.getVector().getAt(1), 'f', digits);
+    return QString::number(this->zAxis.getVector().getAt(1), 'f', digits);
 }
 
 /*!
@@ -702,7 +727,7 @@ QString Station::getDisplayPrimaryJ(const int &digits, const bool &showDiff) con
  * \return
  */
 QString Station::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    return QString::number(this->ijk.getVector().getAt(2), 'f', digits);
+    return QString::number(this->zAxis.getVector().getAt(2), 'f', digits);
 }
 
 /*!
