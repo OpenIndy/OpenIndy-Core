@@ -10,7 +10,8 @@ struct IdPoint {
     OiVec xyz;
 };
 inline bool operator==(const IdPoint& p1, const IdPoint& p2){
-    return p1.id == p2.id;
+    return p1.id == p2.id
+            && p1.xyz == p2.xyz;
 }
 
 class CylinderApproximation{
