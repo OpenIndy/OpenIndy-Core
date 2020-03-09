@@ -76,7 +76,7 @@ protected:
         foreach(const IdPoint &point, points){
             centroid = centroid + point.xyz;
         }
-        centroid = centroid * (1.0/points.size());
+        centroid = centroid / (double)points.size();
         centroid.removeLast();
 
         //principle component analysis
