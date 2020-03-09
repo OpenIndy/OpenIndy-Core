@@ -36,6 +36,18 @@ Point::Point(const bool &isNominal, const Position &xyz, QObject *parent) : Geom
 
 }
 
+Point::Point(int id, const bool &isNominal, const Position &xyz, QObject *parent) : Geometry(isNominal, parent), distance(-1.){
+    this->id = id;
+
+    //set up feature wrapper
+    if(!this->selfFeature.isNull()){
+        this->selfFeature->setPoint(this);
+    }
+
+    this->setPoint(xyz);
+
+}
+
 /*!
  * \brief Point::Point
  * \param copy
