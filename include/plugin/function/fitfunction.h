@@ -45,6 +45,8 @@ class OI_CORE_EXPORT FitFunction : public Function
 {
     Q_OBJECT
 
+   friend class BestFitCircleUtil;
+
 public:
     FitFunction(QObject *parent = 0) : Function(parent){
 
@@ -70,7 +72,17 @@ protected:
     bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
     bool exec(TrafoParam &trafoParam){ return Function::exec(trafoParam); }
 
-    bool bestFitCircleInPlane(Circle &circle, QList<IdPoint> points, QList<IdPoint> usablePoints) {
+};
+
+
+class OI_CORE_EXPORT BestFitCircleUtil: public QObject
+{
+
+    Q_OBJECT
+
+protected:
+
+    bool bestFitCircleInPlane(FitFunction *function, Circle &circle, QList<IdPoint> points, QList<IdPoint> usablePoints) {
         //calculate centroid
         OiVec centroid(4);
         foreach(const IdPoint &point, points){
@@ -114,9 +126,9 @@ protected:
         OiVec::cross(direction, ab, ac);
         direction.normalize();
 
-        if(this->inputElements.contains(InputElementKey::eDummyPoint) && this->inputElements[InputElementKey::eDummyPoint].size() > 0) {
+        if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
             // computing circle normale by dummy point
-            OiVec dummyPoint = inputElements[InputElementKey::eDummyPoint][0].observation->getXYZ(); // TODO Point
+            OiVec dummyPoint = function->getInputElements()[InputElementKey::eDummyPoint][0].observation->getXYZ(); // TODO Point
             dummyPoint.removeLast();
             double dot;
             OiVec::dot(dot, dummyPoint - centroid, centroid);
@@ -186,7 +198,7 @@ protected:
                 return false;
             }
         }catch(const exception &e){
-            emit this->sendMessage(e.what(), eErrorMessage);
+            emit function->sendMessage(e.what(), eErrorMessage);
             return false;
         }
 
@@ -248,7 +260,7 @@ protected:
             v_all = v_circle + v_plane;
 
             //set up display residual
-            addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2),
+            function->addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2),
                                qSqrt(v_all.getAt(0) * v_all.getAt(0)
                                     + v_all.getAt(1) * v_all.getAt(1)
                                     + v_all.getAt(2) * v_all.getAt(2)));
@@ -271,17 +283,16 @@ protected:
             stdev += v_i*v_i;
         }
         stdev = qSqrt(stdev / (centroidReducedCoordinates.size() - 3.0));
-        this->statistic.setIsValid(true);
-        this->statistic.setStdev(stdev);
-        circle.setStatistic(this->statistic);
+        function->statistic.setIsValid(true);
+        function->statistic.setStdev(stdev);
+        circle.setStatistic(function->statistic);
 
         return true;
 
     }
 };
 
-}
-
+} // namespace oi
 #ifndef STR
 #define STR(x) #x
 #endif
