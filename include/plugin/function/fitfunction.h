@@ -225,14 +225,11 @@ protected:
             diff.setAt(0, reduced.getAt(0) + centroid2D.getAt(0) - xm.getAt(0));
             diff.setAt(1, reduced.getAt(1) + centroid2D.getAt(1) - xm.getAt(1));
 
-            double distance = 0.0;
-            OiVec::dot(distance, diff, diff);
-            distance = qSqrt(distance);
-            distance = qAbs(distance - radius);
+            double dr = diff.length() - radius;
 
-            allCircleDistances.add(distance);
+            allCircleDistances.add(dr);
             if(points.contains(point)) {
-                circleDistances.add(distance);
+                circleDistances.add(dr);
             }
         }
 
