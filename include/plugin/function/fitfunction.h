@@ -266,7 +266,9 @@ protected:
             function->addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2),
                                qSqrt(v_all.getAt(0) * v_all.getAt(0)
                                     + v_all.getAt(1) * v_all.getAt(1)
-                                    + v_all.getAt(2) * v_all.getAt(2)));
+                                    + v_all.getAt(2) * v_all.getAt(2))
+                               * sgn(allCircleDistances.getAt(i))
+                                         );
 
         }
 
