@@ -123,15 +123,7 @@ protected:
         u.getCol(n, eigenIndex);
         n.normalize();
 
-        //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
-        OiVec ab = points.at(1).xyz - points.at(0).xyz;
-        ab.removeLast();
-        OiVec ac = points.at(2).xyz - points.at(0).xyz;
-        ac.removeLast();
         OiVec direction(3);
-        OiVec::cross(direction, ab, ac);
-        direction.normalize();
-
         if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
             // computing circle normale by dummy point
             OiVec dummyPoint = function->getInputElements()[InputElementKey::eDummyPoint][0].observation->getXYZ(); // TODO Point
@@ -139,6 +131,14 @@ protected:
             double dot;
             OiVec::dot(dot, dummyPoint - centroid, centroid);
             direction = - dot * dummyPoint;
+            direction.normalize();
+        } else {
+            //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
+            OiVec ab = points.at(1).xyz - points.at(0).xyz;
+            ab.removeLast();
+            OiVec ac = points.at(2).xyz - points.at(0).xyz;
+            ac.removeLast();
+            OiVec::cross(direction, ab, ac);
             direction.normalize();
         }
         double angle = 0.0; //angle between n and direction
