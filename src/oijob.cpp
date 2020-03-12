@@ -20,7 +20,7 @@ OiJob::~OiJob(){
 
     //delete device pointer
     if(!this->jobDevice.isNull()){
-        delete this->jobDevice;
+        delete this->jobDevice.data();
     }
 
 }
@@ -45,7 +45,7 @@ void OiJob::setJobName(const QString &jobName){
  * \brief OiJob::getJobDevice
  * \return
  */
-const QPointer<QIODevice> &OiJob::getJobDevice() const{
+const QPointer<QFileDevice> &OiJob::getJobDevice() const{
     return this->jobDevice;
 }
 
@@ -53,7 +53,7 @@ const QPointer<QIODevice> &OiJob::getJobDevice() const{
  * \brief OiJob::setJobDevice
  * \param jobDevice
  */
-void OiJob::setJobDevice(const QPointer<QIODevice> &jobDevice){
+void OiJob::setJobDevice(const QPointer<QFileDevice> &jobDevice){
     this->jobDevice = jobDevice;
 }
 
@@ -989,7 +989,7 @@ void OiJob::removeFunction(const int &functionIndex){
 
     //remove and delete the function
     this->activeFeature->getFeature()->removeFunction(functionIndex);
-    delete function;
+    delete function.data();
 
 }
 
@@ -1504,7 +1504,7 @@ void OiJob::addMeasurementResults(const int &geomId, const QList<QPointer<Readin
     if(activeStation.isNull() || activeStation->getCoordinateSystem().isNull()){
         foreach(const QPointer<Reading> &reading, readings){
             if(!reading.isNull()){
-                delete reading;
+                delete reading.data();
             }
         }
         return;
@@ -1515,7 +1515,7 @@ void OiJob::addMeasurementResults(const int &geomId, const QList<QPointer<Readin
     if(feature.isNull() || feature->getGeometry().isNull()){
         foreach(const QPointer<Reading> &reading, readings){
             if(!reading.isNull()){
-                delete reading;
+                delete reading.data();
             }
         }
         return;
@@ -1541,7 +1541,7 @@ void OiJob::addMeasurementResults(const int &geomId, const QList<QPointer<Readin
                 && !feature->getGeometry()->getFunctions().at(0).isNull()
                 && feature->getGeometry()->getFunctions().at(0)->getNeededElements().size() > 0
                 && feature->getGeometry()->getFunctions().at(0)->getNeededElements().at(0).typeOfElement == eObservationElement){
-            this->addInputObservation(feature, 0, 0, observation);
+            this->addInputObservation(feature, 0, observation->getIsDummyPoint() ? InputElementKey::eDummyPoint : InputElementKey::eDefault, observation);
         }
 
     }
@@ -1570,7 +1570,7 @@ void OiJob::removeObservations(const int &featureId){
     //run through all observations of the feature
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
-        delete obs;
+        delete obs.data();
     }
 
     //recalculate the feature
@@ -1579,17 +1579,42 @@ void OiJob::removeObservations(const int &featureId){
 }
 
 void OiJob::enableOrDisableObservations(const int &featureId, bool enable) {
+    QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
+    if(feature.isNull()) {
+        emit this->sendMessage(QString("Cannot enable or disable observations from %1").arg(feature.isNull() ? QString("feature id: %1").arg(featureId) : feature->getFeature()->getFeatureName()), eWarningMessage);
+        return;
+    }
+
+    QPointer<Station> station = feature->getStation();
+    if(!station.isNull()) { // is station
+        enableOrDisableStationObservations(station, enable);
+    } else {
+        enableOrDisableGeometryObservations(featureId, enable, QPointer<Station>());
+    }
+}
+
+void OiJob::enableOrDisableStationObservations(QPointer<Station> station, bool enable) {
+    foreach(int featureId, this->featureContainer.getFeatureIdList()) {
+        enableOrDisableGeometryObservations(featureId, enable, station);
+    }
+}
+
+void OiJob::enableOrDisableGeometryObservations(const int &featureId, bool enable, QPointer<Station> station) {
     int functionIndex = 0;
     int neededElementIndex = 0;
     //get and check feature with the id featureId
     QPointer<FeatureWrapper> feature = this->featureContainer.getFeatureById(featureId);
     if(feature.isNull() || feature->getGeometry().isNull()){
+        emit this->sendMessage(QString("Cannot enable or disable observations from %1").arg(feature.isNull() ? QString("feature id: %1").arg(featureId) : feature->getFeature()->getFeatureName()), eWarningMessage);
         return;
     }
 
     //run through all observations of the feature
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
+        if(!station.isNull() && station->getId() != obs->getStation()->getId()) {
+            continue; // skip
+        }
         int elementId = obs->getId();
 
         //check if the current use state already equals the new use state
@@ -1630,7 +1655,7 @@ void OiJob::removeObservations(const int &featureId, const QList<int> selectedId
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
         if (selectedIds.contains(obs->getId())) {
-            delete obs;
+            delete obs.data();
         }
     }
 
@@ -2227,7 +2252,7 @@ void OiJob::connectFeature(const QPointer<FeatureWrapper> &feature){
     //QObject::connect(feature->getFeature().data(), &Feature::featureIsUpdatedChanged,
     //                 this, &OiJob::setFeatureIsUpdated, Qt::AutoConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureIsSolvedChanged,
-                     this, &OiJob::setFeatureIsSolved, Qt::AutoConnection);
+                     this, &OiJob::setFeatureIsSolved, Qt::QueuedConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureFunctionListChanged,
                      this, &OiJob::setFeatureFunctions, Qt::AutoConnection);
     QObject::connect(feature->getFeature().data(), &Feature::featureUsedForChanged,
@@ -2566,7 +2591,7 @@ QPointer<FeatureWrapper> OiJob::createFeatureWrapper(const FeatureTypes &type, b
         feature->setTorus(torus);
         break;
     }default:{
-        delete feature;
+        delete feature.data();
     }
     }
 
@@ -3148,6 +3173,10 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
 
         //pass the job instance to the feature
         feature->getFeature()->job = this;
+        for(QPointer<Function> function : feature->getFeature()->getFunctions()) {
+            QObject::connect(function.data(), &Function::sendMessage, this, &OiJob::sendMessage, Qt::AutoConnection);
+        }
+
         if(!feature->getStation().isNull()){
 
             //pass job to the station system

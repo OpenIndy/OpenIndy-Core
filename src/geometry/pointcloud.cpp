@@ -30,7 +30,7 @@ PointCloud::PointCloud(const PointCloud &copy, QObject *parent) : Geometry(copy,
         this->selfFeature->setPointCloud(this);
     }
 
-    this->setPosition(copy.mainFocus);
+    this->xyz = copy.xyz;
     this->setBoundingBox(copy.bbox);
 
 }
@@ -47,7 +47,7 @@ PointCloud &PointCloud::operator=(const PointCloud &copy){
         this->selfFeature->setPointCloud(this);
     }
 
-    this->setPosition(copy.mainFocus);
+     this->xyz = copy.xyz;
     this->setBoundingBox(copy.bbox);
 
     return *this;
@@ -134,23 +134,6 @@ void PointCloud::addPointCloudPoint(const QPointer<Point_PC> &point){
 }
 
 /*!
- * \brief PointCloud::getPosition
- * Returns the main focus of the point cloud points
- * \return
- */
-const Position &PointCloud::getPosition() const{
-    return this->mainFocus;
-}
-
-/*!
- * \brief PointCloud::setPosition
- * \param mainFocus
- */
-void PointCloud::setPosition(const Position &mainFocus){
-    this->mainFocus = mainFocus;
-}
-
-/*!
  * \brief PointCloud::getBoundingBox
  * Returns the bounding box of the point cloud
  * \return
@@ -214,44 +197,3 @@ bool PointCloud::fromOpenIndyXML(QDomElement &xmlElem){
 
 }
 
-/*!
- * \brief PointCloud::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString PointCloud::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->mainFocus.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief PointCloud::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString PointCloud::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->mainFocus.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief PointCloud::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString PointCloud::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->mainFocus.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}

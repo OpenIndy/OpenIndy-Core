@@ -50,7 +50,7 @@ Line::Line(const Line &copy, QObject *parent) : Geometry(copy, parent){
     }
 
     this->xyz = copy.xyz;
-    this->axis = copy.axis;
+    this->ijk = copy.ijk;
 
 }
 
@@ -67,7 +67,7 @@ Line &Line::operator=(const Line &copy){
     }
 
     this->xyz = copy.xyz;
-    this->axis = copy.axis;
+    this->ijk = copy.ijk;
 
     return *this;
 
@@ -97,24 +97,6 @@ bool Line::hasPosition() const{
 }
 
 /*!
- * \brief Line::getDirection
- * Returns the direction vector
- * \return
- */
-const Direction &Line::getDirection() const{
-    return this->axis;
-}
-
-/*!
- * \brief Line::getPosition
- * Returns an arbitrary point on the line
- * \return
- */
-const Position &Line::getPosition() const{
-    return this->xyz;
-}
-
-/*!
  * \brief Line::setLine
  * \param xyz
  * \param axis
@@ -123,7 +105,7 @@ void Line::setLine(const Position &xyz, const Direction &axis){
 
     //set the given parameters
     this->xyz = xyz;
-    this->axis = axis;
+    this->ijk = axis;
 
     emit this->geomParametersChanged(this->id);
 
@@ -158,7 +140,7 @@ void Line::setUnknownParameters(const QMap<GeometryParameters, double> &paramete
 
     //get current parameters
     OiVec position = this->xyz.getVector();
-    OiVec direction = this->axis.getVector();
+    OiVec direction = this->ijk.getVector();
 
     //update parameters
     QList<GeometryParameters> keys = parameters.keys();
@@ -203,7 +185,7 @@ void Line::recalc(){
     //reset line definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
         this->xyz.setVector(0.0, 0.0, 0.0);
-        this->axis.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
     }
 
 }
@@ -248,7 +230,7 @@ bool Line::fromOpenIndyXML(QDomElement &xmlElem){
             return false;
         }
 
-        this->axis.setVector(directionVector.attribute("i").toDouble(),
+        this->ijk.setVector(directionVector.attribute("i").toDouble(),
                                directionVector.attribute("j").toDouble(),
                                directionVector.attribute("k").toDouble());
         this->xyz.setVector(axisPoint.attribute("x").toDouble(),
@@ -259,85 +241,4 @@ bool Line::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Line::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Line::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Line::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Line::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Line::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Line::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->xyz.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Line::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Line::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Line::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Line::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Line::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Line::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
 }

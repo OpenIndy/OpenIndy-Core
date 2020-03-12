@@ -50,8 +50,8 @@ Cylinder::Cylinder(const Cylinder &copy, QObject *parent) : Geometry(copy, paren
         this->selfFeature->setCylinder(this);
     }
 
-    this->axisPoint = copy.axisPoint;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->radius = copy.radius;
 
 }
@@ -68,8 +68,8 @@ Cylinder &Cylinder::operator=(const Cylinder &copy){
         this->selfFeature->setCylinder(this);
     }
 
-    this->axisPoint = copy.axisPoint;
-    this->axis = copy.axis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->radius = copy.radius;
 
     return *this;
@@ -108,33 +108,6 @@ bool Cylinder::hasRadius() const{
 }
 
 /*!
- * \brief Cylinder::getRadius
- * Returns the radius of the cylinder
- * \return
- */
-const Radius &Cylinder::getRadius() const{
-    return this->radius;
-}
-
-/*!
- * \brief Cylinder::getDirection
- * Returns the axis of the cylinder
- * \return
- */
-const Direction &Cylinder::getDirection() const{
-    return this->axis;
-}
-
-/*!
- * \brief Cylinder::getPosition
- * Returns an arbitrary point on the cylinder axis
- * \return
- */
-const Position &Cylinder::getPosition() const{
-    return this->axisPoint;
-}
-
-/*!
  * \brief Cylinder::setCylinder
  * \param axisPoint
  * \param axis
@@ -143,8 +116,8 @@ const Position &Cylinder::getPosition() const{
 void Cylinder::setCylinder(const Position &axisPoint, const Direction &axis, const Radius &radius){
 
     //set the given parameters
-    this->axisPoint = axisPoint;
-    this->axis = axis;
+    this->xyz = axisPoint;
+    this->ijk = axis;
     this->radius = radius;
 
     emit this->geomParametersChanged(this->id);
@@ -180,8 +153,8 @@ QMap<GeometryParameters, QString> Cylinder::getUnknownParameters(const QMap<Dime
 void Cylinder::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->axisPoint.getVector();
-    OiVec direction = this->axis.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
     double radius = this->radius.getRadius();
 
     //update parameters
@@ -230,8 +203,8 @@ void Cylinder::recalc(){
 
     //reset cylinder definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->axisPoint.setVector(0.0, 0.0, 0.0);
-        this->axis.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->radius.setRadius(0.0);
     }
 
@@ -279,10 +252,10 @@ bool Cylinder::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         this->radius.setRadius(radius.attribute("value").toDouble());
-        this->axis.setVector(axis.attribute("i").toDouble(),
+        this->ijk.setVector(axis.attribute("i").toDouble(),
                              axis.attribute("j").toDouble(),
                              axis.attribute("k").toDouble());
-        this->axisPoint.setVector(axisPoint.attribute("x").toDouble(),
+        this->xyz.setVector(axisPoint.attribute("x").toDouble(),
                                   axisPoint.attribute("y").toDouble(),
                                   axisPoint.attribute("z").toDouble());
 
@@ -292,97 +265,3 @@ bool Cylinder::fromOpenIndyXML(QDomElement &xmlElem){
 
 }
 
-/*!
- * \brief Cylinder::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->axisPoint.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cylinder::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->axisPoint.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cylinder::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->axisPoint.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cylinder::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cylinder::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cylinder::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->axis.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Cylinder::getDisplayRadiusA
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Cylinder::getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->radius.getRadius(), type), 'f', digits);
-    }
-    return QString("");
-}

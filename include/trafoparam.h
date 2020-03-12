@@ -49,7 +49,7 @@ public:
                               const QPointer<CoordinateSystem> &to);
 
     //bundle
-    const bool &getIsBundle() const;
+    const bool getIsBundle() const;
 
     //statistic
     const Statistic &getStatistic() const;

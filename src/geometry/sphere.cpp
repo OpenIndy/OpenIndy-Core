@@ -49,7 +49,7 @@ Sphere::Sphere(const Sphere &copy, QObject *parent) : Geometry(copy, parent){
         this->selfFeature->setSphere(this);
     }
 
-    this->center = copy.center;
+    this->xyz = copy.xyz;
     this->radius = copy.radius;
 
 }
@@ -66,7 +66,7 @@ Sphere &Sphere::operator=(const Sphere &copy){
         this->selfFeature->setSphere(this);
     }
 
-    this->center = copy.center;
+    this->xyz = copy.xyz;
     this->radius = copy.radius;
 
     return *this;
@@ -96,23 +96,6 @@ bool Sphere::hasRadius() const{
     return true;
 }
 
-/*!
- * \brief Sphere::getRadius
- * Returns the radius of the sphere
- * \return
- */
-const Radius &Sphere::getRadius() const{
-    return this->radius;
-}
-
-/*!
- * \brief Sphere::getPosition
- * Returns the center of the sphere
- * \return
- */
-const Position &Sphere::getPosition() const{
-    return this->center;
-}
 
 /*!
  * \brief Sphere::setSphere
@@ -122,7 +105,7 @@ const Position &Sphere::getPosition() const{
 void Sphere::setSphere(const Position &center, const Radius &radius){
 
     //set the given parameters
-    this->center = center;
+    this->xyz = center;
     this->radius = radius;
 
     emit this->geomParametersChanged(this->id);
@@ -155,7 +138,7 @@ QMap<GeometryParameters, QString> Sphere::getUnknownParameters(const QMap<Dimens
 void Sphere::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->center.getVector();
+    OiVec position = this->xyz.getVector();
     double radius = this->radius.getRadius();
 
     //update parameters
@@ -193,7 +176,7 @@ void Sphere::recalc(){
 
     //reset sphere definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->center.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
         this->radius.setRadius(0.0);
     }
 
@@ -239,7 +222,7 @@ bool Sphere::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         this->radius.setRadius(radius.attribute("value").toDouble());
-        this->center.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                                center.attribute("y").toDouble(),
                                center.attribute("z").toDouble());
 
@@ -247,60 +230,4 @@ bool Sphere::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Sphere::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Sphere::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Sphere::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Sphere::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Sphere::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Sphere::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Sphere::getDisplayRadiusA
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Sphere::getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->radius.getRadius(), type), 'f', digits);
-    }
-    return QString("");
 }

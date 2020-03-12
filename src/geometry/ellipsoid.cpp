@@ -53,8 +53,8 @@ Ellipsoid::Ellipsoid(const Ellipsoid &copy, QObject *parent) : Geometry(copy, pa
         this->selfFeature->setEllipsoid(this);
     }
 
-    this->center = copy.center;
-    this->majorAxis = copy.majorAxis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->a = copy.a;
     this->b = copy.b;
 
@@ -72,8 +72,8 @@ Ellipsoid &Ellipsoid::operator=(const Ellipsoid &copy){
         this->selfFeature->setEllipsoid(this);
     }
 
-    this->center = copy.center;
-    this->majorAxis = copy.majorAxis;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
     this->a = copy.a;
     this->b = copy.b;
 
@@ -102,24 +102,6 @@ bool Ellipsoid::hasDirection() const{
  */
 bool Ellipsoid::hasPosition() const{
     return true;
-}
-
-/*!
- * \brief Ellipsoid::getDirection
- * Returns the major axis vector of the ellipsoid (semi-major axis)
- * \return
- */
-const Direction &Ellipsoid::getDirection() const{
-    return this->majorAxis;
-}
-
-/*!
- * \brief Ellipsoid::getPosition
- * Returns the center of the ellipsoid
- * \return
- */
-const Position &Ellipsoid::getPosition() const{
-    return this->center;
 }
 
 /*!
@@ -152,8 +134,8 @@ const double &Ellipsoid::getB() const{
 void Ellipsoid::setEllipsoid(const Position &center, const Direction &majorAxis, const double &a, const double &b){
 
     //set the given parameters
-    this->center = center;
-    this->majorAxis = majorAxis;
+    this->xyz = center;
+    this->ijk = majorAxis;
     this->a = a;
     this->b = b;
 
@@ -191,8 +173,8 @@ QMap<GeometryParameters, QString> Ellipsoid::getUnknownParameters(const QMap<Dim
 void Ellipsoid::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->center.getVector();
-    OiVec direction = this->majorAxis.getVector();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
     double a = this->a;
     double b = this->b;
 
@@ -244,8 +226,8 @@ void Ellipsoid::recalc(){
 
     //reset ellipsoid definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->center.setVector(0.0, 0.0, 0.0);
-        this->majorAxis.setVector(0.0, 0.0, 0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
         this->a = 0.0;
         this->b = 0.0;
     }
@@ -315,10 +297,10 @@ bool Ellipsoid::fromOpenIndyXML(QDomElement &xmlElem){
 
         this->a = a.attribute("value").toDouble();
         this->b = b.attribute("value").toDouble();
-        this->majorAxis.setVector(majorAxis.attribute("i").toDouble(),
+        this->ijk.setVector(majorAxis.attribute("i").toDouble(),
                                   majorAxis.attribute("j").toDouble(),
                                   majorAxis.attribute("k").toDouble());
-        this->center.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                                center.attribute("y").toDouble(),
                                center.attribute("z").toDouble());
 
@@ -326,87 +308,6 @@ bool Ellipsoid::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Ellipsoid::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipsoid::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipsoid::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipsoid::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipsoid::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipsoid::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipsoid::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipsoid::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->majorAxis.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipsoid::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipsoid::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->majorAxis.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Ellipsoid::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Ellipsoid::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->majorAxis.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
 }
 
 /*!

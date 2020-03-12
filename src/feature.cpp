@@ -104,7 +104,7 @@ Feature::~Feature(){
     //delete all functions when deleting the feature
     foreach(const QPointer<Function> &function, this->functionList){
         if(!function.isNull()){
-            delete function;
+            delete function.data();
         }
     }
 
@@ -112,7 +112,7 @@ Feature::~Feature(){
 
     //delete self feature wrapper
     if(!this->selfFeature.isNull()){
-        delete this->selfFeature;
+        delete this->selfFeature.data();
     }
 
 }
@@ -1174,6 +1174,17 @@ QString Feature::getDisplayIsMovement() const{
  * \return
  */
 QString Feature::getDisplayIsDatumTransformation() const{
+    return QString("-/-");
+}
+
+/*!
+ * \brief Feature::getDisplayFormError
+ * \param type
+ * \param digits
+ * \param showDiff
+ * \return
+ */
+QString Feature::getDisplayFormError(const UnitType &type, const int &digits) const{
     return QString("-/-");
 }
 

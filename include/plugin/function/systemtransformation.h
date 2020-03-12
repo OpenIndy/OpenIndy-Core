@@ -13,7 +13,7 @@ namespace oi{
  */
 class OI_CORE_EXPORT SystemTransformation : public Function
 {
-    friend class FeatureUpdater;
+    friend class ::FeatureUpdater;
     Q_OBJECT
 
 public:
