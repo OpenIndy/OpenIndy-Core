@@ -337,6 +337,7 @@ protected:
     void filterObservations(QList<QPointer<Observation> > &allUsableObservations, QList<QPointer<Observation> > &inputObservations);
     void addDisplayResidual(int elementId, double vr);
     void addDisplayResidual(int elementId, double vx, double vy, double vz, double v);
+    void addDisplayResidual(int elementId, double vx, double vy, double vz, double v, double vi, double vj, double vk);
 
 };
 

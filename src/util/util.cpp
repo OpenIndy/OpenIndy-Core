@@ -320,6 +320,9 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayVZ, "vz");
     observationDisplayAttributesMap.insert(eObservationDisplayV, "v");
     observationDisplayAttributesMap.insert(eObservationDisplayVR, "vr");
+    observationDisplayAttributesMap.insert(eObservationDisplayVI, "vi");
+    observationDisplayAttributesMap.insert(eObservationDisplayVJ, "vj");
+    observationDisplayAttributesMap.insert(eObservationDisplayVK, "vk");
     observationDisplayAttributesMap.insert(eObservationDisplayIsUsed, "used");
     observationDisplayAttributesMap.insert(eObservationDisplayIsDummyPoint, "dummy point");
 

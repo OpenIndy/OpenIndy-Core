@@ -329,6 +329,9 @@ enum ObservationDisplayAttributes{
     eObservationDisplayVZ,
     eObservationDisplayV,
     eObservationDisplayVR,
+    eObservationDisplayVI,
+    eObservationDisplayVJ,
+    eObservationDisplayVK,
     eObservationDisplayIsUsed,
     eObservationDisplayIsDummyPoint
 
