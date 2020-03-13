@@ -627,11 +627,8 @@ QString Feature::getDisplayFunctions() const{
     for(int i = 0; i < this->functionList.size(); i++){
         QPointer<Function> function = this->functionList.at(i);
         if(!function.isNull()){
-            if(i == this->functionList.size() - 1){ // last function
-                display += function->getMetaData().name;
-            }else{
-                display += function->getMetaData().name + ", ";
-            }
+            display += function->getMetaData().name
+                    +  (i < this->functionList.size() -1 ? ", " : "");
         }
     }
     return display;
@@ -646,11 +643,8 @@ QString Feature::getDisplayUsedFor() const{
     for(int i = 0; i < this->usedForList.size(); i++){
         QPointer<FeatureWrapper> feature = this->usedForList.at(i);
         if(!feature.isNull() && !feature->getFeature().isNull()){
-            if(i == this->usedForList.size() - 1){ // last feature
-                display += feature->getFeature()->getFeatureName();
-            }else{
-                display += feature->getFeature()->getFeatureName() + ", ";
-            }
+            display += feature->getFeature()->getFeatureName()
+                    +  (i < this->usedForList.size() -1 ? ", " : "");
         }
     }
     return display;
@@ -665,11 +659,8 @@ QString Feature::getDisplayPreviouslyNeeded() const{
     for(int i = 0; i < this->previouslyNeededList.size(); i++){
         QPointer<FeatureWrapper> feature = this->previouslyNeededList.at(i);
         if(!feature.isNull() && !feature->getFeature().isNull()){
-            if(i == this->previouslyNeededList.size() - 1){ // last feature
-                display += feature->getFeature()->getFeatureName();
-            }else{
-                display += feature->getFeature()->getFeatureName() + ", ";
-            }
+                display += feature->getFeature()->getFeatureName()
+                        +  (i < this->previouslyNeededList.size() -1 ? ", " : "");
         }
     }
     return display;
