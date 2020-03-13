@@ -263,12 +263,12 @@ protected:
             v_all = v_circle + v_plane;
 
             //set up display residual
-            function->addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2),
-                               qSqrt(v_all.getAt(0) * v_all.getAt(0)
-                                    + v_all.getAt(1) * v_all.getAt(1)
-                                    + v_all.getAt(2) * v_all.getAt(2))
-                               * sgn(allCircleDistances.getAt(i))
-                                         );
+            if(false) {
+                function->addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2), v_all.length());
+            } else {
+                function->addDisplayResidual(point.id, v_all.length() * sgn(allCircleDistances.getAt(i)));
+            }
+
 
         }
 
