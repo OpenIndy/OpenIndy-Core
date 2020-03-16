@@ -179,7 +179,7 @@ public:
     //public exec method that calls the appropriate protected exec method
     //###################################################################
 
-    bool exec(const QPointer<FeatureWrapper> &feature);
+    virtual bool exec(const QPointer<FeatureWrapper> &feature);
 
     //#############################################################
     //methods to get or set further information to solve a function
