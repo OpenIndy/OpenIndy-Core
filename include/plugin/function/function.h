@@ -81,6 +81,7 @@ public:
     }
 
     int id; //the id of the element
+    QString label;
     ElementTypes typeOfElement; //the type of the element
 
     //single parameters of this element that shall not be used in function calculation
