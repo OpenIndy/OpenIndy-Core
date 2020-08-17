@@ -17,6 +17,10 @@ MeasurementConfig::MeasurementConfig() : isSaved(false){
     this->distanceInterval = 0.0;
     this->typeOfReading = ePolarReading;
 
+    this->isStablePoint = false;
+    this->stablePointMinDistance = 10.0;
+    this->stablePointThreshold = 0.1;
+
 }
 
 /*!
@@ -36,6 +40,10 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
+
+    this->isStablePoint = copy.isStablePoint;
+    this->stablePointMinDistance = copy.stablePointMinDistance;
+    this->stablePointThreshold = copy.stablePointThreshold;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -59,6 +67,10 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
+
+    this->isStablePoint = copy.isStablePoint;
+    this->stablePointMinDistance = copy.stablePointMinDistance;
+    this->stablePointThreshold = copy.stablePointThreshold;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -247,6 +259,34 @@ void MeasurementConfig::setTypeOfReading(const ReadingTypes &type){
     this->isSaved = false;
 }
 
+
+void MeasurementConfig::setIsStablePoint(const bool isStablePoint) {
+    this->isStablePoint = isStablePoint;
+    this->isSaved = false;
+}
+
+const bool &MeasurementConfig::getIsStablePoint() const {
+    return this->isStablePoint;
+}
+
+void MeasurementConfig::setStablePointMinDistance(const double &minDistance) {
+    this->stablePointMinDistance = minDistance;
+    this->isSaved = false;
+}
+
+const double &MeasurementConfig::getStablePointMinDistance() const {
+    return this->stablePointMinDistance;
+}
+
+void MeasurementConfig::setStablePointThreshold(const double &threshold) {
+    this->stablePointThreshold = threshold;
+    this->isSaved = false;
+}
+
+const double &MeasurementConfig::getStablePointThreshold() const {
+    return this->stablePointThreshold;
+}
+
 /*!
  * \brief MeasurementConfig::toOpenIndyXML
  * \param xmlDoc
@@ -271,6 +311,10 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     mConfig.setAttribute("timeInterval", QString::number(this->timeInterval));
     mConfig.setAttribute("distanceInterval", this->distanceInterval);
     mConfig.setAttribute("typeOfReading", this->typeOfReading);
+
+    mConfig.setAttribute("isStablePoint", this->isStablePoint);
+    mConfig.setAttribute("stablePointMinDistance", this->stablePointMinDistance);
+    mConfig.setAttribute("stablePointThreshold", this->stablePointThreshold);
 
     return mConfig;
 
@@ -303,6 +347,10 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
     this->typeOfReading = (ReadingTypes)xmlElem.attribute("typeOfReading").toInt();
+
+    this->isStablePoint = xmlElem.attribute("isStablePoint").toInt();
+    this->stablePointMinDistance = xmlElem.attribute("stablePointMinDistance").toDouble();
+    this->stablePointThreshold = xmlElem.attribute("stablePointThreshold").toDouble();
 
     if(xmlElem.hasAttribute("isSaved")){
         this->isSaved = xmlElem.attribute("isSaved").toInt();
