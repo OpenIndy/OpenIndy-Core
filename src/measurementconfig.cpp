@@ -19,7 +19,8 @@ MeasurementConfig::MeasurementConfig() : isSaved(false){
 
     this->isStablePoint = false;
     this->stablePointMinDistance = 10.0;
-    this->stablePointThreshold = 0.1;
+    this->stablePointThresholdRange = 0.1;
+    this->stablePointThresholdTime = 2.0;
 
 }
 
@@ -43,7 +44,8 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
-    this->stablePointThreshold = copy.stablePointThreshold;
+    this->stablePointThresholdRange = copy.stablePointThresholdRange;
+    this->stablePointThresholdTime = copy.stablePointThresholdTime;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -70,7 +72,8 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
-    this->stablePointThreshold = copy.stablePointThreshold;
+    this->stablePointThresholdRange = copy.stablePointThresholdRange;
+    this->stablePointThresholdTime = copy.stablePointThresholdTime;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -278,13 +281,22 @@ const double &MeasurementConfig::getStablePointMinDistance() const {
     return this->stablePointMinDistance;
 }
 
-void MeasurementConfig::setStablePointThreshold(const double &threshold) {
-    this->stablePointThreshold = threshold;
+void MeasurementConfig::setStablePointThresholdRange(const double &threshold) {
+    this->stablePointThresholdRange = threshold;
     this->isSaved = false;
 }
 
-const double &MeasurementConfig::getStablePointThreshold() const {
-    return this->stablePointThreshold;
+const double &MeasurementConfig::getStablePointThresholdRange() const {
+    return this->stablePointThresholdRange;
+}
+
+void MeasurementConfig::setStablePointThresholdTime(const double &threshold) {
+    this->stablePointThresholdTime = threshold;
+    this->isSaved = false;
+}
+
+const double &MeasurementConfig::getStablePointThresholdTime() const {
+    return this->stablePointThresholdTime;
 }
 
 /*!
@@ -314,7 +326,8 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     mConfig.setAttribute("isStablePoint", this->isStablePoint);
     mConfig.setAttribute("stablePointMinDistance", this->stablePointMinDistance);
-    mConfig.setAttribute("stablePointThreshold", this->stablePointThreshold);
+    mConfig.setAttribute("stablePointThresholdRange", this->stablePointThresholdRange);
+    mConfig.setAttribute("stablePointThresholdTime", this->stablePointThresholdTime);
 
     return mConfig;
 
@@ -350,7 +363,8 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
 
     this->isStablePoint = xmlElem.attribute("isStablePoint").toInt();
     this->stablePointMinDistance = xmlElem.attribute("stablePointMinDistance").toDouble();
-    this->stablePointThreshold = xmlElem.attribute("stablePointThreshold").toDouble();
+    this->stablePointThresholdRange = xmlElem.attribute("stablePointThresholdRange").toDouble();
+    this->stablePointThresholdTime = xmlElem.attribute("stablePointThresholdTime").toDouble();
 
     if(xmlElem.hasAttribute("isSaved")){
         this->isSaved = xmlElem.attribute("isSaved").toInt();

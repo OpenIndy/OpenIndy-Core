@@ -76,8 +76,11 @@ public:
     void setStablePointMinDistance(const double &minDistance);
     const double &getStablePointMinDistance() const;
 
-    void setStablePointThreshold(const double &threshold);
-    const double &getStablePointThreshold() const;
+    void setStablePointThresholdRange(const double &threshold);
+    const double &getStablePointThresholdRange() const;
+
+    void setStablePointThresholdTime(const double &threshold);
+    const double &getStablePointThresholdTime() const;
 
     //#################
     //save and load XML
@@ -106,7 +109,8 @@ private:
 
     bool isStablePoint; // is stable point measurement
     double stablePointMinDistance; // [mm]
-    double stablePointThreshold; // [mm]
+    double stablePointThresholdRange; // [mm]
+    double stablePointThresholdTime; // [second]
 
     QMap<QString, QVariant> transientData;
 
