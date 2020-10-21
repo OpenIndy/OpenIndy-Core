@@ -53,6 +53,9 @@ public slots:
     virtual void customXmlRequest(const QPointer<OiRequestResponse> &request);
     virtual void watchWindowKeyPressed(const Qt::Key &key);
 
+    // receive emitted job
+    virtual void setCurrentJob(const QPointer<OiJob> &job);
+
 signals:
 
     //############################################
