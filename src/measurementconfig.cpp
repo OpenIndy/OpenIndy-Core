@@ -17,6 +17,11 @@ MeasurementConfig::MeasurementConfig() : isSaved(false){
     this->distanceInterval = 0.0;
     this->typeOfReading = ePolarReading;
 
+    this->isStablePoint = false;
+    this->stablePointMinDistance = 10.0;
+    this->stablePointThresholdRange = 0.1;
+    this->stablePointThresholdTime = 2.0;
+
 }
 
 /*!
@@ -36,6 +41,11 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
+
+    this->isStablePoint = copy.isStablePoint;
+    this->stablePointMinDistance = copy.stablePointMinDistance;
+    this->stablePointThresholdRange = copy.stablePointThresholdRange;
+    this->stablePointThresholdTime = copy.stablePointThresholdTime;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -59,6 +69,11 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
     this->typeOfReading = copy.typeOfReading;
+
+    this->isStablePoint = copy.isStablePoint;
+    this->stablePointMinDistance = copy.stablePointMinDistance;
+    this->stablePointThresholdRange = copy.stablePointThresholdRange;
+    this->stablePointThresholdTime = copy.stablePointThresholdTime;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -247,6 +262,43 @@ void MeasurementConfig::setTypeOfReading(const ReadingTypes &type){
     this->isSaved = false;
 }
 
+
+void MeasurementConfig::setIsStablePoint(const bool isStablePoint) {
+    this->isStablePoint = isStablePoint;
+    this->isSaved = false;
+}
+
+const bool &MeasurementConfig::getIsStablePoint() const {
+    return this->isStablePoint;
+}
+
+void MeasurementConfig::setStablePointMinDistance(const double &minDistance) {
+    this->stablePointMinDistance = minDistance;
+    this->isSaved = false;
+}
+
+const double &MeasurementConfig::getStablePointMinDistance() const {
+    return this->stablePointMinDistance;
+}
+
+void MeasurementConfig::setStablePointThresholdRange(const double &threshold) {
+    this->stablePointThresholdRange = threshold;
+    this->isSaved = false;
+}
+
+const double &MeasurementConfig::getStablePointThresholdRange() const {
+    return this->stablePointThresholdRange;
+}
+
+void MeasurementConfig::setStablePointThresholdTime(const double &threshold) {
+    this->stablePointThresholdTime = threshold;
+    this->isSaved = false;
+}
+
+const double &MeasurementConfig::getStablePointThresholdTime() const {
+    return this->stablePointThresholdTime;
+}
+
 /*!
  * \brief MeasurementConfig::toOpenIndyXML
  * \param xmlDoc
@@ -271,6 +323,11 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     mConfig.setAttribute("timeInterval", QString::number(this->timeInterval));
     mConfig.setAttribute("distanceInterval", this->distanceInterval);
     mConfig.setAttribute("typeOfReading", this->typeOfReading);
+
+    mConfig.setAttribute("isStablePoint", this->isStablePoint);
+    mConfig.setAttribute("stablePointMinDistance", this->stablePointMinDistance);
+    mConfig.setAttribute("stablePointThresholdRange", this->stablePointThresholdRange);
+    mConfig.setAttribute("stablePointThresholdTime", this->stablePointThresholdTime);
 
     return mConfig;
 
@@ -303,6 +360,11 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
     this->typeOfReading = (ReadingTypes)xmlElem.attribute("typeOfReading").toInt();
+
+    this->isStablePoint = xmlElem.attribute("isStablePoint").toInt();
+    this->stablePointMinDistance = xmlElem.attribute("stablePointMinDistance").toDouble();
+    this->stablePointThresholdRange = xmlElem.attribute("stablePointThresholdRange").toDouble();
+    this->stablePointThresholdTime = xmlElem.attribute("stablePointThresholdTime").toDouble();
 
     if(xmlElem.hasAttribute("isSaved")){
         this->isSaved = xmlElem.attribute("isSaved").toInt();
