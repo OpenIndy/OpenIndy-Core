@@ -6,6 +6,10 @@
 
 namespace oi{
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 struct IdPoint {
     int id;
     OiVec xyz;
@@ -119,15 +123,7 @@ protected:
         u.getCol(n, eigenIndex);
         n.normalize();
 
-        //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
-        OiVec ab = points.at(1).xyz - points.at(0).xyz;
-        ab.removeLast();
-        OiVec ac = points.at(2).xyz - points.at(0).xyz;
-        ac.removeLast();
         OiVec direction(3);
-        OiVec::cross(direction, ab, ac);
-        direction.normalize();
-
         if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
             // computing circle normale by dummy point
             OiVec dummyPoint = function->getInputElements()[InputElementKey::eDummyPoint][0].observation->getXYZ(); // TODO Point
@@ -135,6 +131,14 @@ protected:
             double dot;
             OiVec::dot(dot, dummyPoint - centroid, centroid);
             direction = - dot * dummyPoint;
+            direction.normalize();
+        } else {
+            //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
+            OiVec ab = points.at(1).xyz - points.at(0).xyz;
+            ab.removeLast();
+            OiVec ac = points.at(2).xyz - points.at(0).xyz;
+            ac.removeLast();
+            OiVec::cross(direction, ab, ac);
             direction.normalize();
         }
         double angle = 0.0; //angle between n and direction
@@ -221,14 +225,11 @@ protected:
             diff.setAt(0, reduced.getAt(0) + centroid2D.getAt(0) - xm.getAt(0));
             diff.setAt(1, reduced.getAt(1) + centroid2D.getAt(1) - xm.getAt(1));
 
-            double distance = 0.0;
-            OiVec::dot(distance, diff, diff);
-            distance = qSqrt(distance);
-            distance = qAbs(distance - radius);
+            double dr = diff.length() - radius;
 
-            allCircleDistances.add(distance);
+            allCircleDistances.add(dr);
             if(points.contains(point)) {
-                circleDistances.add(distance);
+                circleDistances.add(dr);
             }
         }
 
@@ -262,10 +263,12 @@ protected:
             v_all = v_circle + v_plane;
 
             //set up display residual
-            function->addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2),
-                               qSqrt(v_all.getAt(0) * v_all.getAt(0)
-                                    + v_all.getAt(1) * v_all.getAt(1)
-                                    + v_all.getAt(2) * v_all.getAt(2)));
+            if(false) {
+                function->addDisplayResidual(point.id, v_all.getAt(0), v_all.getAt(1), v_all.getAt(2), v_all.length());
+            } else {
+                function->addDisplayResidual(point.id, v_all.length() * sgn(allCircleDistances.getAt(i)));
+            }
+
 
         }
 
