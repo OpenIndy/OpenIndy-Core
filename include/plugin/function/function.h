@@ -81,6 +81,7 @@ public:
     }
 
     int id; //the id of the element
+    QString label;
     ElementTypes typeOfElement; //the type of the element
 
     //single parameters of this element that shall not be used in function calculation
@@ -179,7 +180,7 @@ public:
     //public exec method that calls the appropriate protected exec method
     //###################################################################
 
-    bool exec(const QPointer<FeatureWrapper> &feature);
+    virtual bool exec(const QPointer<FeatureWrapper> &feature);
 
     //#############################################################
     //methods to get or set further information to solve a function
