@@ -886,3 +886,17 @@ void Function::addDisplayResidual(int elementId, double vx, double vy, double vz
     residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayV), v);
     this->statistic.addDisplayResidual(residual);
 }
+
+void Function::addDisplayResidual(int elementId, double vx, double vy, double vz, double v, double vi, double vj, double vk) {
+    Residual residual;
+    residual.elementId = elementId;
+    residual.dimension = eMetric;
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVX), vx);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVY), vy);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVZ), vz);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayV), v);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVI), vi);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVJ), vj);
+    residual.corrections.insert(getObservationDisplayAttributesName(eObservationDisplayVK), vk);
+    this->statistic.addDisplayResidual(residual);
+}
