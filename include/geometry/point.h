@@ -20,6 +20,7 @@ class OI_CORE_EXPORT Point : public Geometry
 public:
     Point(const bool &isNominal, QObject *parent = 0);
     Point(const bool &isNominal, const Position &xyz, QObject *parent = 0);
+    Point(int id, const bool &isNominal, const Position &xyz, QObject *parent = 0);
 
     Point(const Point &copy, QObject *parent = 0);
 
