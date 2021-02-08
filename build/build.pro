@@ -128,6 +128,7 @@ HEADERS  += \
     $$PWD/../include/plugin/function/geodeticfunction.h \
     $$PWD/../include/plugin/function/objecttransformation.h \
     $$PWD/../include/plugin/function/systemtransformation.h \
+    $$PWD/../include/plugin/function/specialfunction.h \
     $$PWD/../include/plugin/sensor/lasertracker.h \
     $$PWD/../include/plugin/sensor/sensor.h \
     $$PWD/../include/plugin/sensor/totalstation.h \
