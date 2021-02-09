@@ -47,6 +47,6 @@ protected:
 #endif
 
 #define SPECIALFUNCTION_PREFIX de.openIndy.plugin.function.specialFunction.v
-#define SpecialFunction_iidd STR2(CONCAT2(SPECIALFUNCTION__PREFIX, PLUGIN_INTERFACE_VERSION))
+#define SpecialFunction_iidd STR2(CONCAT2(SPECIALFUNCTION_PREFIX, PLUGIN_INTERFACE_VERSION))
 
 #endif // SPECIALFUNCTION__H
