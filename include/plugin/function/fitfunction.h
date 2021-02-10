@@ -311,14 +311,15 @@ protected:
     bool bestFitCylinder(FitFunction *function, Cylinder &cylinder, QList<IdPoint> points, QList<IdPoint> usablePoints) {
 
         ApproximationTypes approximationType = eFirstTwoPoints; // default
-        if(function->getStringParameter().contains("approximation")){
-            if(function->getScalarInputParams().stringParameter.value("approximation").compare("direction") == 0){
+        if(function->getScalarInputParams().stringParameter.size() > 0){
+            QString value = function->getScalarInputParams().stringParameter.value("approximation");
+            if(value.compare("direction") == 0){
                 approximationType = eDirection;
-            } else if(function->getScalarInputParams().stringParameter.value("approximation").compare("guess axis") == 0){
+            } else if(value.compare("guess axis") == 0){
                 approximationType = eGuessAxis;
-            } else if(function->getScalarInputParams().stringParameter.value("approximation").compare("first two dummy points") == 0){
+            } else if(value.compare("first two dummy points") == 0){
                 approximationType = eFirstTwoDummyPoint;
-            } else if(function->getScalarInputParams().stringParameter.value("approximation").compare("first two points") == 0){
+            } else if(value.compare("first two points") == 0){
                 approximationType = eFirstTwoPoints;
             }
         }
