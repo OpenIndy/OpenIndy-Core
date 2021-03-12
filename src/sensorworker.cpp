@@ -993,8 +993,6 @@ void SensorWorker::asyncSensorStreamDataReceived(const QVariantMap &reading)
 void SensorWorker::finishMeasurement(){
     qDebug() << "SensorWorker::finishMeasurement()";
 
-    return; // TODO
-
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, "no sensor instance");
