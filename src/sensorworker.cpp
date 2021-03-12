@@ -1000,7 +1000,7 @@ void SensorWorker::finishMeasurement(){
         emit this->commandFinished(false, "no sensor instance");
         return;
     }
-
+/*
     //check wether the sensor is already connected
     QString msg = "failed to measure";
     bool success = false;
@@ -1042,5 +1042,5 @@ void SensorWorker::finishMeasurement(){
             emit this->commandFinished(false, "connection was blocked - please try again");
         }
     }
-
+*/
 }
