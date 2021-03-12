@@ -211,7 +211,7 @@ bool SensorControl::getIsSensorSet(){
  * \return
  */
 bool SensorControl::getIsSensorConnected(){
-
+    qDebug()<< "SensorControl::getIsSensorConnected()";
     //check sensor worker
     if(!this->isWorkerRunning()){
         return false;
