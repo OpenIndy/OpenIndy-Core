@@ -910,7 +910,7 @@ void Station::disconnectSensorControl(){
     QObject::disconnect(this->sensorControl.data(), &SensorControl::sensorMessage, this, &Station::sensorMessage);
 
 
-    QObject::disconnect(this, &Station::finishMeasurement, this->sensorControl.data(), &SensorControl::finishMeasurement, Qt::AutoConnection);
+    QObject::disconnect(this, &Station::finishMeasurement, this->sensorControl.data(), &SensorControl::finishMeasurement);
 
 }
 
