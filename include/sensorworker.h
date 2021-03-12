@@ -137,6 +137,7 @@ public slots:
     void stopStatusMonitoringStream();
 
     void finishMeasurement();
+
 private slots:
 
     //##############
