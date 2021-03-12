@@ -907,6 +907,9 @@ void Station::disconnectSensorControl(){
     //connect sensor messages
     QObject::disconnect(this->sensorControl.data(), &SensorControl::sensorMessage, this, &Station::sensorMessage);
 
+
+    QObject::connect(this, &Station::finishMeasurement, this->sensorControl.data(), &SensorControl::finishMeasurement, Qt::AutoConnection);
+
 }
 
 /*!

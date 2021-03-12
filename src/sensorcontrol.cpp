@@ -856,6 +856,20 @@ void SensorControl::stopSensorWorker(){
 
 }
 
+void SensorControl::finishMeasurement(){
+
+    //check sensor worker
+    if(!this->isWorkerRunning()){
+        return;
+    }
+
+    //call method of sensor worker
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "finishMeasurement", Qt::QueuedConnection);
+    if(!hasInvoked){
+        emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
+    }
+
+}
 /*!
  * \brief SensorControl::connectSensorWorker
  */

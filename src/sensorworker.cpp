@@ -988,3 +988,59 @@ void SensorWorker::asyncSensorStreamDataReceived(const QVariantMap &reading)
     //put reading stream into event queue again
     QMetaObject::invokeMethod(this, "streamReading", Qt::QueuedConnection);
 }
+
+
+void SensorWorker::finishMeasurement(){
+    qDebug() << "SensorWorker::finishMeasurement()";
+
+    return; // TODO
+
+    //check sensor
+    if(this->sensor.isNull()){
+        emit this->commandFinished(false, "no sensor instance");
+        return;
+    }
+
+    //check wether the sensor is already connected
+    QString msg = "failed to measure";
+    bool success = false;
+    QList<QPointer<Reading> > readings;
+
+    if(!this->sensor->isSensorAsync()){
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+        }else{
+
+            //measure
+            readings = this->sensor->measure(mConfig);
+            if(readings.size() > 0){
+                foreach(QPointer<Reading> r, readings) {
+                    QVariant p =  mConfig.getTransientData("isDummyPoint");
+                    if(p.isValid()) {
+                        r->setProperty("isDummyPoint", p);
+                    }
+                }
+                msg = "measurement finished";
+                success = true;
+            }
+
+        }
+
+        emit this->measurementDone(success);
+
+        emit this->commandFinished(success, msg);
+        if(success){
+            emit this->measurementFinished(geomId, readings);
+        }
+    }else{
+        QJsonObject request;
+        request.insert("method", "measure");
+        request.insert("geomId", geomId);
+        this->sensor->setMeasurementConfig(mConfig);
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
+    }
+
+}
