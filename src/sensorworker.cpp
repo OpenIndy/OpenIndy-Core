@@ -1018,8 +1018,6 @@ void SensorWorker::finishMeasurement(){
     }else{
         QJsonObject request;
         request.insert("method", "stopMeasurement");
-        request.insert("geomId", geomId);
-        this->sensor->setMeasurementConfig(mConfig);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
             emit this->commandFinished(false, "connection was blocked - please try again");
