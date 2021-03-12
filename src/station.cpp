@@ -855,7 +855,7 @@ void Station::connectSensorControl(){
     //connect sensor messages
     QObject::connect(this->sensorControl.data(), &SensorControl::sensorMessage, this, &Station::sensorMessage, Qt::AutoConnection);
 
-    QObject::connect(this, &Station::finishMeasurement, this->sensorControl.data(), &SensorControl::finishMeasurement, Qt::AutoConnection);
+    QObject::connect(this, &Station::finishMeasurement, this->sensorControl.data(), &SensorControl::finishMeasurement, Qt::QueuedConnection);
 
 }
 
