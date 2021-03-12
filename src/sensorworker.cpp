@@ -107,7 +107,7 @@ void SensorWorker::resetSensor(){
  * \return
  */
 bool SensorWorker::getIsSensorConnected(){
-
+    qDebug() << "SensorWorker::getIsSensorConnected()";
     //check sensor
     if(this->sensor.isNull()){
         return false;
