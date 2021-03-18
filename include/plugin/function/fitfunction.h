@@ -81,10 +81,8 @@ protected:
 };
 
 
-class OI_CORE_EXPORT BestFitCircleUtil: public QObject
+class OI_CORE_EXPORT BestFitCircleUtil
 {
-
-    Q_OBJECT
 
 protected:
 
@@ -297,10 +295,8 @@ protected:
     }
 };
 
-class OI_CORE_EXPORT BestFitCylinderUtil: public QObject
+class OI_CORE_EXPORT BestFitCylinderUtil
 {
-
-    Q_OBJECT
 
 private:
     QList<CylinderApproximation> approximations;
