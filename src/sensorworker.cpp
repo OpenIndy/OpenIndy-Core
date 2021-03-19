@@ -1000,14 +1000,14 @@ void SensorWorker::finishMeasurement(){
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to measure";
+    QString msg = "failed to finish";
     bool success = false;
 
     if(!this->sensor->isSensorAsync()){
         if(!this->sensor->getConnectionState()){
             msg = "sensor is not connected";
 
-        }else if(this->sensor->doSelfDefinedAction("stopMeasurement")) {
+        }else if(this->sensor->doSelfDefinedAction("stopMeasure")) {
                 msg = "finish measurement called";
                 success = true;
         }
@@ -1015,7 +1015,7 @@ void SensorWorker::finishMeasurement(){
         emit this->commandFinished(success, msg);
     }else{
         QJsonObject request;
-        request.insert("method", "stopMeasurement");
+        request.insert("method", "stopMeasure");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
             emit this->commandFinished(false, "connection was blocked - please try again");
