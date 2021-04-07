@@ -107,7 +107,7 @@ void SensorWorker::resetSensor(){
  * \return
  */
 bool SensorWorker::getIsSensorConnected(){
-
+    qDebug() << "SensorWorker::getIsSensorConnected()";
     //check sensor
     if(this->sensor.isNull()){
         return false;
@@ -987,4 +987,39 @@ void SensorWorker::asyncSensorStreamDataReceived(const QVariantMap &reading)
 
     //put reading stream into event queue again
     QMetaObject::invokeMethod(this, "streamReading", Qt::QueuedConnection);
+}
+
+
+void SensorWorker::finishMeasurement(){
+    qDebug() << "SensorWorker::finishMeasurement()";
+
+    //check sensor
+    if(this->sensor.isNull()){
+        emit this->commandFinished(false, "no sensor instance");
+        return;
+    }
+
+    //check wether the sensor is already connected
+    QString msg = "failed to finish";
+    bool success = false;
+
+    if(!this->sensor->isSensorAsync()){
+        if(!this->sensor->getConnectionState()){
+            msg = "sensor is not connected";
+
+        }else if(this->sensor->doSelfDefinedAction("stopMeasure")) {
+                msg = "finish measurement called";
+                success = true;
+        }
+
+        emit this->commandFinished(success, msg);
+    }else{
+        QJsonObject request;
+        request.insert("method", "stopMeasure");
+        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
+        if(status.value("status").toString().compare("blocked") == 0) {
+            emit this->commandFinished(false, "connection was blocked - please try again");
+        }
+    }
+
 }
