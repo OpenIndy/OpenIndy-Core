@@ -12,7 +12,7 @@ using namespace oi::math;
  * \param parent
  */
 Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
-    isValid(false), isSolved(false), hasDirection(false){
+    isValid(false), isSolved(false), hasDirection(false), isDummyPoint(false){
 
 }
 
@@ -36,6 +36,7 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
     this->originalIjk = copy.originalIjk;
     this->sigmaIjk = copy.sigmaIjk;
     this->originalSigmaIjk = copy.originalSigmaIjk;
+    this->isDummyPoint = copy.isDummyPoint;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -50,7 +51,7 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
  * \param parent
  */
 Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
-    isValid(isValid), isSolved(false) , hasDirection(false){
+    isValid(isValid), isSolved(false) , hasDirection(false), isDummyPoint(false){
 
     if(xyz.getSize() == this->xyz.getSize()){
         this->xyz = xyz;
@@ -68,7 +69,7 @@ Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Elem
  * \param parent
  */
 Observation::Observation(const OiVec &xyz, int id, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
-    isValid(isValid), isSolved(false) , hasDirection(false) {
+    isValid(isValid), isSolved(false) , hasDirection(false), isDummyPoint(false) {
 
     this->id = id;
 
@@ -99,6 +100,7 @@ Observation &Observation::operator=(const Observation &copy){
     this->originalIjk = copy.originalIjk;
     this->sigmaIjk = copy.sigmaIjk;
     this->originalSigmaIjk = copy.originalSigmaIjk;
+    this->isDummyPoint = copy.isDummyPoint;
 
     //copy reading and station
     this->reading = copy.reading;
