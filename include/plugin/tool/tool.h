@@ -38,8 +38,8 @@ public:
     const QPointer<OiJob> &getJob() const;
     void setJob(const QPointer<OiJob> &job);
 
-    void toOpenIndyXML(QDomDocument &project);
-    void fromOpenIndyXML(QDomDocument &project);
+    virtual void toOpenIndyXML(QDomElement toolData);
+    virtual void fromOpenIndyXML(QDomElement project);
 
     //#########################
     //override QWidget methods
