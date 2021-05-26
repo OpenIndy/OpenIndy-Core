@@ -49,12 +49,12 @@ void Tool::setJob(const QPointer<OiJob> &job){
     this->job = job;
 }
 
-void Tool::toOpenIndyXML(QDomElement toolData)
+void Tool::toOpenIndyXML(QDomDocument &project)
 {
 
 }
 
-void Tool::fromOpenIndyXML(QDomElement project)
+void Tool::fromOpenIndyXML(QDomDocument project)
 {
 
 }
