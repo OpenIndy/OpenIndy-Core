@@ -412,6 +412,7 @@ enum SensorTypes{
 
     eLaserTracker = 0,
     eTotalStation,
+    eMeasurementArm,
     eUndefinedSensor
 
 };

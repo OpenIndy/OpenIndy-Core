@@ -424,6 +424,7 @@ void init(){
     //fill sensor types map
     sensorTypesMap.insert(eLaserTracker, "laser tracker");
     sensorTypesMap.insert(eTotalStation, "total station");
+    sensorTypesMap.insert(eMeasurementArm, "measurement arm");
 
     //fill sensor functions map
     sensorFunctionsMap.insert(eMoveAngle, "move (polar)");
