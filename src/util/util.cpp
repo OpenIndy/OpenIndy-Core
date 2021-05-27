@@ -442,6 +442,7 @@ void init(){
     //fill connection types map
     connectionTypesMap.insert(eSerialConnection, "serial");
     connectionTypesMap.insert(eNetworkConnection, "network");
+    connectionTypesMap.insert(eUSBConnection, "USB");
 
     //fill tool types map
     toolTypesMap.insert(eReportTool, "report");
