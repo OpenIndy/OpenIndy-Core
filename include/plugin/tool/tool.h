@@ -82,6 +82,8 @@ signals:
     void startChangeMotorState();
     void startCustomAction(const QString &task);
 
+    void addFeatures(const FeatureAttributes &attributes);
+
 protected:
 
     //###########################
