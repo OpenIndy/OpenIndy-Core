@@ -73,6 +73,9 @@ void Tool::watchWindowKeyPressed(const Qt::Key &key){
     emit this->sendMessage(QString("No watch window key pressed implementation"), eCriticalMessage, eMessageBoxMessage);
 }
 
+void Tool::setCurrentJob(const QPointer<OiJob> &job) {
+}
+
 /*!
  * \brief Tool::init
  */

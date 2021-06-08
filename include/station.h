@@ -201,6 +201,8 @@ signals:
 
     void sensorMessage(QString msg, MessageTypes msgType, MessageDestinations msgDest = eConsoleMessage);
 
+    void finishMeasurement();
+
 protected:
 
     //######################################
