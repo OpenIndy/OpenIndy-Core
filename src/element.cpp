@@ -33,11 +33,9 @@ int Element::getId() const{
  * \brief Element::setId
  * \param id
  */
-/*bool Element::setId(const int &id){
+void Element::setId(const int &id){
     this->id = id;
-    emit this->elementIdChanged();
-    return true;
-}*/
+}
 
 /*!
  * \brief Element::toOpenIndyXML

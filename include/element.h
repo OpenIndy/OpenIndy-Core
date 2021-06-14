@@ -33,6 +33,7 @@ public:
     //#############
 
     int getId() const;
+    void setId(const int &id);
 
     //################
     //save or load XML
