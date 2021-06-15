@@ -507,6 +507,12 @@ public:
     QMap<QString, QString> stringParameter;
 };
 
+enum SensorStatus{
+
+    eUnknown = 0,
+    eReadyToMeasure
+};
+
 }
 
 #endif // TYPES_H
