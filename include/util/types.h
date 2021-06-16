@@ -510,7 +510,7 @@ public:
 enum SensorStatus{
 
     eUnknown = 0,
-    eReadyToMeasure
+    eReadyForMeasurement
 };
 
 }
