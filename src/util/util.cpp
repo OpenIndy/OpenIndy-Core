@@ -503,17 +503,17 @@ void init(){
     materialStringsMap.insert(eMaterialConcrete, "concrete");
     materialStringsMap.insert(eMaterialReinforcedConcrete, "reinforced concrete");
 
-    materialValuesMap.insert(eMaterialSteel, 0.00001139);
-    materialValuesMap.insert(eMaterialAluminum, 0.000024);
-    materialValuesMap.insert(eMaterialPlumb, 0.000030);
-    materialValuesMap.insert(eMaterialIron, 0.000012);
-    materialValuesMap.insert(eMaterialGrayCastIron, 0.000009);
-    materialValuesMap.insert(eMaterialCopper, 0.000017);
-    materialValuesMap.insert(eMaterialBrass, 0.000018);
-    materialValuesMap.insert(eMaterialZinc, 0.000027);
-    materialValuesMap.insert(eMaterialPlatinum, 0.000009);
-    materialValuesMap.insert(eMaterialConcrete, 0.000012);
-    materialValuesMap.insert(eMaterialReinforcedConcrete, 0.000013);
+    materialValuesMap.insert(eMaterialSteel,              0.00001139 );
+    materialValuesMap.insert(eMaterialAluminum,           0.000024   );
+    materialValuesMap.insert(eMaterialPlumb,              0.000030   );
+    materialValuesMap.insert(eMaterialIron,               0.000012   );
+    materialValuesMap.insert(eMaterialGrayCastIron,       0.000009   );
+    materialValuesMap.insert(eMaterialCopper,             0.000017   );
+    materialValuesMap.insert(eMaterialBrass,              0.000018   );
+    materialValuesMap.insert(eMaterialZinc,               0.000027   );
+    materialValuesMap.insert(eMaterialPlatinum,           0.000009   );
+    materialValuesMap.insert(eMaterialConcrete,           0.000012   );
+    materialValuesMap.insert(eMaterialReinforcedConcrete, 0.000013   );
 
     isInit = true;
 
