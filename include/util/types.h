@@ -443,7 +443,8 @@ enum SensorFunctions{
     eMeasure,
     eConnect,
     eDisconnect,
-    eStream
+    eStream,
+    eStopMeasure
 };
 
 //################################

@@ -437,6 +437,7 @@ void init(){
     sensorFunctionsMap.insert(eDisconnect, "disconnect");
     sensorFunctionsMap.insert(eMeasure, "measure");
     sensorFunctionsMap.insert(eStream, "stream");
+    sensorFunctionsMap.insert(eStopMeasure, "stopMeasure");
 
     //fill connection types map
     connectionTypesMap.insert(eSerialConnection, "serial");
