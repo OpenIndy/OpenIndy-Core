@@ -511,7 +511,7 @@ enum SensorStatus{
 
     eUnknown = 0,
     eReadyForMeasurement,    // target present, device ready, measurement arm ready
-    eNotReadyForMeasurement  // target present, device ready, measurement arm ready
+    eNotReadyForMeasurement  // target not present or device not ready or measurement arm not ready
 };
 
 }
