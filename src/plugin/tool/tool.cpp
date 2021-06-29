@@ -86,5 +86,5 @@ void Tool::init(){
 }
 
 bool Tool::saveProjectEnabled() {
-    true;
+    return true;
 }
