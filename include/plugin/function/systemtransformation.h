@@ -32,6 +32,11 @@ public:
         this->inputPointsDestinationSystem = destinationSystem;
     }
 
+    void setInputElements(const QMap<int, QList<InputElement> > &startSystem, const QMap<int, QList<InputElement> > &destinationSystem){
+        this->inputElementsStartSystem = startSystem;
+        this->inputElementsDestinationSystem = destinationSystem;
+    }
+
 protected:
 
     //####################################
