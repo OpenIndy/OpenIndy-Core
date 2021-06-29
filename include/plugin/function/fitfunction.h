@@ -126,9 +126,7 @@ protected:
             // computing circle normale by dummy point
             OiVec dummyPoint = function->getInputElements()[InputElementKey::eDummyPoint][0].observation->getXYZ(); // TODO Point
             dummyPoint.removeLast();
-            double dot;
-            OiVec::dot(dot, dummyPoint - centroid, centroid);
-            direction = - dot * dummyPoint;
+            direction = dummyPoint - centroid;
             direction.normalize();
         } else {
             //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
@@ -142,7 +140,7 @@ protected:
         double angle = 0.0; //angle between n and direction
         OiVec::dot(angle, n, direction);
         angle = qAbs(qAcos(angle));
-        if(angle > (PI/2.0)){
+        if(angle > (PI/2.0 && angle < PI)){
             n = n * -1.0;
         }
 
