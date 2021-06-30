@@ -473,7 +473,7 @@ bool Feature::removePreviouslyNeeded(const QPointer<FeatureWrapper> &feature){
 /*!
  * \brief Feature::recalc
  */
-void Feature::recalc(){
+void Feature::recalc(const FunctionContext &ctx){
 
     this->isSolved = false;
 
@@ -487,7 +487,7 @@ void Feature::recalc(){
         }
 
         //try to solve the current function
-        this->isSolved = function->exec(this->selfFeature);
+        this->isSolved = function->exec(this->selfFeature, ctx);
         if(!this->isSolved){
             break;
         }
