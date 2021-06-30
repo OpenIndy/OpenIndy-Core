@@ -8,7 +8,7 @@
 #include <QtXml>
 
 #include "element.h"
-#include "function.h"
+#include "functioncontext.h"
 
 namespace oi{
 

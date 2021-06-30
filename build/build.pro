@@ -124,6 +124,7 @@ HEADERS  += \
     $$PWD/../include/plugin/function/constructfunction.h \
     $$PWD/../include/plugin/function/fitfunction.h \
     $$PWD/../include/plugin/function/function.h \
+    $$PWD/../include/plugin/function/functioncontext.h \
     $$PWD/../include/plugin/function/generatefeaturefunction.h \
     $$PWD/../include/plugin/function/geodeticfunction.h \
     $$PWD/../include/plugin/function/objecttransformation.h \
