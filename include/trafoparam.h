@@ -87,7 +87,7 @@ public:
     //reexecute the function list
     //###########################
 
-    void recalc();
+    void recalc(const FunctionContext &ctx = FunctionContext{});
 
     //#################
     //save and load XML
