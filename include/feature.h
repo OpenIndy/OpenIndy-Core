@@ -8,6 +8,7 @@
 #include <QtXml>
 
 #include "element.h"
+#include "function.h"
 
 namespace oi{
 
@@ -75,7 +76,7 @@ public:
     //reexecute the function list
     //###########################
 
-    virtual void recalc();
+    virtual void recalc(const FunctionContext &ctx = FunctionContext{});
 
     //#################
     //save and load XML

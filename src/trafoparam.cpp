@@ -467,8 +467,8 @@ void TrafoParam::setUnknownParameters(const QMap<TrafoParamParameters, double> &
 /*!
  * \brief TrafoParam::recalc
  */
-void TrafoParam::recalc(){
-    Feature::recalc();
+void TrafoParam::recalc(const FunctionContext &ctx){
+    Feature::recalc(ctx);
 }
 
 /*!
