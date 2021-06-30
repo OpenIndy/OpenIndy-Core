@@ -43,6 +43,9 @@ namespace oi{
 //############################################
 //helper classes to define function parameters
 //############################################
+struct FunctionContext {
+
+};
 
 enum InputElementKey {
     eNotSet = -1,
@@ -180,7 +183,7 @@ public:
     //public exec method that calls the appropriate protected exec method
     //###################################################################
 
-    virtual bool exec(const QPointer<FeatureWrapper> &feature);
+    virtual bool exec(const QPointer<FeatureWrapper> &feature, const FunctionContext &ctx = FunctionContext{});
 
     //#############################################################
     //methods to get or set further information to solve a function
@@ -271,29 +274,29 @@ protected:
     //exec methods
     //############
 
-    virtual bool exec(Station &station);
-    virtual bool exec(CoordinateSystem &coordinateSystem);
-    virtual bool exec(TrafoParam &trafoParam);
+    virtual bool exec(Station &station, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(CoordinateSystem &coordinateSystem, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(TrafoParam &trafoParam, const FunctionContext &ctx = FunctionContext{});
 
-    virtual bool exec(Circle &circle);
-    virtual bool exec(Cone &cone);
-    virtual bool exec(Cylinder &cylinder);
-    virtual bool exec(Ellipse &ellipse);
-    virtual bool exec(Ellipsoid &ellipsoid);
-    virtual bool exec(Hyperboloid &hyperboloid);
-    virtual bool exec(Line &line);
-    virtual bool exec(Nurbs &nurbs);
-    virtual bool exec(Paraboloid &paraboloid);
-    virtual bool exec(Plane &plane);
-    virtual bool exec(Point &point);
-    virtual bool exec(PointCloud &pointCloud);
-    virtual bool exec(ScalarEntityAngle &angle);
-    virtual bool exec(ScalarEntityDistance &distance);
-    virtual bool exec(ScalarEntityMeasurementSeries &measurementSeries);
-    virtual bool exec(ScalarEntityTemperature &temperature);
-    virtual bool exec(SlottedHole &slottedHole);
-    virtual bool exec(Sphere &sphere);
-    virtual bool exec(Torus &torus);
+    virtual bool exec(Circle &circle, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Cone &cone, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Cylinder &cylinder, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Ellipse &ellipse, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Ellipsoid &ellipsoid, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Hyperboloid &hyperboloid, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Line &line, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Nurbs &nurbs, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Paraboloid &paraboloid, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Plane &plane, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Point &point, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(PointCloud &pointCloud, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(ScalarEntityAngle &angle, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(ScalarEntityDistance &distance, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(ScalarEntityMeasurementSeries &measurementSeries, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(ScalarEntityTemperature &temperature, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(SlottedHole &slottedHole, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Sphere &sphere, const FunctionContext &ctx = FunctionContext{});
+    virtual bool exec(Torus &torus, const FunctionContext &ctx = FunctionContext{});
 
     //#################################
     //mark elements as used or not used
