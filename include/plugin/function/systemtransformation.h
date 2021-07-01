@@ -53,7 +53,7 @@ protected:
     bool exec(Ellipsoid &ellipsoid, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(ellipsoid, ctx); }
     bool exec(Hyperboloid &hyperboloid, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(hyperboloid, ctx); }
     bool exec(Line &line, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(line, ctx); }
-    bool exec(Nurbs &nurbs, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(nurbs); }
+    bool exec(Nurbs &nurbs, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(nurbs, ctx); }
     bool exec(Paraboloid &paraboloid, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(paraboloid, ctx); }
     bool exec(Plane &plane, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(plane, ctx); }
     bool exec(Point &point, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(point, ctx); }
