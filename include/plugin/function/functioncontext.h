@@ -4,6 +4,7 @@ namespace oi {
 
 // TODO remvoe OI_EXEC_CONTEXT
 struct FunctionContext { // TODO refactoring to class
+    bool isValid = false;
     float referenceTemperature = 20.0;
     float actualTemperatur = 20.0;
     QString material = "steel"; // TODO use enum
