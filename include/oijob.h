@@ -221,7 +221,7 @@ signals:
     //signals to force recalculation
     //##############################
 
-    void recalcFeature(const QPointer<Feature> &feature);
+    void recalcFeature(const QPointer<Feature> &feature, const FunctionContext &ctx = FunctionContext{});
     void recalcFeatureSet(const FunctionContext &ctx = FunctionContext{});
 
     //#####################################
