@@ -24,8 +24,8 @@ protected:
     //methods that cannot be reimplemented
     //####################################
 
-    bool exec(Station &station){ return Function::exec(station); }
-    bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
+    bool exec(Station &station, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(station, ctx); }
+    bool exec(CoordinateSystem &coordinateSystem, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(coordinateSystem, ctx); }
 
 };
 

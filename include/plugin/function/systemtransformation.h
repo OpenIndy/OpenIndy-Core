@@ -43,28 +43,28 @@ protected:
     //methods that cannot be reimplemented
     //####################################
 
-    bool exec(Station &station){ return Function::exec(station); }
-    bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
+    bool exec(Station &station, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(station, ctx); }
+    bool exec(CoordinateSystem &coordinateSystem, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(coordinateSystem, ctx); }
 
-    bool exec(Circle &circle){ return Function::exec(circle); }
-    bool exec(Cone &cone){ return Function::exec(cone); }
-    bool exec(Cylinder &cylinder){ return Function::exec(cylinder); }
-    bool exec(Ellipse &ellipse){ return Function::exec(ellipse); }
-    bool exec(Ellipsoid &ellipsoid){ return Function::exec(ellipsoid); }
-    bool exec(Hyperboloid &hyperboloid){ return Function::exec(hyperboloid); }
-    bool exec(Line &line){ return Function::exec(line); }
-    bool exec(Nurbs &nurbs){ return Function::exec(nurbs); }
-    bool exec(Paraboloid &paraboloid){ return Function::exec(paraboloid); }
-    bool exec(Plane &plane){ return Function::exec(plane); }
-    bool exec(Point &point){ return Function::exec(point); }
-    bool exec(PointCloud &pointCloud){ return Function::exec(pointCloud); }
-    bool exec(ScalarEntityAngle &angle){ return Function::exec(angle); }
-    bool exec(ScalarEntityDistance &distance){ return Function::exec(distance); }
-    bool exec(ScalarEntityMeasurementSeries &measurementSeries){ return Function::exec(measurementSeries); }
-    bool exec(ScalarEntityTemperature &temperature){ return Function::exec(temperature); }
-    bool exec(SlottedHole &slottedHole){ return Function::exec(slottedHole); }
-    bool exec(Sphere &sphere){ return Function::exec(sphere); }
-    bool exec(Torus &torus){ return Function::exec(torus); }
+    bool exec(Circle &circle, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(circle, ctx); }
+    bool exec(Cone &cone, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(cone, ctx); }
+    bool exec(Cylinder &cylinder, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(cylinder, ctx); }
+    bool exec(Ellipse &ellipse, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(ellipse, ctx); }
+    bool exec(Ellipsoid &ellipsoid, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(ellipsoid, ctx); }
+    bool exec(Hyperboloid &hyperboloid, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(hyperboloid, ctx); }
+    bool exec(Line &line, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(line, ctx); }
+    bool exec(Nurbs &nurbs, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(nurbs); }
+    bool exec(Paraboloid &paraboloid, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(paraboloid, ctx); }
+    bool exec(Plane &plane, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(plane, ctx); }
+    bool exec(Point &point, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(point, ctx); }
+    bool exec(PointCloud &pointCloud, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(pointCloud, ctx); }
+    bool exec(ScalarEntityAngle &angle, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(angle, ctx); }
+    bool exec(ScalarEntityDistance &distance, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(distance, ctx); }
+    bool exec(ScalarEntityMeasurementSeries &measurementSeries, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(measurementSeries, ctx); }
+    bool exec(ScalarEntityTemperature &temperature, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(temperature, ctx); }
+    bool exec(SlottedHole &slottedHole, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(slottedHole, ctx); }
+    bool exec(Sphere &sphere, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(sphere, ctx); }
+    bool exec(Torus &torus, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(torus, ctx); }
 
     //special attributes for system transformations (normal transformations)
     QList<Point> inputPointsStartSystem; //input elements solved in start system

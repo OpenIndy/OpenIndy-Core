@@ -74,9 +74,9 @@ protected:
     //methods that cannot be reimplemented
     //####################################
 
-    bool exec(Station &station){ return Function::exec(station); }
-    bool exec(CoordinateSystem &coordinateSystem){ return Function::exec(coordinateSystem); }
-    bool exec(TrafoParam &trafoParam){ return Function::exec(trafoParam); }
+    bool exec(Station &station, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(station, ctx); }
+    bool exec(CoordinateSystem &coordinateSystem, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(coordinateSystem, ctx); }
+    bool exec(TrafoParam &trafoParam, const FunctionContext &ctx = FunctionContext{}){ return Function::exec(trafoParam, ctx); }
 
 };
 
