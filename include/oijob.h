@@ -222,7 +222,7 @@ signals:
     //##############################
 
     void recalcFeature(const QPointer<Feature> &feature);
-    void recalcFeatureSet();
+    void recalcFeatureSet(const FunctionContext &ctx = FunctionContext{});
 
     //#####################################
     //signals forwarded from FeatureUpdater
