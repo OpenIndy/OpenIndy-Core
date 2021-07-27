@@ -27,6 +27,8 @@ public:
 
     virtual void init();
 
+    virtual bool saveProjectEnabled();
+
     //#########################################
     //methods to get or set further information
     //#########################################

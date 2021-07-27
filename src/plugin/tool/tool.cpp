@@ -94,3 +94,7 @@ void Tool::init(){
     this->toolType = eUnknownTool;
 
 }
+
+bool Tool::saveProjectEnabled() {
+    return true;
+}

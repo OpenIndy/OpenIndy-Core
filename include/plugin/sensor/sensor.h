@@ -139,7 +139,7 @@ signals:
     //##############################################
     //signals to inform OpenIndy about sensor issues
     //##############################################
-
+    void sensorStatus(const SensorStatus &status, const QString &msg);
     void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
     void asyncSensorResponse(const QJsonObject &response);
     void asyncMeasurementResult(const int &geomId, const QList<QPointer<Reading> > &measurements);
