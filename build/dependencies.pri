@@ -3,7 +3,7 @@ include($$PWD/../lib/OpenIndy-Math/include.pri)
 
 linux: LIBS = -lGLU
 
-win {
+win32 {
     CONFIG(release, debug|release) {
         dlltarget.path = $$PWD/../install/release
     } else {
