@@ -13,7 +13,7 @@ namespace oi{
  */
 class OI_CORE_EXPORT SystemTransformation : public Function
 {
-    friend class FeatureUpdater;
+    friend class ::FeatureUpdater;
     Q_OBJECT
 
 public:
@@ -30,6 +30,11 @@ public:
     void setInputPoint(const QList<Point> &startSystem, const QList<Point> &destinationSystem){
         this->inputPointsStartSystem = startSystem;
         this->inputPointsDestinationSystem = destinationSystem;
+    }
+
+    void setInputElements(const QMap<int, QList<InputElement> > &startSystem, const QMap<int, QList<InputElement> > &destinationSystem){
+        this->inputElementsStartSystem = startSystem;
+        this->inputElementsDestinationSystem = destinationSystem;
     }
 
 protected:

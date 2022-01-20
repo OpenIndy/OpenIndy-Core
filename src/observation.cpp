@@ -12,7 +12,7 @@ using namespace oi::math;
  * \param parent
  */
 Observation::Observation(QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
-    isValid(false), isSolved(false), hasDirection(false){
+    isValid(false), isSolved(false), hasDirection(false), isDummyPoint(false){
 
 }
 
@@ -36,6 +36,7 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
     this->originalIjk = copy.originalIjk;
     this->sigmaIjk = copy.sigmaIjk;
     this->originalSigmaIjk = copy.originalSigmaIjk;
+    this->isDummyPoint = copy.isDummyPoint;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -50,7 +51,7 @@ Observation::Observation(const Observation &copy, QObject *parent) : Element(cop
  * \param parent
  */
 Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
-    isValid(isValid), isSolved(false) , hasDirection(false){
+    isValid(isValid), isSolved(false) , hasDirection(false), isDummyPoint(false){
 
     if(xyz.getSize() == this->xyz.getSize()){
         this->xyz = xyz;
@@ -60,6 +61,25 @@ Observation::Observation(const OiVec &xyz, bool isValid, QObject *parent) : Elem
 
 }
 
+/*!
+ * \brief Observation::Observation
+ * \param xyz
+ * \param observation id
+ * \param isValid
+ * \param parent
+ */
+Observation::Observation(const OiVec &xyz, int id, bool isValid, QObject *parent) : Element(parent), xyz(4), originalXyz(4), sigmaXyz(4), originalSigmaXyz(4), ijk(4), originalIjk(4), sigmaIjk(4), originalSigmaIjk(4),
+    isValid(isValid), isSolved(false) , hasDirection(false), isDummyPoint(false) {
+
+    this->id = id;
+
+    if(xyz.getSize() == this->xyz.getSize()){
+        this->xyz = xyz;
+        this->originalXyz = xyz;
+        this->isSolved = true;
+    }
+
+}
 /*!
  * \brief Observation::operator =
  * \param copy
@@ -80,6 +100,7 @@ Observation &Observation::operator=(const Observation &copy){
     this->originalIjk = copy.originalIjk;
     this->sigmaIjk = copy.sigmaIjk;
     this->originalSigmaIjk = copy.originalSigmaIjk;
+    this->isDummyPoint = copy.isDummyPoint;
 
     //copy reading and station
     this->reading = copy.reading;
@@ -141,7 +162,7 @@ Observation::~Observation(){
     }
 
     //delete the corresponding reading
-    delete this->getReading();
+    delete this->getReading().data();
 
 }
 
@@ -424,6 +445,10 @@ const bool &Observation::getHasDirection() const{
     return this->hasDirection;
 }
 
+const bool &Observation::getIsDummyPoint() const{
+    return this->isDummyPoint;
+}
+
 /*!
  * \brief Observation::getDisplayId
  * \return
@@ -694,6 +719,7 @@ QDomElement Observation::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     observation.setAttribute("isValid", this->isValid);
     observation.setAttribute("isSolved", this->isSolved);
+    observation.setAttribute("isDummyPoint", this->isDummyPoint);
 
     //add station
     if(!this->station.isNull()){
@@ -740,6 +766,7 @@ bool Observation::fromOpenIndyXML(QDomElement &xmlElem){
         }
         this->isValid = xmlElem.attribute("isValid").toInt();
         this->isSolved = xmlElem.attribute("isSolved").toInt();
+        this->isDummyPoint = xmlElem.hasAttribute("isDummyPoint") ? xmlElem.attribute("isDummyPoint").toInt() : false;
         this->xyz.setAt(0, xmlElem.attribute("x").toDouble());
         this->xyz.setAt(1, xmlElem.attribute("y").toDouble());
         this->xyz.setAt(2, xmlElem.attribute("z").toDouble());

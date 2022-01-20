@@ -115,6 +115,7 @@ public slots:
     void startStatusMonitoringStream();
     void stopStatusMonitoringStream();
 
+    void finishMeasurement();
 signals:
 
     //##############################

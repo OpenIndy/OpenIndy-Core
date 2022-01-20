@@ -28,7 +28,7 @@ class OI_CORE_EXPORT Observation : public Element
 {
     friend class Reading;
     friend class CoordinateSystem;
-    friend class TrafoController;
+    friend class ::TrafoController;
     Q_OBJECT
 
 public:
@@ -36,6 +36,7 @@ public:
 
     Observation(const Observation &copy, QObject *parent = 0);
     Observation(const OiVec &xyz, bool isValid, QObject *parent = 0);
+    Observation(const OiVec &xyz, int id, bool isValid, QObject *parent = 0);
 
     Observation &operator=(const Observation &copy);
 
@@ -91,6 +92,8 @@ public:
     const bool &getIsSolved() const;
 
     const bool &getHasDirection() const;
+
+    const bool &getIsDummyPoint() const;
 
     //###############
     //display methods
@@ -163,6 +166,8 @@ private:
 
     OiVec sigmaIjk; // stdev unit vector
     OiVec originalSigmaIjk; // orignal sigma unit vector
+
+    bool isDummyPoint; // is dummy observation
 
 };
 

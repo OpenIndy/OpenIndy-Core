@@ -53,9 +53,6 @@ public:
     //get or set cone parameters
     //##########################
 
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
-
     const double &getAperture() const;
 
     void setCone(const Position &apex, const Direction &axis, const double &aperture);
@@ -81,17 +78,6 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
-    //###############
-    //display methods
-    //###############
-
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayAperture(const UnitType &type, const int &digits, const bool &showDiff = false) const;
 
 private:
 
@@ -99,8 +85,6 @@ private:
     //cone attributes
     //###############
 
-    Position apex; //the peak of the cone
-    Direction axis; //vector pointing from the apex inside the cone
     double aperture; //opening angle = 2 * angle between surface line and r
 
 };

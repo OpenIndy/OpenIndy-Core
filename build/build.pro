@@ -3,7 +3,7 @@
 # Project created by QtCreator 2013-09-18T14:25:09
 #
 #-------------------------------------------------
-
+CONFIG += c++11
 QT       += core svg serialport network xml
 
 greaterThan(QT_MAJOR_VERSION, 4):
@@ -128,6 +128,7 @@ HEADERS  += \
     $$PWD/../include/plugin/function/geodeticfunction.h \
     $$PWD/../include/plugin/function/objecttransformation.h \
     $$PWD/../include/plugin/function/systemtransformation.h \
+    $$PWD/../include/plugin/function/specialfunction.h \
     $$PWD/../include/plugin/sensor/lasertracker.h \
     $$PWD/../include/plugin/sensor/sensor.h \
     $$PWD/../include/plugin/sensor/totalstation.h \

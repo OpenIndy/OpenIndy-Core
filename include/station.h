@@ -23,7 +23,7 @@ class Sensor;
 class OI_CORE_EXPORT Station : public Feature
 {
     friend class OiJob;
-    friend class ProjectExchanger;
+    friend class ::ProjectExchanger;
     friend class Observation;
     Q_OBJECT
 
@@ -47,7 +47,11 @@ public:
 
     //position
     const QPointer<Point> &getPosition() const;
-    void setPosition(const Position pos);
+    const Direction &getXAxis() const;
+    const Direction &getYAxis() const;
+    const Direction &getZAxis() const;
+    void setCoordinateSystem(const Position &origin, const Direction &xAxis, const Direction &yAxis, const Direction &zAxis);
+
 
     //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;
@@ -63,7 +67,7 @@ public:
     void resetSensor();
 
     //previously used sensors
-    const QList<Sensor> &getUsedSensors() const;
+    const QList<Sensor> getUsedSensors() const;
 
     //get geometries measured from this station
     QList<QPointer<Geometry> > getTargetGeometries() const;
@@ -114,6 +118,9 @@ public:
     QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
 
 signals:
 
@@ -194,6 +201,8 @@ signals:
 
     void sensorMessage(QString msg, MessageTypes msgType, MessageDestinations msgDest = eConsoleMessage);
 
+    void finishMeasurement();
+
 protected:
 
     //######################################
@@ -212,6 +221,9 @@ private:
 
     //the position of the station
     QPointer<Point> position;
+    Direction xAxis; //x axis of the coordinate system in the current display coordinate system
+    Direction yAxis; //y axis of the coordinate system in the current display coordinate system
+    Direction zAxis; //z (ijk / normal) axis of the coordinate system in the current display coordinate system
 
     //sensor communication
     QPointer<SensorControl> sensorControl;

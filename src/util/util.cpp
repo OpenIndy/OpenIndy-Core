@@ -295,6 +295,7 @@ void init(){
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginY, "expansion y");
     featureDisplayAttributesMap.insert(eFeatureDisplayExpansionOriginZ, "expansion z");
     featureDisplayAttributesMap.insert(eFeatureDisplayIsActual, "actual feature");
+    featureDisplayAttributesMap.insert(eFeatureDisplayFormError, "form error");
 
     //fill observation display attributes map
     observationDisplayAttributesMap.insert(eObservationDisplayId, "id");
@@ -318,7 +319,12 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayVY, "vy");
     observationDisplayAttributesMap.insert(eObservationDisplayVZ, "vz");
     observationDisplayAttributesMap.insert(eObservationDisplayV, "v");
+    observationDisplayAttributesMap.insert(eObservationDisplayVR, "vr");
+    observationDisplayAttributesMap.insert(eObservationDisplayVI, "vi");
+    observationDisplayAttributesMap.insert(eObservationDisplayVJ, "vj");
+    observationDisplayAttributesMap.insert(eObservationDisplayVK, "vk");
     observationDisplayAttributesMap.insert(eObservationDisplayIsUsed, "used");
+    observationDisplayAttributesMap.insert(eObservationDisplayIsDummyPoint, "dummy point");
 
     //fill reading display attributes map
     readingDisplayAttributesMap.insert(eReadingDisplayId, "id");
@@ -376,19 +382,19 @@ void init(){
     trafoParamDisplayAttributesMap.insert(eTrafoParamDisplayIsDatumTransformation, "datum transformation");
 
     //fill available display attributes
-    for(int i = 0; i < 10; i++){ //general feature attributes
+    for(int i = eFeatureDisplayType; i <= eFeatureDisplayStDev; i++){ //general feature attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 100; i < 104; i++){ //geometry specific attributes
+    for(int i = eFeatureDisplayMeasurementConfig; i <= eFeatureDisplayIsActual; i++){ //geometry specific attributes
         featureDisplayAttributes.append(i);
     }
-    for(int i = 200; i < 220; i++){ //unknown geometry parameters
+    for(int i = eFeatureDisplayX; i <= eFeatureDisplayFormError; i++){ //unknown geometry parameters
         featureDisplayAttributes.append(i);
     }
-    for(int i = 300; i < 303; i++){ //coordinate system specific
+    for(int i = eFeatureDisplayExpansionOriginX; i <= eFeatureDisplayExpansionOriginZ; i++){ //coordinate system specific
         featureDisplayAttributes.append(i);
     }
-    for(int i = 400; i < 415; i++){ //trafo param specific
+    for(int i = eTrafoParamDisplayStartSystem; i <= eTrafoParamDisplayIsDatumTransformation; i++){ //trafo param specific
         featureDisplayAttributes.append(i);
     }
 
@@ -497,17 +503,17 @@ void init(){
     materialStringsMap.insert(eMaterialConcrete, "concrete");
     materialStringsMap.insert(eMaterialReinforcedConcrete, "reinforced concrete");
 
-    materialValuesMap.insert(eMaterialSteel, 0.00001139);
-    materialValuesMap.insert(eMaterialAluminum, 0.000024);
-    materialValuesMap.insert(eMaterialPlumb, 0.000030);
-    materialValuesMap.insert(eMaterialIron, 0.000012);
-    materialValuesMap.insert(eMaterialGrayCastIron, 0.000009);
-    materialValuesMap.insert(eMaterialCopper, 0.000017);
-    materialValuesMap.insert(eMaterialBrass, 0.000018);
-    materialValuesMap.insert(eMaterialZinc, 0.000027);
-    materialValuesMap.insert(eMaterialPlatinum, 0.000009);
-    materialValuesMap.insert(eMaterialConcrete, 0.000012);
-    materialValuesMap.insert(eMaterialReinforcedConcrete, 0.000013);
+    materialValuesMap.insert(eMaterialSteel,              0.00001139 );
+    materialValuesMap.insert(eMaterialAluminum,           0.000024   );
+    materialValuesMap.insert(eMaterialPlumb,              0.000030   );
+    materialValuesMap.insert(eMaterialIron,               0.000012   );
+    materialValuesMap.insert(eMaterialGrayCastIron,       0.000009   );
+    materialValuesMap.insert(eMaterialCopper,             0.000017   );
+    materialValuesMap.insert(eMaterialBrass,              0.000018   );
+    materialValuesMap.insert(eMaterialZinc,               0.000027   );
+    materialValuesMap.insert(eMaterialPlatinum,           0.000009   );
+    materialValuesMap.insert(eMaterialConcrete,           0.000012   );
+    materialValuesMap.insert(eMaterialReinforcedConcrete, 0.000013   );
 
     isInit = true;
 
@@ -1053,10 +1059,10 @@ const QList<ReadingDisplayAttributes> &getReadingDisplayAttributes(){
  * \return
  */
 bool getIsFeatureDisplayAttribute(const int &attr){
-    if( (attr >= 0 && attr < 10) || (attr >= 100 && attr < 104) || (attr >= 200 && attr < 220) || (attr >= 300 && attr < 303) ){
-        return true;
-    }
-    return false;
+    return  (attr >= eFeatureDisplayType && attr <= eFeatureDisplayStDev)
+            || (attr >= eFeatureDisplayMeasurementConfig && attr <= eFeatureDisplayIsActual)
+            || (attr >= eFeatureDisplayX && attr <= eFeatureDisplayFormError)
+            || (attr >= eFeatureDisplayExpansionOriginX && attr <= eFeatureDisplayExpansionOriginZ);
 }
 
 /*!
@@ -2026,7 +2032,7 @@ const QString &getMaterialName(const MaterialsTempComp &material)
  * \param material
  * \return
  */
-const double &getMaterialValue(const MaterialsTempComp &material)
+const double getMaterialValue(const MaterialsTempComp &material)
 {
     //fill helper maps if not yet done
     if(!internal::isInit){
@@ -2072,36 +2078,6 @@ const double getTemperatureExpansion(const QString material, double actual, doub
     double expansion = (actual - nominal) * exp;
 
     return 1.0 / (1.0+expansion);
-}
-
-/*!
- * \brief getDropDownMenuSize
- * \param list
- * \param menuSize
- * \return
- */
-const int &getDropDownMenuSize(QStringList list, const int menuSize)
-{
-    //get largest string in list
-    QString largestString = "";
-    foreach (const QString &filter, list) {
-        if(filter.length() > largestString.length()){
-            largestString = filter;
-        }
-    }
-
-    //calculate width of popup dependend of list
-    QFont font;
-    QFontMetrics fm(font);
-    int width = fm.width(largestString);
-
-    //get largest width
-    if((width + (0.1 * width)) > menuSize){
-        return (width + (0.1 * width));
-    }else{
-        return menuSize;
-    }
-    return menuSize;
 }
 
 }

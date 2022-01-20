@@ -29,7 +29,7 @@ namespace oi{
  */
 class OI_CORE_EXPORT OiJob : public QObject
 {
-    friend class ProjectExchanger;
+    friend class ::ProjectExchanger;
     Q_OBJECT
 
 public:
@@ -44,8 +44,8 @@ public:
     const QString &getJobName() const;
     void setJobName(const QString &jobName);
 
-    const QPointer<QIODevice> &getJobDevice() const;
-    void setJobDevice(const QPointer<QIODevice> &jobDevice);
+    const QPointer<QFileDevice> &getJobDevice() const;
+    void setJobDevice(const QPointer<QFileDevice> &jobDevice);
 
     void setDigest(const QString &);
     const QString &getDigest() const;
@@ -318,8 +318,8 @@ private:
     //meta information of a job
     //#########################
 
-    QString jobName; //the name under that the job is saved
-    QPointer<QIODevice> jobDevice; //the device where the job is saved
+    QString jobName; // the name under that the job is saved
+    QPointer<QFileDevice> jobDevice; // the device where the job is saved
 
     // the last calculated digest of the job content
     QString digest;
@@ -345,6 +345,9 @@ private:
     int nextId; //the next free id an element of this job could get
 
     void enableOrDisableObservations(const int &featureId, bool enable);
+    void enableOrDisableStationObservations(QPointer<Station> station, bool enable);
+    void enableOrDisableGeometryObservations(const int &featureId, bool enable, QPointer<Station> station);
+
 };
 
 }

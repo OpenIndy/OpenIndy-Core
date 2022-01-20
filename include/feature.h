@@ -20,7 +20,6 @@ class Function;
 class OI_CORE_EXPORT Feature : public Element
 {
     friend class OiJob;
-    friend class Feature;
     Q_OBJECT
 
 public:
@@ -125,6 +124,7 @@ public:
     virtual QString getDisplayMeasurementSeries(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     virtual QString getDisplayTemperature(const UnitType &type, const int &digits, const bool &showDiff = false) const;
     virtual QString getDisplayLength(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    virtual QString getDisplayFormError(const UnitType &type, const int &digits) const;
 
     //coordinate system specific
     virtual QString getDisplayExpansionOriginX(const UnitType &type, const int &digits) const;

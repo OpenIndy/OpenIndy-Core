@@ -57,9 +57,6 @@ public:
     //get or set ellipse parameters
     //#############################
 
-    const Direction &getDirection() const;
-    const Position &getPosition() const;
-
     const double &getA() const;
     const double &getB() const;
     const Direction &getSemiMajorAxisDirection() const;
@@ -91,12 +88,6 @@ public:
     //display methods
     //###############
 
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
-    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
     QString getDisplaySecondaryI(const int &digits, const bool &showDiff = false) const;
     QString getDisplaySecondaryJ(const int &digits, const bool &showDiff = false) const;
     QString getDisplaySecondaryK(const int &digits, const bool &showDiff = false) const;
@@ -109,8 +100,6 @@ private:
     //ellipse attributes
     //##################
 
-    Position center; //center
-    Direction normal; //normal vector
     double a; //semi-major axis length
     double b; //semi-minor axis length
     Direction semiMajorAxis; //semi-major axis direction

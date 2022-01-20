@@ -506,6 +506,10 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         observation->originalIjk.setAt(2, 0.0);
         observation->originalIjk.setAt(3, 1.0);
 
+        if(this->property("isDummyPoint").isValid()) { // set only if property is available
+            observation->isDummyPoint = this->property("isDummyPoint").toBool();
+        }
+
         //set observation to valid
         observation->isValid = true;
 

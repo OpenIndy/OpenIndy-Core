@@ -70,6 +70,18 @@ public:
     const bool &getMeasureWithAim() const;
     void setMeasureWithAim(const bool &measureWithAim);
 
+    void setIsStablePoint(const bool isStablePoint);
+    const bool &getIsStablePoint() const;
+
+    void setStablePointMinDistance(const double &minDistance);
+    const double &getStablePointMinDistance() const;
+
+    void setStablePointThresholdRange(const double &threshold);
+    const double &getStablePointThresholdRange() const;
+
+    void setStablePointThresholdTime(const double &threshold);
+    const double &getStablePointThresholdTime() const;
+
     //#################
     //save and load XML
     //#################
@@ -92,9 +104,15 @@ private:
     bool timeDependent; //true if the sensor shall measure in a special timeInterval (false if not)
     bool distanceDependent; //true if the sensor shall measure in a special distanceInterval (false if not)
     long timeInterval; //time interval in which the sensor shall measure
-    double distanceInterval; //distance interval in which the sensor shall measure
+    double distanceInterval; //distance interval in which the sensor shall measure [mm]
     ReadingTypes typeOfReading; //the type of reading which the sensor shall return
     bool measureWithAim; //true search target / aim then measure
+    bool isStablePoint; // is stable point measurement
+    double stablePointMinDistance; // [mm]
+    double stablePointThresholdRange; // [mm]
+    double stablePointThresholdTime; // [second]
+
+    QMap<QString, QVariant> transientData;
 
 };
 

@@ -20,6 +20,7 @@ class OI_CORE_EXPORT Point : public Geometry
 public:
     Point(const bool &isNominal, QObject *parent = 0);
     Point(const bool &isNominal, const Position &xyz, QObject *parent = 0);
+    Point(int id, const bool &isNominal, const Position &xyz, QObject *parent = 0);
 
     Point(const Point &copy, QObject *parent = 0);
 
@@ -51,6 +52,9 @@ public:
 
     void setPoint(const Position &xyz);
 
+    const double &getDistance() const;
+    void setDistance(const double distance);
+
     //#############################
     //get or set unknown parameters
     //#############################
@@ -72,22 +76,8 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
-    //###############
-    //display methods
-    //###############
-
-    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
-
-private:
-
-    //################
-    //point attributes
-    //################
-
-    Position xyz; //position
-
+    QString getDisplayDistance(const UnitType &type, const int &digits, const bool &showDiff) const;
+    double distance; // depends on function
 };
 
 }

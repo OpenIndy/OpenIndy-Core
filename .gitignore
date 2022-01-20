@@ -26,3 +26,7 @@ Makefile
 *-build-*
 *.Debug
 *.Release
+
+build/*_resource.rc
+
+install

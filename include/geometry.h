@@ -25,7 +25,6 @@ class CoordinateSystem;
  */
 class OI_CORE_EXPORT Geometry : public Feature
 {
-    friend class Geometry;
     friend class OiJob;
     Q_OBJECT
 
@@ -86,7 +85,9 @@ public:
 
     virtual const Radius &getRadius() const;
     virtual const Direction &getDirection() const;
+    virtual void setDirection(Direction &direction);
     virtual const Position &getPosition() const;
+    virtual void setPosition(Position &position);
 
     //#############################
     //get or set unknown parameters
@@ -114,11 +115,21 @@ public:
     //###############
 
     QString getDisplayStDev(const UnitType &type, const int &digits) const;
+    QString getDisplayFormError(const UnitType &type, const int &digits) const override;
 
     QString getDisplayMeasurementConfig() const;
     QString getDisplayObservations() const;
     QString getDisplayIsCommon() const;
     QString getDisplayIsActual() const;
+
+    QString getDisplayX(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayY(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryI(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
+    QString getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff = false) const;
+
 
 signals:
 
@@ -166,15 +177,9 @@ protected:
     //current measurement config that is used to create readings until the user selects another one
     MeasurementConfig activeMeasurementConfig; //only for this geometry instance
 
-private:
-
-    //############################################################################
-    //helper variables used for geometries without a radius, direction or position
-    //############################################################################
-
-    Position dummyPosition;
-    Direction dummyDirection;
-    Radius dummyRadius;
+    Position xyz;
+    Direction ijk;
+    Radius radius;
 
 };
 

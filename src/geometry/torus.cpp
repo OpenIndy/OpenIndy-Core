@@ -51,9 +51,9 @@ Torus::Torus(const Torus &copy, QObject *parent) : Geometry(copy, parent){
         this->selfFeature->setTorus(this);
     }
 
-    this->center = copy.center;
-    this->normal = copy.normal;
-    this->radiusA = copy.radiusA;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
+    this->radius = copy.radius;
     this->radiusB = copy.radiusB;
 
 }
@@ -70,9 +70,9 @@ Torus &Torus::operator=(const Torus &copy){
         this->selfFeature->setTorus(this);
     }
 
-    this->center = copy.center;
-    this->normal = copy.normal;
-    this->radiusA = copy.radiusA;
+    this->xyz = copy.xyz;
+    this->ijk = copy.ijk;
+    this->radius = copy.radius;
     this->radiusB = copy.radiusB;
 
     return *this;
@@ -111,33 +111,6 @@ bool Torus::hasRadius() const{
 }
 
 /*!
- * \brief Torus::getRadius
- * Returns the distance of the center to the center curve of the torus
- * \return
- */
-const Radius &Torus::getRadius() const{
-    return this->radiusA;
-}
-
-/*!
- * \brief Torus::getDirection
- * Returns the normal vector of the torus
- * \return
- */
-const Direction &Torus::getDirection() const{
-    return this->normal;
-}
-
-/*!
- * \brief Torus::getPosition
- * Returns the center of the torus
- * \return
- */
-const Position &Torus::getPosition() const{
-    return this->center;
-}
-
-/*!
  * \brief Torus::getSmallRadius
  * Returns the distance of the center curve to the torus surface (radiusA > radiusB)
  * \return
@@ -156,9 +129,9 @@ const Radius &Torus::getSmallRadius() const{
 void Torus::setTorus(const Position &center, const Direction &normal, const Radius &radiusA, const Radius &radiusB){
 
     //set the given parameters
-    this->center = center;
-    this->normal = normal;
-    this->radiusA = radiusA;
+    this->xyz = center;
+    this->ijk = normal;
+    this->radius = radiusA;
     this->radiusB = radiusB;
 
     emit this->geomParametersChanged(this->id);
@@ -195,9 +168,9 @@ QMap<GeometryParameters, QString> Torus::getUnknownParameters(const QMap<Dimensi
 void Torus::setUnknownParameters(const QMap<GeometryParameters, double> &parameters){
 
     //get current parameters
-    OiVec position = this->center.getVector();
-    OiVec direction = this->normal.getVector();
-    double radiusA = this->radiusA.getRadius();
+    OiVec position = this->xyz.getVector();
+    OiVec direction = this->ijk.getVector();
+    double radiusA = this->radius.getRadius();
     double radiusB = this->radiusB.getRadius();
 
     //update parameters
@@ -250,9 +223,9 @@ void Torus::recalc(){
 
     //reset torus definition if not solved and no nominal
     if(!this->isSolved && !this->isNominal){
-        this->center.setVector(0.0, 0.0, 0.0);
-        this->normal.setVector(0.0, 0.0, 0.0);
-        this->radiusA.setRadius(0.0);
+        this->xyz.setVector(0.0, 0.0, 0.0);
+        this->ijk.setVector(0.0, 0.0, 0.0);
+        this->radius.setRadius(0.0);
         this->radiusB.setRadius(0.0);
     }
 
@@ -310,12 +283,12 @@ bool Torus::fromOpenIndyXML(QDomElement &xmlElem){
             return false;
         }
 
-        this->radiusA.setRadius(radiusA.attribute("value").toDouble());
+        this->radius.setRadius(radiusA.attribute("value").toDouble());
         this->radiusB.setRadius(radiusB.attribute("value").toDouble());
-        this->normal.setVector(normal.attribute("i").toDouble(),
+        this->ijk.setVector(normal.attribute("i").toDouble(),
                                normal.attribute("j").toDouble(),
                                normal.attribute("k").toDouble());
-        this->center.setVector(center.attribute("x").toDouble(),
+        this->xyz.setVector(center.attribute("x").toDouble(),
                                center.attribute("y").toDouble(),
                                center.attribute("z").toDouble());
 
@@ -323,101 +296,6 @@ bool Torus::fromOpenIndyXML(QDomElement &xmlElem){
 
     return result;
 
-}
-
-/*!
- * \brief Torus::getDisplayX
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayX(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(0), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Torus::getDisplayY
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayY(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(1), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Torus::getDisplayZ
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayZ(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->center.getVector().getAt(2), type), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Torus::getDisplayPrimaryI
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayPrimaryI(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(0), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Torus::getDisplayPrimaryJ
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayPrimaryJ(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(1), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Torus::getDisplayPrimaryK
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayPrimaryK(const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(this->normal.getVector().getAt(2), 'f', digits);
-    }
-    return QString("");
-}
-
-/*!
- * \brief Torus::getDisplayRadiusA
- * \param type
- * \param digits
- * \param showDiff
- * \return
- */
-QString Torus::getDisplayRadiusA(const UnitType &type, const int &digits, const bool &showDiff) const{
-    if(this->isSolved){
-        return QString::number(convertFromDefault(this->radiusA.getRadius(), type), 'f', digits);
-    }
-    return QString("");
 }
 
 /*!
