@@ -89,6 +89,9 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
+    const QVariant getTransientData(const QString key) const;
+    void setTransientData(const QString key, const QVariant value);
+
 private:
 
     //#############################
