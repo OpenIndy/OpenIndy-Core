@@ -51,7 +51,7 @@ public:
 
     //getter to access features by id, name, group, type or mConfig
     QPointer<FeatureWrapper> getFeatureById(const int &featureId) const;
-    QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name) const;
+    QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name, const bool startWith = false) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByGroup(const QString &group) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByType(const FeatureTypes &type) const;
     QList<QPointer<Geometry> > getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const;

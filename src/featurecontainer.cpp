@@ -128,10 +128,21 @@ QPointer<FeatureWrapper> FeatureContainer::getFeatureById(const int &featureId) 
 /*!
  * \brief FeatureContainer::getFeaturesByName
  * \param name
+ * \param startWith use name as "start with" pattern
  * \return
  */
-QList<QPointer<FeatureWrapper> > FeatureContainer::getFeaturesByName(const QString &name) const{
-    return this->featuresNameMap.values(name);
+QList<QPointer<FeatureWrapper> > FeatureContainer::getFeaturesByName(const QString &name, const bool startWith) const{
+    if(startWith) {
+        QList<QPointer<FeatureWrapper> > result;
+        foreach(const QPointer<FeatureWrapper> &feature, this->featuresList){
+            if(!feature.isNull() && !feature->getFeature().isNull() && feature->getFeature()->getFeatureName().startsWith(name, Qt::CaseInsensitive)){
+                result.append(feature);
+            }
+        }
+        return result;
+    } else {
+        return this->featuresNameMap.values(name);
+    }
 }
 
 /*!
