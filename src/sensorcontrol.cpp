@@ -15,7 +15,6 @@ SensorControl::SensorControl(QPointer<Station> &station, QObject *parent) : QObj
  * \brief SensorControl::~SensorControl
  */
 SensorControl::~SensorControl(){
-    this->stopSensorWorker();
 }
 
 /*!
@@ -24,11 +23,6 @@ SensorControl::~SensorControl(){
  * \return
  */
 Sensor SensorControl::getSensor(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return Sensor();
-    }
 
     //get sensor
     Sensor sensor;
@@ -54,8 +48,6 @@ void SensorControl::setSensor(const QPointer<Sensor> &sensor){
         return;
     }
 
-    //start worker thread if it is not running yet
-    this->startSensorWorker();
 
     //check old sensor and add it to the list of used sensors
     if(sensorValid){
@@ -81,11 +73,6 @@ void SensorControl::setSensor(const QPointer<Sensor> &sensor){
  */
 QPointer<Sensor> SensorControl::takeSensor(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return QPointer<Sensor>(NULL);
-    }
-
     //check old sensor and add it to the list of used sensors
     if(sensorValid){
         this->usedSensors.append(this->getSensor());
@@ -98,9 +85,6 @@ QPointer<Sensor> SensorControl::takeSensor(){
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
-
-    //stop worker thread
-    this->stopSensorWorker();
 
     //set sensor invalid
     this->sensorValid = false;
@@ -115,11 +99,6 @@ QPointer<Sensor> SensorControl::takeSensor(){
  */
 void SensorControl::resetSensor(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //check old sensor and add it to the list of used sensors
     if(sensorValid){
         this->usedSensors.append(this->getSensor());
@@ -130,9 +109,6 @@ void SensorControl::resetSensor(){
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
-
-    //stop worker thread
-    this->stopSensorWorker();
 
     //set sensor invalid
     this->sensorValid = false;
@@ -161,11 +137,6 @@ void SensorControl::setUsedSensors(const QList<Sensor> &sensors){
  */
 ReadingTypes SensorControl::getStreamFormat(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return eUndefinedReading;
-    }
-
     //call method of sensor worker
     ReadingTypes type = eUndefinedReading;
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "getStreamFormat", Qt::BlockingQueuedConnection,
@@ -183,11 +154,6 @@ ReadingTypes SensorControl::getStreamFormat(){
  * \param streamFormat
  */
 void SensorControl::setStreamFormat(ReadingTypes streamFormat){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "setStreamFormat", Qt::QueuedConnection,
@@ -211,11 +177,6 @@ bool SensorControl::getIsSensorSet(){
  * \return
  */
 bool SensorControl::getIsSensorConnected(){
-    qDebug()<< "SensorControl::getIsSensorConnected()";
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return false;
-    }
 
     //call method of sensor worker
     bool isConnected = false;
@@ -235,11 +196,6 @@ bool SensorControl::getIsSensorConnected(){
  */
 bool SensorControl::getIsReadyForMeasurement(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return false;
-    }
-
     //call method of sensor worker
     bool isReady = false;
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "getIsReadyForMeasurement", Qt::BlockingQueuedConnection,
@@ -257,11 +213,6 @@ bool SensorControl::getIsReadyForMeasurement(){
  * \return
  */
 bool SensorControl::getIsBusy(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return false;
-    }
 
     //call method of sensor worker
     bool isBusy = false;
@@ -281,11 +232,6 @@ bool SensorControl::getIsBusy(){
  */
 QMap<QString, QString> SensorControl::getSensorStatus(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return QMap<QString, QString>();
-    }
-
     //call method of sensor worker
     QMap<QString, QString> status;
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "getSensorStatus", Qt::BlockingQueuedConnection,
@@ -303,11 +249,6 @@ QMap<QString, QString> SensorControl::getSensorStatus(){
  * \return
  */
 SensorTypes SensorControl::getActiveSensorType(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return eUndefinedSensor;
-    }
 
     //call method of sensor worker
     SensorTypes type;
@@ -327,11 +268,6 @@ SensorTypes SensorControl::getActiveSensorType(){
  */
 QList<ReadingTypes> SensorControl::getSupportedReadingTypes(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return QList<ReadingTypes>();
-    }
-
     //call method of sensor worker
     QList<ReadingTypes> types;
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "getSupportedReadingTypes", Qt::BlockingQueuedConnection,
@@ -349,11 +285,6 @@ QList<ReadingTypes> SensorControl::getSupportedReadingTypes(){
  * \return
  */
 QList<ConnectionTypes> SensorControl::getSupportedConnectionTypes(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return QList<ConnectionTypes>();
-    }
 
     //call method of sensor worker
     QList<ConnectionTypes> types;
@@ -373,11 +304,6 @@ QList<ConnectionTypes> SensorControl::getSupportedConnectionTypes(){
  */
 QList<SensorFunctions> SensorControl::getSupportedSensorActions(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return QList<SensorFunctions>();
-    }
-
     //call method of sensor worker
     QList<SensorFunctions> actions;
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "getSupportedSensorActions", Qt::BlockingQueuedConnection,
@@ -395,11 +321,6 @@ QList<SensorFunctions> SensorControl::getSupportedSensorActions(){
  * \return
  */
 QStringList SensorControl::getSelfDefinedActions(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return QStringList();
-    }
 
     //call method of sensor worker
     QStringList actions;
@@ -419,11 +340,6 @@ QStringList SensorControl::getSelfDefinedActions(){
  */
 SensorConfiguration SensorControl::getSensorConfiguration(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return SensorConfiguration();
-    }
-
     //call method of sensor worker
     SensorConfiguration sConfig;
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "getSensorConfiguration", Qt::BlockingQueuedConnection,
@@ -442,11 +358,6 @@ SensorConfiguration SensorControl::getSensorConfiguration(){
  */
 void SensorControl::setSensorConfiguration(const SensorConfiguration &sConfig){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "setSensorConfiguration", Qt::BlockingQueuedConnection,
                                                 Q_ARG(SensorConfiguration, sConfig));
@@ -461,11 +372,6 @@ void SensorControl::setSensorConfiguration(const SensorConfiguration &sConfig){
  */
 void SensorControl::connectSensor(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "connectSensor", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -478,11 +384,6 @@ void SensorControl::connectSensor(){
  * \brief SensorControl::disconnectSensor
  */
 void SensorControl::disconnectSensor(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "disconnectSensor", Qt::QueuedConnection);
@@ -498,11 +399,6 @@ void SensorControl::disconnectSensor(){
  * \param mConfig
  */
 void SensorControl::measure(const int &geomId, const MeasurementConfig &mConfig){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "measure", Qt::QueuedConnection,
@@ -524,11 +420,6 @@ void SensorControl::measure(const int &geomId, const MeasurementConfig &mConfig)
  * \param mConfig
  */
 void SensorControl::move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative, const bool &measure, const int &geomId, const MeasurementConfig &mConfig){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "move", Qt::QueuedConnection,
@@ -552,11 +443,6 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
  */
 void SensorControl::move(const double &x, const double &y, const double &z, const bool &measure, const int &geomId, const MeasurementConfig &mConfig){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "move", Qt::QueuedConnection,
                                                 Q_ARG(double, x), Q_ARG(double, y), Q_ARG(double, z),
@@ -572,11 +458,6 @@ void SensorControl::move(const double &x, const double &y, const double &z, cons
  */
 void SensorControl::initialize(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "initialize", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -589,11 +470,6 @@ void SensorControl::initialize(){
  * \brief SensorControl::motorState
  */
 void SensorControl::motorState(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "motorState", Qt::QueuedConnection);
@@ -608,11 +484,6 @@ void SensorControl::motorState(){
  */
 void SensorControl::home(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "home", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -626,11 +497,6 @@ void SensorControl::home(){
  */
 void SensorControl::toggleSight(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "toggleSight", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -643,11 +509,6 @@ void SensorControl::toggleSight(){
  * \brief SensorControl::compensation
  */
 void SensorControl::compensation(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "compensation", Qt::QueuedConnection);
@@ -663,11 +524,6 @@ void SensorControl::compensation(){
  */
 void SensorControl::selfDefinedAction(const QString &action){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "selfDefinedAction", Qt::QueuedConnection,
                                                 Q_ARG(QString, action));
@@ -682,11 +538,6 @@ void SensorControl::selfDefinedAction(const QString &action){
  */
 void SensorControl::startReadingStream(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startReadingStream", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -700,10 +551,6 @@ void SensorControl::startReadingStream(){
  */
 void SensorControl::stopReadingStream(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopReadingStream", Qt::QueuedConnection);
@@ -718,11 +565,6 @@ void SensorControl::stopReadingStream(){
  */
 void SensorControl::startConnectionMonitoringStream(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startConnectionMonitoringStream", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -735,11 +577,6 @@ void SensorControl::startConnectionMonitoringStream(){
  * \brief SensorControl::stopConnectionMonitoringStream
  */
 void SensorControl::stopConnectionMonitoringStream(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopConnectionMonitoringStream", Qt::QueuedConnection);
@@ -754,11 +591,6 @@ void SensorControl::stopConnectionMonitoringStream(){
  */
 void SensorControl::startStatusMonitoringStream(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startStatusMonitoringStream", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -772,11 +604,6 @@ void SensorControl::startStatusMonitoringStream(){
  */
 void SensorControl::stopStatusMonitoringStream(){
 
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
-
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopStatusMonitoringStream", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -785,83 +612,7 @@ void SensorControl::stopStatusMonitoringStream(){
 
 }
 
-/*!
- * \brief SensorControl::isWorkerValid
- * \return
- */
-bool SensorControl::isWorkerValid() const{
-    if(this->worker.isNull() || this->workerThread.isNull()){
-        return false;
-    }
-    return true;
-}
-
-/*!
- * \brief SensorControl::isWorkerRunning
- * \return
- */
-bool SensorControl::isWorkerRunning() const{
-    if(!this->isWorkerValid() || !this->workerThread->isRunning()){
-        return false;
-    }
-    return true;
-}
-
-/*!
- * \brief SensorControl::startSensorWorker
- */
-void SensorControl::startSensorWorker(){
-
-    //check sensor worker
-    if(!this->isWorkerValid()){
-
-        //create worker and worker thread
-        this->worker = new SensorWorker();
-        this->workerThread = new QThread();
-
-        //move worker to worker thread
-        this->worker->moveToThread(this->workerThread);
-
-        //connect sensor worker
-        this->connectSensorWorker();
-
-        //delete worker thread when it is finished
-        QObject::connect(this->workerThread, &QThread::finished, this->workerThread, &QThread::deleteLater, Qt::AutoConnection);
-
-    }
-
-    //check if sensor worker is running
-    if(!this->isWorkerRunning()){
-        this->workerThread->start();
-    }
-
-}
-
-/*!
- * \brief SensorControl::stopSensorWorker
- */
-void SensorControl::stopSensorWorker(){
-
-    //check worker and worker thread
-    if(!this->isWorkerValid()){
-        return;
-    }
-
-    //disconnect sensor worker
-    this->disconnectSensorWorker();
-
-    //stop worker thread if it is still running
-    this->worker->deleteLater();
-    this->workerThread->exit();
-
-}
-
 void SensorControl::finishMeasurement(){
-
-    //check sensor worker
-    if(!this->isWorkerRunning()){
-        return;
-    }
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "finishMeasurement", Qt::DirectConnection);
