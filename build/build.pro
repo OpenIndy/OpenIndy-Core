@@ -71,6 +71,7 @@ SOURCES += \
     $$PWD/../src/sensorconfiguration.cpp \
     $$PWD/../src/sensorcontrol.cpp \
     $$PWD/../src/sensorworker.cpp \
+    $$PWD/../src/sensorworkermessage.cpp \
     $$PWD/../src/station.cpp \
     $$PWD/../src/statistic.cpp \
     $$PWD/../src/trafoparam.cpp \
@@ -135,6 +136,7 @@ HEADERS  += \
     $$PWD/../include/sensorconfiguration.h \
     $$PWD/../include/sensorcontrol.h \
     $$PWD/../include/sensorworker.h \
+    $$PWD/../include/sensorworkermessage.h \
     $$PWD/../include/station.h \
     $$PWD/../include/statistic.h \
     $$PWD/../include/trafoparam.h \
