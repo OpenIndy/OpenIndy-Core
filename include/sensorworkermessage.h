@@ -1,8 +1,15 @@
 #ifndef SENSORWORKERMESSAGE_H
 #define SENSORWORKERMESSAGE_H
+
 #include <QString>
 
-struct SensorWorkerMessage {
+#if defined(OI_CORE_LIB)
+#  define OI_CORE_EXPORT Q_DECL_EXPORT
+#else
+#  define OI_CORE_EXPORT Q_DECL_IMPORT
+#endif
+
+struct OI_CORE_EXPORT SensorWorkerMessage {
     static const QString NO_SENSOR_INSTANCE;
     static const QString CONNECTION_WAS_BLOCKED;
     static const QString MEASUREMENT_DATA_RECEIVED;
