@@ -173,7 +173,6 @@ private:
 
     //sensor worker
     QPointer<SensorWorker> worker;
-    QPointer<QThread> workerThread;
 
 };
 

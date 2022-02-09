@@ -8,13 +8,15 @@ using namespace oi;
  * \param parent
  */
 SensorControl::SensorControl(QPointer<Station> &station, QObject *parent) : QObject(parent), station(station), sensorValid(false){
-
+    this->worker = new SensorWorker();
+    this->connectSensorWorker();
 }
 
 /*!
  * \brief SensorControl::~SensorControl
  */
 SensorControl::~SensorControl(){
+    this->disconnectSensorWorker();
 }
 
 /*!
