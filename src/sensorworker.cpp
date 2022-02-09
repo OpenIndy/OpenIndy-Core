@@ -280,23 +280,23 @@ void SensorWorker::connectSensor(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "sensor connected";
+    QString msg = SensorWorkerMessage::SENSOR_CONNECTED;
     bool success = false;
 
     if(!this->sensor->isSensorAsync()){
         if(this->sensor->getConnectionState()){
-            msg = "sensor is already connected";
+            msg = SensorWorkerMessage::SENSOR_IS_ALREADY_CONNECTED;
         }else{
 
             //connect sensor
             success = this->sensor->connectSensor();
             if(!success){
-                msg = "failed to connect sensor";
+                msg = SensorWorkerMessage::FAILED_TO_CONNECT_SENSOR;
             }else{
                 this->isSensorConnected = true;
             }
@@ -308,7 +308,7 @@ void SensorWorker::connectSensor(){
         request.insert("method", "connect");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -321,23 +321,23 @@ void SensorWorker::disconnectSensor(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "sensor disconnected";
+    QString msg = SensorWorkerMessage::SENSOR_DISCONNECTED;
     bool success = false;
 
     if(!this->sensor->isSensorAsync()){
         if(!this->sensor->getConnectionState()){
-            msg = "sensor is not connected";
+            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
         }else{
 
             //disconnect sensor
             success = this->sensor->disconnectSensor();
             if(!success){
-                msg = "failed to disconnect sensor";
+                msg = SensorWorkerMessage::FAILED_TO_DISCONNECT_SENSOR;
             }else{
                 this->isSensorConnected = false;
             }
@@ -348,7 +348,7 @@ void SensorWorker::disconnectSensor(){
         request.insert("method", "disconnect");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -366,24 +366,24 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to measure";
+    QString msg = SensorWorkerMessage::FAILED_TO_MEASURE;
     bool success = false;
     QList<QPointer<Reading> > readings;
 
     if(!this->sensor->isSensorAsync()){
         if(!this->sensor->getConnectionState()){
-            msg = "sensor is not connected";
+            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
         }else{
 
             //measure
             readings = this->sensor->measure(mConfig);
             if(readings.size() > 0){
-                msg = "measurement finished";
+                msg = SensorWorkerMessage::MEASUREMENT_FINISHED;
                 success = true;
             }
 
@@ -402,7 +402,7 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
         this->sensor->setMeasurementConfig(mConfig);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -422,16 +422,16 @@ void SensorWorker::move(double azimuth, double zenith, double distance, bool isR
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to move sensor";
+    QString msg = SensorWorkerMessage::FAILED_TO_MOVE_SENSOR;
     bool success = false;
     QList<QPointer<Reading> > readings;
     if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
+        msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
     }else{
 
         //set up sensor attributes
@@ -445,7 +445,7 @@ void SensorWorker::move(double azimuth, double zenith, double distance, bool isR
         success = this->sensor->accept(eMoveAngle, attr);
         if(success){
 
-            msg = "moving sensor finished";
+            msg = SensorWorkerMessage::MOVING_SENSOR_FINISHED_PREFIX;
 
             //optionally perform measurement after move
             if(measure){
@@ -485,17 +485,17 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     if(!this->sensor->isSensorAsync()){
         //check wether the sensor is already connected
-        QString msg = "failed to move sensor";
+        QString msg = SensorWorkerMessage::FAILED_TO_MOVE_SENSOR;
         bool success = false;
         QList<QPointer<Reading> > readings;
         if(!this->sensor->getConnectionState()){
-            msg = "sensor is not connected";
+            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
         }else{
 
             //set up sensor attributes
@@ -509,7 +509,7 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
             success = this->sensor->accept(eMoveXYZ, attr);
             if(success){
 
-                msg = "moving sensor finished";
+                msg = SensorWorkerMessage::MOVING_SENSOR_FINISHED_PREFIX;
 
                 //optionally perform measurement after move
                 if(measure){
@@ -517,9 +517,9 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
                     //start measure
                     readings = this->sensor->measure(mConfig);
                     if(readings.size() > 0){
-                        msg.append(", measurement finished");
+                        msg = SensorWorkerMessage::MOVING_SENSOR_FINISHED_MEASUREMENT_FINISHED;
                     }else{
-                        msg.append(", failed to measure");
+                        msg = SensorWorkerMessage::MOVING_SENSOR_FINISHED_FAILED_TO_MEASURE;
                         success = false;
                     }
 
@@ -541,7 +541,7 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
         request.insert("z", z);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -555,22 +555,22 @@ void SensorWorker::initialize(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
     if(!this->sensor->isSensorAsync()){
-        QString msg = "failed to initialize sensor";
+        QString msg = SensorWorkerMessage::FAILED_TO_INITIALIZE_SENSOR;
         bool success = false;
         if(!this->sensor->getConnectionState()){
-            msg = "sensor is not connected";
+            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
         }else{
 
             //initialize sensor
             success = this->sensor->accept(eInitialize, SensorAttributes());
             if(success){
-                msg = "initializing finished";
+                msg = SensorWorkerMessage::INITIALIZING_FINISHED;
             }
 
         }
@@ -581,7 +581,7 @@ void SensorWorker::initialize(){
         request.insert("method", "initialize");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -594,21 +594,21 @@ void SensorWorker::motorState(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to change motor state";
+    QString msg = SensorWorkerMessage::FAILED_TO_CHANGE_MOTOR_STATE;
     bool success = false;
     if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
+        msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
     }else{
 
         //changing motor state
         success = this->sensor->accept(eMotorState, SensorAttributes());
         if(success){
-            msg = "changing motor state finished";
+            msg = SensorWorkerMessage::CHANGING_MOTOR_STATE_FINISHED;
         }
 
     }
@@ -624,21 +624,21 @@ void SensorWorker::home(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to set sensor to home position";
+    QString msg = SensorWorkerMessage::FAILED_TO_SET_SENSOR_TO_HOME_POSITION;
     bool success = false;
     if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
+        msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
     }else{
 
         //setting sensor to home position
         success = this->sensor->accept(eHome, SensorAttributes());
         if(success){
-            msg = "setting home finished";
+            msg = SensorWorkerMessage::SETTING_HOME_FINISHED;
         }
 
     }
@@ -654,23 +654,23 @@ void SensorWorker::toggleSight(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to toggle sight orientation";
+    QString msg = SensorWorkerMessage::FAILED_TO_TOGGLE_SIGHT_ORIENTATION;
     bool success = false;
 
     if(!this->sensor->isSensorAsync()){
         if(!this->sensor->getConnectionState()){
-            msg = "sensor is not connected";
+            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
         }else{
 
             //toggle sight
             success = this->sensor->accept(eToggleSight, SensorAttributes());
             if(success){
-                msg = "toggle sight orientation finished";
+                msg = SensorWorkerMessage::TOGGLE_SIGHT_ORIENTATION_FINISHED;
             }
 
         }
@@ -681,7 +681,7 @@ void SensorWorker::toggleSight(){
         request.insert("method", "toggle sight orientation");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -695,21 +695,21 @@ void SensorWorker::compensation(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to start compensation";
+    QString msg = SensorWorkerMessage::FAILED_TO_START_COMPENSATION;
     bool success = false;
     if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
+        msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
     }else{
 
         //starting compensation
         success = this->sensor->accept(eCompensation, SensorAttributes());
         if(success){
-            msg = "starting compensation finished";
+            msg = SensorWorkerMessage::STARTING_COMPENSATION_FINISHED;
         }
 
     }
@@ -726,21 +726,21 @@ void SensorWorker::selfDefinedAction(QString action){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
     //check wether the sensor is already connected
-    QString msg = "failed to do self defined action";
+    QString msg = SensorWorkerMessage::FAILED_TO_DO_SELF_DEFINED_ACTION;
     bool success = false;
     if(!this->sensor->getConnectionState()){
-        msg = "sensor is not connected";
+        msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
     }else{
 
         //starting compensation
         success = this->sensor->doSelfDefinedAction(action);
         if(success){
-            msg = "self defined action finished";
+            msg = SensorWorkerMessage::SELF_DEFINED_ACTION_FINISHED;
         }
 
     }
@@ -773,7 +773,7 @@ void SensorWorker::startReadingStream(){
     //check sensor
     if(this->sensor.isNull()){
         this->isReadingStreamStarted = false;
-        emit this->sensorMessage("no sensor instance", eErrorMessage, eConsoleMessage);
+        emit this->sensorMessage(SensorWorkerMessage::NO_SENSOR_INSTANCE, eErrorMessage, eConsoleMessage);
         return;
     }
 
@@ -804,7 +804,7 @@ void SensorWorker::startConnectionMonitoringStream(){
     //check sensor
     if(this->sensor.isNull()){
         this->isConnectionStreamStarted = false;
-        emit this->sensorMessage("no sensor instance", eErrorMessage, eConsoleMessage);
+        emit this->sensorMessage(SensorWorkerMessage::NO_SENSOR_INSTANCE, eErrorMessage, eConsoleMessage);
         return;
     }
 
@@ -834,7 +834,7 @@ void SensorWorker::startStatusMonitoringStream(){
     //check sensor
     if(this->sensor.isNull()){
         this->isStatusStreamStarted = false;
-        emit this->sensorMessage("no sensor instance", eErrorMessage, eConsoleMessage);
+        emit this->sensorMessage(SensorWorkerMessage::NO_SENSOR_INSTANCE, eErrorMessage, eConsoleMessage);
         return;
     }
 
@@ -884,7 +884,7 @@ void SensorWorker::streamReading(){
         request.insert("method", "stream");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
@@ -965,10 +965,10 @@ void SensorWorker::asyncSensorMeasurementReceived(const int &geomId, const QList
     emit this->measurementDone(true);
 
     if(measurements.size() > 0) {
-        emit this->commandFinished(true, "measurement data received");
+        emit this->commandFinished(true, SensorWorkerMessage::MEASUREMENT_DATA_RECEIVED);
 
     }else {
-        emit this->commandFinished(true, "measurement did not deliver any results");
+        emit this->commandFinished(true, SensorWorkerMessage::MEASUREMENT_DIT_NOT_DELIVER_ANY_RESULTS);
     }
 
     emit this->measurementFinished(geomId, measurements);
@@ -989,7 +989,7 @@ void SensorWorker::finishMeasurement(){
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, "no sensor instance");
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
         return;
     }
 
@@ -999,7 +999,7 @@ void SensorWorker::finishMeasurement(){
 
     if(!this->sensor->isSensorAsync()){
         if(!this->sensor->getConnectionState()){
-            msg = "sensor is not connected";
+            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
 
         }else if(this->sensor->doSelfDefinedAction("stopMeasure")) {
                 msg = "finish measurement called";
@@ -1012,7 +1012,7 @@ void SensorWorker::finishMeasurement(){
         request.insert("method", "stopMeasure");
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, "connection was blocked - please try again");
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
         }
     }
 
