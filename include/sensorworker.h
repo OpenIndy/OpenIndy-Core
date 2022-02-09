@@ -8,6 +8,7 @@
 #include <QVariantMap>
 
 #include "sensor.h"
+#include "sensorworkermessage.h"
 
 namespace oi{
 
