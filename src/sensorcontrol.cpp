@@ -57,7 +57,7 @@ void SensorControl::setSensor(const QPointer<Sensor> &sensor){
     }
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "setSensor", Qt::QueuedConnection,
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "setSensor", Qt::DirectConnection,
                                                 Q_ARG(QPointer<Sensor>, sensor));
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
