@@ -830,6 +830,7 @@ void Station::connectSensorControl(){
     QObject::connect(this, &Station::toggleSight, this->sensorControl.data(), &SensorControl::toggleSight, Qt::AutoConnection);
     QObject::connect(this, &Station::compensation, this->sensorControl.data(), &SensorControl::compensation, Qt::AutoConnection);
     QObject::connect(this, &Station::selfDefinedAction, this->sensorControl.data(), &SensorControl::selfDefinedAction, Qt::AutoConnection);
+    QObject::connect(this, &Station::search, this->sensorControl.data(), &SensorControl::search, Qt::AutoConnection);
 
     //connect sensor streaming
     QObject::connect(this, &Station::startReadingStream, this->sensorControl.data(), &SensorControl::startReadingStream, Qt::AutoConnection);
