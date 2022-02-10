@@ -98,6 +98,7 @@ public slots:
     void toggleSight();
     void compensation();
     void selfDefinedAction(const QString &action);
+    void search();
 
     //################
     //sensor streaming

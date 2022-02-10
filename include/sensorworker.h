@@ -116,6 +116,7 @@ public slots:
     void toggleSight();
     void compensation();
     void selfDefinedAction(QString action);
+    void search();
 
     //###################
     //real time streaming
