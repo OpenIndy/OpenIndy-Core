@@ -242,6 +242,13 @@ QStringList SensorWorker::getSelfDefinedActions(){
 
 }
 
+void SensorWorker::search() {
+    if(this->sensor.isNull()){
+        return;
+    }
+    this->sensor->search();
+}
+
 /*!
  * \brief SensorWorker::getSensorConfiguration
  * \return

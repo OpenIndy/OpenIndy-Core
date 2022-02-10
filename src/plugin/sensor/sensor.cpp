@@ -307,6 +307,10 @@ bool Sensor::doSelfDefinedAction(const QString &action){
     return false;
 }
 
+bool Sensor::search(){
+    return false;
+}
+
 /*!
  * \brief Sensor::toOpenIndyXML
  * \param xmlDoc

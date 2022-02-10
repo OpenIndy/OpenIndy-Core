@@ -38,6 +38,8 @@ public:
             return this->changeMotorState();
         case(eCompensation):
             return this->compensation();
+        case(eSearch):
+            return this->search();
         }
         return false;
 
@@ -119,6 +121,10 @@ protected:
         return false;
     }
 
+    virtual bool search(){
+        emit this->sensorMessage(QString("Laser Tracker not implemented correctly: search method missing"), eCriticalMessage, eMessageBoxMessage);
+        return false;
+    }
 };
 
 }

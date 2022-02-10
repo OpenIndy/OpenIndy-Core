@@ -127,6 +127,8 @@ public:
     //self defined actions
     virtual bool doSelfDefinedAction(const QString &action);
 
+    virtual bool search();
+
     //#################
     //save and load XML
     //#################
