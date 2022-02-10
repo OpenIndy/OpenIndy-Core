@@ -389,6 +389,7 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
 
         }
 
+        // same logic like SensorWorker::asyncSensorMeasurementReceived
         emit this->measurementDone(success);
 
         emit this->commandFinished(success, msg);
@@ -962,16 +963,16 @@ void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
 
 void SensorWorker::asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements)
 {
-    emit this->measurementDone(true);
+    // same logic like SensorWorker::measure
+    const bool success = measurements.size() > 0;
 
-    if(measurements.size() > 0) {
-        emit this->commandFinished(true, SensorWorkerMessage::MEASUREMENT_DATA_RECEIVED);
+    emit this->measurementDone(success);
 
-    }else {
-        emit this->commandFinished(true, SensorWorkerMessage::MEASUREMENT_DIT_NOT_DELIVER_ANY_RESULTS);
+    emit this->commandFinished(success, success ? SensorWorkerMessage::MEASUREMENT_DATA_RECEIVED : SensorWorkerMessage::MEASUREMENT_DIT_NOT_DELIVER_ANY_RESULTS);
+
+    if(success) {
+        emit this->measurementFinished(geomId, measurements);
     }
-
-    emit this->measurementFinished(geomId, measurements);
 
 }
 
