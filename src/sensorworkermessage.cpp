@@ -37,3 +37,7 @@ const QString SensorWorkerMessage::STARTING_COMPENSATION_FINISHED = "starting co
 
 const QString SensorWorkerMessage::FAILED_TO_DO_SELF_DEFINED_ACTION = "failed to do self defined action";
 const QString SensorWorkerMessage::SELF_DEFINED_ACTION_FINISHED = "self defined action finished";
+
+const QString SensorWorkerMessage::SEARCH_FINISHED = "search finished";
+const QString SensorWorkerMessage::FAILED_TO_SEARCH = "failed to search";
+

@@ -47,5 +47,8 @@ struct OI_CORE_EXPORT SensorWorkerMessage {
 
     static const QString FAILED_TO_DO_SELF_DEFINED_ACTION;
     static const QString SELF_DEFINED_ACTION_FINISHED;
+
+    static const QString SEARCH_FINISHED;
+    static const QString FAILED_TO_SEARCH;
 };
 #endif // SENSORWORKERMESSAGE_H
