@@ -246,7 +246,10 @@ void SensorWorker::search() {
     if(this->sensor.isNull()){
         return;
     }
-    this->sensor->search();
+
+    const bool success = this->sensor->search();
+
+    emit this->commandFinished(success, success ? SensorWorkerMessage::SEARCH_FINISHED : SensorWorkerMessage::FAILED_TO_SEARCH);
 }
 
 /*!
