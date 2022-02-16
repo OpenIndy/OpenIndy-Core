@@ -999,3 +999,6 @@ void Station::setJob(const QPointer<OiJob> &job){
     this->setUpFeatureId();
 
 }
+void Station::setSensorWorkerThread(QPointer<QThread> t) {
+    this->sensorControl->setSensorWorkerThread(t);
+}

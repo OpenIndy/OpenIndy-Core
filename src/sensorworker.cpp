@@ -373,7 +373,7 @@ void SensorWorker::disconnectSensor(){
  * \param mConfig
  */
 void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
-
+qDebug() << "measure" << QThread::currentThreadId();
     //check sensor
     if(this->sensor.isNull()){
         emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
