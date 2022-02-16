@@ -122,6 +122,7 @@ public:
     QString getDisplayPrimaryJ(const int &digits, const bool &showDiff = false) const;
     QString getDisplayPrimaryK(const int &digits, const bool &showDiff = false) const;
 
+    void setSensorWorkerThread(QPointer<QThread> t);
 signals:
 
     //#######################################

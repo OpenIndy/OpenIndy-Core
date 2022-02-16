@@ -30,6 +30,7 @@ public:
 
     ~SensorControl();
 
+    void setSensorWorkerThread(QPointer<QThread> t);
 public slots:
 
     //####################################
@@ -174,7 +175,6 @@ private:
 
     //sensor worker
     QPointer<SensorWorker> worker;
-
 };
 
 }

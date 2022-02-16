@@ -373,7 +373,7 @@ void SensorControl::setSensorConfiguration(const SensorConfiguration &sConfig){
  * \brief SensorControl::connectSensor
  */
 void SensorControl::connectSensor(){
-
+qDebug() << "connectSensor" << QThread::currentThreadId();
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "connectSensor", Qt::QueuedConnection);
     if(!hasInvoked){
@@ -659,4 +659,8 @@ void SensorControl::connectSensorWorker(){
  */
 void SensorControl::disconnectSensorWorker(){
 
+}
+
+void SensorControl::setSensorWorkerThread(QPointer<QThread> t) {
+    this->worker->moveToThread(t);
 }
