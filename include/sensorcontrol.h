@@ -155,12 +155,6 @@ private:
     //helper methods
     //##############
 
-    //sensor worker
-    bool isWorkerValid() const;
-    bool isWorkerRunning() const;
-    void startSensorWorker();
-    void stopSensorWorker();
-
     //connect or disconnect sensor worker
     void connectSensorWorker();
     void disconnectSensorWorker();
@@ -180,7 +174,6 @@ private:
 
     //sensor worker
     QPointer<SensorWorker> worker;
-    QPointer<QThread> workerThread;
 
 };
 

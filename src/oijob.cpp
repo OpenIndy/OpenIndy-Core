@@ -307,10 +307,11 @@ QPointer<FeatureWrapper> OiJob::getFeatureById(const int &featureId) const{
 /*!
  * \brief OiJob::getFeaturesByName
  * \param name
+ * \param startWith use name as "start with" pattern
  * \return
  */
-QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByName(const QString &name) const{
-    return this->featureContainer.getFeaturesByName(name);
+QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByName(const QString &name, const bool startWith) const{
+    return this->featureContainer.getFeaturesByName(name, startWith);
 }
 
 /*!

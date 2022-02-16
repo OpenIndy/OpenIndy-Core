@@ -88,7 +88,7 @@ void SensorWorker::resetSensor(){
 
         //disconnect sensor
         if(this->sensor->getConnectionState()){
-            this->sensor->disconnectSensor();
+            this->disconnectSensor(); // call worker method to handle default and async sensors
         }
         QObject::disconnect(sensor, &Sensor::sensorMessage, this, &SensorWorker::sensorMessage);
         QObject::disconnect(sensor, &Sensor::asyncSensorResponse, this, &SensorWorker::asyncSensorResponseReceived);
@@ -107,7 +107,7 @@ void SensorWorker::resetSensor(){
  * \return
  */
 bool SensorWorker::getIsSensorConnected(){
-    qDebug() << "SensorWorker::getIsSensorConnected()";
+
     //check sensor
     if(this->sensor.isNull()){
         return false;
