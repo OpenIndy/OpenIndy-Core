@@ -8,6 +8,7 @@
 #include <QVariantMap>
 
 #include "sensor.h"
+#include "sensorworkermessage.h"
 
 namespace oi{
 
@@ -115,6 +116,7 @@ public slots:
     void toggleSight();
     void compensation();
     void selfDefinedAction(QString action);
+    void search();
 
     //###################
     //real time streaming

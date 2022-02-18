@@ -534,6 +534,15 @@ void SensorControl::selfDefinedAction(const QString &action){
     }
 
 }
+void SensorControl::search(){
+
+    //call method of sensor worker
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "search", Qt::QueuedConnection);
+    if(!hasInvoked){
+        emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
+    }
+
+}
 
 /*!
  * \brief SensorControl::startReadingStream
@@ -650,4 +659,8 @@ void SensorControl::connectSensorWorker(){
  */
 void SensorControl::disconnectSensorWorker(){
 
+}
+
+void SensorControl::setSensorWorkerThread(QPointer<QThread> t) {
+    this->worker->moveToThread(t);
 }

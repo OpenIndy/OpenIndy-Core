@@ -24,26 +24,7 @@ include($$PWD/config.pri)
 include($$PWD/dependencies.pri)
 
 # include paths
-INCLUDEPATH += $$PWD/../src
-INCLUDEPATH += $$PWD/../src/geometry
-INCLUDEPATH += $$PWD/../src/plugin
-INCLUDEPATH += $$PWD/../src/plugin/function
-INCLUDEPATH += $$PWD/../src/plugin/sensor
-INCLUDEPATH += $$PWD/../src/plugin/networkAdjustment
-INCLUDEPATH += $$PWD/../src/plugin/simulation
-INCLUDEPATH += $$PWD/../src/plugin/tool
-INCLUDEPATH += $$PWD/../src/plugin/exchange
-INCLUDEPATH += $$PWD/../src/util
-INCLUDEPATH += $$PWD/../include
-INCLUDEPATH += $$PWD/../include/geometry
-INCLUDEPATH += $$PWD/../include/plugin
-INCLUDEPATH += $$PWD/../include/plugin/function
-INCLUDEPATH += $$PWD/../include/plugin/sensor
-INCLUDEPATH += $$PWD/../include/plugin/networkAdjustment
-INCLUDEPATH += $$PWD/../include/plugin/simulation
-INCLUDEPATH += $$PWD/../include/plugin/tool
-INCLUDEPATH += $$PWD/../include/plugin/exchange
-INCLUDEPATH += $$PWD/../include/util
+include($$PWD/includes.pri)
 
 # source files
 SOURCES += \
@@ -90,6 +71,7 @@ SOURCES += \
     $$PWD/../src/sensorconfiguration.cpp \
     $$PWD/../src/sensorcontrol.cpp \
     $$PWD/../src/sensorworker.cpp \
+    $$PWD/../src/sensorworkermessage.cpp \
     $$PWD/../src/station.cpp \
     $$PWD/../src/statistic.cpp \
     $$PWD/../src/trafoparam.cpp \
@@ -154,6 +136,7 @@ HEADERS  += \
     $$PWD/../include/sensorconfiguration.h \
     $$PWD/../include/sensorcontrol.h \
     $$PWD/../include/sensorworker.h \
+    $$PWD/../include/sensorworkermessage.h \
     $$PWD/../include/station.h \
     $$PWD/../include/statistic.h \
     $$PWD/../include/trafoparam.h \

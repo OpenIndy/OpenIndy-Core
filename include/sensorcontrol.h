@@ -30,6 +30,7 @@ public:
 
     ~SensorControl();
 
+    void setSensorWorkerThread(QPointer<QThread> t);
 public slots:
 
     //####################################
@@ -98,6 +99,7 @@ public slots:
     void toggleSight();
     void compensation();
     void selfDefinedAction(const QString &action);
+    void search();
 
     //################
     //sensor streaming
@@ -173,7 +175,6 @@ private:
 
     //sensor worker
     QPointer<SensorWorker> worker;
-
 };
 
 }
