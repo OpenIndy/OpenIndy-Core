@@ -197,4 +197,7 @@ protected:
 #define SENSOR_PREFIX de.openIndy.plugin.sensor.v
 #define Sensor_iidd STR2(CONCAT2(SENSOR_PREFIX, PLUGIN_INTERFACE_VERSION))
 
+#define MeasurementArm_PREFIX de.openIndy.plugin.measurementArm.v
+#define MeasurementArm_iidd STR2(CONCAT2(MeasurementArm_PREFIX, PLUGIN_INTERFACE_VERSION))
+
 #endif // SENSOR_H

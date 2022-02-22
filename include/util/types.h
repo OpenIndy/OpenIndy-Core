@@ -412,6 +412,7 @@ enum SensorTypes{
 
     eLaserTracker = 0,
     eTotalStation,
+    eMeasurementArm,
     eUndefinedSensor
 
 };
@@ -427,7 +428,8 @@ enum SensorFaces{
 enum ConnectionTypes{
 
     eNetworkConnection = 0,
-    eSerialConnection
+    eSerialConnection,
+    eUSBConnection
 
 };
 
