@@ -582,6 +582,14 @@ QString Reading::getDisplaySensorConfigName() const{
 }
 
 /*!
+ * \brief Reading::getDisplayMeasurementConfigName
+ * \return
+ */
+QString Reading::getDisplayMeasurementConfigName() const{
+    return this->measurementConfigName;
+}
+
+/*!
  * \brief Reading::getDisplaySide
  * \return
  */
