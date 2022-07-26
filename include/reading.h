@@ -287,6 +287,7 @@ private:
 
     QDateTime measuredAt;
     MeasurementConfig mConfig; //the configuration that the sensor used to produce this reading
+    QString measurementConfigName;
     SensorFaces face;
     bool imported; // indicate that "reading" was not measured but imported
 

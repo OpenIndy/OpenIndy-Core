@@ -400,6 +400,7 @@ const MeasurementConfig &Reading::getMeasurementConfig(){
  */
 void Reading::setMeasurementConfig(const MeasurementConfig &mConfig){
     this->mConfig = mConfig;
+    this->measurementConfigName = mConfig.getName();
 }
 
 /*!
