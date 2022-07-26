@@ -464,6 +464,7 @@ const SensorConfiguration &Reading::getSensorConfiguration() const{
  */
 void Reading::setSensorConfiguration(const SensorConfiguration &sConfig){
     this->sConfig = sConfig;
+    this->sensorConfigName = sConfig.getName();
 }
 
 /*!
@@ -572,11 +573,11 @@ QString Reading::getDisplayTime() const{
 }
 
 /*!
- * \brief Reading::getDisplaySensor
+ * \brief Reading::getDisplaySensorConfigName
  * \return
  */
-QString Reading::getDisplaySensor() const{
-    return "";//return this->sensor.getMetaData().name;
+QString Reading::getDisplaySensorConfigName() const{
+    return this->sensorConfigName;
 }
 
 /*!

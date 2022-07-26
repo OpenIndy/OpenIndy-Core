@@ -223,7 +223,7 @@ public:
     QString getDisplayId() const;
     QString getDisplayType() const;
     QString getDisplayTime() const;
-    QString getDisplaySensor() const;
+    QString getDisplaySensorConfigName() const;
     QString getDisplaySide() const;
     QString getDisplayAzimuth(const UnitType &type, const int &digits) const;
     QString getDisplayZenith(const UnitType &type, const int &digits) const;
@@ -295,6 +295,7 @@ private:
     //######################
 
     SensorConfiguration sConfig;
+    QString sensorConfigName;
     QPointer<Observation> observation;
 
     //################
