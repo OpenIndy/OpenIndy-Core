@@ -894,6 +894,10 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     sensorConfig.setAttribute("name", this->sensorConfigName);
     reading.appendChild(sensorConfig);
 
+    QDomElement measurementConfig = xmlDoc.createElement("measurementConfig");
+    measurementConfig.setAttribute("name", this->measurementConfigName);
+    reading.appendChild(measurementConfig);
+
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
     switch(this->typeOfReading){
@@ -1031,6 +1035,11 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     QDomElement sensorConfig = xmlElem.firstChildElement("sensorConfig");
     if(!sensorConfig.isNull()) { // may null for old project files
         this->sensorConfigName = sensorConfig.attribute("name");
+    }
+
+    QDomElement measurementConfig = xmlElem.firstChildElement("measurementConfig");
+    if(!measurementConfig.isNull()) { // may null for old project files
+        this->measurementConfigName = measurementConfig.attribute("name");
     }
 
     //get list of measurements
