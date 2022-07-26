@@ -889,6 +889,10 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.setAttribute("imported", this->isImported());
     reading.setAttribute("face", (int)this->getFace());
 
+    QDomElement sensorConfig = xmlDoc.createElement("sensorConfig");
+    sensorConfig.setAttribute("name", this->sensorConfigName);
+    reading.appendChild(sensorConfig);
+
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
     switch(this->typeOfReading){
@@ -1022,6 +1026,11 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
     this->setImported(xmlElem.attribute("imported").toInt());
     this->setSensorFace(xmlElem.attribute("face").isEmpty() ? eUndefinedSide : (SensorFaces)(xmlElem.attribute("face").toInt()));
+
+    QDomElement sensorConfig = xmlElem.firstChildElement("sensorConfig");
+    if(!sensorConfig.isNull()) { // may null for old project files
+        this->sensorConfigName = sensorConfig.attribute("name");
+    }
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");
