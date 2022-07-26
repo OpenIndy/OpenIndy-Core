@@ -342,7 +342,7 @@ enum ReadingDisplayAttributes{
     eReadingDisplayId = 0,
     eReadingDisplayType,
     eReadingDisplayTime,
-    eReadingDisplaySensor,
+    eReadingDisplaySensorConfigName,
     eReadingDisplaySide,
     eReadingDisplayAzimuth,
     eReadingDisplayZenith,
