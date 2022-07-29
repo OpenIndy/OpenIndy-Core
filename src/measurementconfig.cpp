@@ -380,3 +380,12 @@ const QVariant MeasurementConfig::getTransientData(const QString key) const {
 void MeasurementConfig::setTransientData(const QString key, const QVariant value) {
     this->transientData.insert(key, value);
 }
+
+bool MeasurementConfig::applicableFor(const ElementTypes elementType) {
+    switch(elementType) {
+    case ElementTypes::eReadingLevelElement:
+        return this->typeOfReading == ReadingTypes::eLevelReading;
+    default:
+        return true;
+    }
+}
