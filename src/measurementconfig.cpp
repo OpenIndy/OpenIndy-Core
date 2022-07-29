@@ -381,11 +381,28 @@ void MeasurementConfig::setTransientData(const QString key, const QVariant value
     this->transientData.insert(key, value);
 }
 
-bool MeasurementConfig::applicableFor(const ElementTypes elementType) {
-    switch(elementType) {
-    case ElementTypes::eReadingLevelElement:
+/**
+ * @brief MeasurementConfig::applicableFor
+ * @param elementType
+ * @param typeOfFeature
+ * @return true if elementType and typeOfFeature can handled by this MeasurementConfig
+ */
+bool MeasurementConfig::applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature) {
+    // handle level ->
+    if(ElementTypes::eReadingLevelElement == elementType) {
         return this->typeOfReading == ReadingTypes::eLevelReading;
-    default:
-        return true;
     }
+    if(this->typeOfReading == ReadingTypes::eLevelReading) {
+        return false;
+    }
+    // <- handle level
+
+    if(FeatureTypes::ePointFeature == typeOfFeature) {
+        if(this->distanceDependent) { // no distance scan possible
+            return false;
+        }
+    }
+
+
+    return true;
 }
