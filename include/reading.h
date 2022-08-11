@@ -223,7 +223,8 @@ public:
     QString getDisplayId() const;
     QString getDisplayType() const;
     QString getDisplayTime() const;
-    QString getDisplaySensor() const;
+    QString getDisplaySensorConfigName() const;
+    QString getDisplayMeasurementConfigName() const;
     QString getDisplaySide() const;
     QString getDisplayAzimuth(const UnitType &type, const int &digits) const;
     QString getDisplayZenith(const UnitType &type, const int &digits) const;
@@ -287,6 +288,7 @@ private:
 
     QDateTime measuredAt;
     MeasurementConfig mConfig; //the configuration that the sensor used to produce this reading
+    QString measurementConfigName;
     SensorFaces face;
     bool imported; // indicate that "reading" was not measured but imported
 
@@ -295,6 +297,7 @@ private:
     //######################
 
     SensorConfiguration sConfig;
+    QString sensorConfigName;
     QPointer<Observation> observation;
 
     //################

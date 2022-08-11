@@ -330,7 +330,8 @@ void init(){
     readingDisplayAttributesMap.insert(eReadingDisplayId, "id");
     readingDisplayAttributesMap.insert(eReadingDisplayType, "type");
     readingDisplayAttributesMap.insert(eReadingDisplayTime, "time");
-    readingDisplayAttributesMap.insert(eReadingDisplaySensor, "sensor");
+    readingDisplayAttributesMap.insert(eReadingDisplaySensorConfigName, "sensor config");
+    readingDisplayAttributesMap.insert(eReadingDisplayMeasurementConfigName, "measurement config");
     readingDisplayAttributesMap.insert(eReadingDisplaySide, "side");
     readingDisplayAttributesMap.insert(eReadingDisplayAzimuth, "azimuth");
     readingDisplayAttributesMap.insert(eReadingDisplayZenith, "zenith");

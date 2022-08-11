@@ -400,6 +400,7 @@ const MeasurementConfig &Reading::getMeasurementConfig(){
  */
 void Reading::setMeasurementConfig(const MeasurementConfig &mConfig){
     this->mConfig = mConfig;
+    this->measurementConfigName = mConfig.getName();
 }
 
 /*!
@@ -464,6 +465,7 @@ const SensorConfiguration &Reading::getSensorConfiguration() const{
  */
 void Reading::setSensorConfiguration(const SensorConfiguration &sConfig){
     this->sConfig = sConfig;
+    this->sensorConfigName = sConfig.getName();
 }
 
 /*!
@@ -572,11 +574,19 @@ QString Reading::getDisplayTime() const{
 }
 
 /*!
- * \brief Reading::getDisplaySensor
+ * \brief Reading::getDisplaySensorConfigName
  * \return
  */
-QString Reading::getDisplaySensor() const{
-    return "";//return this->sensor.getMetaData().name;
+QString Reading::getDisplaySensorConfigName() const{
+    return this->sensorConfigName;
+}
+
+/*!
+ * \brief Reading::getDisplayMeasurementConfigName
+ * \return
+ */
+QString Reading::getDisplayMeasurementConfigName() const{
+    return this->measurementConfigName;
 }
 
 /*!
@@ -888,6 +898,14 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.setAttribute("imported", this->isImported());
     reading.setAttribute("face", (int)this->getFace());
 
+    QDomElement sensorConfig = xmlDoc.createElement("sensorConfig");
+    sensorConfig.setAttribute("name", this->sensorConfigName);
+    reading.appendChild(sensorConfig);
+
+    QDomElement measurementConfig = xmlDoc.createElement("measurementConfig");
+    measurementConfig.setAttribute("name", this->measurementConfigName);
+    reading.appendChild(measurementConfig);
+
     //add measurements
     QDomElement measurements = xmlDoc.createElement("measurements");
     switch(this->typeOfReading){
@@ -1021,6 +1039,16 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->typeOfReading = getReadingTypeEnum(xmlElem.attribute("type"));
     this->setImported(xmlElem.attribute("imported").toInt());
     this->setSensorFace(xmlElem.attribute("face").isEmpty() ? eUndefinedSide : (SensorFaces)(xmlElem.attribute("face").toInt()));
+
+    QDomElement sensorConfig = xmlElem.firstChildElement("sensorConfig");
+    if(!sensorConfig.isNull()) { // may null for old project files
+        this->sensorConfigName = sensorConfig.attribute("name");
+    }
+
+    QDomElement measurementConfig = xmlElem.firstChildElement("measurementConfig");
+    if(!measurementConfig.isNull()) { // may null for old project files
+        this->measurementConfigName = measurementConfig.attribute("name");
+    }
 
     //get list of measurements
     QDomElement measurements = xmlElem.firstChildElement("measurements");

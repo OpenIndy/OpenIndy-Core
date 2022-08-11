@@ -338,11 +338,12 @@ enum ObservationDisplayAttributes{
 };
 
 enum ReadingDisplayAttributes{
-
+    // order corresponds to the display order
     eReadingDisplayId = 0,
     eReadingDisplayType,
     eReadingDisplayTime,
-    eReadingDisplaySensor,
+    eReadingDisplaySensorConfigName,
+    eReadingDisplayMeasurementConfigName,
     eReadingDisplaySide,
     eReadingDisplayAzimuth,
     eReadingDisplayZenith,
