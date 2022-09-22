@@ -13,3 +13,6 @@ math.subdir = $$PWD/lib/OpenIndy-Math
 
 # project dependencies
 core.depends = math
+
+QMAKE_EXTRA_TARGETS += run-test
+run-test.commands = rem
