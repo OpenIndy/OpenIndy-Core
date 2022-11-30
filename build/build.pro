@@ -52,6 +52,7 @@ SOURCES += \
     $$PWD/../src/plugin/exchange/exchangesimpleascii.cpp \
     $$PWD/../src/plugin/function/function.cpp \
     $$PWD/../src/plugin/sensor/sensor.cpp \
+    $$PWD/../src/plugin/sensor/sensorfacade.cpp \
     $$PWD/../src/plugin/simulation/simulationmodel.cpp \
     $$PWD/../src/plugin/tool/tool.cpp \
     $$PWD/../src/util/util.cpp \
@@ -113,6 +114,7 @@ HEADERS  += \
     $$PWD/../include/plugin/function/specialfunction.h \
     $$PWD/../include/plugin/sensor/lasertracker.h \
     $$PWD/../include/plugin/sensor/sensor.h \
+    $$PWD/../include/plugin/sensor/sensorfacade.h \
     $$PWD/../include/plugin/sensor/totalstation.h \
     $$PWD/../include/plugin/simulation/simulationmodel.h \
     $$PWD/../include/plugin/tool/tool.h \
