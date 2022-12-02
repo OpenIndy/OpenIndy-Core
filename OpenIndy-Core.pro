@@ -5,14 +5,18 @@ TEMPLATE = subdirs
 CONFIG += ordered
 SUBDIRS = \
     math \
-    core
+    core \
+    test
 
 # project locations
 core.subdir = $$PWD/build
 math.subdir = $$PWD/lib/OpenIndy-Math
+test.subdir = test
 
 # project dependencies
 core.depends = math
+test.depends = core
 
 QMAKE_EXTRA_TARGETS += run-test
-run-test.commands = rem
+run-test.commands = \
+    cd test && $(MAKE) run-test
