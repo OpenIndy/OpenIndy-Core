@@ -34,12 +34,111 @@ public:
     QString action;
 };
 
+class OI_CORE_EXPORT SensorInterface : public QObject
+{
+
+    Q_OBJECT
+
+public:
+    SensorInterface(QObject *parent = 0);
+    //############################
+    //sensor initialization method
+    //############################
+
+    virtual void init() = 0;
+
+    //####################################
+    //get or set general sensor attributes
+    //####################################
+
+    virtual const SensorConfiguration &getSensorConfiguration() const = 0;
+    virtual void setSensorConfiguration(const SensorConfiguration &sConfig) = 0;
+
+    virtual void setMeasurementConfig(const MeasurementConfig &mConfig) = 0;
+
+    virtual const QPair<ReadingTypes, QPointer<Reading> > &getLastReading() const = 0;
+
+    virtual bool isSensorAsync() const = 0;
+
+    //#########################################################
+    //methods to get or set further information to use a sensor
+    //#########################################################
+
+    //reading types, sensor actions and connection types
+    virtual const QList<ReadingTypes> &getSupportedReadingTypes() const = 0;
+    virtual const QList<SensorFunctions> &getSupportedSensorActions() const = 0;
+    virtual const QList<ConnectionTypes> &getSupportedConnectionTypes() const = 0;
+
+    //meta data
+    virtual const PluginMetaData &getMetaData() const = 0;
+
+    //integer, double and string parameter
+    virtual const QMap<QString, int> &getIntegerParameter() const = 0;
+    virtual const QMap<QString, double> &getDoubleParameter() const = 0;
+    virtual const QMultiMap<QString, QString> &getStringParameter() const = 0;
+
+    //self deined actions
+    virtual const QStringList &getSelfDefinedActions() const = 0;
+
+    //accuracy
+    virtual const Accuracy &getDefaultAccuracy() const = 0;
+
+    //########################
+    //sensor state and actions
+    //########################
+
+    //sensor actions
+    virtual bool accept(const SensorFunctions &method, const SensorAttributes &sAttr) = 0;
+
+    virtual QJsonObject performAsyncSensorCommand(const QJsonObject &request) = 0;
+
+    //abort actions
+    virtual bool abortAction() = 0;
+
+    //connect or disconnect
+    virtual bool connectSensor() = 0;
+    virtual bool disconnectSensor() = 0;
+
+    //measurements
+    virtual QList<QPointer<Reading> > measure(const MeasurementConfig &mConfig) = 0;
+    virtual QVariantMap readingStream(const ReadingTypes &streamFormat) = 0;
+
+    //status information
+    virtual bool getConnectionState() = 0;
+    virtual bool getIsReadyForMeasurement() = 0;
+    virtual bool getIsBusy() = 0;
+    virtual QMap<QString, QString> getSensorStatus() = 0;
+
+    //self defined actions
+    virtual bool doSelfDefinedAction(const QString &action) = 0;
+
+    virtual bool search() = 0;
+
+    //#################
+    //save and load XML
+    //#################
+
+    virtual QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const = 0;
+    virtual bool fromOpenIndyXML(QDomElement &xmlElem) = 0;
+
+signals:
+
+    //##############################################
+    //signals to inform OpenIndy about sensor issues
+    //##############################################
+    void sensorStatus(const SensorStatus &status, const QString &msg);
+    void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
+    void asyncSensorResponse(const QJsonObject &response);
+    void asyncMeasurementResult(const int &geomId, const QList<QPointer<Reading> > &measurements);
+    void asyncStreamResult(const QVariantMap &reading);
+    void asyncSensorNotification(const QJsonObject &response);
+};
+
 /*!
  * \brief The Sensor class
  */
-class OI_CORE_EXPORT Sensor : public QObject
+class OI_CORE_EXPORT Sensor : public SensorInterface
 {
-    Q_OBJECT
 
 public:
     explicit Sensor(QObject *parent = 0);
@@ -60,20 +159,20 @@ public:
     //sensor initialization method
     //############################
 
-    virtual void init();
+    void init();
 
     //####################################
     //get or set general sensor attributes
     //####################################
 
     const SensorConfiguration &getSensorConfiguration() const;
-    virtual void setSensorConfiguration(const SensorConfiguration &sConfig);
+    void setSensorConfiguration(const SensorConfiguration &sConfig);
 
     void setMeasurementConfig(const MeasurementConfig &mConfig);
 
     const QPair<ReadingTypes, QPointer<Reading> > &getLastReading() const;
 
-    virtual bool isSensorAsync() const;
+    bool isSensorAsync() const;
 
     //#########################################################
     //methods to get or set further information to use a sensor
@@ -103,31 +202,31 @@ public:
     //########################
 
     //sensor actions
-    virtual bool accept(const SensorFunctions &method, const SensorAttributes &sAttr);
+    bool accept(const SensorFunctions &method, const SensorAttributes &sAttr);
 
-    virtual QJsonObject performAsyncSensorCommand(const QJsonObject &request);
+    QJsonObject performAsyncSensorCommand(const QJsonObject &request);
 
     //abort actions
-    virtual bool abortAction();
+    bool abortAction();
 
     //connect or disconnect
-    virtual bool connectSensor();
-    virtual bool disconnectSensor();
+    bool connectSensor();
+    bool disconnectSensor();
 
     //measurements
-    virtual QList<QPointer<Reading> > measure(const MeasurementConfig &mConfig);
-    virtual QVariantMap readingStream(const ReadingTypes &streamFormat);
+    QList<QPointer<Reading> > measure(const MeasurementConfig &mConfig);
+    QVariantMap readingStream(const ReadingTypes &streamFormat);
 
     //status information
-    virtual bool getConnectionState();
-    virtual bool getIsReadyForMeasurement();
-    virtual bool getIsBusy();
-    virtual QMap<QString, QString> getSensorStatus();
+    bool getConnectionState();
+    bool getIsReadyForMeasurement();
+    bool getIsBusy();
+    QMap<QString, QString> getSensorStatus();
 
     //self defined actions
-    virtual bool doSelfDefinedAction(const QString &action);
+    bool doSelfDefinedAction(const QString &action);
 
-    virtual bool search();
+    bool search();
 
     //#################
     //save and load XML
@@ -135,18 +234,6 @@ public:
 
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
-
-signals:
-
-    //##############################################
-    //signals to inform OpenIndy about sensor issues
-    //##############################################
-    void sensorStatus(const SensorStatus &status, const QString &msg);
-    void sensorMessage(const QString &msg, const MessageTypes &msgType, const MessageDestinations &msgDest = eConsoleMessage);
-    void asyncSensorResponse(const QJsonObject &response);
-    void asyncMeasurementResult(const int &geomId, const QList<QPointer<Reading> > &measurements);
-    void asyncStreamResult(const QVariantMap &reading);
-    void asyncSensorNotification(const QJsonObject &response);
 
 protected:
 

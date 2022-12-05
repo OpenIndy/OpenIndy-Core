@@ -6,11 +6,13 @@
 
 using namespace oi;
 
+SensorInterface::SensorInterface(QObject *parent): QObject(parent) {}
+
 /*!
  * \brief Sensor::Sensor
  * \param parent
  */
-Sensor::Sensor(QObject *parent) : QObject(parent){
+Sensor::Sensor(QObject *parent) : SensorInterface(parent){
 
 }
 
