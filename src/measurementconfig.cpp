@@ -8,18 +8,12 @@ using namespace oi;
 MeasurementConfig::MeasurementConfig() : isSaved(false){
 
     //set defaults
-    this->count = 500; // TODO remove
-    this->iterations = 1; // TODO remove
-
     this->measurementType = eSinglePoint;
     this->measurementMode = eFast;
     this->measureTwoSides = false;
-    this->timeDependent = false; // TODO remove
-    this->distanceDependent = false; // TODO remove
     this->maxObservations = 500;
     this->timeInterval = 0;
     this->distanceInterval = 0.0;
-    this->typeOfReading = ePolarReading; // TODO remove
 
     this->isStablePoint = false;
     this->stablePointMinDistance = 10.0;
@@ -38,17 +32,12 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     //copy measurement config attributes
     this->name = copy.name;
     this->isSaved = copy.isSaved;
-    this->count = copy.count; // TODO remove
-    this->iterations = copy.iterations; // TODO remove
     this->measurementType = copy.measurementType;
     this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
     this->maxObservations = copy.maxObservations;
-    this->timeDependent = copy.timeDependent;
-    this->distanceDependent = copy.distanceDependent;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
-    this->typeOfReading = copy.typeOfReading; // TODO remove
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
@@ -69,17 +58,12 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     //copy measurement config attributes
     this->name = copy.name;
     this->isSaved = copy.isSaved;
-    this->count = copy.count; // TODO remove
-    this->iterations = copy.iterations; // TODO remove
     this->measurementType = copy.measurementType;
     this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
     this->maxObservations = copy.maxObservations;
-    this->timeDependent = copy.timeDependent;
-    this->distanceDependent = copy.distanceDependent;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
-    this->typeOfReading = copy.typeOfReading; // TODO remove
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
@@ -138,40 +122,6 @@ bool MeasurementConfig::getIsValid() const{
 }
 
 /*!
- * \brief MeasurementConfig::getCount
- * \return
- */
-const int &MeasurementConfig::getCount() const{
-    return this->count;
-}
-
-/*!
- * \brief MeasurementConfig::setCount
- * \param count
- */
-void MeasurementConfig::setCount(const int &count){
-    this->count = count;
-    this->isSaved = false;
-}
-
-/*!
- * \brief MeasurementConfig::getIterations
- * \return
- */
-const int &MeasurementConfig::getIterations() const{
-    return this->iterations;
-}
-
-/*!
- * \brief MeasurementConfig::setIterations
- * \param iterations
- */
-void MeasurementConfig::setIterations(const int &iterations){
-    this->iterations = iterations;
-    this->isSaved = false;
-}
-
-/*!
  * \brief MeasurementConfig::getMeasureTwoSides
  * \return
  */
@@ -185,40 +135,6 @@ const bool &MeasurementConfig::getMeasureTwoSides() const{
  */
 void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
     this->measureTwoSides = measureTwoSides;
-    this->isSaved = false;
-}
-
-/*!
- * \brief MeasurementConfig::getTimeDependent
- * \return
- */
-const bool &MeasurementConfig::getTimeDependent() const{
-    return this->timeDependent;
-}
-
-/*!
- * \brief MeasurementConfig::setTimeDependent
- * \param timeDependent
- */
-void MeasurementConfig::setTimeDependent(const bool &timeDependent){
-    this->timeDependent = timeDependent;
-    this->isSaved = false;
-}
-
-/*!
- * \brief MeasurementConfig::getDistanceDependent
- * \return
- */
-const bool &MeasurementConfig::getDistanceDependent() const{
-    return this->distanceDependent;
-}
-
-/*!
- * \brief MeasurementConfig::setDistanceDependent
- * \param distanceDependent
- */
-void MeasurementConfig::setDistanceDependent(const bool &distanceDependent){
-    this->distanceDependent = distanceDependent;
     this->isSaved = false;
 }
 
@@ -255,24 +171,6 @@ void MeasurementConfig::setDistanceInterval(const double &interval){
     this->distanceInterval = interval;
     this->isSaved = false;
 }
-
-/*!
- * \brief MeasurementConfig::getTypeOfReading
- * \return
- */
-const ReadingTypes &MeasurementConfig::getTypeOfReading() const{
-    return this->typeOfReading;
-}
-
-/*!
- * \brief MeasurementConfig::setTypeOfReading
- * \param type
- */
-void MeasurementConfig::setTypeOfReading(const ReadingTypes &type){
-    this->typeOfReading = type;
-    this->isSaved = false;
-}
-
 
 void MeasurementConfig::setIsStablePoint(const bool isStablePoint) {
     this->isStablePoint = isStablePoint;
