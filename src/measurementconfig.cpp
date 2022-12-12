@@ -299,15 +299,15 @@ void MeasurementConfig::setTransientData(const QString key, const QVariant value
 bool MeasurementConfig::applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature) {
     // handle level ->
     if(ElementTypes::eReadingLevelElement == elementType) {
-        return this->typeOfReading == ReadingTypes::eLevelReading;
+        return this->measurementType == MeasurementTypes::eLevel;
     }
-    if(this->typeOfReading == ReadingTypes::eLevelReading) {
+    if(this->measurementType == MeasurementTypes::eLevel) {
         return false;
     }
     // <- handle level
 
     if(FeatureTypes::ePointFeature == typeOfFeature) {
-        if(this->distanceDependent) { // no distance scan possible
+        if(this->measurementType == MeasurementTypes::eScanDistanceDependent) { // no distance scan possible
             return false;
         }
     }
