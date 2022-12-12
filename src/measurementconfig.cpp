@@ -235,7 +235,7 @@ const long &MeasurementConfig::getTimeInterval() const{
  * \param interval
  */
 void MeasurementConfig::setTimeInterval(const long &interval){
-    this->timeInterval = timeInterval;
+    this->timeInterval = interval;
     this->isSaved = false;
 }
 
