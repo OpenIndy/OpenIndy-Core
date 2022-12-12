@@ -326,14 +326,13 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     //set measurement config attributes
     mConfig.setAttribute("name", this->name);
     mConfig.setAttribute("isSaved", this->isSaved);
-    mConfig.setAttribute("count", this->count);
-    mConfig.setAttribute("iterations", this->iterations);
+
+    mConfig.setAttribute("measurementMode", this->measurementMode);
+    mConfig.setAttribute("measurementType", this->measurementType);
     mConfig.setAttribute("measureTwoSides", this->measureTwoSides);
-    mConfig.setAttribute("timeDependent", this->timeDependent);
-    mConfig.setAttribute("distanceDependent", this->distanceDependent);
+    mConfig.setAttribute("maxObservations", this->maxObservations);
     mConfig.setAttribute("timeInterval", QString::number(this->timeInterval));
     mConfig.setAttribute("distanceInterval", this->distanceInterval);
-    mConfig.setAttribute("typeOfReading", this->typeOfReading);
 
     mConfig.setAttribute("isStablePoint", this->isStablePoint);
     mConfig.setAttribute("stablePointMinDistance", this->stablePointMinDistance);
@@ -355,22 +354,23 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
         return false;
     }
 
-    if(!xmlElem.hasAttribute("name") || !xmlElem.hasAttribute("count") || !xmlElem.hasAttribute("iterations")
-            || !xmlElem.hasAttribute("measureTwoSides") || !xmlElem.hasAttribute("timeDependent")
-            || !xmlElem.hasAttribute("distanceDependent") || !xmlElem.hasAttribute("timeInterval")
-            || !xmlElem.hasAttribute("distanceInterval") || !xmlElem.hasAttribute("typeOfReading")){
+    if(!xmlElem.hasAttribute("name")
+            || !xmlElem.hasAttribute("measurementMode")
+            || !xmlElem.hasAttribute("measurementType")
+            || !xmlElem.hasAttribute("measureTwoSides")
+            || !xmlElem.hasAttribute("maxObservations")
+            || !xmlElem.hasAttribute("timeInterval")
+            || !xmlElem.hasAttribute("distanceInterval")
+            ){
         return false;
     }
 
     this->name = xmlElem.attribute("name");
-    this->count = xmlElem.attribute("count").toInt();
-    this->iterations = xmlElem.attribute("iterations").toInt();
+    this->measurementMode = (MeasurementModes)xmlElem.attribute("measurementMode").toInt();
+    this->measurementType = (MeasurementTypes)xmlElem.attribute("measurementType").toInt();
     this->measureTwoSides = xmlElem.attribute("measureTwoSides").toInt();
-    this->timeDependent = xmlElem.attribute("timeDependent").toInt();
-    this->distanceDependent = xmlElem.attribute("distanceDependent").toInt();
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
-    this->typeOfReading = (ReadingTypes)xmlElem.attribute("typeOfReading").toInt();
 
     this->isStablePoint = xmlElem.attribute("isStablePoint").toInt();
     this->stablePointMinDistance = xmlElem.attribute("stablePointMinDistance").toDouble();
