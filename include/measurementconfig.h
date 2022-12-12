@@ -11,7 +11,8 @@ namespace oi{
 enum MeasurementTypes{
     eSinglePoint = 0,
     eScanTimeDependent,
-    eScanDistanceDependent
+    eScanDistanceDependent,
+    eLevel
 };
 
 enum MeasurementModes {
