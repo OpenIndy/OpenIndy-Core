@@ -318,6 +318,7 @@ bool MeasurementConfig::applicableFor(const ElementTypes elementType, const Feat
 
 void MeasurementConfig::setMeasurementMode(const MeasurementModes mode) {
     this->measurementMode = mode;
+    this->isSaved = false;
 }
 
 const MeasurementModes MeasurementConfig::getMeasurementMode() const {
@@ -326,6 +327,7 @@ const MeasurementModes MeasurementConfig::getMeasurementMode() const {
 
 void MeasurementConfig::setMeasurementType(const MeasurementTypes type) {
     this->measurementType = type;
+    this->isSaved = false;
 }
 
 const MeasurementTypes MeasurementConfig::getMeasurementType() const {
@@ -337,4 +339,5 @@ const int &MeasurementConfig::getMaxObservations() const {
 }
 void MeasurementConfig::setMaxObservations(const int &maxObservations) {
     this->maxObservations = maxObservations;
+    this->isSaved = false;
 }
