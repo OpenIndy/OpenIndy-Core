@@ -8,19 +8,24 @@ using namespace oi;
 MeasurementConfig::MeasurementConfig() : isSaved(false){
 
     //set defaults
-    this->count = 500;
-    this->iterations = 1;
+    this->count = 500; // TODO remove
+    this->iterations = 1; // TODO remove
+
+    this->measurementType = eSinglePoint;
+    this->measurementMode = eFast;
     this->measureTwoSides = false;
-    this->timeDependent = false;
-    this->distanceDependent = false;
+    this->timeDependent = false; // TODO remove
+    this->distanceDependent = false; // TODO remove
+    this->maxObservations = 500;
     this->timeInterval = 0;
     this->distanceInterval = 0.0;
-    this->typeOfReading = ePolarReading;
+    this->typeOfReading = ePolarReading; // TODO remove
 
     this->isStablePoint = false;
     this->stablePointMinDistance = 10.0;
     this->stablePointThresholdRange = 0.1;
     this->stablePointThresholdTime = 2.0;
+
 
 }
 
@@ -33,14 +38,17 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     //copy measurement config attributes
     this->name = copy.name;
     this->isSaved = copy.isSaved;
-    this->count = copy.count;
-    this->iterations = copy.iterations;
+    this->count = copy.count; // TODO remove
+    this->iterations = copy.iterations; // TODO remove
+    this->measurementType = copy.measurementType;
+    this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
+    this->maxObservations = copy.maxObservations;
     this->timeDependent = copy.timeDependent;
     this->distanceDependent = copy.distanceDependent;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
-    this->typeOfReading = copy.typeOfReading;
+    this->typeOfReading = copy.typeOfReading; // TODO remove
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
@@ -61,14 +69,17 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     //copy measurement config attributes
     this->name = copy.name;
     this->isSaved = copy.isSaved;
-    this->count = copy.count;
-    this->iterations = copy.iterations;
+    this->count = copy.count; // TODO remove
+    this->iterations = copy.iterations; // TODO remove
+    this->measurementType = copy.measurementType;
+    this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
+    this->maxObservations = copy.maxObservations;
     this->timeDependent = copy.timeDependent;
     this->distanceDependent = copy.distanceDependent;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
-    this->typeOfReading = copy.typeOfReading;
+    this->typeOfReading = copy.typeOfReading; // TODO remove
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
@@ -405,4 +416,27 @@ bool MeasurementConfig::applicableFor(const ElementTypes elementType, const Feat
 
 
     return true;
+}
+
+void MeasurementConfig::setMeasurementMode(const MeasurementModes mode) {
+    this->measurementMode = mode;
+}
+
+const MeasurementModes MeasurementConfig::getMeasurementMode() const {
+    return this->measurementMode;
+}
+
+void MeasurementConfig::setMeasurementType(const MeasurementTypes type) {
+    this->measurementType = type;
+}
+
+const MeasurementTypes MeasurementConfig::getMeasurementType() const {
+    return this->measurementType;
+}
+
+const int &MeasurementConfig::getMaxObservations() const {
+    return this->maxObservations;
+}
+void MeasurementConfig::setMaxObservations(const int &maxObservations) {
+    this->maxObservations = maxObservations;
 }

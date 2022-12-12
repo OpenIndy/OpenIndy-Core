@@ -8,6 +8,18 @@
 
 namespace oi{
 
+enum MeasurementTypes{
+    eSinglePoint = 0,
+    eScanTimeDependent,
+    eScanDistanceDependent
+};
+
+enum MeasurementModes {
+    eFast = 0,
+    eStandard,
+    ePrecise
+};
+
 /*!
  * \brief The MeasurementConfig class
  * Contains all the configuration parameters needed to start a measurement.
@@ -82,6 +94,15 @@ public:
     void setStablePointThresholdTime(const double &threshold);
     const double &getStablePointThresholdTime() const;
 
+    void setMeasurementMode(const MeasurementModes mode);
+    const MeasurementModes getMeasurementMode() const;
+
+    void setMeasurementType(const MeasurementTypes type);
+    const MeasurementTypes getMeasurementType() const;
+
+    const int &getMaxObservations() const;
+    void setMaxObservations(const int &maxObservations);
+
     //#################
     //save and load XML
     //#################
@@ -115,6 +136,10 @@ private:
     double stablePointThresholdTime; // [second]
 
     QMap<QString, QVariant> transientData;
+
+    MeasurementTypes measurementType;
+    MeasurementModes measurementMode;
+    int maxObservations;
 
 };
 
