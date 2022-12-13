@@ -14,7 +14,8 @@ enum MeasurementTypes{
     eScanDistanceDependent_MeasurementType,
     eLevel_MeasurementType,
     eDirection_MeasurementType,
-    eDistance_MeasurementType
+    eDistance_MeasurementType,
+    eTemperature_MeasurementType
 };
 
 enum MeasurementModes {
