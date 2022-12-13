@@ -100,6 +100,9 @@ public:
 
     bool applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature);
 
+    //compare two configs
+    bool equals(const MeasurementConfig &other);
+
 private:
 
     //#############################
