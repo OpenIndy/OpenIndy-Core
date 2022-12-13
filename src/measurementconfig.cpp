@@ -8,8 +8,8 @@ using namespace oi;
 MeasurementConfig::MeasurementConfig() : isSaved(false){
 
     //set defaults
-    this->measurementType = eSinglePoint;
-    this->measurementMode = eFast;
+    this->measurementType = eSinglePoint_MeasurementType;
+    this->measurementMode = eFast_MeasurementMode;
     this->measureTwoSides = false;
     this->maxObservations = 500;
     this->timeInterval = 0;
@@ -299,15 +299,15 @@ void MeasurementConfig::setTransientData(const QString key, const QVariant value
 bool MeasurementConfig::applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature) {
     // handle level ->
     if(ElementTypes::eReadingLevelElement == elementType) {
-        return this->measurementType == MeasurementTypes::eLevel;
+        return this->measurementType == MeasurementTypes::eLevel_MeasurementType;
     }
-    if(this->measurementType == MeasurementTypes::eLevel) {
+    if(this->measurementType == MeasurementTypes::eLevel_MeasurementType) {
         return false;
     }
     // <- handle level
 
     if(FeatureTypes::ePointFeature == typeOfFeature) {
-        if(this->measurementType == MeasurementTypes::eScanDistanceDependent) { // no distance scan possible
+        if(this->measurementType == MeasurementTypes::eScanDistanceDependent_MeasurementType) { // no distance scan possible
             return false;
         }
     }

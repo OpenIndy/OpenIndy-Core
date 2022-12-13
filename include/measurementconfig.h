@@ -12,9 +12,9 @@ enum MeasurementTypes{
     eSinglePoint_MeasurementType = 0,
     eScanTimeDependent_MeasurementType,
     eScanDistanceDependent_MeasurementType,
-    eLevelMeasurement_MeasurementType,
+    eLevel_MeasurementType,
     eDirection_MeasurementType,
-    eDistanceMeasurement_MeasurementType
+    eDistance_MeasurementType
 };
 
 enum MeasurementModes {
