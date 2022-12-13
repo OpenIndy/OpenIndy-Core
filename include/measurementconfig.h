@@ -9,16 +9,18 @@
 namespace oi{
 
 enum MeasurementTypes{
-    eSinglePoint = 0,
-    eScanTimeDependent,
-    eScanDistanceDependent,
-    eLevel
+    eSinglePoint_MeasurementType = 0,
+    eScanTimeDependent_MeasurementType,
+    eScanDistanceDependent_MeasurementType,
+    eLevelMeasurement_MeasurementType,
+    eDirection_MeasurementType,
+    eDistanceMeasurement_MeasurementType
 };
 
 enum MeasurementModes {
-    eFast = 0,
-    eStandard,
-    ePrecise
+    eFast_MeasurementMode = 0,
+    eStandard_MeasurementMode,
+    ePrecise_MeasurementMode
 };
 
 /*!
