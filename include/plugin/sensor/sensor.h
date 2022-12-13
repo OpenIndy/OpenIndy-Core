@@ -114,6 +114,8 @@ public:
 
     virtual bool search() = 0;
 
+    virtual ReadingTypes getReadingType(const MeasurementConfig &mConfig) = 0;
+
     //#################
     //save and load XML
     //#################
