@@ -350,12 +350,12 @@ void Sensor::init(){
 
 }
 
-ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig){
+ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig) const{
     switch(mConfig.getMeasurementMode()) {
     case eSinglePoint_MeasurementType:
     case eScanDistanceDependent_MeasurementType:
     case eScanTimeDependent_MeasurementType:
-        return getReadingTypeEnum(this->sensorConfiguration.getStringParameter().value("reading tpye"));
+        return getReadingTypeEnum(this->sensorConfiguration.getStringParameter().value("reading type"));
     case eDistance_MeasurementType:
         return eDistanceReading;
     case eDirection_MeasurementType:
@@ -364,4 +364,5 @@ ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig){
         return eLevelReading;
     default:
         return eUndefinedReading;
+    }
 }

@@ -114,7 +114,7 @@ public:
 
     virtual bool search() = 0;
 
-    virtual ReadingTypes getReadingType(const MeasurementConfig &mConfig) = 0;
+    virtual ReadingTypes getReadingType(const MeasurementConfig &mConfig) const = 0;
 
     //#################
     //save and load XML
@@ -229,6 +229,8 @@ public:
     bool doSelfDefinedAction(const QString &action);
 
     bool search();
+
+    ReadingTypes getReadingType(const MeasurementConfig &mConfig) const;
 
     //#################
     //save and load XML
