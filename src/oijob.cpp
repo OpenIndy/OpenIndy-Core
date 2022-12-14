@@ -80,6 +80,10 @@ const bool &OiJob::checkCompatibilty() const {
     }
 
     QStringList parts = loadedVersion.split(".");
+    if(parts.length()<2) {
+        return false;
+    }
+
     int major = parts.at(0).toInt();
     int minor = parts.at(1).toInt();
     return major >= 22 && minor >= 2;
