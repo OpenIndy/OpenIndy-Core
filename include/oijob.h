@@ -50,6 +50,9 @@ public:
     void setDigest(const QString &);
     const QString &getDigest() const;
 
+    const bool &checkCompatibilty() const;
+    void setLoadedProjectVersion(const QString &loadedVersion);
+
     int generateUniqueId();
 
     bool validateFeatureName(const QString &name, const FeatureTypes &type, const bool &isNominal = false,
@@ -347,6 +350,8 @@ private:
     void enableOrDisableObservations(const int &featureId, bool enable);
     void enableOrDisableStationObservations(QPointer<Station> station, bool enable);
     void enableOrDisableGeometryObservations(const int &featureId, bool enable, QPointer<Station> station);
+
+    QString loadedVersion;
 
 };
 

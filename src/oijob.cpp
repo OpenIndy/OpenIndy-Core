@@ -72,6 +72,24 @@ void OiJob::setDigest(const QString &digest) {
 }
 
 /*!
+ * \return true if the project file version compatible with this program version
+ */
+const bool &OiJob::checkCompatibilty() const {
+    if(loadedVersion.isEmpty()) {
+        return false;
+    }
+
+    QStringList parts = loadedVersion.split(".");
+    int major = parts.at(0).toInt();
+    int minor = parts.at(1).toInt();
+    return major >= 22 && minor >= 2;
+}
+
+void OiJob::setLoadedProjectVersion(const QString &loadedVersion) {
+    this->loadedVersion = loadedVersion;
+}
+
+/*!
  * \brief OiJob::generateUniqueId
  * \return
  */
