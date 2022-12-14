@@ -362,6 +362,8 @@ ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig) const{
         return eDirectionReading;
     case eLevel_MeasurementType:
         return eLevelReading;
+    case eTemperature_MeasurementType:
+        return eTemperatureReading;
     default:
         return eUndefinedReading;
     }
