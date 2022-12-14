@@ -31,7 +31,8 @@ enum MessageTypes{
     eInformationMessage = 0,
     eWarningMessage,
     eErrorMessage,
-    eCriticalMessage
+    eCriticalMessage,
+    eQuestionMessage
 };
 
 //! used to specify where to print a message
