@@ -33,3 +33,14 @@ isEmpty(OpenIndyCore_VERSION){
     message($$OpenIndyCore_VERSION)
     VERSION = $$OpenIndyCore_VERSION
 }
+
+#------------------------------------------
+# get OpenIndy version if available
+#------------------------------------------
+
+OpenIndy_VERSION = $$system(git --git-dir ../../../.git describe --always --tags) # get git version
+OpenIndy_VERSION = $$replace(OpenIndy_VERSION, "-g"{1}\w*, ) # remove commit hash after tag name
+OpenIndy_VERSION = $$replace(OpenIndy_VERSION, "-", ".") # remove remaining hyphen
+OpenIndy_VERSION = $$replace(OpenIndy_VERSION, "\b[0-9a-f]{5,40}\b", ) # remove commit hash (only if no tag has been set yet)
+DEFINES += OPENINDY_VERSION=\\\"$$OpenIndy_VERSION\\\"
+
