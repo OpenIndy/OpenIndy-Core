@@ -24,11 +24,12 @@ class ProjectExchanger;
 namespace oi{
 
 enum CompatibilyCheckResult{
-    eCheckResult_ok= 0,
+    eCheckResult_match= 0,
     eCheckResult_job_wo_valid_version,
     eCheckResult_oi_wo_valid_version,
     eCheckResult_oi_lt_job,
-    eCheckResult_oi_gt_job
+    eCheckResult_oi_gt_job,
+    eCheckResult_job_lt_oi_22_1
 };
 
 /*!

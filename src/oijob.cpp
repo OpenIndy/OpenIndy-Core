@@ -91,9 +91,11 @@ const CompatibilyCheckResult &OiJob::checkCompatibilty() const {
     int oiMajor = oiParts.at(0).toInt();
     int oiMinor = oiParts.at(1).toInt();
 
-    if(oiMajor == jobMajor) {
+    if(jobMajor <= 22 && jobMinor <= 1) {
+        return eCheckResult_job_lt_oi_22_1;
+    } else if(oiMajor == jobMajor) {
         if(oiMinor == jobMinor) {
-            return eCheckResult_ok;
+            return eCheckResult_match;
         } else if (oiMinor > jobMinor) {
             return eCheckResult_oi_gt_job;
         } else {
