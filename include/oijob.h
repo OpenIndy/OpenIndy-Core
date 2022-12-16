@@ -23,6 +23,15 @@ class ProjectExchanger;
 
 namespace oi{
 
+enum CompatibilyCheckResult{
+    eCheckResult_match= 0,
+    eCheckResult_job_wo_valid_version,
+    eCheckResult_oi_wo_valid_version,
+    eCheckResult_oi_lt_job,
+    eCheckResult_oi_gt_job,
+    eCheckResult_job_lt_oi_22_1
+};
+
 /*!
  * \brief The OiJob class
  * Represents an OpenIndy job (holds all features and active states)
@@ -49,6 +58,9 @@ public:
 
     void setDigest(const QString &);
     const QString &getDigest() const;
+
+    const CompatibilyCheckResult &checkCompatibilty() const;
+    void setLoadedProjectVersion(const QString &loadedVersion);
 
     int generateUniqueId();
 
@@ -347,6 +359,8 @@ private:
     void enableOrDisableObservations(const int &featureId, bool enable);
     void enableOrDisableStationObservations(QPointer<Station> station, bool enable);
     void enableOrDisableGeometryObservations(const int &featureId, bool enable, QPointer<Station> station);
+
+    QString loadedVersion;
 
 };
 
