@@ -74,19 +74,37 @@ void OiJob::setDigest(const QString &digest) {
 /*!
  * \return true if the project file version compatible with this program version
  */
-const bool &OiJob::checkCompatibilty() const {
-    if(loadedVersion.isEmpty()) {
-        return false;
+const CompatibilyCheckResult &OiJob::checkCompatibilty() const {
+    QStringList jobParts = loadedVersion.split(".");
+    if(jobParts.length()<2) {
+        return eCheckResult_job_wo_valid_version;
     }
 
-    QStringList parts = loadedVersion.split(".");
-    if(parts.length()<2) {
-        return false;
+    int jobMajor = jobParts.at(0).toInt();
+    int jobMinor = jobParts.at(1).toInt();
+
+    QStringList oiParts =  QString(OPENINDY_VERSION).split(".");
+    if(oiParts.length()<2) {
+        return eCheckResult_oi_wo_valid_version;
     }
 
-    int major = parts.at(0).toInt();
-    int minor = parts.at(1).toInt();
-    return major >= 22 && minor >= 2;
+    int oiMajor = oiParts.at(0).toInt();
+    int oiMinor = oiParts.at(1).toInt();
+
+    if(oiMajor == jobMajor) {
+        if(oiMinor == jobMinor) {
+            return eCheckResult_ok;
+        } else if (oiMinor > jobMinor) {
+            return eCheckResult_oi_gt_job;
+        } else {
+            return eCheckResult_oi_lt_job;
+        }
+    } else if(oiMajor > jobMajor) {
+        return eCheckResult_oi_gt_job;
+    } else {
+        return eCheckResult_oi_lt_job;
+    }
+
 }
 
 void OiJob::setLoadedProjectVersion(const QString &loadedVersion) {

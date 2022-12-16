@@ -23,6 +23,14 @@ class ProjectExchanger;
 
 namespace oi{
 
+enum CompatibilyCheckResult{
+    eCheckResult_ok= 0,
+    eCheckResult_job_wo_valid_version,
+    eCheckResult_oi_wo_valid_version,
+    eCheckResult_oi_lt_job,
+    eCheckResult_oi_gt_job
+};
+
 /*!
  * \brief The OiJob class
  * Represents an OpenIndy job (holds all features and active states)
@@ -50,7 +58,7 @@ public:
     void setDigest(const QString &);
     const QString &getDigest() const;
 
-    const bool &checkCompatibilty() const;
+    const CompatibilyCheckResult &checkCompatibilty() const;
     void setLoadedProjectVersion(const QString &loadedVersion);
 
     int generateUniqueId();
