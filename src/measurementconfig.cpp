@@ -388,6 +388,10 @@ void MeasurementConfig::setTransientData(const QString key, const QVariant value
  * @return true if elementType and typeOfFeature can handled by this MeasurementConfig
  */
 bool MeasurementConfig::applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature) {
+    if(ElementTypes::eUndefinedElement == elementType) {
+        return false;
+    }
+
     // handle level ->
     if(ElementTypes::eReadingLevelElement == elementType) {
         return this->typeOfReading == ReadingTypes::eLevelReading;
