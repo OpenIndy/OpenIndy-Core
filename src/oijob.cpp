@@ -72,6 +72,48 @@ void OiJob::setDigest(const QString &digest) {
 }
 
 /*!
+ * \return true if the project file version compatible with this program version
+ */
+const CompatibilyCheckResult &OiJob::checkCompatibilty() const {
+    QStringList jobParts = loadedVersion.split(".");
+    if(jobParts.length()<2) {
+        return eCheckResult_job_wo_valid_version;
+    }
+
+    int jobMajor = jobParts.at(0).toInt();
+    int jobMinor = jobParts.at(1).toInt();
+
+    QStringList oiParts =  QString(OPENINDY_VERSION).split(".");
+    if(oiParts.length()<2) {
+        return eCheckResult_oi_wo_valid_version;
+    }
+
+    int oiMajor = oiParts.at(0).toInt();
+    int oiMinor = oiParts.at(1).toInt();
+
+    if(jobMajor <= 22 && jobMinor <= 1) {
+        return eCheckResult_job_lt_oi_22_1;
+    } else if(oiMajor == jobMajor) {
+        if(oiMinor == jobMinor) {
+            return eCheckResult_match;
+        } else if (oiMinor > jobMinor) {
+            return eCheckResult_oi_gt_job;
+        } else {
+            return eCheckResult_oi_lt_job;
+        }
+    } else if(oiMajor > jobMajor) {
+        return eCheckResult_oi_gt_job;
+    } else {
+        return eCheckResult_oi_lt_job;
+    }
+
+}
+
+void OiJob::setLoadedProjectVersion(const QString &loadedVersion) {
+    this->loadedVersion = loadedVersion;
+}
+
+/*!
  * \brief OiJob::generateUniqueId
  * \return
  */
