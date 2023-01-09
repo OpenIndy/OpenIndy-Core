@@ -1,4 +1,5 @@
 #include "measurementconfig.h"
+#include "util.h"
 
 using namespace oi;
 
@@ -8,19 +9,18 @@ using namespace oi;
 MeasurementConfig::MeasurementConfig() : isSaved(false){
 
     //set defaults
-    this->count = 500;
-    this->iterations = 1;
+    this->measurementType = eSinglePoint_MeasurementType;
+    this->measurementMode = eFast_MeasurementMode;
     this->measureTwoSides = false;
-    this->timeDependent = false;
-    this->distanceDependent = false;
+    this->maxObservations = 500;
     this->timeInterval = 0;
     this->distanceInterval = 0.0;
-    this->typeOfReading = ePolarReading;
 
     this->isStablePoint = false;
     this->stablePointMinDistance = 10.0;
     this->stablePointThresholdRange = 0.1;
     this->stablePointThresholdTime = 2.0;
+
 
 }
 
@@ -33,14 +33,12 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     //copy measurement config attributes
     this->name = copy.name;
     this->isSaved = copy.isSaved;
-    this->count = copy.count;
-    this->iterations = copy.iterations;
+    this->measurementType = copy.measurementType;
+    this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
-    this->timeDependent = copy.timeDependent;
-    this->distanceDependent = copy.distanceDependent;
+    this->maxObservations = copy.maxObservations;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
-    this->typeOfReading = copy.typeOfReading;
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
@@ -61,14 +59,12 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     //copy measurement config attributes
     this->name = copy.name;
     this->isSaved = copy.isSaved;
-    this->count = copy.count;
-    this->iterations = copy.iterations;
+    this->measurementType = copy.measurementType;
+    this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
-    this->timeDependent = copy.timeDependent;
-    this->distanceDependent = copy.distanceDependent;
+    this->maxObservations = copy.maxObservations;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
-    this->typeOfReading = copy.typeOfReading;
 
     this->isStablePoint = copy.isStablePoint;
     this->stablePointMinDistance = copy.stablePointMinDistance;
@@ -127,40 +123,6 @@ bool MeasurementConfig::getIsValid() const{
 }
 
 /*!
- * \brief MeasurementConfig::getCount
- * \return
- */
-const int &MeasurementConfig::getCount() const{
-    return this->count;
-}
-
-/*!
- * \brief MeasurementConfig::setCount
- * \param count
- */
-void MeasurementConfig::setCount(const int &count){
-    this->count = count;
-    this->isSaved = false;
-}
-
-/*!
- * \brief MeasurementConfig::getIterations
- * \return
- */
-const int &MeasurementConfig::getIterations() const{
-    return this->iterations;
-}
-
-/*!
- * \brief MeasurementConfig::setIterations
- * \param iterations
- */
-void MeasurementConfig::setIterations(const int &iterations){
-    this->iterations = iterations;
-    this->isSaved = false;
-}
-
-/*!
  * \brief MeasurementConfig::getMeasureTwoSides
  * \return
  */
@@ -178,40 +140,6 @@ void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
 }
 
 /*!
- * \brief MeasurementConfig::getTimeDependent
- * \return
- */
-const bool &MeasurementConfig::getTimeDependent() const{
-    return this->timeDependent;
-}
-
-/*!
- * \brief MeasurementConfig::setTimeDependent
- * \param timeDependent
- */
-void MeasurementConfig::setTimeDependent(const bool &timeDependent){
-    this->timeDependent = timeDependent;
-    this->isSaved = false;
-}
-
-/*!
- * \brief MeasurementConfig::getDistanceDependent
- * \return
- */
-const bool &MeasurementConfig::getDistanceDependent() const{
-    return this->distanceDependent;
-}
-
-/*!
- * \brief MeasurementConfig::setDistanceDependent
- * \param distanceDependent
- */
-void MeasurementConfig::setDistanceDependent(const bool &distanceDependent){
-    this->distanceDependent = distanceDependent;
-    this->isSaved = false;
-}
-
-/*!
  * \brief MeasurementConfig::getTimeInterval
  * \return
  */
@@ -224,7 +152,7 @@ const long &MeasurementConfig::getTimeInterval() const{
  * \param interval
  */
 void MeasurementConfig::setTimeInterval(const long &interval){
-    this->timeInterval = timeInterval;
+    this->timeInterval = interval;
     this->isSaved = false;
 }
 
@@ -244,24 +172,6 @@ void MeasurementConfig::setDistanceInterval(const double &interval){
     this->distanceInterval = interval;
     this->isSaved = false;
 }
-
-/*!
- * \brief MeasurementConfig::getTypeOfReading
- * \return
- */
-const ReadingTypes &MeasurementConfig::getTypeOfReading() const{
-    return this->typeOfReading;
-}
-
-/*!
- * \brief MeasurementConfig::setTypeOfReading
- * \param type
- */
-void MeasurementConfig::setTypeOfReading(const ReadingTypes &type){
-    this->typeOfReading = type;
-    this->isSaved = false;
-}
-
 
 void MeasurementConfig::setIsStablePoint(const bool isStablePoint) {
     this->isStablePoint = isStablePoint;
@@ -315,14 +225,13 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     //set measurement config attributes
     mConfig.setAttribute("name", this->name);
     mConfig.setAttribute("isSaved", this->isSaved);
-    mConfig.setAttribute("count", this->count);
-    mConfig.setAttribute("iterations", this->iterations);
+
+    mConfig.setAttribute("measurementMode", this->measurementMode);
+    mConfig.setAttribute("measurementType", this->measurementType);
     mConfig.setAttribute("measureTwoSides", this->measureTwoSides);
-    mConfig.setAttribute("timeDependent", this->timeDependent);
-    mConfig.setAttribute("distanceDependent", this->distanceDependent);
+    mConfig.setAttribute("maxObservations", this->maxObservations);
     mConfig.setAttribute("timeInterval", QString::number(this->timeInterval));
     mConfig.setAttribute("distanceInterval", this->distanceInterval);
-    mConfig.setAttribute("typeOfReading", this->typeOfReading);
 
     mConfig.setAttribute("isStablePoint", this->isStablePoint);
     mConfig.setAttribute("stablePointMinDistance", this->stablePointMinDistance);
@@ -344,22 +253,23 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
         return false;
     }
 
-    if(!xmlElem.hasAttribute("name") || !xmlElem.hasAttribute("count") || !xmlElem.hasAttribute("iterations")
-            || !xmlElem.hasAttribute("measureTwoSides") || !xmlElem.hasAttribute("timeDependent")
-            || !xmlElem.hasAttribute("distanceDependent") || !xmlElem.hasAttribute("timeInterval")
-            || !xmlElem.hasAttribute("distanceInterval") || !xmlElem.hasAttribute("typeOfReading")){
+    if(!xmlElem.hasAttribute("name")
+            || !xmlElem.hasAttribute("measurementMode")
+            || !xmlElem.hasAttribute("measurementType")
+            || !xmlElem.hasAttribute("measureTwoSides")
+            || !xmlElem.hasAttribute("maxObservations")
+            || !xmlElem.hasAttribute("timeInterval")
+            || !xmlElem.hasAttribute("distanceInterval")
+            ){
         return false;
     }
 
     this->name = xmlElem.attribute("name");
-    this->count = xmlElem.attribute("count").toInt();
-    this->iterations = xmlElem.attribute("iterations").toInt();
+    this->measurementMode = (MeasurementModes)xmlElem.attribute("measurementMode").toInt();
+    this->measurementType = (MeasurementTypes)xmlElem.attribute("measurementType").toInt();
     this->measureTwoSides = xmlElem.attribute("measureTwoSides").toInt();
-    this->timeDependent = xmlElem.attribute("timeDependent").toInt();
-    this->distanceDependent = xmlElem.attribute("distanceDependent").toInt();
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
-    this->typeOfReading = (ReadingTypes)xmlElem.attribute("typeOfReading").toInt();
 
     this->isStablePoint = xmlElem.attribute("isStablePoint").toInt();
     this->stablePointMinDistance = xmlElem.attribute("stablePointMinDistance").toDouble();
@@ -394,19 +304,56 @@ bool MeasurementConfig::applicableFor(const ElementTypes elementType, const Feat
 
     // handle level ->
     if(ElementTypes::eReadingLevelElement == elementType) {
-        return this->typeOfReading == ReadingTypes::eLevelReading;
+        return this->measurementType == MeasurementTypes::eLevel_MeasurementType;
     }
-    if(this->typeOfReading == ReadingTypes::eLevelReading) {
+    if(this->measurementType == MeasurementTypes::eLevel_MeasurementType) {
         return false;
     }
     // <- handle level
 
     if(FeatureTypes::ePointFeature == typeOfFeature) {
-        if(this->distanceDependent) { // no distance scan possible
+        if(this->measurementType == MeasurementTypes::eScanDistanceDependent_MeasurementType) { // no distance scan possible
             return false;
         }
     }
 
 
     return true;
+}
+
+void MeasurementConfig::setMeasurementMode(const MeasurementModes mode) {
+    this->measurementMode = mode;
+    this->isSaved = false;
+}
+
+const MeasurementModes MeasurementConfig::getMeasurementMode() const {
+    return this->measurementMode;
+}
+
+void MeasurementConfig::setMeasurementType(const MeasurementTypes type) {
+    this->measurementType = type;
+    this->isSaved = false;
+}
+
+const MeasurementTypes MeasurementConfig::getMeasurementType() const {
+    return this->measurementType;
+}
+
+const int &MeasurementConfig::getMaxObservations() const {
+    return this->maxObservations;
+}
+void MeasurementConfig::setMaxObservations(const int &maxObservations) {
+    this->maxObservations = maxObservations;
+    this->isSaved = false;
+}
+
+bool MeasurementConfig::equals(const MeasurementConfig &other){
+    return getName() == other.getName()
+            && getMeasurementType() == other.getMeasurementType()
+            && getMeasurementMode() == other.getMeasurementMode()
+            && getMeasureTwoSides() == other.getMeasureTwoSides()
+            && getMaxObservations() == other.getMaxObservations()
+            && getTimeInterval() == other.getTimeInterval()
+            & almostEqual(getDistanceInterval(), other.getDistanceInterval(), 8);
+            // TODO stablepoint properties
 }

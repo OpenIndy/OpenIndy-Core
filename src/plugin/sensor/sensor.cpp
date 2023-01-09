@@ -349,3 +349,22 @@ bool Sensor::fromOpenIndyXML(QDomElement &xmlElem){
 void Sensor::init(){
 
 }
+
+ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig) const{
+    switch(mConfig.getMeasurementMode()) {
+    case eSinglePoint_MeasurementType:
+    case eScanDistanceDependent_MeasurementType:
+    case eScanTimeDependent_MeasurementType:
+        return getReadingTypeEnum(this->sensorConfiguration.getStringParameter().value("reading type"));
+    case eDistance_MeasurementType:
+        return eDistanceReading;
+    case eDirection_MeasurementType:
+        return eDirectionReading;
+    case eLevel_MeasurementType:
+        return eLevelReading;
+    case eTemperature_MeasurementType:
+        return eTemperatureReading;
+    default:
+        return eUndefinedReading;
+    }
+}
