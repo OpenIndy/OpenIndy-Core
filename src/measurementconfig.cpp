@@ -268,6 +268,7 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->measurementMode = (MeasurementModes)xmlElem.attribute("measurementMode").toInt();
     this->measurementType = (MeasurementTypes)xmlElem.attribute("measurementType").toInt();
     this->measureTwoSides = xmlElem.attribute("measureTwoSides").toInt();
+    this->maxObservations = xmlElem.attribute("maxObservations").toInt();
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
 
