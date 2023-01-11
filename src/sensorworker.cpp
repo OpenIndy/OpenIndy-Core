@@ -417,11 +417,13 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
         request.insert("method", "measure");
         request.insert("geomId", geomId);
 
-        QDomDocument mConfigXml("measurementConfig");
-        //add mConfig to document as xml
-        QDomElement root = mConfig.toOpenIndyXML(mConfigXml);
-        mConfigXml.appendChild(root);
-        emit this->sensorMessage(mConfigXml.toString(),MessageTypes::eInformationMessage);
+        if(QLoggingCategory("openindy.measurementconfig").isDebugEnabled()) {
+            QDomDocument mConfigXml("measurementConfig");
+            //add mConfig to document as xml
+            QDomElement root = mConfig.toOpenIndyXML(mConfigXml);
+            mConfigXml.appendChild(root);
+            emit this->sensorMessage(mConfigXml.toString(),MessageTypes::eInformationMessage);
+        }
 
         this->sensor->setMeasurementConfig(mConfig);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
