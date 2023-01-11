@@ -312,13 +312,6 @@ bool MeasurementConfig::applicableFor(const ElementTypes elementType, const Feat
     }
     // <- handle level
 
-    if(FeatureTypes::ePointFeature == typeOfFeature) {
-        if(this->measurementType == MeasurementTypes::eScanDistanceDependent_MeasurementType) { // no distance scan possible
-            return false;
-        }
-    }
-
-
     return true;
 }
 
