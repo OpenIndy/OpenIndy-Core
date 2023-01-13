@@ -1159,32 +1159,32 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
         }
         break;
     case eReadingDisplayX:
-        if(type != eCartesianReading){
+        if(type != eCartesianReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplayY:
-        if(type != eCartesianReading){
+        if(type != eCartesianReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplayZ:
-        if(type != eCartesianReading){
+        if(type != eCartesianReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplayI:
-        if(type != eLevelReading){
+        if(type != eLevelReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplayJ:
-        if(type != eLevelReading){
+        if(type != eLevelReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplayK:
-        if(type != eLevelReading){
+        if(type != eLevelReading && type != eCartesianReading6D){
             return false;
         }
         break;
@@ -1209,17 +1209,17 @@ bool getReadingDisplayAttributeVisibility(const ReadingDisplayAttributes &attr, 
         }
         break;
     case eReadingDisplaySigmaX:
-        if(type != eCartesianReading){
+        if(type != eCartesianReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplaySigmaY:
-        if(type != eCartesianReading){
+        if(type != eCartesianReading && type != eCartesianReading6D){
             return false;
         }
         break;
     case eReadingDisplaySigmaZ:
-        if(type != eCartesianReading){
+        if(type != eCartesianReading && type != eCartesianReading6D){
             return false;
         }
         break;
