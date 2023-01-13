@@ -718,7 +718,7 @@ QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
 }
 
 /*!
- * \brief Reading::getDisplayRX
+ * \brief Reading::getDisplayI
  * \param type
  * \param digits
  * \return
@@ -733,7 +733,7 @@ QString Reading::getDisplayI(const int &digits) const{
 }
 
 /*!
- * \brief Reading::getDisplayRY
+ * \brief Reading::getDisplayJ
  * \param type
  * \param digits
  * \return
@@ -748,7 +748,7 @@ QString Reading::getDisplayJ(const int &digits) const{
 }
 
 /*!
- * \brief Reading::getDisplayRZ
+ * \brief Reading::getDisplayK
  * \param type
  * \param digits
  * \return
