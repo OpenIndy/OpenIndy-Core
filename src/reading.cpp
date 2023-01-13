@@ -272,6 +272,10 @@ const ReadingCartesian &Reading::getCartesianReading() const{
     return this->rCartesian;
 }
 
+const ReadingCartesian6D &Reading::getCartesianReading6D() const{
+    return this->rCartesian6D;
+}
+
 /*!
  * \brief Reading::getDirectionReading
  * \return

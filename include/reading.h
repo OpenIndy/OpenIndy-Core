@@ -178,6 +178,7 @@ public:
 
     const ReadingPolar &getPolarReading() const;
     const ReadingCartesian &getCartesianReading() const;
+    const ReadingCartesian6D &getCartesianReading6D() const;
     const ReadingDirection &getDirectionReading() const;
     const ReadingDistance &getDistanceReading() const;
     const ReadingTemperature &getTemperatureReading() const;
