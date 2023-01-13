@@ -1010,17 +1010,17 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
             QDomElement i = xmlDoc.createElement("measurement");
             i.setAttribute("type", "i");
             i.setAttribute("value", this->rCartesian6D.ijk.getAt(0));
-            //i.setAttribute("sigma", this->rCartesian6D.sigmaI);
+            i.setAttribute("sigma", -1);
             measurements.appendChild(i);
             QDomElement j = xmlDoc.createElement("measurement");
             j.setAttribute("type", "j");
             j.setAttribute("value", this->rCartesian6D.ijk.getAt(1));
-            //j.setAttribute("sigma", this->rCartesian6D.sigmaJ);
+            j.setAttribute("sigma", -1);
             measurements.appendChild(j);
             QDomElement k = xmlDoc.createElement("measurement");
             k.setAttribute("type", "k");
             k.setAttribute("value", this->rCartesian6D.ijk.getAt(2));
-            //k.setAttribute("sigma", this->rCartesian6D.sigmaK);
+            k.setAttribute("sigma", -1);
             measurements.appendChild(k);
         }
         break;
