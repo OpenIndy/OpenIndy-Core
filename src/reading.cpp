@@ -61,7 +61,24 @@ Reading::Reading(const ReadingCartesian &reading, QObject *parent) : Element(par
     this->imported = false;
 
 }
+Reading::Reading(const ReadingCartesian6D &reading, QObject *parent) : Element(parent), hasBackup(false){
 
+    if(reading.xyz.getSize() != 3 || reading.ijk.getSize() != 3 || reading.sigmaXyz.getSize() != 3){
+        this->typeOfReading = eCartesianReading6D;
+        return;
+    }
+
+    //set the reading and transform into polar
+    this->typeOfReading = eCartesianReading6D;
+    this->rCartesian6D = reading;
+    this->toPolar();
+
+    //set default attributes
+    this->measuredAt = QDateTime::currentDateTime();
+    this->face = eUndefinedSide;
+    this->imported = false;
+
+}
 /*!
  * \brief Reading::Reading
  * \param reading

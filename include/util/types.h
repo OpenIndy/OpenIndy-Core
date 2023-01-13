@@ -207,6 +207,7 @@ enum ReadingTypes{
 
     eDistanceReading = 0,
     eCartesianReading,
+    eCartesianReading6D,
     ePolarReading,
     eDirectionReading,
     eTemperatureReading,
