@@ -127,6 +127,7 @@ public:
  */
 class OI_CORE_EXPORT ReadingLevel{
 public:
+    ReadingLevel() : isValid(false){}
     double i;
     double j;
     double k;
