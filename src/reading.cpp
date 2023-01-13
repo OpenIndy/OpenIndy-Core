@@ -509,7 +509,7 @@ void Reading::setObservation(const QPointer<Observation> &observation){
     }
 
     //set observation position and standard deviation
-    if(this->rCartesian.isValid){
+    if(this->rCartesian.isValid || this->rCartesian6D.isValid){
 
         //set position
         observation->originalXyz.setAt(0, this->rCartesian.xyz.getAt(0));
@@ -524,10 +524,17 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         observation->originalSigmaXyz.setAt(3, 1.0);
 
         //set ijk
-        observation->originalIjk.setAt(0, 0.0);
-        observation->originalIjk.setAt(1, 0.0);
-        observation->originalIjk.setAt(2, 0.0);
-        observation->originalIjk.setAt(3, 1.0);
+        if(this->rCartesian6D.isValid) {
+            observation->originalIjk.setAt(0, this->rCartesian6D.ijk.getAt(0));
+            observation->originalIjk.setAt(1, this->rCartesian6D.ijk.getAt(1));
+            observation->originalIjk.setAt(2, this->rCartesian6D.ijk.getAt(2));
+            observation->originalIjk.setAt(3, 1.0);
+        } else {
+            observation->originalIjk.setAt(0, 0.0);
+            observation->originalIjk.setAt(1, 0.0);
+            observation->originalIjk.setAt(2, 0.0);
+            observation->originalIjk.setAt(3, 1.0);
+        }
 
         if(this->property("isDummyPoint").isValid()) { // set only if property is available
             observation->isDummyPoint = this->property("isDummyPoint").toBool();
