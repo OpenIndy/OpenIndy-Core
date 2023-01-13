@@ -727,7 +727,7 @@ QString Reading::getDisplayI(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(rLevel.i, 'f', digits);
     } else if(this->rCartesian6D.isValid){
-        return QString::number(convertFromDefault(this->rCartesian6D.ijk.getAt(0), digits), 'f', digits);
+        return QString::number(this->rCartesian6D.ijk.getAt(0), 'f', digits);
     }
     return QString("");
 }
@@ -742,7 +742,7 @@ QString Reading::getDisplayJ(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(this->rLevel.j, 'f', digits);
     } else if(this->rCartesian6D.isValid){
-        return QString::number(convertFromDefault(this->rCartesian6D.ijk.getAt(1), digits), 'f', digits);
+        return QString::number(this->rCartesian6D.ijk.getAt(1), 'f', digits);
     }
     return QString("");
 }
@@ -757,7 +757,7 @@ QString Reading::getDisplayK(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(this->rLevel.k, 'f', digits);
     } else if(this->rCartesian6D.isValid){
-        return QString::number(convertFromDefault(this->rCartesian6D.ijk.getAt(2), digits), 'f', digits);
+        return QString::number(this->rCartesian6D.ijk.getAt(2), 'f', digits);
     }
     return QString("");
 }
