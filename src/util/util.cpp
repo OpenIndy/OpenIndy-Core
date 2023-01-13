@@ -252,6 +252,7 @@ void init(){
     //fill reading map
     readingTypesMap.insert(eDistanceReading, "distance");
     readingTypesMap.insert(eCartesianReading, "cartesian");
+    readingTypesMap.insert(eCartesianReading6D, "cartesian6D");
     readingTypesMap.insert(ePolarReading, "polar");
     readingTypesMap.insert(eDirectionReading, "direction");
     readingTypesMap.insert(eTemperatureReading, "temperature");
