@@ -681,6 +681,8 @@ QString Reading::getDisplayDistance(const UnitType &type, const int &digits) con
 QString Reading::getDisplayX(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.xyz.getAt(0), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.xyz.getAt(0), type), 'f', digits);
     }
     return QString("");
 }
@@ -694,6 +696,8 @@ QString Reading::getDisplayX(const UnitType &type, const int &digits) const{
 QString Reading::getDisplayY(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.xyz.getAt(1), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.xyz.getAt(1), type), 'f', digits);
     }
     return QString("");
 }
@@ -707,6 +711,8 @@ QString Reading::getDisplayY(const UnitType &type, const int &digits) const{
 QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.xyz.getAt(2), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.xyz.getAt(2), type), 'f', digits);
     }
     return QString("");
 }
@@ -720,6 +726,8 @@ QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
 QString Reading::getDisplayI(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(rLevel.i, 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.ijk.getAt(0), type), 'f', digits);
     }
     return QString("");
 }
@@ -733,6 +741,8 @@ QString Reading::getDisplayI(const int &digits) const{
 QString Reading::getDisplayJ(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(this->rLevel.j, 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.ijk.getAt(1), type), 'f', digits);
     }
     return QString("");
 }
@@ -746,6 +756,8 @@ QString Reading::getDisplayJ(const int &digits) const{
 QString Reading::getDisplayK(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(this->rLevel.k, 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.ijk.getAt(2), type), 'f', digits);
     }
     return QString("");
 }
