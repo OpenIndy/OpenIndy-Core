@@ -990,6 +990,40 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
             measurements.appendChild(z);
         }
         break;
+    case eCartesianReading6D:
+        if(this->rCartesian6D.isValid && this->rCartesian6D.xyz.getSize() >= 3 && this->rCartesian6D.sigmaXyz.getSize() >= 3){
+            QDomElement x = xmlDoc.createElement("measurement");
+            x.setAttribute("type", "x");
+            x.setAttribute("value", this->rCartesian6D.xyz.getAt(0));
+            x.setAttribute("sigma", this->rCartesian6D.sigmaXyz.getAt(0));
+            measurements.appendChild(x);
+            QDomElement y = xmlDoc.createElement("measurement");
+            y.setAttribute("type", "y");
+            y.setAttribute("value", this->rCartesian6D.xyz.getAt(1));
+            y.setAttribute("sigma", this->rCartesian6D.sigmaXyz.getAt(1));
+            measurements.appendChild(y);
+            QDomElement z = xmlDoc.createElement("measurement");
+            z.setAttribute("type", "z");
+            z.setAttribute("value", this->rCartesian6D.xyz.getAt(2));
+            z.setAttribute("sigma", this->rCartesian6D.sigmaXyz.getAt(2));
+            measurements.appendChild(z);
+            QDomElement i = xmlDoc.createElement("measurement");
+            i.setAttribute("type", "i");
+            i.setAttribute("value", this->rCartesian6D.ijk.getAt(0));
+            //i.setAttribute("sigma", this->rCartesian6D.sigmaI);
+            measurements.appendChild(i);
+            QDomElement j = xmlDoc.createElement("measurement");
+            j.setAttribute("type", "j");
+            j.setAttribute("value", this->rCartesian6D.ijk.getAt(1));
+            //j.setAttribute("sigma", this->rCartesian6D.sigmaJ);
+            measurements.appendChild(j);
+            QDomElement k = xmlDoc.createElement("measurement");
+            k.setAttribute("type", "k");
+            k.setAttribute("value", this->rCartesian6D.ijk.getAt(2));
+            //k.setAttribute("sigma", this->rCartesian6D.sigmaK);
+            measurements.appendChild(k);
+        }
+        break;
     case eDirectionReading:
         if(this->rDirection.isValid){
             QDomElement azimuth = xmlDoc.createElement("measurement");
@@ -1126,12 +1160,26 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
     this->rCartesian.xyz = OiVec(3);
     this->rCartesian.sigmaXyz = OiVec(3);
 
+    // auto detect reading type
+    int countTypes = 0;
+    for(int i = 0; i < measurementList.size(); i++){
+        QDomElement measurement = measurementList.at(i).toElement();
+        if(measurement.attribute("type").compare("x")) countTypes +=1;
+        if(measurement.attribute("type").compare("y")) countTypes +=1;
+        if(measurement.attribute("type").compare("z")) countTypes +=1;
+        if(measurement.attribute("type").compare("i")) countTypes +=1;
+        if(measurement.attribute("type").compare("j")) countTypes +=1;
+        if(measurement.attribute("type").compare("k")) countTypes +=1;
+    }
+    this->rCartesian6D.isValid == countTypes == 6;
+
     //fill measurement values
     for(int i = 0; i < measurementList.size(); i++){
         QDomElement measurement = measurementList.at(i).toElement();
         if(!measurement.hasAttribute("type") || !measurement.hasAttribute("value") || !measurement.hasAttribute("sigma")){
             continue;
         }
+
         if(measurement.attribute("type").compare("x") == 0){
             this->rCartesian.xyz.setAt(0, measurement.attribute("value").toDouble());
             this->rCartesian.isValid = true;
@@ -1153,17 +1201,32 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
             this->rDistance.distance = measurement.attribute("value").toDouble();
             this->rDistance.isValid = true;
         }else if(measurement.attribute("type").compare("i") == 0){
-            this->rLevel.i = measurement.attribute("value").toDouble();
-            this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
-            this->rLevel.isValid = true;
+            if(this->rCartesian6D.isValid) {
+                this->rCartesian6D.ijk.setAt(0, measurement.attribute("value").toDouble());
+                //this->rCartesian6D.sigmaI = measurement.attribute("sigma").toDouble();
+            } else {
+                this->rLevel.i = measurement.attribute("value").toDouble();
+                this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
+                this->rLevel.isValid = true;
+            }
         }else if(measurement.attribute("type").compare("j") == 0){
-            this->rLevel.j = measurement.attribute("value").toDouble();
-            this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
-            this->rLevel.isValid = true;
+            if(this->rCartesian6D.isValid) {
+                this->rCartesian6D.ijk.setAt(1, measurement.attribute("value").toDouble());
+                //this->rCartesian6D.sigmaJ = measurement.attribute("sigma").toDouble();
+            } else {
+                this->rLevel.j = measurement.attribute("value").toDouble();
+                this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
+                this->rLevel.isValid = true;
+            }
         }else if(measurement.attribute("type").compare("k") == 0){
-            this->rLevel.k = measurement.attribute("value").toDouble();
-            this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
-            this->rLevel.isValid = true;
+            if(this->rCartesian6D.isValid) {
+                this->rCartesian6D.ijk.setAt(2, measurement.attribute("value").toDouble());
+                //this->rCartesian6D.sigmaK = measurement.attribute("sigma").toDouble();
+            } else {
+                this->rLevel.k = measurement.attribute("value").toDouble();
+                this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
+                this->rLevel.isValid = true;
+            }
         }
     }
 
