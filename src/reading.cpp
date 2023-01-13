@@ -1043,21 +1043,21 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
         break;
     case eLevelReading:
         if(this->rLevel.isValid){
-            QDomElement rx = xmlDoc.createElement("measurement");
-            rx.setAttribute("type", "i");
-            rx.setAttribute("value", this->rLevel.i);
-            rx.setAttribute("sigma", this->rLevel.sigmaI);
-            measurements.appendChild(rx);
-            QDomElement ry = xmlDoc.createElement("measurement");
-            ry.setAttribute("type", "j");
-            ry.setAttribute("value", this->rLevel.j);
-            ry.setAttribute("sigma", this->rLevel.sigmaJ);
-            measurements.appendChild(ry);
-            QDomElement rz = xmlDoc.createElement("measurement");
-            rz.setAttribute("type", "k");
-            rz.setAttribute("value", this->rLevel.k);
-            rz.setAttribute("sigma", this->rLevel.sigmaK);
-            measurements.appendChild(rz);
+            QDomElement i = xmlDoc.createElement("measurement");
+            i.setAttribute("type", "i");
+            i.setAttribute("value", this->rLevel.i);
+            i.setAttribute("sigma", this->rLevel.sigmaI);
+            measurements.appendChild(i);
+            QDomElement j = xmlDoc.createElement("measurement");
+            j.setAttribute("type", "j");
+            j.setAttribute("value", this->rLevel.j);
+            j.setAttribute("sigma", this->rLevel.sigmaJ);
+            measurements.appendChild(j);
+            QDomElement k = xmlDoc.createElement("measurement");
+            k.setAttribute("type", "k");
+            k.setAttribute("value", this->rLevel.k);
+            k.setAttribute("sigma", this->rLevel.sigmaK);
+            measurements.appendChild(k);
         }
         break;
     case eUndefinedReading:
