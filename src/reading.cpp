@@ -1156,22 +1156,37 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         return false;
     }
 
-    //initialize measurement variables
-    this->rCartesian.xyz = OiVec(3);
-    this->rCartesian.sigmaXyz = OiVec(3);
-
-    // auto detect reading type
-    int countTypes = 0;
-    for(int i = 0; i < measurementList.size(); i++){
-        QDomElement measurement = measurementList.at(i).toElement();
-        if(measurement.attribute("type").compare("x")) countTypes +=1;
-        if(measurement.attribute("type").compare("y")) countTypes +=1;
-        if(measurement.attribute("type").compare("z")) countTypes +=1;
-        if(measurement.attribute("type").compare("i")) countTypes +=1;
-        if(measurement.attribute("type").compare("j")) countTypes +=1;
-        if(measurement.attribute("type").compare("k")) countTypes +=1;
+    // set isValid
+    switch(typeOfReading) {
+    case eDistanceReading:
+        this->rDistance.isValid = true;
+        break;
+    case eCartesianReading:
+        this->rCartesian.isValid = true;
+        //initialize measurement variables
+        this->rCartesian.xyz = OiVec(3);
+        this->rCartesian.sigmaXyz = OiVec(3);
+        break;
+    case ePolarReading:
+        this->rPolar.isValid = true;
+        break;
+    case eDirectionReading:
+        this->rDirection.isValid = true;
+        break;
+    case eTemperatureReading:
+        this->rTemperature.isValid = true;
+        break;
+    case eLevelReading:
+        this->rLevel.isValid = true;
+        break;
+    case eCartesianReading6D:
+        this->rCartesian6D = true;
+        break;
+    case eUndefinedReading:
+    default:
+        return false;
     }
-    this->rCartesian6D.isValid == countTypes == 6;
+
 
     //fill measurement values
     for(int i = 0; i < measurementList.size(); i++){
@@ -1181,51 +1196,44 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         if(measurement.attribute("type").compare("x") == 0){
-            this->rCartesian.xyz.setAt(0, measurement.attribute("value").toDouble());
-            this->rCartesian.isValid = true;
+            if(rCartesian.isValid) this->rCartesian.xyz.setAt(0, measurement.attribute("value").toDouble());
+            if(rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(0, measurement.attribute("value").toDouble());
         }else if(measurement.attribute("type").compare("y") == 0){
-            this->rCartesian.xyz.setAt(1, measurement.attribute("value").toDouble());
+            if(rCartesian.isValid) this->rCartesian.xyz.setAt(1, measurement.attribute("value").toDouble());
+            if(rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(1, measurement.attribute("value").toDouble());
         }else if(measurement.attribute("type").compare("z") == 0){
-            this->rCartesian.xyz.setAt(2, measurement.attribute("value").toDouble());
+            if(rCartesian.isValid) this->rCartesian.xyz.setAt(2, measurement.attribute("value").toDouble());
+            if(rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(2, measurement.attribute("value").toDouble());
         }else if(measurement.attribute("type").compare("azimuth") == 0){
-            this->rPolar.azimuth = measurement.attribute("value").toDouble();
-            this->rDirection.azimuth = measurement.attribute("value").toDouble();
-            this->rPolar.isValid = true;
-            this->rDirection.isValid = true;
+            if(rPolar.isValid) this->rPolar.azimuth = measurement.attribute("value").toDouble();
+            if(rDirection.isValid) this->rDirection.azimuth = measurement.attribute("value").toDouble();
         }else if(measurement.attribute("type").compare("zenith") == 0){
-            this->rPolar.zenith = measurement.attribute("value").toDouble();
-            this->rDirection.zenith = measurement.attribute("value").toDouble();
-            this->rDirection.isValid = true;
+            if(rPolar.isValid) this->rPolar.zenith = measurement.attribute("value").toDouble();
+            if(rDirection.isValid) this->rDirection.zenith = measurement.attribute("value").toDouble();
         }else if(measurement.attribute("type").compare("distance") == 0){
-            this->rPolar.distance = measurement.attribute("value").toDouble();
-            this->rDistance.distance = measurement.attribute("value").toDouble();
-            this->rDistance.isValid = true;
+            if(rPolar.isValid) this->rPolar.distance = measurement.attribute("value").toDouble();
+            if(rDistance.isValid) this->rDistance.distance = measurement.attribute("value").toDouble();
         }else if(measurement.attribute("type").compare("i") == 0){
             if(this->rCartesian6D.isValid) {
                 this->rCartesian6D.ijk.setAt(0, measurement.attribute("value").toDouble());
-                //this->rCartesian6D.sigmaI = measurement.attribute("sigma").toDouble();
-            } else {
+            } else if(this->rLevel.isValid) {
                 this->rLevel.i = measurement.attribute("value").toDouble();
                 this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
-                this->rLevel.isValid = true;
             }
         }else if(measurement.attribute("type").compare("j") == 0){
             if(this->rCartesian6D.isValid) {
                 this->rCartesian6D.ijk.setAt(1, measurement.attribute("value").toDouble());
-                //this->rCartesian6D.sigmaJ = measurement.attribute("sigma").toDouble();
-            } else {
+            } else if(this->rLevel.isValid) {
                 this->rLevel.j = measurement.attribute("value").toDouble();
                 this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
-                this->rLevel.isValid = true;
             }
         }else if(measurement.attribute("type").compare("k") == 0){
             if(this->rCartesian6D.isValid) {
                 this->rCartesian6D.ijk.setAt(2, measurement.attribute("value").toDouble());
                 //this->rCartesian6D.sigmaK = measurement.attribute("sigma").toDouble();
-            } else {
+            } else if(this->rLevel.isValid) {
                 this->rLevel.k = measurement.attribute("value").toDouble();
                 this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
-                this->rLevel.isValid = true;
             }
         }
     }
