@@ -1196,23 +1196,23 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         }
 
         if(measurement.attribute("type").compare("x") == 0){
-            if(rCartesian.isValid) this->rCartesian.xyz.setAt(0, measurement.attribute("value").toDouble());
-            if(rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(0, measurement.attribute("value").toDouble());
+            if(this->rCartesian.isValid) this->rCartesian.xyz.setAt(0, measurement.attribute("value").toDouble());
+            if(this->rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(0, measurement.attribute("value").toDouble());
         }else if(measurement.attribute("type").compare("y") == 0){
-            if(rCartesian.isValid) this->rCartesian.xyz.setAt(1, measurement.attribute("value").toDouble());
-            if(rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(1, measurement.attribute("value").toDouble());
+            if(this->rCartesian.isValid) this->rCartesian.xyz.setAt(1, measurement.attribute("value").toDouble());
+            if(this->rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(1, measurement.attribute("value").toDouble());
         }else if(measurement.attribute("type").compare("z") == 0){
-            if(rCartesian.isValid) this->rCartesian.xyz.setAt(2, measurement.attribute("value").toDouble());
-            if(rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(2, measurement.attribute("value").toDouble());
+            if(this->rCartesian.isValid) this->rCartesian.xyz.setAt(2, measurement.attribute("value").toDouble());
+            if(this->rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(2, measurement.attribute("value").toDouble());
         }else if(measurement.attribute("type").compare("azimuth") == 0){
-            if(rPolar.isValid) this->rPolar.azimuth = measurement.attribute("value").toDouble();
-            if(rDirection.isValid) this->rDirection.azimuth = measurement.attribute("value").toDouble();
+            if(this->rPolar.isValid) this->rPolar.azimuth = measurement.attribute("value").toDouble();
+            if(this->rDirection.isValid) this->rDirection.azimuth = measurement.attribute("value").toDouble();
         }else if(measurement.attribute("type").compare("zenith") == 0){
-            if(rPolar.isValid) this->rPolar.zenith = measurement.attribute("value").toDouble();
-            if(rDirection.isValid) this->rDirection.zenith = measurement.attribute("value").toDouble();
+            if(this->rPolar.isValid) this->rPolar.zenith = measurement.attribute("value").toDouble();
+            if(this->rDirection.isValid) this->rDirection.zenith = measurement.attribute("value").toDouble();
         }else if(measurement.attribute("type").compare("distance") == 0){
-            if(rPolar.isValid) this->rPolar.distance = measurement.attribute("value").toDouble();
-            if(rDistance.isValid) this->rDistance.distance = measurement.attribute("value").toDouble();
+            if(this->rPolar.isValid) this->rPolar.distance = measurement.attribute("value").toDouble();
+            if(this->rDistance.isValid) this->rDistance.distance = measurement.attribute("value").toDouble();
         }else if(measurement.attribute("type").compare("i") == 0){
             if(this->rCartesian6D.isValid) {
                 this->rCartesian6D.ijk.setAt(0, measurement.attribute("value").toDouble());
@@ -1230,7 +1230,6 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         }else if(measurement.attribute("type").compare("k") == 0){
             if(this->rCartesian6D.isValid) {
                 this->rCartesian6D.ijk.setAt(2, measurement.attribute("value").toDouble());
-                //this->rCartesian6D.sigmaK = measurement.attribute("sigma").toDouble();
             } else if(this->rLevel.isValid) {
                 this->rLevel.k = measurement.attribute("value").toDouble();
                 this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
