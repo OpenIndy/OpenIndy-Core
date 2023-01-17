@@ -1180,7 +1180,7 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         this->rLevel.isValid = true;
         break;
     case eCartesianReading6D:
-        this->rCartesian6D = true;
+        this->rCartesian6D.isValid = true;
         break;
     case eUndefinedReading:
     default:
