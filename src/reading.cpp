@@ -1235,7 +1235,10 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
                 this->rLevel.k = value;
                 this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
             }
+        }else if(measurement.attribute("type").compare("temperature") == 0){
+            if(this->rTemperature.isValid) this->rTemperature.temperature = value;
         }
+
     }
 
     this->toCartesian(); // if necessary and posible
