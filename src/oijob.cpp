@@ -3270,7 +3270,7 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
 
 void OiJob::createTemplateFromJob() {
 
-    this->removeAllObservations(); // from features
+    this->removeAllObservations(); // from geometries
 
     // set first station to active station
     QList<QPointer<Station> > stations = this->getStationsList();
@@ -3311,26 +3311,6 @@ void OiJob::createTemplateFromJob() {
         QPointer<BundleAdjustment> bundle = coordianteSystem->getBundlePlugin();
         if(!bundle.isNull()) {
             bundle->clearResults();
-
-            {
-                QList<BundleStation> inputStations;
-                foreach(BundleStation inputStation, bundle->getInputStations()){
-
-                    //get corresponding station feature
-                    QPointer<FeatureWrapper> station = this->getFeatureById(inputStation.id);
-                    if(station.isNull() || station->getStation().isNull() || station->getStation()->getCoordinateSystem().isNull()){
-                        continue;
-                    }
-
-                    // clear station geometries of bundle
-                    inputStation.geometries.clear();
-                    inputStations.append(inputStation);
-
-                }
-
-                bundle->setInputStations(inputStations);
-                bundle->setBaseStation(inputStations.at(0));
-            }
         }
     }
 
@@ -3344,6 +3324,7 @@ void OiJob::createTemplateFromJob() {
     scale.setAt(2,1.);
     for(QPointer<TrafoParam> trafoParam : trafoParams) {
         trafoParam->setTransformationParameters(rotation, translation, scale);
+        trafoParam->setIsSolved(false);
     }
 }
 
