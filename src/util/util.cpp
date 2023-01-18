@@ -401,7 +401,13 @@ void init(){
 
     //fill available observation display attributes
     foreach(const ObservationDisplayAttributes &attr, observationDisplayAttributesMap.keys()){
-        observationDisplayAttributes.append(attr);
+        switch(attr){
+            case eObservationDisplayIsValid:
+            // skip
+            break;
+        default:
+            observationDisplayAttributes.append(attr);
+        }
     }
 
     //fill available reading display attributes
