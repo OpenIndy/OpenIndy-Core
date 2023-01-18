@@ -400,14 +400,10 @@ void init(){
     }
 
     //fill available observation display attributes
-    foreach(const ObservationDisplayAttributes &attr, observationDisplayAttributesMap.keys()){
-        observationDisplayAttributes.append(attr);
-    }
+    observationDisplayAttributes = observationDisplayAttributesMap.keys();
 
     //fill available reading display attributes
-    foreach(const ReadingDisplayAttributes &attr, readingDisplayAttributesMap.keys()){
-        readingDisplayAttributes.append(attr);
-    }
+    readingDisplayAttributes = readingDisplayAttributesMap.keys();
 
     //fill unit types map
     unitTypesMap.insert(eUnitArcSeconds, "[arcsec]");
