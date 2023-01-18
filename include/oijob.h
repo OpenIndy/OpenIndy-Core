@@ -162,6 +162,8 @@ public:
     void setShouldBeUsed(const QPointer<FeatureWrapper> &target, const int &functionIndex, const int &neededElementIndex,
                          const int &elementId, const bool &use, const bool &recalc);
 
+    void createTemplateFromJob();
+
 signals:
 
     //#########################################

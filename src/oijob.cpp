@@ -3267,3 +3267,83 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
     }
 
 }
+
+void OiJob::createTemplateFromJob() {
+
+    this->removeAllObservations(); // from features
+
+    // set first station to active station
+    QList<QPointer<Station> > stations = this->getStationsList();
+    std:sort(stations.begin(), stations.end(),[] (const QPointer<Station>& lhs, const QPointer<Station>& rhs) {
+        return lhs->getId() < rhs->getId();
+    });
+
+    // remove used sensors
+    QList<Sensor> usedSensors;
+    int i=0;
+    for(QPointer<Station> station : stations) {
+        if(++i=1) {
+            blockSignals(true); // supress copying of sensor
+            stations.first()->setActiveStationState(true);
+            blockSignals(false);
+            stations.first()->setActiveFeatureState(true);
+        } else {
+            stations.first()->setActiveStationState(false);
+            stations.first()->setActiveFeatureState(false);
+        }
+        station->resetSensor();
+        // remove used sensors
+        station->setUsedSensors(usedSensors);
+        // remove observations from coordinate system
+        QPointer<CoordinateSystem> coordianteSystem = station->getCoordinateSystem();
+        for(QPointer<Observation> obs : coordianteSystem->getObservations()) {
+            coordianteSystem->removeObservation(obs);
+        }
+    }
+
+    // remove observations from coordinate system
+    QList<QPointer<CoordinateSystem> > coordianteSystems = this->getCoordinateSystemsList();
+    for(QPointer<CoordinateSystem> coordianteSystem : coordianteSystems) {
+        for(QPointer<Observation> obs : coordianteSystem->getObservations()) {
+            coordianteSystem->removeObservation(obs);
+        }
+
+        QPointer<BundleAdjustment> bundle = coordianteSystem->getBundlePlugin();
+        if(!bundle.isNull()) {
+            bundle->clearResults();
+
+            {
+                QList<BundleStation> inputStations;
+                foreach(BundleStation inputStation, bundle->getInputStations()){
+
+                    //get corresponding station feature
+                    QPointer<FeatureWrapper> station = this->getFeatureById(inputStation.id);
+                    if(station.isNull() || station->getStation().isNull() || station->getStation()->getCoordinateSystem().isNull()){
+                        continue;
+                    }
+
+                    // clear station geometries of bundle
+                    inputStation.geometries.clear();
+                    inputStations.append(inputStation);
+
+                }
+
+                bundle->setInputStations(inputStations);
+                bundle->setBaseStation(inputStations.at(0));
+            }
+        }
+    }
+
+    // remove transformations parameter
+    QList<QPointer<TrafoParam> > trafoParams = this->getTransformationParametersList();
+    OiVec rotation(3);
+    OiVec translation(3);
+    OiVec scale(3);
+    scale.setAt(0,1.);
+    scale.setAt(1,1.);
+    scale.setAt(2,1.);
+    for(QPointer<TrafoParam> trafoParam : trafoParams) {
+        trafoParam->setTransformationParameters(rotation, translation, scale);
+    }
+}
+
