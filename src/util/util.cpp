@@ -401,7 +401,6 @@ void init(){
 
     //fill available observation display attributes
     observationDisplayAttributes = observationDisplayAttributesMap.keys();
-    observationDisplayAttributes.removeAt(observationDisplayAttributes.indexOf(eObservationDisplayIsValid));
 
     //fill available reading display attributes
     readingDisplayAttributes = readingDisplayAttributesMap.keys();
