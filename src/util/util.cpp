@@ -400,20 +400,11 @@ void init(){
     }
 
     //fill available observation display attributes
-    foreach(const ObservationDisplayAttributes &attr, observationDisplayAttributesMap.keys()){
-        switch(attr){
-            case eObservationDisplayIsValid:
-            // skip
-            break;
-        default:
-            observationDisplayAttributes.append(attr);
-        }
-    }
+    observationDisplayAttributes = observationDisplayAttributesMap.keys();
+    observationDisplayAttributes.removeAt(observationDisplayAttributes.indexOf(eObservationDisplayIsValid));
 
     //fill available reading display attributes
-    foreach(const ReadingDisplayAttributes &attr, readingDisplayAttributesMap.keys()){
-        readingDisplayAttributes.append(attr);
-    }
+    readingDisplayAttributes = readingDisplayAttributesMap.keys();
 
     //fill unit types map
     unitTypesMap.insert(eUnitArcSeconds, "[arcsec]");
