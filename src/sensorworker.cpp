@@ -1004,33 +1004,6 @@ void SensorWorker::asyncSensorStreamDataReceived(const QVariantMap &reading)
 void SensorWorker::finishMeasurement(){
     qDebug() << "SensorWorker::finishMeasurement()";
 
-    //check sensor
-    if(this->sensor.isNull()){
-        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
-        return;
-    }
-
-    //check wether the sensor is already connected
-    QString msg = "failed to finish";
-    bool success = false;
-
-    if(!this->sensor->isSensorAsync()){
-        if(!this->sensor->getConnectionState()){
-            msg = SensorWorkerMessage::SENSOR_IS_NOT_CONNECTED;
-
-        }else if(this->sensor->doSelfDefinedAction("stopMeasure")) {
-                msg = "finish measurement called";
-                success = true;
-        }
-
-        emit this->commandFinished(success, msg);
-    }else{
-        QJsonObject request;
-        request.insert("method", "stopMeasure");
-        QJsonObject status = this->sensor->performAsyncSensorCommand(request);
-        if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
-        }
-    }
+    this->selfDefinedAction("stopMeasure");
 
 }
