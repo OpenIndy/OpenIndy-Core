@@ -74,10 +74,7 @@ public:
 
     //! custom comparison operator to compare input elements by their id
     bool operator==(const InputElement &other){
-        if(this->id == other.id){
-            return true;
-        }
-        return false;
+        return this->id == other.id;
     }
 
     int id; //the id of the element

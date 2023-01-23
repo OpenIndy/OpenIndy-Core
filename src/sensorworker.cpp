@@ -395,12 +395,6 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
             if(readings.size() > 0){
                 msg = SensorWorkerMessage::MEASUREMENT_FINISHED;
                 success = true;
-
-                QList<QPointer<Reading> >::iterator reading;
-                for (reading = readings.begin(); reading != readings.end(); ++reading) {
-                    (*reading)->setMeasurementConfig(mConfig);
-                    (*reading)->setSensorConfiguration(this->getSensorConfiguration());
-                }
             }
 
         }
@@ -416,6 +410,7 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
         QJsonObject request;
         request.insert("method", "measure");
         request.insert("geomId", geomId);
+
         this->sensor->setMeasurementConfig(mConfig);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {

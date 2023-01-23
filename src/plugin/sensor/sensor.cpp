@@ -351,7 +351,7 @@ void Sensor::init(){
 }
 
 ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig) const{
-    switch(mConfig.getMeasurementMode()) {
+    switch(mConfig.getMeasurementType()) {
     case eSinglePoint_MeasurementType:
     case eScanDistanceDependent_MeasurementType:
     case eScanTimeDependent_MeasurementType:
