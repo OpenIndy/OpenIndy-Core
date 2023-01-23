@@ -86,6 +86,19 @@ public:
 };
 
 /*!
+ * \brief The ReadingCartesian6D class
+ */
+class OI_CORE_EXPORT ReadingCartesian6D{
+public:
+    ReadingCartesian6D() : xyz(3), ijk(3),sigmaXyz(3), isValid(false){}
+
+    OiVec xyz;
+    OiVec ijk;
+    OiVec sigmaXyz;
+    bool isValid;
+};
+
+/*!
  * \brief The ReadingTemperature class
  */
 class OI_CORE_EXPORT ReadingTemperature{
@@ -114,6 +127,7 @@ public:
  */
 class OI_CORE_EXPORT ReadingLevel{
 public:
+    ReadingLevel() : isValid(false){}
     double i;
     double j;
     double k;
@@ -144,6 +158,7 @@ private:
 public:
     explicit Reading(const ReadingPolar &reading, QObject *parent = 0);
     explicit Reading(const ReadingCartesian &reading, QObject *parent = 0);
+    explicit Reading(const ReadingCartesian6D &reading, QObject *parent = 0);
     explicit Reading(const ReadingDirection &reading, QObject *parent = 0);
     explicit Reading(const ReadingDistance &reading, QObject *parent = 0);
     explicit Reading(const ReadingTemperature &reading, QObject *parent = 0);
@@ -164,6 +179,7 @@ public:
 
     const ReadingPolar &getPolarReading() const;
     const ReadingCartesian &getCartesianReading() const;
+    const ReadingCartesian6D &getCartesianReading6D() const;
     const ReadingDirection &getDirectionReading() const;
     const ReadingDistance &getDistanceReading() const;
     const ReadingTemperature &getTemperatureReading() const;
@@ -264,6 +280,7 @@ private:
 
     ReadingPolar rPolar;
     ReadingCartesian rCartesian;
+    ReadingCartesian6D rCartesian6D;
     ReadingDirection rDirection;
     ReadingDistance rDistance;
     ReadingTemperature rTemperature;

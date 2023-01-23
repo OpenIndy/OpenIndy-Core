@@ -211,7 +211,8 @@ enum ReadingTypes{
     eDirectionReading,
     eTemperatureReading,
     eLevelReading,
-    eUndefinedReading
+    eUndefinedReading,
+    eCartesianReading6D,
 
 };
 
