@@ -61,7 +61,24 @@ Reading::Reading(const ReadingCartesian &reading, QObject *parent) : Element(par
     this->imported = false;
 
 }
+Reading::Reading(const ReadingCartesian6D &reading, QObject *parent) : Element(parent), hasBackup(false){
 
+    if(reading.xyz.getSize() != 3 || reading.ijk.getSize() != 3 || reading.sigmaXyz.getSize() != 3){
+        this->typeOfReading = eCartesianReading6D;
+        return;
+    }
+
+    //set the reading and transform into polar
+    this->typeOfReading = eCartesianReading6D;
+    this->rCartesian6D = reading;
+    this->toPolar();
+
+    //set default attributes
+    this->measuredAt = QDateTime::currentDateTime();
+    this->face = eUndefinedSide;
+    this->imported = false;
+
+}
 /*!
  * \brief Reading::Reading
  * \param reading
@@ -253,6 +270,10 @@ const ReadingPolar &Reading::getPolarReading() const{
  */
 const ReadingCartesian &Reading::getCartesianReading() const{
     return this->rCartesian;
+}
+
+const ReadingCartesian6D &Reading::getCartesianReading6D() const{
+    return this->rCartesian6D;
 }
 
 /*!
@@ -515,6 +536,33 @@ void Reading::setObservation(const QPointer<Observation> &observation){
         //set observation to valid
         observation->isValid = true;
 
+    } else if(this->rCartesian6D.isValid){
+
+            //set position
+            observation->originalXyz.setAt(0, this->rCartesian6D.xyz.getAt(0));
+            observation->originalXyz.setAt(1, this->rCartesian6D.xyz.getAt(1));
+            observation->originalXyz.setAt(2, this->rCartesian6D.xyz.getAt(2));
+            observation->originalXyz.setAt(3, 1.0);
+
+            //set standard deviation
+            observation->originalSigmaXyz.setAt(0, this->rCartesian6D.sigmaXyz.getAt(0));
+            observation->originalSigmaXyz.setAt(1, this->rCartesian6D.sigmaXyz.getAt(1));
+            observation->originalSigmaXyz.setAt(2, this->rCartesian6D.sigmaXyz.getAt(2));
+            observation->originalSigmaXyz.setAt(3, 1.0);
+
+            //set ijk
+            observation->originalIjk.setAt(0, this->rCartesian6D.ijk.getAt(0));
+            observation->originalIjk.setAt(1, this->rCartesian6D.ijk.getAt(1));
+            observation->originalIjk.setAt(2, this->rCartesian6D.ijk.getAt(2));
+            observation->originalIjk.setAt(3, 1.0);
+
+            if(this->property("isDummyPoint").isValid()) { // set only if property is available
+                observation->isDummyPoint = this->property("isDummyPoint").toBool();
+            }
+
+            //set observation to valid
+            observation->isValid = true;
+
     }else if(this->rLevel.isValid){
 
         //set ijk
@@ -660,6 +708,8 @@ QString Reading::getDisplayDistance(const UnitType &type, const int &digits) con
 QString Reading::getDisplayX(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.xyz.getAt(0), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.xyz.getAt(0), type), 'f', digits);
     }
     return QString("");
 }
@@ -673,6 +723,8 @@ QString Reading::getDisplayX(const UnitType &type, const int &digits) const{
 QString Reading::getDisplayY(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.xyz.getAt(1), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.xyz.getAt(1), type), 'f', digits);
     }
     return QString("");
 }
@@ -686,12 +738,14 @@ QString Reading::getDisplayY(const UnitType &type, const int &digits) const{
 QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.xyz.getAt(2), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.xyz.getAt(2), type), 'f', digits);
     }
     return QString("");
 }
 
 /*!
- * \brief Reading::getDisplayRX
+ * \brief Reading::getDisplayI
  * \param type
  * \param digits
  * \return
@@ -699,12 +753,14 @@ QString Reading::getDisplayZ(const UnitType &type, const int &digits) const{
 QString Reading::getDisplayI(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(rLevel.i, 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(this->rCartesian6D.ijk.getAt(0), 'f', digits);
     }
     return QString("");
 }
 
 /*!
- * \brief Reading::getDisplayRY
+ * \brief Reading::getDisplayJ
  * \param type
  * \param digits
  * \return
@@ -712,12 +768,14 @@ QString Reading::getDisplayI(const int &digits) const{
 QString Reading::getDisplayJ(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(this->rLevel.j, 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(this->rCartesian6D.ijk.getAt(1), 'f', digits);
     }
     return QString("");
 }
 
 /*!
- * \brief Reading::getDisplayRZ
+ * \brief Reading::getDisplayK
  * \param type
  * \param digits
  * \return
@@ -725,6 +783,8 @@ QString Reading::getDisplayJ(const int &digits) const{
 QString Reading::getDisplayK(const int &digits) const{
     if(this->rLevel.isValid){
         return QString::number(this->rLevel.k, 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(this->rCartesian6D.ijk.getAt(2), 'f', digits);
     }
     return QString("");
 }
@@ -796,6 +856,8 @@ QString Reading::getDisplaySigmaDistance(const UnitType &type, const int &digits
 QString Reading::getDisplaySigmaX(const UnitType &type, const int &digits) const{
     if(this->rCartesian.isValid){
         return QString::number(convertFromDefault(this->rCartesian.sigmaXyz.getAt(0), type), 'f', digits);
+    } else if(this->rCartesian6D.isValid){
+        return QString::number(convertFromDefault(this->rCartesian6D.sigmaXyz.getAt(0), type), 'f', digits);
     }
     return QString("");
 }
@@ -928,6 +990,40 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
             measurements.appendChild(z);
         }
         break;
+    case eCartesianReading6D:
+        if(this->rCartesian6D.isValid && this->rCartesian6D.xyz.getSize() >= 3 && this->rCartesian6D.sigmaXyz.getSize() >= 3){
+            QDomElement x = xmlDoc.createElement("measurement");
+            x.setAttribute("type", "x");
+            x.setAttribute("value", this->rCartesian6D.xyz.getAt(0));
+            x.setAttribute("sigma", this->rCartesian6D.sigmaXyz.getAt(0));
+            measurements.appendChild(x);
+            QDomElement y = xmlDoc.createElement("measurement");
+            y.setAttribute("type", "y");
+            y.setAttribute("value", this->rCartesian6D.xyz.getAt(1));
+            y.setAttribute("sigma", this->rCartesian6D.sigmaXyz.getAt(1));
+            measurements.appendChild(y);
+            QDomElement z = xmlDoc.createElement("measurement");
+            z.setAttribute("type", "z");
+            z.setAttribute("value", this->rCartesian6D.xyz.getAt(2));
+            z.setAttribute("sigma", this->rCartesian6D.sigmaXyz.getAt(2));
+            measurements.appendChild(z);
+            QDomElement i = xmlDoc.createElement("measurement");
+            i.setAttribute("type", "i");
+            i.setAttribute("value", this->rCartesian6D.ijk.getAt(0));
+            i.setAttribute("sigma", -1);
+            measurements.appendChild(i);
+            QDomElement j = xmlDoc.createElement("measurement");
+            j.setAttribute("type", "j");
+            j.setAttribute("value", this->rCartesian6D.ijk.getAt(1));
+            j.setAttribute("sigma", -1);
+            measurements.appendChild(j);
+            QDomElement k = xmlDoc.createElement("measurement");
+            k.setAttribute("type", "k");
+            k.setAttribute("value", this->rCartesian6D.ijk.getAt(2));
+            k.setAttribute("sigma", -1);
+            measurements.appendChild(k);
+        }
+        break;
     case eDirectionReading:
         if(this->rDirection.isValid){
             QDomElement azimuth = xmlDoc.createElement("measurement");
@@ -981,21 +1077,21 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
         break;
     case eLevelReading:
         if(this->rLevel.isValid){
-            QDomElement rx = xmlDoc.createElement("measurement");
-            rx.setAttribute("type", "i");
-            rx.setAttribute("value", this->rLevel.i);
-            rx.setAttribute("sigma", this->rLevel.sigmaI);
-            measurements.appendChild(rx);
-            QDomElement ry = xmlDoc.createElement("measurement");
-            ry.setAttribute("type", "j");
-            ry.setAttribute("value", this->rLevel.j);
-            ry.setAttribute("sigma", this->rLevel.sigmaJ);
-            measurements.appendChild(ry);
-            QDomElement rz = xmlDoc.createElement("measurement");
-            rz.setAttribute("type", "k");
-            rz.setAttribute("value", this->rLevel.k);
-            rz.setAttribute("sigma", this->rLevel.sigmaK);
-            measurements.appendChild(rz);
+            QDomElement i = xmlDoc.createElement("measurement");
+            i.setAttribute("type", "i");
+            i.setAttribute("value", this->rLevel.i);
+            i.setAttribute("sigma", this->rLevel.sigmaI);
+            measurements.appendChild(i);
+            QDomElement j = xmlDoc.createElement("measurement");
+            j.setAttribute("type", "j");
+            j.setAttribute("value", this->rLevel.j);
+            j.setAttribute("sigma", this->rLevel.sigmaJ);
+            measurements.appendChild(j);
+            QDomElement k = xmlDoc.createElement("measurement");
+            k.setAttribute("type", "k");
+            k.setAttribute("value", this->rLevel.k);
+            k.setAttribute("sigma", this->rLevel.sigmaK);
+            measurements.appendChild(k);
         }
         break;
     case eUndefinedReading:
@@ -1060,9 +1156,37 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         return false;
     }
 
-    //initialize measurement variables
-    this->rCartesian.xyz = OiVec(3);
-    this->rCartesian.sigmaXyz = OiVec(3);
+    // set isValid
+    switch(typeOfReading) {
+    case eDistanceReading:
+        this->rDistance.isValid = true;
+        break;
+    case eCartesianReading:
+        this->rCartesian.isValid = true;
+        //initialize measurement variables
+        this->rCartesian.xyz = OiVec(3);
+        this->rCartesian.sigmaXyz = OiVec(3);
+        break;
+    case ePolarReading:
+        this->rPolar.isValid = true;
+        break;
+    case eDirectionReading:
+        this->rDirection.isValid = true;
+        break;
+    case eTemperatureReading:
+        this->rTemperature.isValid = true;
+        break;
+    case eLevelReading:
+        this->rLevel.isValid = true;
+        break;
+    case eCartesianReading6D:
+        this->rCartesian6D.isValid = true;
+        break;
+    case eUndefinedReading:
+    default:
+        return false;
+    }
+
 
     //fill measurement values
     for(int i = 0; i < measurementList.size(); i++){
@@ -1070,39 +1194,51 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
         if(!measurement.hasAttribute("type") || !measurement.hasAttribute("value") || !measurement.hasAttribute("sigma")){
             continue;
         }
+
+        double value = measurement.attribute("value").toDouble();
         if(measurement.attribute("type").compare("x") == 0){
-            this->rCartesian.xyz.setAt(0, measurement.attribute("value").toDouble());
-            this->rCartesian.isValid = true;
+            if(this->rCartesian.isValid) this->rCartesian.xyz.setAt(0, value);
+            if(this->rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(0, value);
         }else if(measurement.attribute("type").compare("y") == 0){
-            this->rCartesian.xyz.setAt(1, measurement.attribute("value").toDouble());
+            if(this->rCartesian.isValid) this->rCartesian.xyz.setAt(1, value);
+            if(this->rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(1, value);
         }else if(measurement.attribute("type").compare("z") == 0){
-            this->rCartesian.xyz.setAt(2, measurement.attribute("value").toDouble());
+            if(this->rCartesian.isValid) this->rCartesian.xyz.setAt(2, value);
+            if(this->rCartesian6D.isValid) this->rCartesian6D.xyz.setAt(2, value);
         }else if(measurement.attribute("type").compare("azimuth") == 0){
-            this->rPolar.azimuth = measurement.attribute("value").toDouble();
-            this->rDirection.azimuth = measurement.attribute("value").toDouble();
-            this->rPolar.isValid = true;
-            this->rDirection.isValid = true;
+            if(this->rPolar.isValid) this->rPolar.azimuth = value;
+            if(this->rDirection.isValid) this->rDirection.azimuth = value;
         }else if(measurement.attribute("type").compare("zenith") == 0){
-            this->rPolar.zenith = measurement.attribute("value").toDouble();
-            this->rDirection.zenith = measurement.attribute("value").toDouble();
-            this->rDirection.isValid = true;
+            if(this->rPolar.isValid) this->rPolar.zenith = value;
+            if(this->rDirection.isValid) this->rDirection.zenith = value;
         }else if(measurement.attribute("type").compare("distance") == 0){
-            this->rPolar.distance = measurement.attribute("value").toDouble();
-            this->rDistance.distance = measurement.attribute("value").toDouble();
-            this->rDistance.isValid = true;
+            if(this->rPolar.isValid) this->rPolar.distance = value;
+            if(this->rDistance.isValid) this->rDistance.distance = value;
         }else if(measurement.attribute("type").compare("i") == 0){
-            this->rLevel.i = measurement.attribute("value").toDouble();
-            this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
-            this->rLevel.isValid = true;
+            if(this->rCartesian6D.isValid) {
+                this->rCartesian6D.ijk.setAt(0, value);
+            } else if(this->rLevel.isValid) {
+                this->rLevel.i = value;
+                this->rLevel.sigmaI = measurement.attribute("sigma").toDouble();
+            }
         }else if(measurement.attribute("type").compare("j") == 0){
-            this->rLevel.j = measurement.attribute("value").toDouble();
-            this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
-            this->rLevel.isValid = true;
+            if(this->rCartesian6D.isValid) {
+                this->rCartesian6D.ijk.setAt(1, value);
+            } else if(this->rLevel.isValid) {
+                this->rLevel.j = value;
+                this->rLevel.sigmaJ = measurement.attribute("sigma").toDouble();
+            }
         }else if(measurement.attribute("type").compare("k") == 0){
-            this->rLevel.k = measurement.attribute("value").toDouble();
-            this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
-            this->rLevel.isValid = true;
+            if(this->rCartesian6D.isValid) {
+                this->rCartesian6D.ijk.setAt(2, value);
+            } else if(this->rLevel.isValid) {
+                this->rLevel.k = value;
+                this->rLevel.sigmaK = measurement.attribute("sigma").toDouble();
+            }
+        }else if(measurement.attribute("type").compare("temperature") == 0){
+            if(this->rTemperature.isValid) this->rTemperature.temperature = value;
         }
+
     }
 
     this->toCartesian(); // if necessary and posible
