@@ -95,8 +95,8 @@ enum ElementTypes{
 
 //! all OpenIndy feature types
 enum FeatureTypes{
-
-    //geometry types
+    // keep order !
+    // geometry types
     eCircleFeature = 0,
     eConeFeature,
     eCylinderFeature,
@@ -122,7 +122,8 @@ enum FeatureTypes{
     eStationFeature,
     eTrafoParamFeature,
 
-    eUndefinedFeature
+    eUndefinedFeature,
+    eLevelFeature,
 
 };
 
