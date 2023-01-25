@@ -2,6 +2,7 @@
 #define FUNCTION_H
 
 #include <QMap>
+#include <QList>
 #include <QMultiMap>
 #include <QStringList>
 #include <QtXml>
@@ -58,6 +59,7 @@ enum InputElementKey {
 class NeededElement{
 public:
     ElementTypes typeOfElement; //type of the needed input element
+    QList<ElementTypes> typesOfReading; // specify property typeOfElement if needed
     QString description; //optional description for the needed element to show in the GUI
     bool infinite; //only one element or as many elements as one wants?
     InputElementKey key = eNotSet; // if key not set InputElementKey is NeedeElement index
