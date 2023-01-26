@@ -168,6 +168,7 @@ void init(){
     featureTypesMap.insert(eCoordinateSystemFeature, "coordinate system");
     featureTypesMap.insert(eStationFeature, "station");
     featureTypesMap.insert(eTrafoParamFeature, "transformation parameters");
+    featureTypesMap.insert(eLevelFeature, "level");
 
     //fill geometry map
     geometryTypesMap.insert(eCircleGeometry, "circle");
