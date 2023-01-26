@@ -298,13 +298,13 @@ void MeasurementConfig::setTransientData(const QString key, const QVariant value
  * @param typeOfFeature
  * @return true if elementType and typeOfFeature can handled by this MeasurementConfig
  */
-bool MeasurementConfig::applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature) {
-    if(ElementTypes::eUndefinedElement == elementType) {
+bool MeasurementConfig::applicableFor(const ElementTypes elementType, QList<FeatureTypes> functionIsApplicableFor) {
+    if(ElementTypes::eUndefinedElement == elementType) { // used to filter all configs: CreateFeatureDialog::initMeasurementConfigUI
         return false;
     }
 
     // handle level ->
-    if(ElementTypes::eReadingLevelElement == elementType) {
+    if(functionIsApplicableFor.contains(FeatureTypes::eLevelFeature)) {
         return this->measurementType == MeasurementTypes::eLevel_MeasurementType;
     }
     if(this->measurementType == MeasurementTypes::eLevel_MeasurementType) {
