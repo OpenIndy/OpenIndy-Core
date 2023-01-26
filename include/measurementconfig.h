@@ -99,7 +99,7 @@ public:
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
-    bool applicableFor(const ElementTypes elementType, const FeatureTypes typeOfFeature);
+    bool applicableFor(const ElementTypes elementType, QList<FeatureTypes> functionIsApplicableFor);
 
     //compare two configs
     bool equals(const MeasurementConfig &other);
