@@ -626,7 +626,7 @@ void SensorControl::stopStatusMonitoringStream(){
 void SensorControl::finishMeasurement(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "finishMeasurement", Qt::DirectConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "finishMeasurement", Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
