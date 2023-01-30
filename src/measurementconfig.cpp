@@ -1,5 +1,4 @@
 #include "measurementconfig.h"
-#include "util.h"
 
 using namespace oi;
 
@@ -341,13 +340,3 @@ void MeasurementConfig::setMaxObservations(const int &maxObservations) {
     this->isSaved = false;
 }
 
-bool MeasurementConfig::equals(const MeasurementConfig &other){
-    return getName() == other.getName()
-            && getMeasurementType() == other.getMeasurementType()
-            && getMeasurementMode() == other.getMeasurementMode()
-            && getMeasureTwoSides() == other.getMeasureTwoSides()
-            && getMaxObservations() == other.getMaxObservations()
-            && getTimeInterval() == other.getTimeInterval()
-            && almostEqual(getDistanceInterval(), other.getDistanceInterval(), 8);
-            // TODO stablepoint properties
-}

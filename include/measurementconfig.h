@@ -5,6 +5,7 @@
 #include <QtXml>
 
 #include "types.h"
+#include "util.h"
 
 namespace oi{
 
@@ -40,11 +41,14 @@ public:
 
     friend bool operator==(const MeasurementConfig &left, const MeasurementConfig &right){
 
-        if(left.getName().compare(right.getName()) == 0){
-            return true;
-        }
-        return false;
-
+        return left.getName() == right.getName()
+                && left.getMeasurementType() == right.getMeasurementType()
+                && left.getMeasurementMode() == right.getMeasurementMode()
+                && left.getMeasureTwoSides() == right.getMeasureTwoSides()
+                && left.getMaxObservations() == right.getMaxObservations()
+                && left.getTimeInterval() == right.getTimeInterval()
+                & almostEqual(left.getDistanceInterval(), right.getDistanceInterval(), 8);
+                // TODO stablepoint properties
     }
 
     //########################################
@@ -100,9 +104,6 @@ public:
     bool fromOpenIndyXML(QDomElement &xmlElem);
 
     bool applicableFor(const ElementTypes elementType, QList<FeatureTypes> functionIsApplicableFor);
-
-    //compare two configs
-    bool equals(const MeasurementConfig &other);
 
 private:
 
