@@ -115,10 +115,7 @@ void MeasurementConfig::setIsSaved(const bool &isSaved){
  * \return
  */
 bool MeasurementConfig::getIsValid() const{
-    if(this->name.compare("") != 0){
-        return true;
-    }
-    return false;
+    return !this->name.isEmpty();
 }
 
 /*!
