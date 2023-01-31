@@ -348,6 +348,6 @@ bool MeasurementConfig::equals(const MeasurementConfig &other){
             && getMeasureTwoSides() == other.getMeasureTwoSides()
             && getMaxObservations() == other.getMaxObservations()
             && getTimeInterval() == other.getTimeInterval()
-            & almostEqual(getDistanceInterval(), other.getDistanceInterval(), 8);
+            && almostEqual(getDistanceInterval(), other.getDistanceInterval(), 8);
             // TODO stablepoint properties
 }
