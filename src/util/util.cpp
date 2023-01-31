@@ -1433,10 +1433,7 @@ bool almostEqual(const double &a, const double &b, const int &digits){
     }
 
     //check difference
-    if(diff <= epsilon){
-        return true;
-    }
-    return false;
+    return diff <= epsilon;
 
 }
 
