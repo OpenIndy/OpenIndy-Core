@@ -58,8 +58,15 @@ public:
     const QString &getName() const;
     void setName(const QString &name);
 
-    const bool &getIsSaved() const;
-    void setIsSaved(const bool &isSaved);
+    const bool &isUserConfig() const;
+    void isUserConfig(const bool &isUser);
+
+    // getIsProject == !getIsUser
+    // is from project xml
+    const bool &isProjectConfig() const;
+
+    const bool &isEditable() const;
+    void isEditable(const bool &isEditable);
 
     bool getIsValid() const;
 
@@ -110,9 +117,8 @@ private:
     //#############################
     //measurement config attributes
     //#############################
-
     QString name;
-    bool isSaved;
+    bool userConfig;
 
     bool measureTwoSides; //true if the sensor shall measure in both faces (false if not)
     long timeInterval; //time interval in which the sensor shall measure
@@ -129,6 +135,7 @@ private:
     MeasurementModes measurementMode;
     int maxObservations;
 
+    bool editable;
 };
 
 }

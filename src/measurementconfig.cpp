@@ -5,7 +5,7 @@ using namespace oi;
 /*!
  * \brief MeasurementConfig::MeasurementConfig
  */
-MeasurementConfig::MeasurementConfig() : isSaved(false){
+MeasurementConfig::MeasurementConfig() : userConfig(false), editable(false){
 
     //set defaults
     this->measurementType = eSinglePoint_MeasurementType;
@@ -31,7 +31,6 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
 
     //copy measurement config attributes
     this->name = copy.name;
-    this->isSaved = copy.isSaved;
     this->measurementType = copy.measurementType;
     this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
@@ -43,6 +42,9 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
     this->stablePointMinDistance = copy.stablePointMinDistance;
     this->stablePointThresholdRange = copy.stablePointThresholdRange;
     this->stablePointThresholdTime = copy.stablePointThresholdTime;
+
+    this->userConfig = copy.userConfig;
+    this->editable = copy.editable;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -57,7 +59,6 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
 
     //copy measurement config attributes
     this->name = copy.name;
-    this->isSaved = copy.isSaved;
     this->measurementType = copy.measurementType;
     this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
@@ -69,6 +70,9 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
     this->stablePointMinDistance = copy.stablePointMinDistance;
     this->stablePointThresholdRange = copy.stablePointThresholdRange;
     this->stablePointThresholdTime = copy.stablePointThresholdTime;
+
+    this->userConfig = copy.userConfig;
+    this->editable = copy.editable;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -91,24 +95,18 @@ const QString &MeasurementConfig::getName() const{
  */
 void MeasurementConfig::setName(const QString &name){
     this->name = name;
-    this->isSaved = false;
 }
 
-/*!
- * \brief MeasurementConfig::getIsSaved
- * \return
- */
-const bool &MeasurementConfig::getIsSaved() const{
-    return this->isSaved;
+const bool &MeasurementConfig::isUserConfig() const{
+    return this->userConfig;
+}
+const bool &MeasurementConfig::isProjectConfig() const{
+    return this->userConfig;
+}
+void MeasurementConfig::isUserConfig(const bool &isUserConfig){
+    this->userConfig = userConfig;
 }
 
-/*!
- * \brief MeasurementConfig::setIsSaved
- * \param isSaved
- */
-void MeasurementConfig::setIsSaved(const bool &isSaved){
-    this->isSaved = isSaved;
-}
 
 /*!
  * \brief MeasurementConfig::getIsValid
@@ -132,7 +130,6 @@ const bool &MeasurementConfig::getMeasureTwoSides() const{
  */
 void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
     this->measureTwoSides = measureTwoSides;
-    this->isSaved = false;
 }
 
 /*!
@@ -149,7 +146,6 @@ const long &MeasurementConfig::getTimeInterval() const{
  */
 void MeasurementConfig::setTimeInterval(const long &interval){
     this->timeInterval = interval;
-    this->isSaved = false;
 }
 
 /*!
@@ -166,12 +162,10 @@ const double &MeasurementConfig::getDistanceInterval() const{
  */
 void MeasurementConfig::setDistanceInterval(const double &interval){
     this->distanceInterval = interval;
-    this->isSaved = false;
 }
 
 void MeasurementConfig::setIsStablePoint(const bool isStablePoint) {
     this->isStablePoint = isStablePoint;
-    this->isSaved = false;
 }
 
 const bool &MeasurementConfig::getIsStablePoint() const {
@@ -180,7 +174,6 @@ const bool &MeasurementConfig::getIsStablePoint() const {
 
 void MeasurementConfig::setStablePointMinDistance(const double &minDistance) {
     this->stablePointMinDistance = minDistance;
-    this->isSaved = false;
 }
 
 const double &MeasurementConfig::getStablePointMinDistance() const {
@@ -189,7 +182,6 @@ const double &MeasurementConfig::getStablePointMinDistance() const {
 
 void MeasurementConfig::setStablePointThresholdRange(const double &threshold) {
     this->stablePointThresholdRange = threshold;
-    this->isSaved = false;
 }
 
 const double &MeasurementConfig::getStablePointThresholdRange() const {
@@ -198,7 +190,6 @@ const double &MeasurementConfig::getStablePointThresholdRange() const {
 
 void MeasurementConfig::setStablePointThresholdTime(const double &threshold) {
     this->stablePointThresholdTime = threshold;
-    this->isSaved = false;
 }
 
 const double &MeasurementConfig::getStablePointThresholdTime() const {
@@ -220,7 +211,6 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //set measurement config attributes
     mConfig.setAttribute("name", this->name);
-    mConfig.setAttribute("isSaved", this->isSaved);
 
     mConfig.setAttribute("measurementMode", this->measurementMode);
     mConfig.setAttribute("measurementType", this->measurementType);
@@ -233,6 +223,8 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     mConfig.setAttribute("stablePointMinDistance", this->stablePointMinDistance);
     mConfig.setAttribute("stablePointThresholdRange", this->stablePointThresholdRange);
     mConfig.setAttribute("stablePointThresholdTime", this->stablePointThresholdTime);
+
+    mConfig.setAttribute("isEditable", this->editable);
 
     return mConfig;
 
@@ -273,8 +265,10 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->stablePointThresholdRange = xmlElem.attribute("stablePointThresholdRange").toDouble();
     this->stablePointThresholdTime = xmlElem.attribute("stablePointThresholdTime").toDouble();
 
-    if(xmlElem.hasAttribute("isSaved")){
-        this->isSaved = xmlElem.attribute("isSaved").toInt();
+    if(xmlElem.hasAttribute("isEditable")){
+        this->editable = xmlElem.attribute("isEditable").toInt();
+    } else {
+        this->editable = true;
     }
 
     return true;
@@ -313,7 +307,7 @@ bool MeasurementConfig::applicableFor(const ElementTypes elementType, QList<Feat
 
 void MeasurementConfig::setMeasurementMode(const MeasurementModes mode) {
     this->measurementMode = mode;
-    this->isSaved = false;
+
 }
 
 const MeasurementModes MeasurementConfig::getMeasurementMode() const {
@@ -322,7 +316,7 @@ const MeasurementModes MeasurementConfig::getMeasurementMode() const {
 
 void MeasurementConfig::setMeasurementType(const MeasurementTypes type) {
     this->measurementType = type;
-    this->isSaved = false;
+
 }
 
 const MeasurementTypes MeasurementConfig::getMeasurementType() const {
@@ -334,6 +328,6 @@ const int &MeasurementConfig::getMaxObservations() const {
 }
 void MeasurementConfig::setMaxObservations(const int &maxObservations) {
     this->maxObservations = maxObservations;
-    this->isSaved = false;
+
 }
 
