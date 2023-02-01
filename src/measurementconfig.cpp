@@ -107,6 +107,13 @@ void MeasurementConfig::isUserConfig(const bool &isUserConfig){
     this->userConfig = userConfig;
 }
 
+const bool &MeasurementConfig::isEditable() const {
+    return this->editable;
+}
+
+void MeasurementConfig::isEditable(const bool &isEditable) {
+    this->editable = isEditable;
+}
 
 /*!
  * \brief MeasurementConfig::getIsValid
