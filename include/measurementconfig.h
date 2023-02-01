@@ -10,6 +10,7 @@
 namespace oi{
 
 enum MeasurementTypes{
+    eUnknown_MeasurementType = -1,
     eSinglePoint_MeasurementType = 0,
     eScanTimeDependent_MeasurementType,
     eScanDistanceDependent_MeasurementType,
