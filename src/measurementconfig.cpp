@@ -101,10 +101,10 @@ const bool &MeasurementConfig::isUserConfig() const{
     return this->userConfig;
 }
 const bool &MeasurementConfig::isProjectConfig() const{
-    return this->userConfig;
+    return !this->userConfig;
 }
 void MeasurementConfig::isUserConfig(const bool &isUserConfig){
-    this->userConfig = userConfig;
+    this->userConfig = isUserConfig;
 }
 
 const bool &MeasurementConfig::isEditable() const {
