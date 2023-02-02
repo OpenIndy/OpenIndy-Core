@@ -5,7 +5,7 @@ using namespace oi;
 /*!
  * \brief MeasurementConfig::MeasurementConfig
  */
-MeasurementConfig::MeasurementConfig() : userConfig(false), editable(false){
+MeasurementConfig::MeasurementConfig() : userConfig(false), editable(true){
 
     //set defaults
     this->measurementType = eSinglePoint_MeasurementType;
