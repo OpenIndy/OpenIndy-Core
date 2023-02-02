@@ -231,8 +231,6 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     mConfig.setAttribute("stablePointThresholdRange", this->stablePointThresholdRange);
     mConfig.setAttribute("stablePointThresholdTime", this->stablePointThresholdTime);
 
-    mConfig.setAttribute("isEditable", this->editable);
-
     return mConfig;
 
 }
@@ -271,12 +269,6 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->stablePointMinDistance = xmlElem.attribute("stablePointMinDistance").toDouble();
     this->stablePointThresholdRange = xmlElem.attribute("stablePointThresholdRange").toDouble();
     this->stablePointThresholdTime = xmlElem.attribute("stablePointThresholdTime").toDouble();
-
-    if(xmlElem.hasAttribute("isEditable")){
-        this->editable = xmlElem.attribute("isEditable").toInt();
-    } else {
-        this->editable = true;
-    }
 
     return true;
 
