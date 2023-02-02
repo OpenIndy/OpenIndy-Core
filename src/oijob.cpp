@@ -74,7 +74,7 @@ void OiJob::setDigest(const QString &digest) {
 /*!
  * \return true if the project file version compatible with this program version
  */
-const CompatibilyCheckResult &OiJob::checkCompatibilty() const {
+const CompatibilyCheckResult OiJob::checkCompatibilty() const {
     QStringList jobParts = loadedVersion.split(".");
     if(jobParts.length()<2) {
         return eCheckResult_job_wo_valid_version;
