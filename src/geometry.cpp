@@ -679,10 +679,10 @@ QString Geometry::getDisplayFormError(const UnitType &type, const int &digits) c
  */
 QString Geometry::getDisplayMeasurementConfig() const{
     if(this->activeMeasurementConfig.getIsValid()){
-        if(this->activeMeasurementConfig.isUserConfig()){
+        if(this->activeMeasurementConfig.isProjectConfig()){
             return this->activeMeasurementConfig.getName();
         }else{
-            return QString("*%1").arg(this->activeMeasurementConfig.getName());
+            return QString("%1 [user]").arg(this->activeMeasurementConfig.getName());
         }
     }
     return QString("");
