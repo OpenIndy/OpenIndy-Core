@@ -26,6 +26,12 @@ enum MeasurementModes {
     ePrecise_MeasurementMode
 };
 
+enum ConfigTypes {
+    eUndefinded = -1,
+    eUserConfig = 0,
+    eProjectConfig
+};
+
 /*!
  * \brief The MeasurementConfig class
  * Contains all the configuration parameters needed to start a measurement.
@@ -42,7 +48,10 @@ public:
 
     friend bool operator==(const MeasurementConfig &left, const MeasurementConfig &right){
 
-        return left.getName() == right.getName()
+        return left.getName() == right.getName()        // combined key
+                && left.configType == right.configType  // combined key
+                && left.standardConfig == right.standardConfig
+                && left.editable == right.editable
                 && left.getMeasurementType() == right.getMeasurementType()
                 && left.getMeasurementMode() == right.getMeasurementMode()
                 && left.getMeasureTwoSides() == right.getMeasureTwoSides()
@@ -58,7 +67,7 @@ public:
 
     const QString &getName() const;
     void setName(const QString &name);
-    const QPair<QString, bool> getKey() const;
+    const QPair<QString, ConfigTypes> getKey() const;
 
     const bool &isUserConfig() const;
     void isUserConfig(const bool &isUser);
@@ -69,6 +78,9 @@ public:
 
     const bool &isEditable() const;
     void isEditable(const bool &isEditable);
+
+    const bool &isStandardConfig() const;
+    void isStandardConfig(const bool &isStandardConfig);
 
     bool getIsValid() const;
 
@@ -120,7 +132,7 @@ private:
     //measurement config attributes
     //#############################
     QString name;
-    bool userConfig;
+    ConfigTypes configType;
 
     bool measureTwoSides; //true if the sensor shall measure in both faces (false if not)
     long timeInterval; //time interval in which the sensor shall measure
@@ -138,6 +150,7 @@ private:
     int maxObservations;
 
     bool editable;
+    bool standardConfig;
 };
 
 }
