@@ -58,6 +58,7 @@ public:
 
     const QString &getName() const;
     void setName(const QString &name);
+    const QPair<QString, bool> getKey() const;
 
     const bool &isUserConfig() const;
     void isUserConfig(const bool &isUser);

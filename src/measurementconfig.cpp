@@ -97,6 +97,11 @@ void MeasurementConfig::setName(const QString &name){
     this->name = name;
 }
 
+/* key for maps */
+const QPair<QString, bool> MeasurementConfig::getKey() const{
+    return QPair<QString, bool>(this->name, this->userConfig);
+}
+
 const bool &MeasurementConfig::isUserConfig() const{
     return this->userConfig;
 }
