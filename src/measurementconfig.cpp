@@ -343,3 +343,8 @@ void MeasurementConfig::setMaxObservations(const int &maxObservations) {
 
 }
 
+void MeasurementConfig::makeUserConfig() {
+    this->isUserConfig(true);
+    this->isEditable(true);
+    this->isStandardConfig(false);
+}

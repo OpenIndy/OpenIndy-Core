@@ -117,6 +117,8 @@ public:
     const int &getMaxObservations() const;
     void setMaxObservations(const int &maxObservations);
 
+    void makeUserConfig();
+
     //#################
     //save and load XML
     //#################
