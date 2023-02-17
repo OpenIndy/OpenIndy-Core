@@ -206,7 +206,7 @@ signals:
     void geometryNominalSystemChanged(const int &featureId);
     void geometryStatisticChanged(const int &featureId);
     void geometrySimulationDataChanged(const int &featureId);
-    void geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
+    void geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const Key oldKey);
 
     //coordinate system specific attributes changed
     void systemObservationsChanged(const int &featureId, const int &obsId);
