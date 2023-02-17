@@ -52,8 +52,10 @@ public:
                 && this->configType == other.configType;
     }
     bool operator<(const Key &other) const {
-        return this->name < other.name
-                && this->configType < other.configType;
+        if (this->name < other.name) {
+            return true;
+        }
+        return this->configType < other.configType;
     }
 
 private:
