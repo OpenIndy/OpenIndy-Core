@@ -33,6 +33,34 @@ enum ConfigTypes {
     eStandardConfig
 };
 
+class Key {
+public:
+    Key(): configType(eUndefinded) {}
+    Key(QString name, ConfigTypes configType) : name(name), configType(configType){}
+    Key(const Key &copy) {
+        this->name = copy.name;
+        this->configType = copy.configType;
+    }
+    Key &operator=(const Key &copy) {
+        this->name = copy.name;
+        this->configType = copy.configType;
+        return *this;
+    }
+
+    bool operator==(const Key &other) const {
+        return this->name == other.name
+                && this->configType == other.configType;
+    }
+    bool operator<(const Key &other) const {
+        return this->name < other.name
+                && this->configType < other.configType;
+    }
+
+private:
+    QString name;
+    ConfigTypes configType;
+};
+
 /*!
  * \brief The MeasurementConfig class
  * Contains all the configuration parameters needed to start a measurement.
