@@ -76,7 +76,6 @@ public:
     int getGeometryCount() const;
     int getFeatureCount(const FeatureTypes &type) const;
     int getFeatureCount(const QString &group) const;
-    int getFeatureCount(const QPair<QString, bool> &mConfig) const;
 
     //access a list of all feature ids and names
     const QList<int> &getFeatureIdList() const;
