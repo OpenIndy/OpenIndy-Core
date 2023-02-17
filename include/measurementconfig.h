@@ -95,7 +95,7 @@ public:
 
     const QString &getName() const;
     void setName(const QString &name);
-    const QPair<QString, ConfigTypes> getKey() const;
+    const Key getKey() const;
 
     const bool isUserConfig() const;
     const bool isProjectConfig() const;

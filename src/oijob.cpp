@@ -276,7 +276,7 @@ const QStringList &OiJob::getFeatureGroupList() const{
  * \brief OiJob::getUsedMeasurementConfigs
  * \return
  */
-const QList<QPair<QString, bool> > &OiJob::getUsedMeasurementConfigs() const{
+const QList<Key> &OiJob::getUsedMeasurementConfigs() const{
     return this->featureContainer.getUsedMeasurementConfigs();
 }
 

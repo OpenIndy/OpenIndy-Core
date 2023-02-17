@@ -112,7 +112,7 @@ const QStringList &FeatureContainer::getFeatureGroupList() const{
  * \brief FeatureContainer::getUsedMeasurementConfigs
  * \return
  */
-const QList<QPair<QString, bool> > &FeatureContainer::getUsedMeasurementConfigs() const{
+const QList<Key> &FeatureContainer::getUsedMeasurementConfigs() const{
     return this->usedMConfigs;
 }
 
@@ -168,8 +168,8 @@ QList<QPointer<FeatureWrapper> > FeatureContainer::getFeaturesByType(const Featu
  * \param mConfig
  * \return
  */
-QList<QPointer<Geometry> > FeatureContainer::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
-    return this->geometriesMConfigMap.values(mConfig);
+QList<QPointer<Geometry> > FeatureContainer::getGeometriesByMConfig(const Key &key) const{
+    return this->geometriesMConfigMap.values(key);
 }
 
 /*!
@@ -258,11 +258,9 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
     default: //geometry
         if(!feature->getGeometry().isNull()){
             this->geometriesList.append(feature);
-            if(feature->getGeometry()->getMeasurementConfig().isValid()){
-                QPair<QString, bool> key;
-                key.first = feature->getGeometry()->getMeasurementConfig().getName();
-                key.second = feature->getGeometry()->getMeasurementConfig().isUserConfig();
-                this->geometriesMConfigMap.insert(key, feature->getGeometry());
+            if(feature->getGeometry()->getMeasurementConfig().isValid()){;
+                this->geometriesMConfigMap.insert(feature->getGeometry()->getMeasurementConfig().getKey(),
+                                                  feature->getGeometry());
             }
         }
         break;
@@ -278,8 +276,7 @@ bool FeatureContainer::addFeature(const QPointer<FeatureWrapper> &feature){
         this->featureGroups.append(feature->getFeature()->getGroupName());
     }
     if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().isValid()){
-        this->usedMConfigs.append(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
-                                        feature->getGeometry()->getMeasurementConfig().isUserConfig()));
+        this->usedMConfigs.append(feature->getGeometry()->getMeasurementConfig().getKey());
     }
 
     return true;
@@ -328,10 +325,8 @@ bool FeatureContainer::removeFeature(const int &featureId){
         if(!feature->getGeometry().isNull()){
             this->geometriesList.removeOne(feature);
             if(feature->getGeometry()->getMeasurementConfig().isValid()){
-                QPair<QString, bool> key;
-                key.first = feature->getGeometry()->getMeasurementConfig().getName();
-                key.second = feature->getGeometry()->getMeasurementConfig().isUserConfig();
-                this->geometriesMConfigMap.remove(key, feature->getGeometry());
+                this->geometriesMConfigMap.remove(feature->getGeometry()->getMeasurementConfig().getKey(),
+                                                  feature->getGeometry());
             }
         }
         break;
@@ -347,8 +342,7 @@ bool FeatureContainer::removeFeature(const int &featureId){
         this->featureGroups.removeOne(feature->getFeature()->getGroupName());
     }
     if(!feature->getGeometry().isNull() && feature->getGeometry()->getMeasurementConfig().isValid()){
-        this->usedMConfigs.removeOne(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
-                                           feature->getGeometry()->getMeasurementConfig().isUserConfig()));
+        this->usedMConfigs.removeOne(feature->getGeometry()->getMeasurementConfig().getKey());
     }
 
     //delete the feature
@@ -408,8 +402,7 @@ void FeatureContainer::checkAndClean(const int &featureId, const QString &name, 
     this->featuresGroupMap.remove(group, feature);
     this->featuresTypeMap.remove(type, feature);
     if(!feature->getGeometry().isNull()){
-        this->geometriesMConfigMap.remove(QPair<QString, bool>(feature->getGeometry()->getMeasurementConfig().getName(),
-                                          feature->getGeometry()->getMeasurementConfig().isUserConfig()), feature->getGeometry());
+        this->geometriesMConfigMap.remove(feature->getGeometry()->getMeasurementConfig().getKey(), feature->getGeometry());
     }
 
     //clean list with ids, names, groups and mConfigs
@@ -421,11 +414,8 @@ void FeatureContainer::checkAndClean(const int &featureId, const QString &name, 
         this->featureGroups.removeOne(group);
     }
     if(!feature->getGeometry().isNull()){
-        QPair<QString, bool> mConfig;
-        mConfig.first = feature->getGeometry()->getMeasurementConfig().getName();
-        mConfig.second = feature->getGeometry()->getMeasurementConfig().isUserConfig();
-        if(!this->geometriesMConfigMap.contains(mConfig)){
-            this->usedMConfigs.removeOne(mConfig);
+        if(!this->geometriesMConfigMap.contains(feature->getGeometry()->getMeasurementConfig().getKey())){
+            this->usedMConfigs.removeOne(feature->getGeometry()->getMeasurementConfig().getKey());
         }
     }
 
@@ -594,11 +584,8 @@ bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, co
     }
 
     //get map-keys for old and new mConfig
-    QPair<QString, bool> oldKey, newKey;
-    oldKey.first = oldMConfig;
-    oldKey.second = oldIsSaved;
-    newKey.first = geometry->getMeasurementConfig().getName();
-    newKey.second = geometry->getMeasurementConfig().isUserConfig();
+    Key oldKey = feature->getGeometry()->getMeasurementConfig().getKey(); // TODO OI-948
+    Key newKey = feature->getGeometry()->getMeasurementConfig().getKey();
 
     //if the old mConfig was empty
     if(oldMConfig.compare("") == 0){
