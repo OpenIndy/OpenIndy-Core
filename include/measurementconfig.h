@@ -29,7 +29,8 @@ enum MeasurementModes {
 enum ConfigTypes {
     eUndefinded = -1,
     eUserConfig = 0,
-    eProjectConfig
+    eProjectConfig,
+    eStandardConfig
 };
 
 /*!
@@ -50,7 +51,6 @@ public:
 
         return left.getName() == right.getName()        // combined key
                 && left.configType == right.configType  // combined key
-                && left.standardConfig == right.standardConfig
                 && left.editable == right.editable
                 && left.getMeasurementType() == right.getMeasurementType()
                 && left.getMeasurementMode() == right.getMeasurementMode()
@@ -69,20 +69,11 @@ public:
     void setName(const QString &name);
     const QPair<QString, ConfigTypes> getKey() const;
 
-    const bool &isUserConfig() const;
-    void isUserConfig(const bool &isUser);
-
-    // getIsProject == !getIsUser
-    // is from project xml
-    const bool &isProjectConfig() const;
-
-    const bool &isEditable() const;
-    void isEditable(const bool &isEditable);
-
-    const bool &isStandardConfig() const;
-    void isStandardConfig(const bool &isStandardConfig);
-
-    bool getIsValid() const;
+    const bool isUserConfig() const;
+    const bool isProjectConfig() const;
+    const bool isEditable() const;
+    const bool isStandardConfig() const;
+    const bool isValid() const;
 
     const bool &getMeasureTwoSides() const;
     void setMeasureTwoSides(const bool &measureTwoSides);
@@ -118,6 +109,9 @@ public:
     void setMaxObservations(const int &maxObservations);
 
     void makeUserConfig();
+    void makeStandardConfig();
+    void makeProjectConfig();
+
 
     //#################
     //save and load XML
@@ -152,7 +146,6 @@ private:
     int maxObservations;
 
     bool editable;
-    bool standardConfig;
 };
 
 }

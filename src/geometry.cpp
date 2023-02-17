@@ -678,7 +678,7 @@ QString Geometry::getDisplayFormError(const UnitType &type, const int &digits) c
  * \return
  */
 QString Geometry::getDisplayMeasurementConfig() const{
-    if(this->activeMeasurementConfig.getIsValid()){
+    if(this->activeMeasurementConfig.isValid()){
         if(this->activeMeasurementConfig.isProjectConfig()){
             return this->activeMeasurementConfig.getName();
         }else{

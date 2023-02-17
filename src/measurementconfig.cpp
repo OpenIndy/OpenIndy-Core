@@ -5,7 +5,7 @@ using namespace oi;
 /*!
  * \brief MeasurementConfig::MeasurementConfig
  */
-MeasurementConfig::MeasurementConfig() : configType(eUndefinded), editable(true), standardConfig(false){
+MeasurementConfig::MeasurementConfig() : configType(eUndefinded), editable(true) {
 
     //set defaults
     this->measurementType = eSinglePoint_MeasurementType;
@@ -45,7 +45,6 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
 
     this->configType = copy.configType;
     this->editable = copy.editable;
-    this->standardConfig = copy.standardConfig;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -74,7 +73,6 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
 
     this->configType = copy.configType;
     this->editable = copy.editable;
-    this->standardConfig = copy.standardConfig;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -104,29 +102,19 @@ const QPair<QString, ConfigTypes> MeasurementConfig::getKey() const{
     return QPair<QString, ConfigTypes>(this->name, this->configType);
 }
 
-const bool &MeasurementConfig::isUserConfig() const{
+const bool MeasurementConfig::isUserConfig() const{
     return eUserConfig == this->configType;
 }
-const bool &MeasurementConfig::isProjectConfig() const{
-    return eProjectConfig == this->configType;
+const bool MeasurementConfig::isProjectConfig() const{
+    return eProjectConfig == this->configType || eStandardConfig == this->configType;
 }
-void MeasurementConfig::isUserConfig(const bool &isUserConfig){
-    this->configType = isUserConfig ? eUserConfig : eProjectConfig;
+const bool MeasurementConfig::isStandardConfig() const {
+    return eStandardConfig == this->configType;
 }
-
-const bool &MeasurementConfig::isEditable() const {
+const bool MeasurementConfig::isEditable() const {
     return this->editable;
 }
-
-void MeasurementConfig::isEditable(const bool &isEditable) {
-    this->editable = isEditable;
-}
-
-/*!
- * \brief MeasurementConfig::getIsValid
- * \return
- */
-bool MeasurementConfig::getIsValid() const{
+const bool MeasurementConfig::isValid() const{
     return !this->name.isEmpty() && this->configType != eUndefinded;
 }
 
@@ -136,13 +124,6 @@ bool MeasurementConfig::getIsValid() const{
  */
 const bool &MeasurementConfig::getMeasureTwoSides() const{
     return this->measureTwoSides;
-}
-const bool &MeasurementConfig::isStandardConfig() const {
-    return this->standardConfig;
-}
-
-void MeasurementConfig::isStandardConfig(const bool &isStandardConfig) {
-    this->standardConfig = isStandardConfig;
 }
 
 /*!
@@ -344,7 +325,14 @@ void MeasurementConfig::setMaxObservations(const int &maxObservations) {
 }
 
 void MeasurementConfig::makeUserConfig() {
-    this->isUserConfig(true);
-    this->isEditable(true);
-    this->isStandardConfig(false);
+    this->editable = true;
+    this->configType = eUserConfig;
+}
+void MeasurementConfig::makeProjectConfig() {
+    this->editable = false;
+    this->configType = eProjectConfig;
+}
+void MeasurementConfig::makeStandardConfig() {
+    this->editable = false;
+    this->configType = eStandardConfig;
 }
