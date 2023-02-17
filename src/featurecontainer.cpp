@@ -207,15 +207,6 @@ int FeatureContainer::getFeatureCount(const QString &group) const{
 }
 
 /*!
- * \brief FeatureContainer::getFeatureCount
- * \param mConfig
- * \return
- */
-int FeatureContainer::getFeatureCount(const QPair<QString, bool> &mConfig) const{
-    return this->geometriesMConfigMap.count(mConfig);
-}
-
-/*!
  * \brief FeatureContainer::addFeature
  * \param feature
  * \return

@@ -240,15 +240,6 @@ int OiJob::getFeatureCount(const QString &group) const{
 }
 
 /*!
- * \brief OiJob::getFeatureCount
- * \param mConfig
- * \return
- */
-int OiJob::getFeatureCount(const QPair<QString, bool> &mConfig) const{
-    return this->featureContainer.getFeatureCount(mConfig);
-}
-
-/*!
  * \brief OiJob::getFeatureIdList
  * \return
  */

@@ -64,7 +64,6 @@ public:
     int getGeometryCount() const;
     int getFeatureCount(const FeatureTypes &type) const;
     int getFeatureCount(const QString &group) const;
-    int getFeatureCount(const QPair<QString, bool> &mConfig) const;
 
     //######################
     //add or remove features
