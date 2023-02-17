@@ -82,7 +82,7 @@ public:
 
     bool featureNameChanged(const int &featureId, const QString &oldName);
     bool featureGroupChanged(const int &featureId, const QString &oldGroup);
-    bool geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
+    bool geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const Key oldIsSaved);
 
 private:
 

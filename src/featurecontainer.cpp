@@ -553,7 +553,7 @@ bool FeatureContainer::featureGroupChanged(const int &featureId, const QString &
  * \param oldIsSaved
  * \return
  */
-bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved){
+bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const Key oldKey){
 
     //check if the feature exists
     if(!this->featuresIdMap.contains(featureId)){
@@ -575,7 +575,6 @@ bool FeatureContainer::geometryMeasurementConfigChanged(const int &featureId, co
     }
 
     //get map-keys for old and new mConfig
-    Key oldKey = feature->getGeometry()->getMeasurementConfig().getKey(); // TODO OI-948
     Key newKey = feature->getGeometry()->getMeasurementConfig().getKey();
 
     //if the old mConfig was empty

@@ -275,7 +275,7 @@ private slots:
     void setGeometryNominalSystem(const int &featureId);
     void setGeometryStatistic(const int &featureId);
     void setGeometrySimulationData(const int &featureId);
-    void setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
+    void setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, const Key oldKey);
 
     //coordinate system specific attributes changed
     void setSystemObservations(const int &featureId, const int &obsId);

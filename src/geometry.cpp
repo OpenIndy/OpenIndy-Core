@@ -359,9 +359,9 @@ const MeasurementConfig &Geometry::getMeasurementConfig() const{
  */
 void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
     QString oldName = this->activeMeasurementConfig.getName();
-    bool oldIsSaved = this->activeMeasurementConfig.isUserConfig();
+    Key oldKey= this->activeMeasurementConfig.getKey();
     this->activeMeasurementConfig = myConfig;
-    emit this->geomMeasurementConfigChanged(this->id, oldName, oldIsSaved);
+    emit this->geomMeasurementConfigChanged(this->id, oldName, oldKey);
 }
 
 /*!

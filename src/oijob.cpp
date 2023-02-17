@@ -370,8 +370,8 @@ QList<QPointer<FeatureWrapper> > OiJob::getFeaturesByType(const FeatureTypes &ty
  * \param mConfig
  * \return
  */
-QList<QPointer<Geometry> > OiJob::getGeometriesByMConfig(const QPair<QString, bool> &mConfig) const{
-    return this->featureContainer.getGeometriesByMConfig(mConfig);
+QList<QPointer<Geometry> > OiJob::getGeometriesByMConfig(const Key &key) const{
+    return this->featureContainer.getGeometriesByMConfig(key);
 }
 
 /*!
@@ -2156,12 +2156,12 @@ void OiJob::setGeometrySimulationData(const int &featureId){
  * \param oldMConfig
  * \param oldIsSaved
  */
-void OiJob::setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, bool oldIsSaved){
+void OiJob::setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, const Key oldKey){
 
     //update feature container
-    this->featureContainer.geometryMeasurementConfigChanged(featureId, oldMConfig, oldIsSaved);
+    this->featureContainer.geometryMeasurementConfigChanged(featureId, oldMConfig, oldKey);
 
-    emit this->geometryMeasurementConfigChanged(featureId, oldMConfig, oldIsSaved);
+    emit this->geometryMeasurementConfigChanged(featureId, oldMConfig, oldKey);
 
 }
 
