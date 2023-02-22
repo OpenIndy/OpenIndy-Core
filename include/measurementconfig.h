@@ -33,7 +33,7 @@ enum ConfigTypes {
     eStandardConfig
 };
 
-class Key {
+class OI_CORE_EXPORT Key {
 public:
     Key(): configType(eUndefinded) {}
     Key(QString name, ConfigTypes configType) : name(name), configType(configType){}
@@ -47,15 +47,25 @@ public:
         return *this;
     }
 
-    bool operator==(const Key &other) const {
-        return this->name == other.name
+    bool operator==(const Key &other) {
+        return this->name.compare(other.name) == 0
                 && this->configType == other.configType;
     }
-    bool operator<(const Key &other) const {
-        if (this->name < other.name) {
-            return true;
+
+    friend bool operator<(const Key &left, const Key &right) {
+        if(left.name != right.name) {
+            return left.name < right.name;
+        } else {
+            return left.configType < right.configType;
         }
-        return this->configType < other.configType;
+    }
+
+    const QString getName() const {
+        return this->name;
+    }
+
+    const ConfigTypes getConfigType() const {
+        return this->configType;
     }
 
 private:
