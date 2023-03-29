@@ -1136,8 +1136,12 @@ void OiJob::addInputFeature(const QPointer<FeatureWrapper> &target, const int &f
     }
 
     //check function position
-    if(functionPosition < 0 || functionPosition >= target->getFeature()->getFunctions().size()
-            || target->getFeature()->getFunctions().at(functionPosition).isNull()){
+    if(functionPosition < 0 || functionPosition >= target->getFeature()->getFunctions().size()){
+        return;
+    }
+
+    QPointer<Function> function = target->getFeature()->getFunctions().at(functionPosition);
+    if(function.isNull()) {
         return;
     }
 
@@ -1147,11 +1151,22 @@ void OiJob::addInputFeature(const QPointer<FeatureWrapper> &target, const int &f
         return;
     }
 
+
     //create and add input element
     InputElement element(feature->getFeature()->getId());
-    element.typeOfElement = target->getFeature()->getFunctions().at(functionPosition)->getNeededElements().at(neededElementsIndex).typeOfElement;
+    element.typeOfElement = eUndefinedElement;
+    if(neededElementsIndex == InputElementKey::eDummyPoint) {
+        for(const NeededElement ne : function->getNeededElements()) {
+            if(ne.key == InputElementKey::eDummyPoint) {
+                element.typeOfElement = ne.typeOfElement;
+                break;
+            }
+        }
+    } else {
+        element.typeOfElement = function->getNeededElements().at(neededElementsIndex).typeOfElement;
+    }
 
-    switch(target->getFeature()->getFunctions().at(functionPosition)->getNeededElements().at(neededElementsIndex).typeOfElement){
+    switch(element.typeOfElement){
     case eCircleElement:{
 
         //check circle
@@ -1477,7 +1492,7 @@ void OiJob::addInputFeature(const QPointer<FeatureWrapper> &target, const int &f
     }
 
     //add the input element to the function
-    target->getFeature()->getFunctions().at(functionPosition)->addInputElement(element, neededElementsIndex);
+    function->addInputElement(element, neededElementsIndex);
 
     //create dependencies
     target->getFeature()->addPreviouslyNeeded(feature);
