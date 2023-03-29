@@ -124,8 +124,27 @@ protected:
         OiVec direction(3);
         if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
             // computing circle normale by dummy point
-            OiVec dummyPoint = function->getInputElements()[InputElementKey::eDummyPoint][0].observation->getXYZ(); // TODO Point
-            dummyPoint.removeLast();
+            ElementTypes elementType = eUndefinedElement;
+            for(const NeededElement ne : function->getNeededElements()) {
+                if(ne.key == InputElementKey::eDummyPoint) {
+                    elementType = ne.typeOfElement;
+                    break;
+                }
+            }
+            InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
+            OiVec dummyPoint;
+            switch(elementType) {
+            case eObservationElement:
+                dummyPoint = inputElement.observation->getXYZ();
+                dummyPoint.removeLast();
+                break;
+            case ePointElement:
+                dummyPoint = inputElement.point->getPosition().getVector();
+                break;
+            default: // TODO
+                break;
+            }
+
             double dot;
             OiVec::dot(dot, dummyPoint - centroid, centroid);
             direction = - dot * dummyPoint;
