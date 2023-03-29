@@ -144,7 +144,7 @@ signals:
     void geomNominalSystemChanged(const int &featureId);
     void geomStatisticChanged(const int &featureId);
     void geomSimulationDataChanged(const int &featureId);
-    void geomMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, bool oldIsSaved);
+    void geomMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const Key oldKey);
     void geomParametersChanged(const int &featureId);
 
 protected:

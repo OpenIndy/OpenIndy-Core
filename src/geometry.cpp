@@ -359,9 +359,9 @@ const MeasurementConfig &Geometry::getMeasurementConfig() const{
  */
 void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
     QString oldName = this->activeMeasurementConfig.getName();
-    bool oldIsSaved = this->activeMeasurementConfig.getIsSaved();
+    Key oldKey= this->activeMeasurementConfig.getKey();
     this->activeMeasurementConfig = myConfig;
-    emit this->geomMeasurementConfigChanged(this->id, oldName, oldIsSaved);
+    emit this->geomMeasurementConfigChanged(this->id, oldName, oldKey);
 }
 
 /*!
@@ -678,11 +678,11 @@ QString Geometry::getDisplayFormError(const UnitType &type, const int &digits) c
  * \return
  */
 QString Geometry::getDisplayMeasurementConfig() const{
-    if(this->activeMeasurementConfig.getIsValid()){
-        if(this->activeMeasurementConfig.getIsSaved()){
+    if(this->activeMeasurementConfig.isValid()){
+        if(this->activeMeasurementConfig.isProjectConfig()){
             return this->activeMeasurementConfig.getName();
         }else{
-            return QString("*%1").arg(this->activeMeasurementConfig.getName());
+            return QString("%1 [user]").arg(this->activeMeasurementConfig.getName());
         }
     }
     return QString("");

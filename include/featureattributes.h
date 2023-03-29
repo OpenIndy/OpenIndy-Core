@@ -5,6 +5,7 @@
 #include <QPair>
 
 #include "types.h"
+#include "measurementconfig.h"
 
 namespace oi{
 
@@ -34,7 +35,8 @@ public:
     bool isNominal;
     bool isCommon;
     QString nominalSystem;
-    QString mConfig;
+    QString measurementConfigName;
+    MeasurementConfig measurementConfig;
 
     //function
     QPair<QString, QString> functionPlugin; //T1 = function, T2 = file path

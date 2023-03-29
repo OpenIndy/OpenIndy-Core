@@ -1,12 +1,11 @@
 #include "measurementconfig.h"
-#include "util.h"
 
 using namespace oi;
 
 /*!
  * \brief MeasurementConfig::MeasurementConfig
  */
-MeasurementConfig::MeasurementConfig() : isSaved(false){
+MeasurementConfig::MeasurementConfig() : configType(eUndefinded), editable(true) {
 
     //set defaults
     this->measurementType = eSinglePoint_MeasurementType;
@@ -25,13 +24,15 @@ MeasurementConfig::MeasurementConfig(const MeasurementConfig &copy){
 
     //copy measurement config attributes
     this->name = copy.name;
-    this->isSaved = copy.isSaved;
     this->measurementType = copy.measurementType;
     this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
     this->maxObservations = copy.maxObservations;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
+
+    this->configType = copy.configType;
+    this->editable = copy.editable;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -46,13 +47,15 @@ MeasurementConfig &MeasurementConfig::operator=(const MeasurementConfig &copy){
 
     //copy measurement config attributes
     this->name = copy.name;
-    this->isSaved = copy.isSaved;
     this->measurementType = copy.measurementType;
     this->measurementMode = copy.measurementMode;
     this->measureTwoSides = copy.measureTwoSides;
     this->maxObservations = copy.maxObservations;
     this->timeInterval = copy.timeInterval;
     this->distanceInterval = copy.distanceInterval;
+
+    this->configType = copy.configType;
+    this->editable = copy.editable;
 
     this->transientData = copy.transientData;
     this->transientData.detach();
@@ -75,34 +78,27 @@ const QString &MeasurementConfig::getName() const{
  */
 void MeasurementConfig::setName(const QString &name){
     this->name = name;
-    this->isSaved = false;
 }
 
-/*!
- * \brief MeasurementConfig::getIsSaved
- * \return
- */
-const bool &MeasurementConfig::getIsSaved() const{
-    return this->isSaved;
+/* key for maps */
+const Key MeasurementConfig::getKey() const{
+    return Key(this->name, this->configType);
 }
 
-/*!
- * \brief MeasurementConfig::setIsSaved
- * \param isSaved
- */
-void MeasurementConfig::setIsSaved(const bool &isSaved){
-    this->isSaved = isSaved;
+const bool MeasurementConfig::isUserConfig() const{
+    return eUserConfig == this->configType;
 }
-
-/*!
- * \brief MeasurementConfig::getIsValid
- * \return
- */
-bool MeasurementConfig::getIsValid() const{
-    if(this->name.compare("") != 0){
-        return true;
-    }
-    return false;
+const bool MeasurementConfig::isProjectConfig() const{
+    return eProjectConfig == this->configType || eStandardConfig == this->configType;
+}
+const bool MeasurementConfig::isStandardConfig() const {
+    return eStandardConfig == this->configType;
+}
+const bool MeasurementConfig::isEditable() const {
+    return this->editable;
+}
+const bool MeasurementConfig::isValid() const{
+    return !this->name.isEmpty() && this->configType != eUndefinded;
 }
 
 /*!
@@ -119,7 +115,6 @@ const bool &MeasurementConfig::getMeasureTwoSides() const{
  */
 void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
     this->measureTwoSides = measureTwoSides;
-    this->isSaved = false;
 }
 
 /*!
@@ -136,7 +131,6 @@ const long &MeasurementConfig::getTimeInterval() const{
  */
 void MeasurementConfig::setTimeInterval(const long &interval){
     this->timeInterval = interval;
-    this->isSaved = false;
 }
 
 /*!
@@ -153,7 +147,6 @@ const double &MeasurementConfig::getDistanceInterval() const{
  */
 void MeasurementConfig::setDistanceInterval(const double &interval){
     this->distanceInterval = interval;
-    this->isSaved = false;
 }
 
 /*!
@@ -171,7 +164,6 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
 
     //set measurement config attributes
     mConfig.setAttribute("name", this->name);
-    mConfig.setAttribute("isSaved", this->isSaved);
 
     mConfig.setAttribute("measurementMode", this->measurementMode);
     mConfig.setAttribute("measurementType", this->measurementType);
@@ -214,10 +206,6 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->timeInterval = xmlElem.attribute("timeInterval").toLong();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
 
-    if(xmlElem.hasAttribute("isSaved")){
-        this->isSaved = xmlElem.attribute("isSaved").toInt();
-    }
-
     return true;
 
 }
@@ -254,7 +242,7 @@ bool MeasurementConfig::applicableFor(const ElementTypes elementType, QList<Feat
 
 void MeasurementConfig::setMeasurementMode(const MeasurementModes mode) {
     this->measurementMode = mode;
-    this->isSaved = false;
+
 }
 
 const MeasurementModes MeasurementConfig::getMeasurementMode() const {
@@ -263,7 +251,6 @@ const MeasurementModes MeasurementConfig::getMeasurementMode() const {
 
 void MeasurementConfig::setMeasurementType(const MeasurementTypes type) {
     this->measurementType = type;
-    this->isSaved = false;
 }
 
 const MeasurementTypes MeasurementConfig::getMeasurementType() const {
@@ -275,15 +262,18 @@ const int &MeasurementConfig::getMaxObservations() const {
 }
 void MeasurementConfig::setMaxObservations(const int &maxObservations) {
     this->maxObservations = maxObservations;
-    this->isSaved = false;
+
 }
 
-bool MeasurementConfig::equals(const MeasurementConfig &other){
-    return getName() == other.getName()
-            && getMeasurementType() == other.getMeasurementType()
-            && getMeasurementMode() == other.getMeasurementMode()
-            && getMeasureTwoSides() == other.getMeasureTwoSides()
-            && getMaxObservations() == other.getMaxObservations()
-            && getTimeInterval() == other.getTimeInterval()
-            && almostEqual(getDistanceInterval(), other.getDistanceInterval(), 8);
+void MeasurementConfig::makeUserConfig() {
+    this->editable = true;
+    this->configType = eUserConfig;
+}
+void MeasurementConfig::makeProjectConfig() {
+    this->editable = false;
+    this->configType = eProjectConfig;
+}
+void MeasurementConfig::makeStandardConfig() {
+    this->editable = false;
+    this->configType = eStandardConfig;
 }
