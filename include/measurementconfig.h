@@ -71,18 +71,6 @@ public:
     const QVariant getTransientData(const QString key) const;
     void setTransientData(const QString key, const QVariant value);
 
-    void setIsStablePoint(const bool isStablePoint);
-    const bool &getIsStablePoint() const;
-
-    void setStablePointMinDistance(const double &minDistance);
-    const double &getStablePointMinDistance() const;
-
-    void setStablePointThresholdRange(const double &threshold);
-    const double &getStablePointThresholdRange() const;
-
-    void setStablePointThresholdTime(const double &threshold);
-    const double &getStablePointThresholdTime() const;
-
     void setMeasurementMode(const MeasurementModes mode);
     const MeasurementModes getMeasurementMode() const;
 
@@ -116,11 +104,6 @@ private:
     bool measureTwoSides; //true if the sensor shall measure in both faces (false if not)
     long timeInterval; //time interval in which the sensor shall measure
     double distanceInterval; //distance interval in which the sensor shall measure [mm]
-
-    bool isStablePoint; // is stable point measurement
-    double stablePointMinDistance; // [mm]
-    double stablePointThresholdRange; // [mm]
-    double stablePointThresholdTime; // [second]
 
     QMap<QString, QVariant> transientData;
 
