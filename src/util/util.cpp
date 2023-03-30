@@ -110,6 +110,7 @@ void init(){
     elementTypesMap.insert(eReadingDirectionElement, "direction reading");
     elementTypesMap.insert(eReadingTemperatureElement, "temperature reading");
     elementTypesMap.insert(eReadingLevelElement, "level reading");
+    elementTypesMap.insert(eLevelElement, "level");
 
     //fill element plural map
     elementTypesPluralMap.insert(eCircleElement, "circles");
