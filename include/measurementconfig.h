@@ -98,7 +98,6 @@ public:
                 && left.getMaxObservations() == right.getMaxObservations()
                 && left.getTimeInterval() == right.getTimeInterval()
                 && almostEqual(left.getDistanceInterval(), right.getDistanceInterval(), 8);
-                // TODO stablepoint properties
     }
 
     //########################################
