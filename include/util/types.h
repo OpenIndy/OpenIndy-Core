@@ -89,7 +89,8 @@ enum ElementTypes{
     eReadingTemperatureElement,
     eReadingLevelElement,
 
-    eUndefinedElement
+    eUndefinedElement,
+    eLevelElement
 
 };
 
