@@ -337,7 +337,8 @@ enum ObservationDisplayAttributes{
     eObservationDisplayVJ,
     eObservationDisplayVK,
     eObservationDisplayIsUsed,
-    eObservationDisplayIsDummyPoint
+    eObservationDisplayIsDummyPoint,
+    eObservationDisplayReadingTime
 
 };
 
