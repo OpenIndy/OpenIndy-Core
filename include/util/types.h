@@ -328,6 +328,7 @@ enum ObservationDisplayAttributes{
     eObservationDisplaySigmaK,
     eObservationDisplayIsValid,
     eObservationDisplayIsSolved,
+    eObservationDisplayReadingTime,
     eObservationDisplayVX,
     eObservationDisplayVY,
     eObservationDisplayVZ,
@@ -337,8 +338,7 @@ enum ObservationDisplayAttributes{
     eObservationDisplayVJ,
     eObservationDisplayVK,
     eObservationDisplayIsUsed,
-    eObservationDisplayIsDummyPoint,
-    eObservationDisplayReadingTime
+    eObservationDisplayIsDummyPoint
 
 };
 
