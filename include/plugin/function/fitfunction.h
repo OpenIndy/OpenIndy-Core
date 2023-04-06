@@ -86,6 +86,34 @@ class OI_CORE_EXPORT BestFitCircleUtil
 
 protected:
 
+    void normaleFromDummyPoint(OiVec &direction, FitFunction *function, const OiVec &point) {
+        ElementTypes elementType = eUndefinedElement;
+        for(const NeededElement ne : function->getNeededElements()) {
+            if(ne.key == InputElementKey::eDummyPoint) {
+                elementType = ne.typeOfElement;
+                break;
+            }
+        }
+        InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
+        OiVec dummyPoint;
+        switch(elementType) {
+        case eObservationElement:
+            dummyPoint = inputElement.observation->getXYZ();
+            dummyPoint.removeLast();
+            break;
+        case ePointElement:
+            dummyPoint = inputElement.point->getPosition().getVector();
+            break;
+        default: // TODO
+            break;
+        }
+
+        double dot;
+        OiVec::dot(dot, dummyPoint - point, point);
+        direction = - dot * dummyPoint;
+        direction.normalize();
+    }
+
     bool bestFitCircleInPlane(FitFunction *function, Circle &circle, QList<IdPoint> points, QList<IdPoint> usablePoints) {
         //calculate centroid
         OiVec centroid(4);
@@ -124,31 +152,7 @@ protected:
         OiVec direction(3);
         if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
             // computing circle normale by dummy point
-            ElementTypes elementType = eUndefinedElement;
-            for(const NeededElement ne : function->getNeededElements()) {
-                if(ne.key == InputElementKey::eDummyPoint) {
-                    elementType = ne.typeOfElement;
-                    break;
-                }
-            }
-            InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
-            OiVec dummyPoint;
-            switch(elementType) {
-            case eObservationElement:
-                dummyPoint = inputElement.observation->getXYZ();
-                dummyPoint.removeLast();
-                break;
-            case ePointElement:
-                dummyPoint = inputElement.point->getPosition().getVector();
-                break;
-            default: // TODO
-                break;
-            }
-
-            double dot;
-            OiVec::dot(dot, dummyPoint - centroid, centroid);
-            direction = - dot * dummyPoint;
-            direction.normalize();
+            normaleFromDummyPoint(direction, function, centroid);
         } else {
             //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
             OiVec ab = points.at(1).xyz - points.at(0).xyz;
