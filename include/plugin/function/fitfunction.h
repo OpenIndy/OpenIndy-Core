@@ -81,9 +81,8 @@ protected:
 };
 
 
-class OI_CORE_EXPORT BestFitCircleUtil
+class OI_CORE_EXPORT BestFitUtil
 {
-
 protected:
 
     void normaleFromDummyPoint(OiVec &direction, FitFunction *function, const OiVec &point) {
@@ -113,6 +112,12 @@ protected:
         direction = - dot * dummyPoint;
         direction.normalize();
     }
+};
+
+class OI_CORE_EXPORT BestFitCircleUtil: public BestFitUtil
+{
+
+protected:
 
     bool bestFitCircleInPlane(FitFunction *function, Circle &circle, QList<IdPoint> points, QList<IdPoint> usablePoints) {
         //calculate centroid
