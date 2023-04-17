@@ -1625,6 +1625,8 @@ void OiJob::removeObservations(const int &featureId){
     //recalculate the feature
     emit this->recalcFeature(feature->getFeature());
 
+    emit this->geometryObservationsChanged(feature->getFeature()->getId());
+
 }
 
 void OiJob::enableOrDisableObservations(const int &featureId, bool enable) {
@@ -1710,6 +1712,8 @@ void OiJob::removeObservations(const int &featureId, const QList<int> selectedId
 
     //recalculate the feature
     emit this->recalcFeature(feature->getFeature());
+
+    emit this->geometryObservationsChanged(feature->getFeature()->getId());
 }
 
 /*!
