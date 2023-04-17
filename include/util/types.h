@@ -328,6 +328,7 @@ enum ObservationDisplayAttributes{
     eObservationDisplaySigmaK,
     eObservationDisplayIsValid,
     eObservationDisplayIsSolved,
+    eObservationDisplayReadingTime,
     eObservationDisplayVX,
     eObservationDisplayVY,
     eObservationDisplayVZ,

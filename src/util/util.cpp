@@ -328,6 +328,7 @@ void init(){
     observationDisplayAttributesMap.insert(eObservationDisplayVK, "vk");
     observationDisplayAttributesMap.insert(eObservationDisplayIsUsed, "used");
     observationDisplayAttributesMap.insert(eObservationDisplayIsDummyPoint, "dummy point");
+    observationDisplayAttributesMap.insert(eObservationDisplayReadingTime, "time");
 
     //fill reading display attributes map
     readingDisplayAttributesMap.insert(eReadingDisplayId, "id");
