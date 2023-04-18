@@ -105,8 +105,9 @@ protected:
         InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
         switch(elementType) {
         case eObservationElement:
-            dummyPoint = inputElement.observation->getXYZ();
-            dummyPoint.removeLast();
+            OiVec dp = inputElement.observation->getXYZ();
+            dp.removeLast();
+            dummyPoint = dp;
             break;
         case ePointElement:
             dummyPoint = inputElement.point->getPosition().getVector();
