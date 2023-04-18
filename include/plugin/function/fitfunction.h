@@ -85,7 +85,16 @@ class OI_CORE_EXPORT BestFitUtil
 {
 protected:
 
-    void normaleFromDummyPoint(OiVec &direction, FitFunction *function, const OiVec &point) {
+    bool hasDummyPoint(FitFunction *function) {
+        return function->getInputElements().contains(InputElementKey::eDummyPoint)
+                && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0;
+    }
+
+    bool getDummyPoint(OiVec &dummyPoint, FitFunction *function) {
+        if(!hasDummyPoint(function)) {
+            return false;
+        }
+
         ElementTypes elementType = eUndefinedElement;
         for(const NeededElement ne : function->getNeededElements()) {
             if(ne.key == InputElementKey::eDummyPoint) {
@@ -94,7 +103,6 @@ protected:
             }
         }
         InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
-        OiVec dummyPoint;
         switch(elementType) {
         case eObservationElement:
             dummyPoint = inputElement.observation->getXYZ();
@@ -103,14 +111,24 @@ protected:
         case ePointElement:
             dummyPoint = inputElement.point->getPosition().getVector();
             break;
-        default: // TODO
-            break;
+        default:
+            return false;
+        }
+        return true;
+    }
+
+    bool normaleFromDummyPoint(OiVec &direction, FitFunction *function, const OiVec &point) {
+        OiVec dummyPoint(3);
+        if(!getDummyPoint(dummyPoint, function)) {
+            return false;
         }
 
-        double dot;
-        OiVec::dot(dot, dummyPoint - point, point);
-        direction = - dot * dummyPoint;
+        double angle;
+        OiVec::dot(angle, dummyPoint - point, point);
+        direction = - angle * dummyPoint;
         direction.normalize();
+
+        return true;
     }
 };
 
