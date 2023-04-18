@@ -156,7 +156,7 @@ protected:
 
     void rectifyNormalToDirection(OiVec &normal, OiVec &direction) {
         double cos = 0.0; // cosine between normal and direction
-        OiVec::dot(angle, normal, direction);
+        OiVec::dot(cos, normal, direction);
         double angle = qAbs(qAcos(cos));
         if(angle > (PI/2.0)&& angle < PI){
             normal = normal * -1.0;
