@@ -175,7 +175,7 @@ protected:
         n.normalize();
 
         OiVec direction(3);
-        if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
+        if(hasDummyPoint(function)) {
             // computing circle normale by dummy point
             normaleFromDummyPoint(direction, function, centroid);
         } else {
