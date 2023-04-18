@@ -103,9 +103,10 @@ protected:
             }
         }
         InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
+        OiVec dp;
         switch(elementType) {
         case eObservationElement:
-            OiVec dp = inputElement.observation->getXYZ();
+            dp = inputElement.observation->getXYZ();
             dp.removeLast();
             dummyPoint = dp;
             break;
