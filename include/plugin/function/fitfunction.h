@@ -134,6 +134,49 @@ protected:
     }
 };
 
+class OI_CORE_EXPORT BestFitPlaneUtil: public BestFitUtil
+{
+
+protected:
+
+    bool bestFitPlane(OiVec &centroid, OiVec &normal, double eVal, QList<IdPoint> points) {
+        //centroid
+        OiVec mean(3);
+        foreach(const IdPoint point, points){
+            mean = mean + point.xyz;
+        }
+        mean = mean * (1.0/points.size());
+        centroid = mean;
+
+        //principle component analysis
+        OiMat a(points.size(), 3);
+        for(int i = 0; i < points.size(); i++){
+            a.setAt(i, 0, points.at(i).xyz.getAt(0) - centroid.getAt(0));
+            a.setAt(i, 1, points.at(i).xyz.getAt(1) - centroid.getAt(1));
+            a.setAt(i, 2, points.at(i).xyz.getAt(2) - centroid.getAt(2));
+        }
+        OiMat ata = a.t() * a;
+        OiMat u(3,3);
+        OiVec d(3);
+        OiMat v(3,3);
+        ata.svd(u, d, v);
+
+        //get smallest eigenvector which is n vector
+        int eigenIndex = -1;
+        for(int i = 0; i < d.getSize(); i++){
+            if(d.getAt(i) < eVal || i == 0){
+                eVal = d.getAt(i);
+                eigenIndex = i;
+            }
+        }
+        u.getCol(normal, eigenIndex);
+        normal.normalize();
+
+        return true;
+    }
+
+};
+
 class OI_CORE_EXPORT BestFitCircleUtil: public BestFitUtil
 {
 
