@@ -81,7 +81,7 @@ protected:
 };
 
 
-class OI_CORE_EXPORT BestFitUtil
+class OI_CORE_EXPORT BestFitUtil: public FunctionUtil
 {
 protected:
 
