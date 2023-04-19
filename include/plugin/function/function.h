@@ -162,6 +162,24 @@ protected:
             normal = normal * -1.0;
         }
     }
+
+    void registerPointToPlane(OiVec &point, OiVec planeOrigin, OiVec planeNormal) {
+        // calculate the distance of the plane from the origin
+        double d;
+        OiVec::dot(d, planeOrigin, planeNormal);
+        if(d < 0.0){
+            planeNormal = -1.0 * planeNormal;
+            d = -d;
+        }
+
+        // calculate the distance of the point position from the plane
+        double s;
+        OiVec::dot(s, point, planeNormal);
+        s = s - d;
+
+        // project the point position into the plane
+        point = point - s * planeNormal;
+    }
 };
 
 //#####################
