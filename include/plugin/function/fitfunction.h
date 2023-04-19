@@ -139,7 +139,7 @@ class OI_CORE_EXPORT BestFitPlaneUtil: public BestFitUtil
 
 protected:
 
-    bool bestFitPlane(OiVec &centroid, OiVec &normal, double eVal, QList<IdPoint> points) {
+    bool bestFitPlane(OiVec &centroid, OiVec &normal, double &eVal, QList<IdPoint> points) {
         //centroid
         OiVec mean(3);
         foreach(const IdPoint point, points){
