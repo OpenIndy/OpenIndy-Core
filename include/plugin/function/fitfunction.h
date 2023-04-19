@@ -140,12 +140,18 @@ class OI_CORE_EXPORT BestFitPlaneUtil: public BestFitUtil
 protected:
 
     bool bestFitPlane(OiVec &centroid, OiVec &normal, double eVal, QList<IdPoint> points) {
+        if(points.size() == 0) {
+            return false;
+        }
+
         //centroid
-        OiVec mean(3);
+        OiVec mean(4);
         foreach(const IdPoint point, points){
             mean = mean + point.xyz;
         }
         mean = mean * (1.0/points.size());
+        mean.removeLast();
+
         centroid = mean;
 
         //principle component analysis
