@@ -238,7 +238,7 @@ public:
     InputElement getInputElement(const int &id) const;
     InputElement getInputElement(const int &id, const int &position) const;
     bool hasInputElement(const int &id) const;
-    void addInputElement(const InputElement &element, const int &position);
+    virtual void addInputElement(const InputElement &element, const int &position);
     void removeInputElement(const int &id, const int &position);
     void removeInputElement(const int &id);
     void replaceInputElement(const InputElement &element, const int &position);
