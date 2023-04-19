@@ -181,6 +181,23 @@ protected:
         return true;
     }
 
+    void addDisplayResidual(FitFunction *function, QList<InputElement> &elements, OiVec normal, double dist) {
+        double distance = 0.0;
+        OiVec v_plane(3);
+        foreach(const InputElement &element, elements){
+            if(!element.observation.isNull() && element.observation->getIsSolved() && element.observation->getIsValid()){ // calculating residuals even if observation not in use
+
+                //calculate residual vector
+                distance = normal.getAt(0) * element.observation->getXYZ().getAt(0) + normal.getAt(1) * element.observation->getXYZ().getAt(1)
+                        + normal.getAt(2) * element.observation->getXYZ().getAt(2) - dist;
+                v_plane = distance * normal;
+
+                //set up display residual
+                function->addDisplayResidual(element.observation->getId(), v_plane.getAt(0), v_plane.getAt(1), v_plane.getAt(2), distance);
+
+            }
+        }
+    }
 };
 
 class OI_CORE_EXPORT BestFitCircleUtil: public BestFitUtil

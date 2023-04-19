@@ -192,6 +192,8 @@ protected:
 class OI_CORE_EXPORT Function : public QObject
 {
     friend class Feature;
+    friend class BestFitPlaneUtil;
+
     Q_OBJECT
 
 public:
