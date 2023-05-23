@@ -150,6 +150,38 @@ public:
     double value;
 };
 
+class OI_CORE_EXPORT FunctionUtil
+{
+protected:
+
+    void rectifyNormalToDirection(OiVec &normal, OiVec &direction) {
+        double cos = 0.0; // cosine between normal and direction
+        OiVec::dot(cos, normal, direction);
+        double angle = qAbs(qAcos(cos));
+        if(angle > (PI/2.0)&& angle < PI){
+            normal = normal * -1.0;
+        }
+    }
+
+    void registerPointToPlane(OiVec &point, OiVec planeOrigin, OiVec planeNormal) {
+        // calculate the distance of the plane from the origin
+        double d;
+        OiVec::dot(d, planeOrigin, planeNormal);
+        if(d < 0.0){
+            planeNormal = -1.0 * planeNormal;
+            d = -d;
+        }
+
+        // calculate the distance of the point position from the plane
+        double s;
+        OiVec::dot(s, point, planeNormal);
+        s = s - d;
+
+        // project the point position into the plane
+        point = point - s * planeNormal;
+    }
+};
+
 //#####################
 //function class itself
 //#####################
@@ -160,6 +192,8 @@ public:
 class OI_CORE_EXPORT Function : public QObject
 {
     friend class Feature;
+    friend class BestFitPlaneUtil;
+
     Q_OBJECT
 
 public:
@@ -224,7 +258,7 @@ public:
     InputElement getInputElement(const int &id) const;
     InputElement getInputElement(const int &id, const int &position) const;
     bool hasInputElement(const int &id) const;
-    void addInputElement(const InputElement &element, const int &position);
+    virtual void addInputElement(const InputElement &element, const int &position);
     void removeInputElement(const int &id, const int &position);
     void removeInputElement(const int &id);
     void replaceInputElement(const InputElement &element, const int &position);

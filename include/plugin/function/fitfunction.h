@@ -81,7 +81,126 @@ protected:
 };
 
 
-class OI_CORE_EXPORT BestFitCircleUtil
+class OI_CORE_EXPORT BestFitUtil: public FunctionUtil
+{
+protected:
+
+    bool hasDummyPoint(FitFunction *function) {
+        return function->getInputElements().contains(InputElementKey::eDummyPoint)
+                && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0;
+    }
+
+    bool getDummyPoint(OiVec &dummyPoint, FitFunction *function) {
+        if(!hasDummyPoint(function)) {
+            return false;
+        }
+
+        ElementTypes elementType = eUndefinedElement;
+        for(const NeededElement ne : function->getNeededElements()) {
+            if(ne.key == InputElementKey::eDummyPoint) {
+                elementType = ne.typeOfElement;
+                break;
+            }
+        }
+        InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
+        OiVec dp;
+        switch(elementType) {
+        case eObservationElement:
+            dp = inputElement.observation->getXYZ();
+            dp.removeLast();
+            dummyPoint = dp;
+            break;
+        case ePointElement:
+            dummyPoint = inputElement.point->getPosition().getVector();
+            break;
+        default:
+            return false;
+        }
+        return true;
+    }
+
+    bool normaleFromDummyPoint(OiVec &direction, FitFunction *function, const OiVec &point) {
+        OiVec dummyPoint(3);
+        if(!getDummyPoint(dummyPoint, function)) {
+            return false;
+        }
+
+        double angle;
+        OiVec::dot(angle, dummyPoint - point, point);
+        direction = - angle * dummyPoint;
+        direction.normalize();
+
+        return true;
+    }
+};
+
+class OI_CORE_EXPORT BestFitPlaneUtil: public BestFitUtil
+{
+
+protected:
+
+    bool bestFitPlane(OiVec &centroid, OiVec &normal, double &eVal, QList<IdPoint> points) {
+        if(points.size() == 0) {
+            return false;
+        }
+
+        //centroid
+        OiVec mean(4);
+        foreach(const IdPoint point, points){
+            mean = mean + point.xyz;
+        }
+        mean = mean * (1.0/points.size());
+        mean.removeLast();
+
+        centroid = mean;
+
+        //principle component analysis
+        OiMat a(points.size(), 3);
+        for(int i = 0; i < points.size(); i++){
+            a.setAt(i, 0, points.at(i).xyz.getAt(0) - centroid.getAt(0));
+            a.setAt(i, 1, points.at(i).xyz.getAt(1) - centroid.getAt(1));
+            a.setAt(i, 2, points.at(i).xyz.getAt(2) - centroid.getAt(2));
+        }
+        OiMat ata = a.t() * a;
+        OiMat u(3,3);
+        OiVec d(3);
+        OiMat v(3,3);
+        ata.svd(u, d, v);
+
+        //get smallest eigenvector which is n vector
+        int eigenIndex = -1;
+        for(int i = 0; i < d.getSize(); i++){
+            if(d.getAt(i) < eVal || i == 0){
+                eVal = d.getAt(i);
+                eigenIndex = i;
+            }
+        }
+        u.getCol(normal, eigenIndex);
+        normal.normalize();
+
+        return true;
+    }
+
+    void addDisplayResidual(FitFunction *function, QList<InputElement> &elements, OiVec normal, double dist) {
+        double distance = 0.0;
+        OiVec v_plane(3);
+        foreach(const InputElement &element, elements){
+            if(!element.observation.isNull() && element.observation->getIsSolved() && element.observation->getIsValid()){ // calculating residuals even if observation not in use
+
+                //calculate residual vector
+                distance = normal.getAt(0) * element.observation->getXYZ().getAt(0) + normal.getAt(1) * element.observation->getXYZ().getAt(1)
+                        + normal.getAt(2) * element.observation->getXYZ().getAt(2) - dist;
+                v_plane = distance * normal;
+
+                //set up display residual
+                function->addDisplayResidual(element.observation->getId(), v_plane.getAt(0), v_plane.getAt(1), v_plane.getAt(2), distance);
+
+            }
+        }
+    }
+};
+
+class OI_CORE_EXPORT BestFitCircleUtil: public BestFitUtil
 {
 
 protected:
@@ -122,33 +241,9 @@ protected:
         n.normalize();
 
         OiVec direction(3);
-        if(function->getInputElements().contains(InputElementKey::eDummyPoint) && function->getInputElements()[InputElementKey::eDummyPoint].size() > 0) {
+        if(hasDummyPoint(function)) {
             // computing circle normale by dummy point
-            ElementTypes elementType = eUndefinedElement;
-            for(const NeededElement ne : function->getNeededElements()) {
-                if(ne.key == InputElementKey::eDummyPoint) {
-                    elementType = ne.typeOfElement;
-                    break;
-                }
-            }
-            InputElement inputElement = function->getInputElements()[InputElementKey::eDummyPoint][0];
-            OiVec dummyPoint;
-            switch(elementType) {
-            case eObservationElement:
-                dummyPoint = inputElement.observation->getXYZ();
-                dummyPoint.removeLast();
-                break;
-            case ePointElement:
-                dummyPoint = inputElement.point->getPosition().getVector();
-                break;
-            default: // TODO
-                break;
-            }
-
-            double dot;
-            OiVec::dot(dot, dummyPoint - centroid, centroid);
-            direction = - dot * dummyPoint;
-            direction.normalize();
+            normaleFromDummyPoint(direction, function, centroid);
         } else {
             //check that the normal vector of the plane is defined by the first three points A, B and C (cross product)
             OiVec ab = points.at(1).xyz - points.at(0).xyz;
