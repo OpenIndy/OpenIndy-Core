@@ -355,7 +355,7 @@ ReadingTypes Sensor::getReadingType(const MeasurementConfig &mConfig) const{
     case eSinglePoint_MeasurementType:
     case eScanDistanceDependent_MeasurementType:
     case eScanTimeDependent_MeasurementType:
-        return getReadingTypeEnum(this->sensorConfiguration.getStringParameter().value("reading type"));
+        return getReadingTypeEnum(this->sensorConfiguration.getStringParameter().value("reading type", "cartesian"));
     case eDistance_MeasurementType:
         return eDistanceReading;
     case eDirection_MeasurementType:
