@@ -117,8 +117,8 @@ public:
     const bool &getMeasureTwoSides() const;
     void setMeasureTwoSides(const bool &measureTwoSides);
 
-    const long &getTimeInterval() const;
-    void setTimeInterval(const long &interval);
+    const double &getTimeInterval() const;
+    void setTimeInterval(const double &interval);
 
     const double &getDistanceInterval() const;
     void setDistanceInterval(const double &interval);
@@ -158,7 +158,7 @@ private:
     ConfigTypes configType;
 
     bool measureTwoSides; //true if the sensor shall measure in both faces (false if not)
-    long timeInterval; //time interval in which the sensor shall measure
+    double timeInterval; //time interval in which the sensor shall measure
     double distanceInterval; //distance interval in which the sensor shall measure [mm]
 
     QMap<QString, QVariant> transientData;

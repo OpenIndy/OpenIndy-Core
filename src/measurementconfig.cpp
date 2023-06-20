@@ -12,7 +12,7 @@ MeasurementConfig::MeasurementConfig() : configType(eUndefinded), editable(true)
     this->measurementMode = eFast_MeasurementMode;
     this->measureTwoSides = false;
     this->maxObservations = 500;
-    this->timeInterval = 0;
+    this->timeInterval = 0.0;
     this->distanceInterval = 0.0;
 }
 
@@ -121,7 +121,7 @@ void MeasurementConfig::setMeasureTwoSides(const bool &measureTwoSides){
  * \brief MeasurementConfig::getTimeInterval
  * \return
  */
-const long &MeasurementConfig::getTimeInterval() const{
+const double &MeasurementConfig::getTimeInterval() const{
     return this->timeInterval;
 }
 
@@ -129,7 +129,7 @@ const long &MeasurementConfig::getTimeInterval() const{
  * \brief MeasurementConfig::setTimeInterval
  * \param interval
  */
-void MeasurementConfig::setTimeInterval(const long &interval){
+void MeasurementConfig::setTimeInterval(const double &interval){
     this->timeInterval = interval;
 }
 
@@ -169,7 +169,7 @@ QDomElement MeasurementConfig::toOpenIndyXML(QDomDocument &xmlDoc) const{
     mConfig.setAttribute("measurementType", this->measurementType);
     mConfig.setAttribute("measureTwoSides", this->measureTwoSides);
     mConfig.setAttribute("maxObservations", this->maxObservations);
-    mConfig.setAttribute("timeInterval", QString::number(this->timeInterval));
+    mConfig.setAttribute("timeInterval", this->timeInterval);
     mConfig.setAttribute("distanceInterval", this->distanceInterval);
 
     return mConfig;
@@ -203,7 +203,7 @@ bool MeasurementConfig::fromOpenIndyXML(QDomElement &xmlElem){
     this->measurementType = (MeasurementTypes)xmlElem.attribute("measurementType").toInt();
     this->measureTwoSides = xmlElem.attribute("measureTwoSides").toInt();
     this->maxObservations = xmlElem.attribute("maxObservations").toInt();
-    this->timeInterval = xmlElem.attribute("timeInterval").toLong();
+    this->timeInterval = xmlElem.attribute("timeInterval").toDouble();
     this->distanceInterval = xmlElem.attribute("distanceInterval").toDouble();
 
     return true;
