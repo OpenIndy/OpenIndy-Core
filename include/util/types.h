@@ -523,6 +523,12 @@ enum SensorStatus{
     eClearStatus // TODO later: define behaviour !!!
 };
 
+enum SensorAction{
+    eSensorActionUndefind = 0, // TODO implement all SensorActions
+    eSensorActionMove, // aim or move
+    eSensorActionMeasure
+};
+
 }
 
 #endif // TYPES_H
