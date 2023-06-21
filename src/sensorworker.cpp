@@ -402,7 +402,7 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
         // same logic like SensorWorker::asyncSensorMeasurementReceived
         emit this->measurementDone(success);
 
-        emit this->commandFinished(success, msg);
+        emit this->commandFinished(success, msg, SensorAction::eSensorActionMeasure);
         if(success){
             emit this->measurementFinished(geomId, readings);
         }
@@ -477,7 +477,7 @@ void SensorWorker::move(double azimuth, double zenith, double distance, bool isR
 
     }
 
-    emit this->commandFinished(success, msg);
+    emit this->commandFinished(success, msg, SensorAction::eSensorActionMove);
     if(success && measure){
         emit this->measurementFinished(geomId, readings);
     }

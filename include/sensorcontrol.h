@@ -140,7 +140,7 @@ signals:
     //##############################################
 
     //sensor action callbacks
-    void commandFinished(bool success, QString msg);
+    void commandFinished(bool success, QString msg, SensorAction sensorAction = SensorAction::eSensorActionUndefind);
     void measurementFinished(int geomId, QList<QPointer<Reading> > readings);
     void measurementDone(bool success);
 
