@@ -434,7 +434,7 @@ void SensorWorker::move(double azimuth, double zenith, double distance, bool isR
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE, SensorAction::eSensorActionMove);
         return;
     }
 
@@ -497,7 +497,7 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
 
     //check sensor
     if(this->sensor.isNull()){
-        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE);
+        emit this->commandFinished(false, SensorWorkerMessage::NO_SENSOR_INSTANCE, SensorAction::eSensorActionMove);
         return;
     }
 
@@ -553,7 +553,7 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
         request.insert("z", z);
         QJsonObject status = this->sensor->performAsyncSensorCommand(request);
         if(status.value("status").toString().compare("blocked") == 0) {
-            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED);
+            emit this->commandFinished(false, SensorWorkerMessage::CONNECTION_WAS_BLOCKED, SensorAction::eSensorActionMove);
         }
     }
 
