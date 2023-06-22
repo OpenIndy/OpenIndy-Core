@@ -47,7 +47,7 @@ signals:
     //##############################################
 
     //sensor action callbacks
-    void commandFinished(bool success, QString msg);
+    void commandFinished(bool success, QString msg, SensorAction sensorAction = SensorAction::eSensorActionUndefind);
     void measurementFinished(int geomId, QList<QPointer<Reading> > readings);
     void measurementDone(bool success);
 
@@ -149,8 +149,8 @@ private slots:
     void streamReading();
     void monitorConnectionStatus();
     void streamStatus();
-    void asyncSensorResponseReceived(const QJsonObject &response);
-    void asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements);
+    void asyncSensorResponseReceived(const QJsonObject &response, const SensorAction sensorAction = SensorAction::eSensorActionUndefind);
+    void asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements, const SensorAction sensorAction = SensorAction::eSensorActionUndefind);
     void asyncSensorStreamDataReceived(const QVariantMap &reading);
 
 private:

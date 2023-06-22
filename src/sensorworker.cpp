@@ -402,7 +402,7 @@ void SensorWorker::measure(int geomId, MeasurementConfig mConfig){
         // same logic like SensorWorker::asyncSensorMeasurementReceived
         emit this->measurementDone(success);
 
-        emit this->commandFinished(success, msg);
+        emit this->commandFinished(success, msg, SensorAction::eSensorActionMeasure);
         if(success){
             emit this->measurementFinished(geomId, readings);
         }
@@ -477,7 +477,7 @@ void SensorWorker::move(double azimuth, double zenith, double distance, bool isR
 
     }
 
-    emit this->commandFinished(success, msg);
+    emit this->commandFinished(success, msg, SensorAction::eSensorActionMove);
     if(success && measure){
         emit this->measurementFinished(geomId, readings);
     }
@@ -541,7 +541,7 @@ void SensorWorker::move(double x, double y, double z, bool measure, int geomId, 
 
         }
 
-        emit this->commandFinished(success, msg);
+        emit this->commandFinished(success, msg, SensorAction::eSensorActionMove);
         if(success && measure){
             emit this->measurementFinished(geomId, readings);
         }
@@ -959,7 +959,7 @@ void SensorWorker::streamStatus(){
 
 }
 
-void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
+void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response, const SensorAction sensorAction)
 {
     bool success = false;
     QString msg = "";
@@ -969,17 +969,17 @@ void SensorWorker::asyncSensorResponseReceived(const QJsonObject &response)
         msg = response.value("result").toString();
         success = true;
     }
-    emit this->commandFinished(success, msg);
+    emit this->commandFinished(success, msg, sensorAction);
 }
 
-void SensorWorker::asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements)
+void SensorWorker::asyncSensorMeasurementReceived(const int &geomId, const QList<QPointer<Reading> > &measurements, const SensorAction sensorAction)
 {
     // same logic like SensorWorker::measure
     const bool success = measurements.size() > 0;
 
     emit this->measurementDone(success);
 
-    emit this->commandFinished(success, success ? SensorWorkerMessage::MEASUREMENT_DATA_RECEIVED : SensorWorkerMessage::MEASUREMENT_DIT_NOT_DELIVER_ANY_RESULTS);
+    emit this->commandFinished(success, success ? SensorWorkerMessage::MEASUREMENT_DATA_RECEIVED : SensorWorkerMessage::MEASUREMENT_DIT_NOT_DELIVER_ANY_RESULTS, sensorAction);
 
     if(success) {
         emit this->measurementFinished(geomId, measurements);
