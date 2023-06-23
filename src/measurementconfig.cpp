@@ -270,7 +270,7 @@ void MeasurementConfig::makeUserConfig() {
     this->configType = eUserConfig;
 }
 void MeasurementConfig::makeProjectConfig() {
-    this->editable = false;
+    this->editable = true;
     this->configType = eProjectConfig;
 }
 void MeasurementConfig::makeStandardConfig() {
