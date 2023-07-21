@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QtXml>
+#include <QHash.h>
 
 #include "types.h"
 #include "util.h"
@@ -50,6 +51,19 @@ public:
     bool operator==(const MeasurementConfigKey &other) {
         return this->name.compare(other.name) == 0
                 && this->configType == other.configType;
+    }
+
+    friend bool operator==(const MeasurementConfigKey &left, const MeasurementConfigKey &right){
+
+        return left.getName() == right.getName()        // combined key
+                && left.configType == right.configType; // combined key
+    }
+
+    friend uint qHash(const MeasurementConfigKey key, uint seed) {
+        QtPrivate::QHashCombine hash;
+        seed = hash(seed, key.name);
+        seed = hash(seed, key.configType);
+        return seed;
     }
 
     friend bool operator<(const MeasurementConfigKey &left, const MeasurementConfigKey &right) {
