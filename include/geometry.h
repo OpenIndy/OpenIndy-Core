@@ -60,8 +60,8 @@ public:
     const QPointer<CoordinateSystem> &getNominalSystem() const;
     bool setNominalSystem(const QPointer<CoordinateSystem> &nomSys);
 	
-    const MeasurementConfig &getMeasurementConfig() const;
-    void setMeasurementConfig(const MeasurementConfig &myConfig);
+    const MeasurementConfigKey &getMeasurementConfig() const;
+    void setMeasurementConfig(const MeasurementConfigKey &myConfig);
 
     const Statistic &getStatistic() const;
     void setStatistic(const Statistic &myStatistic);
@@ -144,7 +144,7 @@ signals:
     void geomNominalSystemChanged(const int &featureId);
     void geomStatisticChanged(const int &featureId);
     void geomSimulationDataChanged(const int &featureId);
-    void geomMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const Key oldKey);
+    void geomMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const MeasurementConfigKey oldKey);
     void geomParametersChanged(const int &featureId);
 
 protected:
@@ -175,7 +175,7 @@ protected:
     QList<ReadingTypes> usedReadingTypes;
 
     //current measurement config that is used to create readings until the user selects another one
-    MeasurementConfig activeMeasurementConfig; //only for this geometry instance
+    MeasurementConfigKey activeMeasurementConfig;
 
     Position xyz;
     Direction ijk;

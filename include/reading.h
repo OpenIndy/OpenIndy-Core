@@ -210,8 +210,8 @@ public:
     //get general information about the reading
     //#########################################
 
-    const MeasurementConfig &getMeasurementConfig();
-    void setMeasurementConfig(const MeasurementConfig &mConfig);
+    const MeasurementConfigKey &getMeasurementConfig();
+    void setMeasurementConfig(const MeasurementConfigKey &mConfig);
 
     const QDateTime &getMeasuredAt() const;
     void setMeasuredAt(const QDateTime &measuredAt);
@@ -304,8 +304,7 @@ private:
     //##########################
 
     QDateTime measuredAt;
-    MeasurementConfig mConfig; //the configuration that the sensor used to produce this reading
-    QString measurementConfigName;
+    MeasurementConfigKey mConfig; //the configuration that the sensor used to produce this reading
     SensorFaces face;
     bool imported; // indicate that "reading" was not measured but imported
 

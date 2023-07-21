@@ -411,7 +411,7 @@ OiVec Reading::toPolar(const double &x, const double &y, const double &z){
  * \brief Reading::getMeasurementConfig
  * \return
  */
-const MeasurementConfig &Reading::getMeasurementConfig(){
+const MeasurementConfigKey &Reading::getMeasurementConfig(){
     return this->mConfig;
 }
 
@@ -419,9 +419,8 @@ const MeasurementConfig &Reading::getMeasurementConfig(){
  * \brief Reading::setMeasurementConfig
  * \param mConfig
  */
-void Reading::setMeasurementConfig(const MeasurementConfig &mConfig){
+void Reading::setMeasurementConfig(const MeasurementConfigKey &mConfig){
     this->mConfig = mConfig;
-    this->measurementConfigName = mConfig.getName();
 }
 
 /*!
@@ -634,7 +633,7 @@ QString Reading::getDisplaySensorConfigName() const{
  * \return
  */
 QString Reading::getDisplayMeasurementConfigName() const{
-    return this->measurementConfigName;
+    return this->mConfig.getName();
 }
 
 /*!
@@ -965,7 +964,7 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
     reading.appendChild(sensorConfig);
 
     QDomElement measurementConfig = xmlDoc.createElement("measurementConfig");
-    measurementConfig.setAttribute("name", this->measurementConfigName);
+    measurementConfig.setAttribute("name", this->mConfig.getName());
     reading.appendChild(measurementConfig);
 
     //add measurements
@@ -1143,7 +1142,8 @@ bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
 
     QDomElement measurementConfig = xmlElem.firstChildElement("measurementConfig");
     if(!measurementConfig.isNull()) { // may null for old project files
-        this->measurementConfigName = measurementConfig.attribute("name");
+        MeasurementConfigKey k(measurementConfig.attribute("name"), ConfigTypes::eUndefinded);
+        this->mConfig = k;
     }
 
     //get list of measurements
