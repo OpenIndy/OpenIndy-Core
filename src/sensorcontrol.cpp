@@ -361,7 +361,7 @@ SensorConfiguration SensorControl::getSensorConfiguration(){
 void SensorControl::setSensorConfiguration(const SensorConfiguration &sConfig){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "setSensorConfiguration", Qt::QueuedConnection,
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "setSensorConfiguration", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection,
                                                 Q_ARG(SensorConfiguration, sConfig));
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
@@ -375,7 +375,7 @@ void SensorControl::setSensorConfiguration(const SensorConfiguration &sConfig){
 void SensorControl::connectSensor(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "connectSensor", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "connectSensor", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -388,7 +388,7 @@ void SensorControl::connectSensor(){
 void SensorControl::disconnectSensor(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "disconnectSensor", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "disconnectSensor", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -403,7 +403,7 @@ void SensorControl::disconnectSensor(){
 void SensorControl::measure(const int &geomId, const MeasurementConfig &mConfig){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "measure", Qt::QueuedConnection,
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "measure", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection,
                                                 Q_ARG(int, geomId), Q_ARG(MeasurementConfig, mConfig));
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
@@ -424,7 +424,7 @@ void SensorControl::measure(const int &geomId, const MeasurementConfig &mConfig)
 void SensorControl::move(const double &azimuth, const double &zenith, const double &distance, const bool &isRelative, const bool &measure, const int &geomId, const MeasurementConfig &mConfig){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "move", Qt::QueuedConnection,
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "move", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection,
                                                 Q_ARG(double, azimuth), Q_ARG(double, zenith), Q_ARG(double, distance),
                                                 Q_ARG(bool, isRelative), Q_ARG(bool, measure), Q_ARG(int, geomId),
                                                 Q_ARG(MeasurementConfig, mConfig));
@@ -446,7 +446,7 @@ void SensorControl::move(const double &azimuth, const double &zenith, const doub
 void SensorControl::move(const double &x, const double &y, const double &z, const bool &measure, const int &geomId, const MeasurementConfig &mConfig){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "move", Qt::QueuedConnection,
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "move", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection,
                                                 Q_ARG(double, x), Q_ARG(double, y), Q_ARG(double, z),
                                                 Q_ARG(bool, measure), Q_ARG(int, geomId), Q_ARG(MeasurementConfig, mConfig));
     if(!hasInvoked){
@@ -461,7 +461,7 @@ void SensorControl::move(const double &x, const double &y, const double &z, cons
 void SensorControl::initialize(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "initialize", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "initialize", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -474,7 +474,7 @@ void SensorControl::initialize(){
 void SensorControl::motorState(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "motorState", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "motorState", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -487,7 +487,7 @@ void SensorControl::motorState(){
 void SensorControl::home(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "home", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "home", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -500,7 +500,7 @@ void SensorControl::home(){
 void SensorControl::toggleSight(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "toggleSight", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "toggleSight", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -513,7 +513,7 @@ void SensorControl::toggleSight(){
 void SensorControl::compensation(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "compensation", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "compensation", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -527,7 +527,8 @@ void SensorControl::compensation(){
 void SensorControl::selfDefinedAction(const QString &action){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "selfDefinedAction", Qt::QueuedConnection,
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "selfDefinedAction",
+                                                this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection,
                                                 Q_ARG(QString, action));
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
@@ -537,7 +538,7 @@ void SensorControl::selfDefinedAction(const QString &action){
 void SensorControl::search(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "search", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "search", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -550,7 +551,7 @@ void SensorControl::search(){
 void SensorControl::startReadingStream(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startReadingStream", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startReadingStream", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -564,7 +565,7 @@ void SensorControl::stopReadingStream(){
 
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopReadingStream", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopReadingStream", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -577,7 +578,7 @@ void SensorControl::stopReadingStream(){
 void SensorControl::startConnectionMonitoringStream(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startConnectionMonitoringStream", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startConnectionMonitoringStream", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -590,7 +591,7 @@ void SensorControl::startConnectionMonitoringStream(){
 void SensorControl::stopConnectionMonitoringStream(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopConnectionMonitoringStream", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopConnectionMonitoringStream", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -603,7 +604,7 @@ void SensorControl::stopConnectionMonitoringStream(){
 void SensorControl::startStatusMonitoringStream(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startStatusMonitoringStream", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "startStatusMonitoringStream", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -616,7 +617,7 @@ void SensorControl::startStatusMonitoringStream(){
 void SensorControl::stopStatusMonitoringStream(){
 
     //call method of sensor worker
-    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopStatusMonitoringStream", Qt::QueuedConnection);
+    bool hasInvoked = QMetaObject::invokeMethod(this->worker, "stopStatusMonitoringStream", this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
@@ -627,9 +628,7 @@ void SensorControl::finishMeasurement(){
 
     //call method of sensor worker
     bool hasInvoked = QMetaObject::invokeMethod(this->worker, "finishMeasurement",
-                                                this->worker->getSensor().isSensorAsync()
-                                                    ? Qt::QueuedConnection
-                                                    : Qt::DirectConnection);
+                                                this->worker->getSensor().isSensorAsync() ? Qt::AutoConnection : Qt::QueuedConnection);
     if(!hasInvoked){
         emit this->sensorMessage("Cannot invoke getSensor method of sensor worker", eErrorMessage, eConsoleMessage);
     }
