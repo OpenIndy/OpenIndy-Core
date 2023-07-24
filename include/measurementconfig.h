@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QtXml>
+#include <QHash.h>
 
 #include "types.h"
 #include "util.h"
@@ -33,26 +34,39 @@ enum ConfigTypes {
     eStandardConfig
 };
 
-class OI_CORE_EXPORT Key {
+class OI_CORE_EXPORT MeasurementConfigKey {
 public:
-    Key(): configType(eUndefinded) {}
-    Key(QString name, ConfigTypes configType) : name(name), configType(configType){}
-    Key(const Key &copy) {
+    MeasurementConfigKey(): configType(eUndefinded) {}
+    MeasurementConfigKey(QString name, ConfigTypes configType) : name(name), configType(configType){}
+    MeasurementConfigKey(const MeasurementConfigKey &copy) {
         this->name = copy.name;
         this->configType = copy.configType;
     }
-    Key &operator=(const Key &copy) {
+    MeasurementConfigKey &operator=(const MeasurementConfigKey &copy) {
         this->name = copy.name;
         this->configType = copy.configType;
         return *this;
     }
 
-    bool operator==(const Key &other) {
+    bool operator==(const MeasurementConfigKey &other) {
         return this->name.compare(other.name) == 0
                 && this->configType == other.configType;
     }
 
-    friend bool operator<(const Key &left, const Key &right) {
+    friend bool operator==(const MeasurementConfigKey &left, const MeasurementConfigKey &right){
+
+        return left.getName() == right.getName()        // combined key
+                && left.configType == right.configType; // combined key
+    }
+
+    friend uint qHash(const MeasurementConfigKey key, uint seed) {
+        QtPrivate::QHashCombine hash;
+        seed = hash(seed, key.name);
+        seed = hash(seed, key.configType);
+        return seed;
+    }
+
+    friend bool operator<(const MeasurementConfigKey &left, const MeasurementConfigKey &right) {
         if(left.name != right.name) {
             return left.name < right.name;
         } else {
@@ -66,6 +80,19 @@ public:
 
     const ConfigTypes getConfigType() const {
         return this->configType;
+    }
+
+    const bool isUserConfig() const{
+        return eUserConfig == this->configType;
+    }
+    const bool isProjectConfig() const{
+        return eProjectConfig == this->configType || eStandardConfig == this->configType;
+    }
+    const bool isStandardConfig() const {
+        return eStandardConfig == this->configType;
+    }
+    const bool isValid() const{
+        return !this->name.isEmpty() && this->configType != eUndefinded;
     }
 
 private:
@@ -106,7 +133,7 @@ public:
 
     const QString &getName() const;
     void setName(const QString &name);
-    const Key getKey() const;
+    const MeasurementConfigKey getKey() const;
 
     const bool isUserConfig() const;
     const bool isProjectConfig() const;

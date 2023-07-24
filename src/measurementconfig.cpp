@@ -81,8 +81,8 @@ void MeasurementConfig::setName(const QString &name){
 }
 
 /* key for maps */
-const Key MeasurementConfig::getKey() const{
-    return Key(this->name, this->configType);
+const MeasurementConfigKey MeasurementConfig::getKey() const{
+    return MeasurementConfigKey(this->name, this->configType);
 }
 
 const bool MeasurementConfig::isUserConfig() const{

@@ -922,7 +922,8 @@ void Station::disconnectSensorControl(){
  */
 void Station::addReadings(const int &geomId, const QList<QPointer<Reading> > &readings){
 
-    MeasurementConfig measurementConfig = this->job->getFeatureById(geomId)->getGeometry()->getMeasurementConfig();
+    MeasurementConfigKey measurementConfig = this->job->getFeatureById(geomId)->getGeometry()->getMeasurementConfig();
+
     foreach(const QPointer<Reading> &reading, readings){
 
         //check reading

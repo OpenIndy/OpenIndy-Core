@@ -349,7 +349,7 @@ bool Geometry::setNominalSystem(const QPointer<CoordinateSystem> &nomSys){
  * \brief Geometry::getMeasurementConfig
  * \return
  */
-const MeasurementConfig &Geometry::getMeasurementConfig() const{
+const MeasurementConfigKey &Geometry::getMeasurementConfig() const{
     return this->activeMeasurementConfig;
 }
 
@@ -357,9 +357,9 @@ const MeasurementConfig &Geometry::getMeasurementConfig() const{
  * \brief Geometry::setMeasurementConfig
  * \param myConfig
  */
-void Geometry::setMeasurementConfig(const MeasurementConfig &myConfig){
+void Geometry::setMeasurementConfig(const MeasurementConfigKey &myConfig){
     QString oldName = this->activeMeasurementConfig.getName();
-    Key oldKey= this->activeMeasurementConfig.getKey();
+    MeasurementConfigKey oldKey = this->activeMeasurementConfig;
     this->activeMeasurementConfig = myConfig;
     emit this->geomMeasurementConfigChanged(this->id, oldName, oldKey);
 }

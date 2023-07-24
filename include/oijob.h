@@ -81,7 +81,7 @@ public:
     const QList<int> &getFeatureIdList() const;
     const QStringList &getFeatureNameList() const;
     const QStringList &getFeatureGroupList() const;
-    const QList<Key> &getUsedMeasurementConfigs() const;
+    const QList<MeasurementConfigKey> &getUsedMeasurementConfigs() const;
 
     //access feature lists
     const QList<QPointer<FeatureWrapper> > &getFeaturesList() const;
@@ -97,7 +97,7 @@ public:
     QList<QPointer<FeatureWrapper> > getFeaturesByName(const QString &name, const bool startWith = false) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByGroup(const QString &group) const;
     QList<QPointer<FeatureWrapper> > getFeaturesByType(const FeatureTypes &type) const;
-    QList<QPointer<Geometry> > getGeometriesByMConfig(const Key &key) const;
+    QList<QPointer<Geometry> > getGeometriesByMConfig(const MeasurementConfigKey &key) const;
 
     //access active features
     const QPointer<FeatureWrapper> &getActiveFeature() const;
@@ -206,7 +206,7 @@ signals:
     void geometryNominalSystemChanged(const int &featureId);
     void geometryStatisticChanged(const int &featureId);
     void geometrySimulationDataChanged(const int &featureId);
-    void geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const Key oldKey);
+    void geometryMeasurementConfigChanged(const int &featureId, const QString &oldMConfig, const MeasurementConfigKey oldKey);
 
     //coordinate system specific attributes changed
     void systemObservationsChanged(const int &featureId, const int &obsId);
@@ -274,7 +274,7 @@ private slots:
     void setGeometryNominalSystem(const int &featureId);
     void setGeometryStatistic(const int &featureId);
     void setGeometrySimulationData(const int &featureId);
-    void setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, const Key oldKey);
+    void setGeometryMeasurementConfig(const int &featureId, const QString &oldMConfig, const MeasurementConfigKey oldKey);
 
     //coordinate system specific attributes changed
     void setSystemObservations(const int &featureId, const int &obsId);
