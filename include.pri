@@ -12,13 +12,6 @@ INCLUDEPATH += $$PWD/include/plugin/simulation
 INCLUDEPATH += $$PWD/include/plugin/tool
 INCLUDEPATH += $$PWD/lib/OpenIndy-Math/include
 
-# header files
-HEADERS  += \
-    $$PWD/lib/OpenIndy-Math/include/chooselalib.h \
-    $$PWD/lib/OpenIndy-Math/include/global.h \
-    $$PWD/lib/OpenIndy-Math/include/linearalgebra.h \
-    $$PWD/lib/OpenIndy-Math/include/oimat.h \
-    $$PWD/lib/OpenIndy-Math/include/oivec.h
 
 # libraries
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/bin/release/ -lopenIndyCore1
