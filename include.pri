@@ -12,27 +12,6 @@ INCLUDEPATH += $$PWD/include/plugin/simulation
 INCLUDEPATH += $$PWD/include/plugin/tool
 INCLUDEPATH += $$PWD/lib/OpenIndy-Math/include
 
-# TODO OI-482 check config:
-win32:CONFIG(release, debug|release): INCLUDEPATH += -L$$PWD/bin/release
-else:win32:CONFIG(debug, debug|release): INCLUDEPATH += -L$$PWD/bin/debug
-else:linux:CONFIG(debug, debug|release): INCLUDEPATH += -L$$PWD/bin/debug
-else:linux:CONFIG(release, debug|release): INCLUDEPATH += -L$$PWD/bin/release
-win32:CONFIG(release, debug|release): INCLUDEPATH += -L$$PWD/lib/OpenIndy-Math/bin/release
-else:win32:CONFIG(debug, debug|release): INCLUDEPATH += -L$$PWD/lib/OpenIndy-Math/bin/debug
-else:linux:CONFIG(debug, debug|release): INCLUDEPATH += -L$$PWD/lib/OpenIndy-Math/bin/debug
-else:linux:CONFIG(release, debug|release): INCLUDEPATH += -L$$PWD/lib/OpenIndy-Math/bin/release
-
-
-# depend paths
-win32:CONFIG(release, debug|release): DEPENDPATH += -L$$PWD/bin/release
-else:win32:CONFIG(debug, debug|release): DEPENDPATH += -L$$PWD/bin/debug
-else:linux: CONFIG(debug, debug|release): DEPENDPATH += -L$$PWD/bin/debug
-else:linux: CONFIG(release, debug|release): DEPENDPATH += -L$$PWD/bin/release
-win32:CONFIG(release, debug|release): DEPENDPATH += -L$$PWD/lib/OpenIndy-Math/bin/release
-else:win32:CONFIG(debug, debug|release): DEPENDPATH += -L$$PWD/lib/OpenIndy-Math/bin/debug
-else:linux: CONFIG(debug, debug|release): DEPENDPATH += -L$$PWD/lib/OpenIndy-Math/bin/debug
-else:linux: CONFIG(release, debug|release): DEPENDPATH += -L$$PWD/lib/OpenIndy-Math/bin/release
-
 # header files
 HEADERS  += \
     $$PWD/lib/OpenIndy-Math/include/chooselalib.h \

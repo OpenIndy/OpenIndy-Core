@@ -1,14 +1,4 @@
 INCLUDEPATH += \
-    $$PWD/../src \
-    $$PWD/../src/geometry \
-    $$PWD/../src/plugin \
-    $$PWD/../src/plugin/function \
-    $$PWD/../src/plugin/sensor \
-    $$PWD/../src/plugin/networkAdjustment \
-    $$PWD/../src/plugin/simulation \
-    $$PWD/../src/plugin/tool \
-    $$PWD/../src/plugin/exchange \
-    $$PWD/../src/util \
     $$PWD/../include \
     $$PWD/../include/geometry \
     $$PWD/../include/plugin \
