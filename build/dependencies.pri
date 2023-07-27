@@ -1,5 +1,6 @@
 
 include($$PWD/../lib/OpenIndy-Math/include.pri)
+include($$PWD/../lib/OpenIndy-Math/build/includes.pri)
 
 linux: LIBS = -lGLU
 
