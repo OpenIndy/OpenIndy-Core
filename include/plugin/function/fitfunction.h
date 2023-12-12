@@ -145,12 +145,15 @@ protected:
         }
 
         //centroid
-        OiVec mean(4);
+        OiVec mean(3);
         foreach(const IdPoint point, points){
-            mean = mean + point.xyz;
+            OiVec xyz = point.xyz;
+            if(xyz.getSize() == 4) {
+                xyz.removeLast();
+            }
+            mean = mean + xyz;
         }
         mean = mean * (1.0/points.size());
-        mean.removeLast();
 
         centroid = mean;
 
