@@ -477,21 +477,32 @@ void Feature::recalc(){
 
     this->isSolved = false;
 
-    //execute all functions in the specified order
-    foreach(const QPointer<Function> &function, this->functionList){
+    try {
+        //execute all functions in the specified order
+        foreach(const QPointer<Function> &function, this->functionList){
 
-        //break if the function pointer is not valid
-        if(function.isNull()){
-            this->isSolved = false;
-            break;
+            //break if the function pointer is not valid
+            if(function.isNull()){
+                this->isSolved = false;
+                break;
+            }
+
+            //try to solve the current function
+            this->isSolved = function->exec(this->selfFeature);
+            if(!this->isSolved){
+                break;
+            }
+
         }
 
-        //try to solve the current function
-        this->isSolved = function->exec(this->selfFeature);
-        if(!this->isSolved){
-            break;
-        }
-
+    } catch(const exception &e) {
+        throw exception(QString("can not calculate feature: \"%1\", error: %2")
+                        .arg(this->getFeatureName())
+                        .arg(e.what()).toLocal8Bit().data());
+    } catch(...) {
+        throw exception(QString("can not calculate feature: \"%1\"")
+                        .arg(this->getFeatureName())
+                        .toLocal8Bit().data());
     }
 
 }
