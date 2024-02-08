@@ -193,6 +193,13 @@ void Station::setCoordinateSystem(const Position &origin, const Direction &xAxis
    this->zAxis = zAxis;
 }
 
+void Station::setEstimatedCoordinateSystem(QPointer<CoordinateSystem> cs) {
+    this->estimatedStationSystem = cs;
+}
+const QPointer<CoordinateSystem> &Station::getEstimatedCoordinateSystem() const {
+    return this->estimatedStationSystem;
+}
+
 /*!
  * \brief Station::getCoordinateSystem
  * \return
