@@ -55,6 +55,8 @@ public:
 
     //coordinate system
     const QPointer<CoordinateSystem> &getCoordinateSystem() const;
+    void setEstimatedCoordinateSystem(QPointer<CoordinateSystem> cs);
+    const QPointer<CoordinateSystem> &getEstimatedCoordinateSystem() const;
 
     //get or set sensor configuration
     SensorConfiguration getSensorConfiguration();
@@ -232,6 +234,7 @@ private:
 
     //the corresponding coordinate system
     QPointer<CoordinateSystem> stationSystem;
+    QPointer<CoordinateSystem> estimatedStationSystem;
 
     //#############################
     //readings made by this station
