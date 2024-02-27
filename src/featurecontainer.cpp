@@ -50,6 +50,7 @@ QList<QPointer<CoordinateSystem> > FeatureContainer::getStationSystemsList() con
  * \brief FeatureContainer::getBundleSystemList
  * \return
  */
+/* // TODO OI-982 remove
 QList<QPointer<CoordinateSystem> > FeatureContainer::getBundleSystemList() const{
     QList<QPointer<CoordinateSystem> > bundleSystems;
     foreach(const QPointer<CoordinateSystem> &system, this->coordSystems){
@@ -59,7 +60,7 @@ QList<QPointer<CoordinateSystem> > FeatureContainer::getBundleSystemList() const
     }
     return bundleSystems;
 }
-
+*/
 /*!
  * \brief FeatureContainer::getStationsList
  * \return

@@ -300,9 +300,11 @@ QList<QPointer<CoordinateSystem> > OiJob::getStationSystemsList() const{
  * \brief OiJob::getBundleSystemList
  * \return
  */
-QList<QPointer<CoordinateSystem> > OiJob::getBundleSystemList() const{
+/*
+QList<QPointer<CoordinateSystem> > OiJob::getBundleSystemList() const{ // TODO OI-982 remove
     return this->featureContainer.getBundleSystemList();
 }
+*/
 
 /*!
  * \brief OiJob::getStationsList
@@ -388,6 +390,24 @@ const QPointer<FeatureWrapper> &OiJob::getActiveFeature() const{
  */
 const QPointer<Station> &OiJob::getActiveStation() const{
     return this->activeStation;
+}
+
+const QPointer<CoordinateSystem> &OiJob::getActiveBundleSystem() const{
+    return this->activeBundleSystem;
+}
+
+const QPointer<oi::BundleAdjustment> &OiJob::getActiveBundleAdjustment() const{
+    if(this->activeBundleSystem.isNull()){
+        return QPointer<oi::BundleAdjustment>(NULL);
+    }
+    return this->activeBundleSystem->getBundlePlugin();
+}
+
+const QJsonObject OiJob::getActiveBundleTemplate() const{
+    if(this->activeBundleSystem.isNull()){
+        return QJsonObject();
+    }
+    return this->activeBundleSystem->getBundleTemplate();
 }
 
 /*!
@@ -2693,8 +2713,12 @@ bool OiJob::checkAndSetUpNewFeature(const QPointer<FeatureWrapper> &feature, boo
     //new feature shall not be active
     feature->getFeature()->setActiveFeatureState(false);
 
-    //check feature relations
+    //check feature relations    
     if(feature->getFeatureTypeEnum() == eCoordinateSystemFeature){
+        if(!feature->getCoordinateSystem().isNull()
+                && feature->getCoordinateSystem()->getIsBundleSystem()){
+            this->activeBundleSystem = feature->getCoordinateSystem();
+        }
 
         //check if the system is a nominal system
         if(feature->getCoordinateSystem()->getIsStationSystem()){

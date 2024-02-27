@@ -103,6 +103,9 @@ public:
     const QPointer<FeatureWrapper> &getActiveFeature() const;
     const QPointer<Station> &getActiveStation() const;
     const QPointer<CoordinateSystem> &getActiveCoordinateSystem() const;
+    const QPointer<CoordinateSystem> &getActiveBundleSystem() const;
+    const QPointer<oi::BundleAdjustment> &getActiveBundleAdjustment() const;
+    const QJsonObject getActiveBundleTemplate() const;
 
     //get or set feature groups
     const QString &getActiveGroup() const;
@@ -345,6 +348,7 @@ private:
     QPointer<FeatureWrapper> activeFeature;
     QPointer<Station> activeStation;
     QPointer<CoordinateSystem> activeCoordinateSystem;
+    QPointer<CoordinateSystem> activeBundleSystem;
 
     //active group
     QString activeGroup;
