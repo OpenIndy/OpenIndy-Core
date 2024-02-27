@@ -706,6 +706,9 @@ QList<QPointer<FeatureWrapper> > OiJob::addFeatures(const FeatureAttributes &fAt
             //if type of feature is a coordinate system
             if(fAttr.typeOfFeature == eCoordinateSystemFeature){
                 feature->getCoordinateSystem()->isBundleSystem = fAttr.isBundleSystem;
+                if(feature->getCoordinateSystem()->isBundleSystem) {
+                    this->activeBundleSystem = feature->getCoordinateSystem();
+                }
             }
 
             //add and connect feature
