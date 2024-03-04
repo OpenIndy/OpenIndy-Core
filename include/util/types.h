@@ -526,7 +526,8 @@ enum SensorStatus{
 enum SensorAction{
     eSensorActionUndefind = 0, // TODO implement all SensorActions
     eSensorActionMove, // aim or move
-    eSensorActionMeasure
+    eSensorActionMeasure,
+    eSensorActionAll,
 };
 
 }
