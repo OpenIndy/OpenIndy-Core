@@ -3273,6 +3273,7 @@ void OiJob::addFeaturesFromXml(const QList<QPointer<FeatureWrapper> > &features)
             if(feature->getCoordinateSystem()->getIsBundleSystem()){
                 if(!feature->getCoordinateSystem()->getBundlePlugin().isNull()){
                     feature->getCoordinateSystem()->getBundlePlugin()->setCurrentJob(this);
+                    this->activeBundleSystem = feature->getCoordinateSystem();
                 }
             }
         }
