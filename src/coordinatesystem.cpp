@@ -565,7 +565,7 @@ void CoordinateSystem::setBundlePlugin(const QPointer<BundleAdjustment> &bundle)
 
     //set bundle
     this->bundlePlugin = bundle;
-    emit this->bundlePluginChanged(this->id);
+    emit this->bundlePluginChanged(this->id); // TODO OI-932 not used
 
 }
 
