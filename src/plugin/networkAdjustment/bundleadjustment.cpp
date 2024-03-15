@@ -298,6 +298,7 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
     baseSystem.setAttribute("ref", this->baseSystem.id);
     bundle.appendChild(baseSystem);
 
+    /* TODO bundle scalar parameters remove later
     //add integer parameters
     QDomElement integerParams = xmlDoc.createElement("integerParameters");
     QMapIterator<QString, int> intIterator(this->scalarInputParams.intParameter);
@@ -333,7 +334,7 @@ QDomElement BundleAdjustment::toOpenIndyXML(QDomDocument &xmlDoc) const{
         stringParams.appendChild(stringParam);
     }
     bundle.appendChild(stringParams);
-
+*/
     return bundle;
 
 }
@@ -447,7 +448,7 @@ bool BundleAdjustment::fromOpenIndyXML(QDomElement &xmlElem){
             this->baseSystem = station;
         }
     }
-
+/* TODO bundle scalar parameters remove later
     //set integer parameter
     QDomElement integerParameters = xmlElem.firstChildElement("integerParameters");
     if(!integerParameters.isNull()){
@@ -488,6 +489,7 @@ bool BundleAdjustment::fromOpenIndyXML(QDomElement &xmlElem){
     }
 
     this->scalarInputParams.isValid = true;
+    */
 
     return true;
 
