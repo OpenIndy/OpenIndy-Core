@@ -510,7 +510,6 @@ protected:
 
         if(!this->fitCylinder(function, cylinder, reducedInputObservations, allReducedInputObservations, bestApproximation)){
             emit function->sendMessage(QString("Error while fitting cylinder %1 with solution: %2").arg(cylinder.getFeatureName()).arg(bestApproximation.comment), eErrorMessage);
-            cylinder.setIsSolved(false);
             return false;
         }
 
