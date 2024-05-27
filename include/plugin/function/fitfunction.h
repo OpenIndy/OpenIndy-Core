@@ -1079,38 +1079,6 @@ protected:
 
             }
 
-            //apply Armijo rule which is useful in case of bad approximations
-            /*do{
-
-                sigma = sigma / 2.0;
-
-                _r_armijo = _r + sigma * x.getAt(0);
-                _X0_armijo = _X0 + sigma * x.getAt(1);
-                _Y0_armijo = _Y0 + sigma * x.getAt(2);
-                _alpha_armijo = _alpha + sigma * x.getAt(3);
-                _beta_armijo = _beta + sigma * x.getAt(4);
-
-                for(int i = 0; i < 5; i++){
-                    _x = L0.getAt(i*3);
-                    _y = L0.getAt(i*3+1);
-                    _z = L0.getAt(i*3+2);
-
-                    a.setAt(i, _r_armijo - qSqrt( (_X0_armijo + _x*qCos(_beta_armijo) + _y*qSin(_alpha_armijo)*qSin(_beta_armijo) + _z*qCos(_alpha_armijo)*qSin(_beta_armijo))*(_X0_armijo + _x*qCos(_beta_armijo) + _y*qSin(_alpha_armijo)*qSin(_beta_armijo) + _z*qCos(_alpha_armijo)*qSin(_beta_armijo))
-                                           + (_Y0_armijo + _y*qCos(_alpha_armijo) - _z*qSin(_alpha_armijo))*(_Y0_armijo + _y*qCos(_alpha_armijo) - _z*qSin(_alpha_armijo)) ));
-
-                    b.setAt(i, _r - qSqrt( (_X0 + _x*qCos(_beta) + _y*qSin(_alpha)*qSin(_beta) + _z*qCos(_alpha)*qSin(_beta))*(_X0 + _x*qCos(_beta) + _y*qSin(_alpha)*qSin(_beta) + _z*qCos(_alpha)*qSin(_beta))
-                                                   + (_Y0 + _y*qCos(_alpha) - _z*qSin(_alpha))*(_Y0 + _y*qCos(_alpha) - _z*qSin(_alpha)) ));
-                }
-
-                OiVec::dot(stopAA, a, a);
-                OiVec::dot(stopBB, b, b);
-
-            }while( stopAA > ( stopBB - 2.0 * 0.001 * sigma * stopBB ) );
-
-            x = sigma * x;*/
-
-
-
 
             do{
 
@@ -1149,47 +1117,10 @@ protected:
             x = sigma * x;
             v = sigma * v;
 
-
-
-
-
-            //nur testweise
-            if(sigma < 0.1){
-                std::default_random_engine generator;
-
-
-                /*_r = approximation.approxRadius;
-                _X0 = approximation.approxXm;
-                _Y0 = approximation.approxYm;
-                _alpha = approximation.approxAlpha;
-                _beta = approximation.approxBeta;
-
-                OiVec X_temp(5);
-                X_temp.setAt(0, _r);
-                X_temp.setAt(1, _X0);
-                X_temp.setAt(2, _Y0);
-                X_temp.setAt(3, _alpha);
-                X_temp.setAt(4, _beta);*/
-
-                for(int k = 0; k < 5; k++){
-                    std::uniform_real_distribution<double> distribution(-3.0 * qAbs(x.getAt(k)), 3.0 * qAbs(x.getAt(k)));
-                    //std::uniform_real_distribution<double> distribution(-0.001 * qAbs(X_temp.getAt(k)), 0.001 * qAbs(X_temp.getAt(k)));
-                    //std::uniform_real_distribution<double> distribution(-(double)(1.0/sigma) * qAbs(X_temp.getAt(k)), (double)(1.0/sigma) * qAbs(X_temp.getAt(k)));
-                    double dice_roll = distribution(generator);
-                    x.setAt(k, x.getAt(k) + dice_roll);
-                }
-            }
-
-
-
             sigma = 2.0;
 
             numIterations++;
 
-        //}while( (stopXX > 0.000000001) && (stopVV > 0.000000001) && numIterations < 1000 );
-        //}while( (stopXX > 0.00000000001) && (stopVV > 0.00000000001) && numIterations < 1000 );
-        //}while( ((stopXX > 0.00000000001) || (stopVV > 0.00000000001)) && numIterations < 1000 );
-        //}while( ((stopXX > 0.0000000000001) || (stopVV > 0.00000000001)) && numIterations < 1000 );
         }while( stopXX > 0.0000000000001 && numIterations < 1000 );
 
         if(numIterations >= 1000){
