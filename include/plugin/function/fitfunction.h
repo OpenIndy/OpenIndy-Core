@@ -886,6 +886,7 @@ protected:
         //solve equation system to get circle parameters
         try{
             if(!OiMat::solve(s, A2.t() * A2, -1.0 * A2.t() * A1)){
+                emit function->sendMessage("can not solve cylinder parameters", eErrorMessage);
                 return false;
             }
         }catch(const exception &e){
