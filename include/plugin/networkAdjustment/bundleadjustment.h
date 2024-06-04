@@ -14,6 +14,20 @@
 
 namespace oi{
 
+class BundleException : public std::exception
+{
+public:
+    BundleException(const char * const & message, int featureId = -1) : std::exception(message), featureId(featureId) {
+    }
+
+    int getFeatureId() {
+        return featureId;
+    }
+
+private:
+    int featureId;
+};
+
 /*!
  * \brief The BundleTransformation class
  * Defines a transformation for bundle adjustment
