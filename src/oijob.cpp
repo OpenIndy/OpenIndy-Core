@@ -1686,7 +1686,12 @@ void OiJob::enableOrDisableGeometryObservations(const int &featureId, bool enabl
     //run through all observations of the feature
     QList<QPointer<Observation> > observations = feature->getGeometry()->getObservations();
     foreach(const QPointer<Observation> &obs, observations){
-        if(!station.isNull() && station->getId() != obs->getStation()->getId()) {
+        if( (
+                ! station.isNull()
+                && station->getId() != obs->getStation()->getId()
+             )
+             || functionIndex >= feature->getFeature()->getFunctions().size()
+                ) {
             continue; // skip
         }
         int elementId = obs->getId();
