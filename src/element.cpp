@@ -62,7 +62,7 @@ QDomElement Element::toOpenIndyXML(QDomDocument &xmlDoc) const{
  * \param xmlElem
  * \return
  */
-bool Element::fromOpenIndyXML(QDomElement &xmlElem){
+bool Element::fromOpenIndyXML(const QDomElement &xmlElem){
 
     if(xmlElem.isNull()){
         return false;

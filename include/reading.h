@@ -268,7 +268,7 @@ public:
     //#################
 
     QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
-    bool fromOpenIndyXML(QDomElement &xmlElem);
+    bool fromOpenIndyXML(const QDomElement &xmlElem);
 
 private:
 

@@ -39,7 +39,7 @@ public:
     //################
 
     virtual QDomElement toOpenIndyXML(QDomDocument &xmlDoc) const;
-    virtual bool fromOpenIndyXML(QDomElement &xmlElem);
+    virtual bool fromOpenIndyXML(const QDomElement &xmlElem);
 
     bool isNull();
 
