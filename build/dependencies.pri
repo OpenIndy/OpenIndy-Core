@@ -2,7 +2,7 @@
 include($$PWD/../lib/OpenIndy-Math/include.pri)
 include($$PWD/../lib/OpenIndy-Math/build/includes.pri)
 
-linux: LIBS = -lGLU
+linux: LIBS += -lGLU
 
 win32 {
     CONFIG(release, debug|release) {
