@@ -14,10 +14,10 @@
 
 namespace oi{
 
-class BundleException : public std::exception
+class BundleException : public std::runtime_error
 {
 public:
-    BundleException(const char * const & message, int featureId = -1) : std::exception(message), featureId(featureId) {
+    BundleException(const char * const & message, int featureId = -1) : std::runtime_error(message), featureId(featureId) {
     }
 
     int getFeatureId() {

@@ -496,13 +496,18 @@ void Feature::recalc(){
         }
 
     } catch(const exception &e) {
-        throw exception(QString("can not calculate feature: \"%1\", error: %2")
-                        .arg(this->getFeatureName())
-                        .arg(e.what()).toLocal8Bit().data());
+        throw std::runtime_error(
+            QString("can not calculate feature: \"%1\", error: %2")
+                .arg(this->getFeatureName())
+                .arg(e.what())
+                .toStdString()
+            );
     } catch(...) {
-        throw exception(QString("can not calculate feature: \"%1\"")
-                        .arg(this->getFeatureName())
-                        .toLocal8Bit().data());
+        throw std::runtime_error(
+            QString("can not calculate feature: \"%1\"")
+                .arg(this->getFeatureName())
+                .toStdString()
+             );
     }
 
 }
