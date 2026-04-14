@@ -3,7 +3,7 @@
 
 #include <QString>
 #include <QtXml>
-#include <QHash.h>
+#include <QHash>
 
 #include "types.h"
 #include "util.h"
