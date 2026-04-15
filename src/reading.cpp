@@ -1119,7 +1119,7 @@ QDomElement Reading::toOpenIndyXML(QDomDocument &xmlDoc) const{
  * \param xmlElem
  * \return
  */
-bool Reading::fromOpenIndyXML(QDomElement &xmlElem){
+bool Reading::fromOpenIndyXML(const QDomElement &xmlElem){
 
     if(xmlElem.isNull()){
         return false;
